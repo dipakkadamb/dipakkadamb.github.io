@@ -11,7 +11,6 @@
   <meta property="og:description" content="Bridging IT Infrastructure, Intelligent Web Apps, and Business Automation." />
   <meta property="og:type" content="website" />
 
-  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script type="application/ld+json">
 {
@@ -40,7 +39,6 @@
 }
 </script>
 
-  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
@@ -243,22 +241,16 @@
 </head>
 <body class="bg-navy-900 text-slate-100 font-sans">
 
-<!-- SCROLL PROGRESS -->
 <div id="progress-bar"></div>
 
-<!-- ══════════════════════════════════════════════
-     NAVBAR
-═══════════════════════════════════════════════ -->
 <nav id="navbar" class="fixed top-0 inset-x-0 z-50 transition-all duration-300 py-5 px-6 md:px-12">
   <div class="max-w-6xl mx-auto flex items-center justify-between">
 
-    <!-- Logo -->
     <a href="#hero" class="flex items-center gap-2">
       <div class="w-8 h-8 rounded-lg bg-royal flex items-center justify-center text-white font-bold text-sm" style="box-shadow:0 0 20px rgba(26,86,219,.4)">DK</div>
       <span class="font-bold text-white tracking-tight hidden sm:block">Dipak<span class="text-royal">.</span></span>
     </a>
 
-    <!-- Desktop Nav -->
     <ul class="hidden md:flex items-center gap-8">
       <li><a href="#about"      class="text-sm font-medium text-slate-400 hover:text-white transition-colors">About</a></li>
       <li><a href="#stack"      class="text-sm font-medium text-slate-400 hover:text-white transition-colors">Stack</a></li>
@@ -267,7 +259,6 @@
       <li><a href="#contact"    class="text-sm font-medium text-slate-400 hover:text-white transition-colors">Contact</a></li>
     </ul>
 
-    <!-- CTA + Hamburger -->
     <div class="flex items-center gap-3">
       <a href="#contact" class="hidden md:inline-flex btn-primary text-sm py-2 px-5">
         Hire Me
@@ -280,7 +271,6 @@
     </div>
   </div>
 
-  <!-- Mobile Menu -->
   <div id="mobile-menu" class="md:hidden mt-4 px-2 pb-4 border-t border-white/5 pt-4">
     <ul class="flex flex-col gap-4">
       <li><a href="#about"      class="mobile-link block text-slate-300 hover:text-white text-base font-medium">About</a></li>
@@ -293,22 +283,16 @@
   </div>
 </nav>
 
-<!-- ══════════════════════════════════════════════
-     HERO
-═══════════════════════════════════════════════ -->
 <section id="hero" class="relative min-h-screen flex items-center overflow-hidden">
-  <!-- Background -->
   <div class="absolute inset-0 bg-navy-900"></div>
   <div class="absolute inset-0" style="background:radial-gradient(ellipse 80% 60% at 60% 20%,rgba(26,86,219,.18) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 90% 80%,rgba(6,182,212,.1) 0%,transparent 50%)"></div>
   <div class="absolute inset-0 grid-bg" style="mask-image:radial-gradient(ellipse at center,black 30%,transparent 80%)"></div>
-  <!-- Orbs -->
   <div class="orb w-96 h-96 top-1/4 right-1/4" style="background:rgba(26,86,219,.18)"></div>
   <div class="orb w-80 h-80 bottom-1/3 left-1/4" style="background:rgba(6,182,212,.12)"></div>
 
   <div class="relative z-10 max-w-6xl mx-auto px-6 md:px-10 pt-28 w-full">
     <div class="max-w-3xl">
 
-      <!-- Available badge -->
       <div class="inline-flex items-center gap-2 px-4 py-2 mb-8 rounded-full text-xs font-mono font-medium tracking-wider reveal"
            style="background:rgba(26,86,219,.1);border:1px solid rgba(26,86,219,.25);color:rgba(147,187,245,.9)">
         <div class="ping-dot">
@@ -317,7 +301,6 @@
         Available for Freelance &amp; Full-time
       </div>
 
-      <!-- H1 -->
       <h1 class="hero-h1 font-extrabold leading-tight tracking-tight mb-6 reveal" style="font-size:clamp(2.4rem,6vw,4.5rem);line-height:1.05">
         Building
         <span class="relative inline-block mx-2">
@@ -329,22 +312,19 @@
         Business Workflows.
       </h1>
 
-      <!-- Sub -->
       <p class="text-lg md:text-xl leading-relaxed mb-10 font-light max-w-2xl reveal" style="color:#94a8cc">
         Specialized in combining modern web technologies with AI-driven development and Zoho ecosystem integrations to create
         <span class="font-medium" style="color:#f0f4ff">scalable business solutions</span>.
       </p>
 
-      <!-- Buttons -->
       <div class="flex flex-wrap gap-4 mb-14 reveal">
         <a href="#services" class="btn-primary text-base px-8 py-3">
           View Work
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
         </a>
-        <a href="https://github.com/dipakkadamb/dipakkadamb.github.io/blob/main/dipakkadamb.pdf" id="cvBtn" class="btn-secondary text-base px-8 py-3">Download CV</a>
+        <a href="https://github.com/dipakkadamb/dipakkadamb.github.io/raw/main/dipakkadamb.pdf" download="Dipak_Kadamb_CV.pdf" class="btn-secondary text-base px-8 py-3">Download CV</a>
       </div>
 
-      <!-- Stats -->
       <div class="stats-grid grid grid-cols-4 gap-6 pt-8 reveal" style="border-top:1px solid rgba(255,255,255,.06)">
         <div><div class="text-2xl font-extrabold text-shimmer mb-1">6+</div><div class="text-xs tracking-wider uppercase font-medium" style="color:#546380">Years in Tech</div></div>
         <div><div class="text-2xl font-extrabold text-shimmer mb-1">3+</div><div class="text-xs tracking-wider uppercase font-medium" style="color:#546380">Zoho Products</div></div>
@@ -354,7 +334,6 @@
     </div>
   </div>
 
-  <!-- Scroll indicator -->
   <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2" style="color:#546380">
     <div id="scrollArrow" style="animation:float 1.5s ease-in-out infinite">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
@@ -362,14 +341,10 @@
   </div>
 </section>
 
-<!-- ══════════════════════════════════════════════
-     ABOUT
-═══════════════════════════════════════════════ -->
 <section id="about" class="py-24 md:py-32" style="border-top:1px solid rgba(255,255,255,.04)">
   <div class="max-w-6xl mx-auto px-6 md:px-10">
     <div class="grid md:grid-cols-2 gap-16 items-center">
 
-      <!-- Left -->
       <div>
         <div class="section-label reveal">About Me</div>
         <h2 class="text-4xl md:text-5xl font-extrabold tracking-tight leading-tight mb-6 reveal">
@@ -377,7 +352,7 @@
           <span class="gradient-text">Business Automation</span>
         </h2>
         <p class="leading-relaxed mb-5 reveal" style="color:#94a8cc">
-          I'm <strong style="color:#f0f4ff;font-weight:600">Dipak Kadam</strong>, an AI Web Developer and Zoho Integration Specialist based in Pune, Maharashtra. With a B.Sc. in Computer Science and a career spanning system engineering, IT administration, and modern web development, I bring a rare combination of deep infrastructure knowledge and cutting-edge AI-assisted development.
+          I'm <strong style="color:#f0f4ff;font-weight:600">Dipak Kadamb</strong>, an AI Web Developer and Zoho Integration Specialist based in Pune, Maharashtra. With a B.Sc. in Computer Science and a career spanning system engineering, IT administration, and modern web development, I bring a rare combination of deep infrastructure knowledge and cutting-edge AI-assisted development.
         </p>
         <p class="leading-relaxed mb-8 reveal" style="color:#94a8cc">
           My core strength lies in the intersection of Zoho platform integrations, intelligent web applications, and scalable IT systems — helping businesses automate complex workflows, capture leads efficiently, and build reliable digital infrastructure.
@@ -407,7 +382,6 @@
         </div>
       </div>
 
-      <!-- Right: Info Cards -->
       <div class="grid gap-4">
         <div class="card p-5 flex items-start gap-4 reveal">
           <span style="color:#1a56db;margin-top:2px">
@@ -441,7 +415,7 @@
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
           </span>
           <div>
-            <p class="text-xs uppercase tracking-widest font-mono mb-1" style="color:#546380">Current Role</p>
+            <p class="text-xs uppercase tracking-wider font-mono mb-1" style="color:#546380">Current Role</p>
             <p class="font-medium" style="color:#f0f4ff">AI Web Developer @ ZM Technologies</p>
           </div>
         </div>
@@ -451,20 +425,18 @@
   </div>
 </section>
 
-<!-- ══════════════════════════════════════════════
-     TECH STACK
-═══════════════════════════════════════════════ -->
 <section id="stack" class="py-24 md:py-32" style="background:rgba(4,9,15,.5)">
   <div class="max-w-6xl mx-auto px-6 md:px-10">
     <div class="mb-16">
       <div class="section-label reveal">Tech Stack</div>
       <h2 class="text-4xl md:text-5xl font-extrabold tracking-tight mb-4 reveal">Tools &amp; Technologies</h2>
-      <p class="text-lg max-w-2xl leading-relaxed reveal" style="color:#94a8cc">A carefully built toolkit spanning modern web development, the Zoho ecosystem, and enterprise IT infrastructure.</p>
+      <p class="text-lg max-w-2xl leading-relaxed reveal" style="color:#94a8cc">A toolkit spanning modern web development, the Zoho ecosystem, and enterprise IT infrastructure.</p>
     </div>
+
+    
 
     <div class="grid md:grid-cols-3 gap-6">
 
-      <!-- Web & AI -->
       <div class="card p-7 reveal" style="border-color:rgba(26,86,219,.15)">
         <div class="flex items-center gap-3 mb-6">
           <div class="w-10 h-10 rounded-xl flex items-center justify-center text-white" style="background:linear-gradient(135deg,#1a56db,#06b6d4)">
@@ -479,7 +451,6 @@
         </div>
       </div>
 
-      <!-- Zoho Ecosystem -->
       <div class="card p-7 reveal" style="border-color:rgba(20,184,166,.15)">
         <div class="flex items-center gap-3 mb-6">
           <div class="w-10 h-10 rounded-xl flex items-center justify-center text-white" style="background:linear-gradient(135deg,#14b8a6,#1a56db)">
@@ -494,7 +465,6 @@
         </div>
       </div>
 
-      <!-- IT Infrastructure -->
       <div class="card p-7 reveal" style="border-color:rgba(100,116,139,.15)">
         <div class="flex items-center gap-3 mb-6">
           <div class="w-10 h-10 rounded-xl flex items-center justify-center text-white" style="background:linear-gradient(135deg,#64748b,#475569)">
@@ -511,35 +481,20 @@
       </div>
 
     </div>
-
-    <!-- Also Proficient -->
-    <div class="card p-6 mt-6 reveal">
-      <p class="text-xs uppercase tracking-widest font-mono mb-4" style="color:#546380">Also Proficient In</p>
-      <div class="flex flex-wrap gap-2">
-        <span class="badge">Postman</span><span class="badge">JSON</span><span class="badge">Git</span>
-        <span class="badge">Python (Basic)</span><span class="badge">VS Code</span>
-        <span class="badge">Virtualization Platforms</span><span class="badge">System Hardening</span>
-        <span class="badge">Backup &amp; Recovery</span>
-      </div>
-    </div>
   </div>
 </section>
 
-<!-- ══════════════════════════════════════════════
-     EXPERIENCE
-═══════════════════════════════════════════════ -->
 <section id="experience" class="py-24 md:py-32">
   <div class="max-w-6xl mx-auto px-6 md:px-10">
     <div class="mb-16">
       <div class="section-label reveal">Career Journey</div>
       <h2 class="text-4xl md:text-5xl font-extrabold tracking-tight mb-4 reveal">Work Experience</h2>
-      <p class="text-lg max-w-2xl leading-relaxed reveal" style="color:#94a8cc">A progressive path from IT administration and system engineering to AI-powered web development and intelligent automation.</p>
+      <p class="text-lg max-w-2xl leading-relaxed reveal" style="color:#94a8cc">A path from system engineering to AI-powered web development and intelligent automation.</p>
     </div>
 
     <div class="relative pl-6 md:pl-8">
       <div class="timeline-line"></div>
 
-      <!-- ZM Technologies -->
       <div class="relative mb-14 reveal-left">
         <div class="timeline-dot"></div>
         <div class="card p-6 md:p-8">
@@ -551,168 +506,48 @@
             </div>
             <span class="self-start px-3 py-1.5 rounded-lg text-xs font-mono whitespace-nowrap" style="background:rgba(13,30,53,.8);border:1px solid rgba(255,255,255,.06);color:#94a8cc">Sept 2025 – Present</span>
           </div>
-          <div class="h-px mb-5" style="background:rgba(255,255,255,.05)"></div>
           <ul class="space-y-2.5 mb-5">
-            <li class="flex items-start gap-3 text-sm leading-relaxed" style="color:#94a8cc"><span class="mt-2 w-1 h-1 rounded-full flex-shrink-0" style="background:rgba(26,86,219,.7)"></span>Building AI-enhanced web applications using HTML, CSS, JavaScript, and React.</li>
-            <li class="flex items-start gap-3 text-sm leading-relaxed" style="color:#94a8cc"><span class="mt-2 w-1 h-1 rounded-full flex-shrink-0" style="background:rgba(26,86,219,.7)"></span>Automating lead capture and data synchronization via Zoho CRM &amp; Zoho Flow using REST APIs and Webhooks.</li>
-            <li class="flex items-start gap-3 text-sm leading-relaxed" style="color:#94a8cc"><span class="mt-2 w-1 h-1 rounded-full flex-shrink-0" style="background:rgba(26,86,219,.7)"></span>Implementing AI features including intelligent chatbots, automated forms, and AI-based security integrations.</li>
-            <li class="flex items-start gap-3 text-sm leading-relaxed" style="color:#94a8cc"><span class="mt-2 w-1 h-1 rounded-full flex-shrink-0" style="background:rgba(26,86,219,.7)"></span>Leveraging GitHub Copilot and ChatGPT API to accelerate development velocity and code quality.</li>
-            <li class="flex items-start gap-3 text-sm leading-relaxed" style="color:#94a8cc"><span class="mt-2 w-1 h-1 rounded-full flex-shrink-0" style="background:rgba(26,86,219,.7)"></span>Maintaining clear API and workflow documentation for long-term system scalability.</li>
+            <li class="flex items-start gap-3 text-sm leading-relaxed" style="color:#94a8cc"><span class="mt-2 w-1 h-1 rounded-full flex-shrink-0" style="background:rgba(26,86,219,.7)"></span>Building AI-enhanced web applications using React and JavaScript.</li>
+            <li class="flex items-start gap-3 text-sm leading-relaxed" style="color:#94a8cc"><span class="mt-2 w-1 h-1 rounded-full flex-shrink-0" style="background:rgba(26,86,219,.7)"></span>Automating lead capture via Zoho CRM &amp; Zoho Flow using REST APIs.</li>
           </ul>
           <div class="flex flex-wrap gap-2">
             <span class="chip">React.js</span><span class="chip">Zoho CRM</span><span class="chip">Zoho Flow</span>
-            <span class="chip">REST API</span><span class="chip">ChatGPT API</span><span class="chip">GitHub Copilot</span>
+            <span class="chip">REST API</span><span class="chip">ChatGPT API</span>
           </div>
         </div>
-      </div>
-
-      <!-- Royaltech -->
-      <div class="relative mb-14 reveal-left">
-        <div class="timeline-dot teal"></div>
-        <div class="card p-6 md:p-8">
-          <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-5">
-            <div>
-              <p class="text-xs font-mono uppercase tracking-wider mb-1.5" style="color:#546380">Full-time · Pune</p>
-              <h3 class="text-xl font-bold" style="color:#f0f4ff">System Engineer</h3>
-              <p class="font-semibold mt-0.5" style="color:#14b8a6">Royaltech</p>
-            </div>
-            <span class="self-start px-3 py-1.5 rounded-lg text-xs font-mono whitespace-nowrap" style="background:rgba(13,30,53,.8);border:1px solid rgba(255,255,255,.06);color:#94a8cc">Apr 2025 – Sept 2025</span>
-          </div>
-          <div class="h-px mb-5" style="background:rgba(255,255,255,.05)"></div>
-          <ul class="space-y-2.5 mb-5">
-            <li class="flex items-start gap-3 text-sm leading-relaxed" style="color:#94a8cc"><span class="mt-2 w-1 h-1 rounded-full flex-shrink-0" style="background:rgba(20,184,166,.7)"></span>Designed and deployed scalable, secure IT environments with high availability and fault tolerance.</li>
-            <li class="flex items-start gap-3 text-sm leading-relaxed" style="color:#94a8cc"><span class="mt-2 w-1 h-1 rounded-full flex-shrink-0" style="background:rgba(20,184,166,.7)"></span>Managed Windows Server and Linux systems, virtualization platforms, and enterprise networking components.</li>
-            <li class="flex items-start gap-3 text-sm leading-relaxed" style="color:#94a8cc"><span class="mt-2 w-1 h-1 rounded-full flex-shrink-0" style="background:rgba(20,184,166,.7)"></span>Proactively monitored system performance using Grafana and Zabbix, preventing potential outages.</li>
-            <li class="flex items-start gap-3 text-sm leading-relaxed" style="color:#94a8cc"><span class="mt-2 w-1 h-1 rounded-full flex-shrink-0" style="background:rgba(20,184,166,.7)"></span>Automated routine administrative tasks using Python, PowerShell, and Bash scripting.</li>
-            <li class="flex items-start gap-3 text-sm leading-relaxed" style="color:#94a8cc"><span class="mt-2 w-1 h-1 rounded-full flex-shrink-0" style="background:rgba(20,184,166,.7)"></span>Led capacity planning efforts, analyzing usage trends to prepare infrastructure for future growth.</li>
-          </ul>
-          <div class="flex flex-wrap gap-2">
-            <span class="chip">Linux</span><span class="chip">Windows Server</span><span class="chip">Grafana</span>
-            <span class="chip">Zabbix</span><span class="chip">Python</span><span class="chip">PowerShell</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- SKS -->
-      <div class="relative mb-14 reveal-left">
-        <div class="timeline-dot slate"></div>
-        <div class="card p-6 md:p-8">
-          <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-5">
-            <div>
-              <p class="text-xs font-mono uppercase tracking-wider mb-1.5" style="color:#546380">Full-time · Pune</p>
-              <h3 class="text-xl font-bold" style="color:#f0f4ff">IT Administrator</h3>
-              <p class="font-semibold mt-0.5" style="color:#94a3b8">SKS Engineering Solutions</p>
-            </div>
-            <span class="self-start px-3 py-1.5 rounded-lg text-xs font-mono whitespace-nowrap" style="background:rgba(13,30,53,.8);border:1px solid rgba(255,255,255,.06);color:#94a8cc">Jul 2024 – Mar 2025</span>
-          </div>
-          <div class="h-px mb-5" style="background:rgba(255,255,255,.05)"></div>
-          <ul class="space-y-2.5 mb-5">
-            <li class="flex items-start gap-3 text-sm leading-relaxed" style="color:#94a8cc"><span class="mt-2 w-1 h-1 rounded-full flex-shrink-0" style="background:rgba(148,163,184,.5)"></span>Managed end-to-end IT infrastructure including servers, networks, and user environments.</li>
-            <li class="flex items-start gap-3 text-sm leading-relaxed" style="color:#94a8cc"><span class="mt-2 w-1 h-1 rounded-full flex-shrink-0" style="background:rgba(148,163,184,.5)"></span>Administered user accounts, access controls, and application software across the organization.</li>
-            <li class="flex items-start gap-3 text-sm leading-relaxed" style="color:#94a8cc"><span class="mt-2 w-1 h-1 rounded-full flex-shrink-0" style="background:rgba(148,163,184,.5)"></span>Performed regular patching, backup, and disaster recovery operations to minimize downtime.</li>
-            <li class="flex items-start gap-3 text-sm leading-relaxed" style="color:#94a8cc"><span class="mt-2 w-1 h-1 rounded-full flex-shrink-0" style="background:rgba(148,163,184,.5)"></span>Implemented security controls and monitored system access to ensure data protection compliance.</li>
-            <li class="flex items-start gap-3 text-sm leading-relaxed" style="color:#94a8cc"><span class="mt-2 w-1 h-1 rounded-full flex-shrink-0" style="background:rgba(148,163,184,.5)"></span>Automated routine admin tasks via scripts, reducing manual errors and improving team efficiency.</li>
-          </ul>
-          <div class="flex flex-wrap gap-2">
-            <span class="chip">IT Admin</span><span class="chip">Security</span>
-            <span class="chip">Backup &amp; Recovery</span><span class="chip">Networking</span><span class="chip">User Management</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Early Career -->
-      <div class="relative reveal-left">
-        <div class="timeline-dot" style="background:#1a3a62;box-shadow:none"></div>
-        <div class="card p-5" style="border-style:dashed">
-          <p class="text-xs font-mono uppercase tracking-wider mb-3" style="color:#546380">Earlier Experience</p>
-          <div class="flex flex-wrap gap-x-8 gap-y-2 text-sm">
-            <span><span style="color:#f0f4ff;font-weight:500">Test Engineer</span> <span style="color:#546380">· PHN Technology · May 2023</span></span>
-            <span><span style="color:#f0f4ff;font-weight:500">Java Developer</span> <span style="color:#546380">· Naresh i Technologies · Dec 2019 – Feb 2020</span></span>
-            <span><span style="color:#f0f4ff;font-weight:500">Industrial Practice</span> <span style="color:#546380">· TCS iON · Nov 2017 – Mar 2018</span></span>
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- Education -->
-    <div class="mt-14 reveal">
-      <div class="section-label mb-6">Education</div>
-      <div class="card p-7 max-w-md" style="border-left:2px solid #1a56db">
-        <p class="text-xs font-mono uppercase tracking-wider mb-2" style="color:#1a56db">2015 – 2020</p>
-        <h3 class="text-lg font-bold mb-1" style="color:#f0f4ff">Bachelor of Science — Computer Science</h3>
-        <p style="color:#546380;font-size:.9rem">MGM College of Engineering &amp; Technology</p>
       </div>
     </div>
-
   </div>
 </section>
 
-<!-- ══════════════════════════════════════════════
-     SERVICES
-═══════════════════════════════════════════════ -->
 <section id="services" class="py-24 md:py-32" style="background:rgba(4,9,15,.5)">
   <div class="max-w-6xl mx-auto px-6 md:px-10">
     <div class="mb-16">
       <div class="section-label reveal">What I Do</div>
       <h2 class="text-4xl md:text-5xl font-extrabold tracking-tight mb-4 reveal">Services</h2>
-      <p class="text-lg max-w-2xl leading-relaxed reveal" style="color:#94a8cc">Comprehensive solutions across web development, business automation, and IT infrastructure — all powered by AI and proven methodology.</p>
     </div>
 
     <div class="grid md:grid-cols-3 gap-6">
-
-      <!-- AI Web Dev -->
       <div class="card p-8 flex flex-col reveal" style="border-color:rgba(26,86,219,.12)">
-        <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-white mb-6" style="background:linear-gradient(135deg,rgba(26,86,219,.3),rgba(6,182,212,.15))">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
-        </div>
         <h3 class="text-xl font-bold mb-3" style="color:#f0f4ff">AI Web Development</h3>
-        <p class="text-sm leading-relaxed mb-6 flex-grow" style="color:#94a8cc">Building modern, responsive websites accelerated by AI tools. From intelligent forms and chatbot integrations to performance-optimized single-page apps — delivered faster with higher quality.</p>
-        <ul class="space-y-2">
-          <li class="flex items-center gap-2.5 text-xs" style="color:#546380"><div class="feat-dot"><span></span></div>AI Chatbot Integration</li>
-          <li class="flex items-center gap-2.5 text-xs" style="color:#546380"><div class="feat-dot"><span></span></div>Intelligent Forms</li>
-          <li class="flex items-center gap-2.5 text-xs" style="color:#546380"><div class="feat-dot"><span></span></div>React.js SPAs</li>
-          <li class="flex items-center gap-2.5 text-xs" style="color:#546380"><div class="feat-dot"><span></span></div>Performance Optimization</li>
-        </ul>
+        <p class="text-sm leading-relaxed mb-6 flex-grow" style="color:#94a8cc">Building performance-optimized apps delivered faster with AI-assisted workflows.</p>
       </div>
 
-      <!-- Zoho Automation -->
       <div class="card p-8 flex flex-col reveal" style="border-color:rgba(20,184,166,.12)">
-        <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-white mb-6" style="background:linear-gradient(135deg,rgba(20,184,166,.3),rgba(26,86,219,.15))">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-        </div>
         <h3 class="text-xl font-bold mb-3" style="color:#f0f4ff">Zoho Automation</h3>
-        <p class="text-sm leading-relaxed mb-6 flex-grow" style="color:#94a8cc">End-to-end business workflow automation using the full Zoho ecosystem. Seamless CRM integration, Deluge scripting, and multi-platform orchestration via Flow.</p>
-        <ul class="space-y-2">
-          <li class="flex items-center gap-2.5 text-xs" style="color:#546380"><div class="feat-dot" style="background:rgba(20,184,166,.2)"><span style="background:#14b8a6"></span></div>Zoho CRM Setup &amp; Integration</li>
-          <li class="flex items-center gap-2.5 text-xs" style="color:#546380"><div class="feat-dot" style="background:rgba(20,184,166,.2)"><span style="background:#14b8a6"></span></div>Zoho Flow Automation</li>
-          <li class="flex items-center gap-2.5 text-xs" style="color:#546380"><div class="feat-dot" style="background:rgba(20,184,166,.2)"><span style="background:#14b8a6"></span></div>Deluge Custom Scripts</li>
-          <li class="flex items-center gap-2.5 text-xs" style="color:#546380"><div class="feat-dot" style="background:rgba(20,184,166,.2)"><span style="background:#14b8a6"></span></div>Lead Capture Pipelines</li>
-        </ul>
+        <p class="text-sm leading-relaxed mb-6 flex-grow" style="color:#94a8cc">End-to-end business workflow automation using CRM integration and Deluge scripting.</p>
       </div>
 
-      <!-- IT Consultancy -->
       <div class="card p-8 flex flex-col reveal">
-        <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-white mb-6" style="background:linear-gradient(135deg,rgba(100,116,139,.3),rgba(71,85,105,.15))">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>
-        </div>
-        <h3 class="text-xl font-bold mb-3" style="color:#f0f4ff">IT Infrastructure Consultancy</h3>
-        <p class="text-sm leading-relaxed mb-6 flex-grow" style="color:#94a8cc">Comprehensive server management, security auditing, and infrastructure design. Scalable, resilient, and monitored environments built for business continuity.</p>
-        <ul class="space-y-2">
-          <li class="flex items-center gap-2.5 text-xs" style="color:#546380"><div class="feat-dot" style="background:rgba(100,116,139,.2)"><span style="background:#64748b"></span></div>Server Design &amp; Deployment</li>
-          <li class="flex items-center gap-2.5 text-xs" style="color:#546380"><div class="feat-dot" style="background:rgba(100,116,139,.2)"><span style="background:#64748b"></span></div>Security Hardening</li>
-          <li class="flex items-center gap-2.5 text-xs" style="color:#546380"><div class="feat-dot" style="background:rgba(100,116,139,.2)"><span style="background:#64748b"></span></div>Monitoring Setup (Grafana/Zabbix)</li>
-          <li class="flex items-center gap-2.5 text-xs" style="color:#546380"><div class="feat-dot" style="background:rgba(100,116,139,.2)"><span style="background:#64748b"></span></div>Disaster Recovery Planning</li>
-        </ul>
+        <h3 class="text-xl font-bold mb-3" style="color:#f0f4ff">Infrastructure Consultancy</h3>
+        <p class="text-sm leading-relaxed mb-6 flex-grow" style="color:#94a8cc">Scalable server management and security auditing built for business continuity.</p>
       </div>
-
     </div>
 
-    <!-- CTA Banner -->
     <div class="card mt-10 p-8 md:p-10 text-center relative overflow-hidden reveal">
       <div class="absolute inset-0" style="background:linear-gradient(90deg,rgba(26,86,219,.1),rgba(6,182,212,.05),rgba(26,86,219,.1))"></div>
       <div class="relative">
-        <h3 class="text-2xl font-bold mb-3" style="color:#f0f4ff">Have a project in mind?</h3>
+        <h3 class="text-2xl font-bold mb-3" style="color:#f0f4ff">Enough thinking. Let's build.</h3>
         <p class="mb-6 max-w-xl mx-auto" style="color:#94a8cc">Whether it's a new web application, a Zoho automation pipeline, or an infrastructure overhaul — let's build something that works.</p>
         <a href="#contact" class="btn-primary">
           Let's Talk
@@ -724,304 +559,105 @@
   </div>
 </section>
 
-<!-- ══════════════════════════════════════════════
-     CONTACT
-═══════════════════════════════════════════════ -->
 <section id="contact" class="py-24 md:py-32" style="border-top:1px solid rgba(255,255,255,.04)">
   <div class="max-w-6xl mx-auto px-6 md:px-10">
     <div class="mb-16">
       <div class="section-label reveal">Get In Touch</div>
       <h2 class="text-4xl md:text-5xl font-extrabold tracking-tight mb-4 reveal">Let's Build Together</h2>
-      <p class="text-lg max-w-2xl leading-relaxed reveal" style="color:#94a8cc">Ready to automate your workflows, launch a web application, or scale your infrastructure? I'd love to hear about your project.</p>
     </div>
 
     <div class="grid md:grid-cols-2 gap-12 items-start">
-
-      <!-- Left: Contact Info -->
       <div class="space-y-4">
-        <a href="mailto:dipakkadamb@gmail.com" class="card p-5 flex items-center gap-4 reveal group" style="text-decoration:none;display:flex">
-          <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 transition-all duration-200" style="background:rgba(26,86,219,.15);color:#1a56db" onmouseover="this.style.background='#1a56db';this.style.color='white'" onmouseout="this.style.background='rgba(26,86,219,.15)';this.style.color='#1a56db'">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-          </div>
+        <div class="card p-5 flex items-center gap-4 reveal">
           <div>
             <p class="text-xs uppercase tracking-wider font-mono mb-0.5" style="color:#546380">Email</p>
             <p class="font-medium" style="color:#f0f4ff">dipakkadamb@gmail.com</p>
           </div>
-        </a>
-
-        <a href="https://linkedin.com/in/dipakkadamb" target="_blank" rel="noreferrer" class="card p-5 flex items-center gap-4 reveal" style="text-decoration:none;display:flex">
-          <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 transition-all duration-200" style="background:rgba(26,86,219,.15);color:#1a56db" onmouseover="this.style.background='#1a56db';this.style.color='white'" onmouseout="this.style.background='rgba(26,86,219,.15)';this.style.color='#1a56db'">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
-          </div>
-          <div>
-            <p class="text-xs uppercase tracking-wider font-mono mb-0.5" style="color:#546380">LinkedIn</p>
-            <p class="font-medium" style="color:#f0f4ff">linkedin.com/in/dipakkadamb ↗</p>
-          </div>
-        </a>
-
-        <a href="tel:+917796852335" class="card p-5 flex items-center gap-4 reveal" style="text-decoration:none;display:flex">
-          <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 transition-all duration-200" style="background:rgba(26,86,219,.15);color:#1a56db" onmouseover="this.style.background='#1a56db';this.style.color='white'" onmouseout="this.style.background='rgba(26,86,219,.15)';this.style.color='#1a56db'">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8 19.79 19.79 0 01.01 2.2 2 2 0 012 0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14h.01z"/></svg>
-          </div>
-          <div>
-            <p class="text-xs uppercase tracking-wider font-mono mb-0.5" style="color:#546380">Phone</p>
-            <p class="font-medium" style="color:#f0f4ff">+91 7796852335</p>
-          </div>
-        </a>
-
-        <div class="card p-5 flex items-center gap-4 reveal">
-          <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(26,86,219,.15);color:#1a56db">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-          </div>
-          <div>
-            <p class="text-xs uppercase tracking-wider font-mono mb-0.5" style="color:#546380">Location</p>
-            <p class="font-medium" style="color:#f0f4ff">Pune, Maharashtra, India</p>
-          </div>
         </div>
       </div>
 
-      <!-- Right: Form (powered by Web3Forms — free, no backend) -->
       <form id="contactForm" class="card p-7 reveal">
-        <!-- Web3Forms access key — paste yours after signing up at web3forms.com -->
         <input type="hidden" name="access_key"  value="f6d7959c-189c-43bb-bd48-3deaa9e9e75b" />
-        <input type="hidden" name="subject"     value="New Portfolio Inquiry — Dipak Kadam" />
-        <input type="hidden" name="from_name"   value="Portfolio Contact Form" />
-        <input type="hidden" name="redirect"    value="false" />
-        <!-- Honeypot anti-spam -->
-        <input type="checkbox" name="botcheck"  style="display:none" tabindex="-1" autocomplete="off" />
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-          <div>
-            <label class="block text-xs uppercase tracking-widest font-mono mb-2" style="color:#546380">Your Name *</label>
-            <input type="text" name="name" required placeholder="John Doe" class="form-input" />
-          </div>
-          <div>
-            <label class="block text-xs uppercase tracking-widest font-mono mb-2" style="color:#546380">Email Address *</label>
-            <input type="email" name="email" required placeholder="john@company.com" class="form-input" />
-          </div>
-        </div>
-
         <div class="mb-4">
-          <label class="block text-xs uppercase tracking-widest font-mono mb-2" style="color:#546380">Phone (Optional)</label>
-          <input type="tel" name="phone" placeholder="+91 XXXXX XXXXX" class="form-input" />
+          <label class="block text-xs uppercase tracking-widest font-mono mb-2" style="color:#546380">Your Name *</label>
+          <input type="text" name="name" required placeholder="John Doe" class="form-input" />
         </div>
-
         <div class="mb-4">
-          <label class="block text-xs uppercase tracking-widest font-mono mb-2" style="color:#546380">Service Needed</label>
-          <select name="service" class="form-input">
-            <option value="">Select a service...</option>
-            <option value="AI Web Development">AI Web Development</option>
-            <option value="Zoho Automation">Zoho Automation</option>
-            <option value="IT Infrastructure Consultancy">IT Infrastructure Consultancy</option>
-            <option value="Other / General Inquiry">Other / General Inquiry</option>
-          </select>
+          <label class="block text-xs uppercase tracking-widest font-mono mb-2" style="color:#546380">Email Address *</label>
+          <input type="email" name="email" required placeholder="john@company.com" class="form-input" />
         </div>
-
         <div class="mb-5">
           <label class="block text-xs uppercase tracking-widest font-mono mb-2" style="color:#546380">Message *</label>
-          <textarea name="message" required rows="5" placeholder="Tell me about your project, timeline, and budget..." class="form-input" style="resize:none"></textarea>
+          <textarea name="message" required rows="5" placeholder="Tell me about your project..." class="form-input" style="resize:none"></textarea>
         </div>
-
-        <!-- Status messages -->
-        <div id="formSuccess" style="display:none;margin-bottom:16px;padding:14px 16px;border-radius:12px;font-size:.875rem;font-weight:500;text-align:center;background:rgba(20,184,166,.14);border:1px solid rgba(20,184,166,.3);color:#2dd4bf">
-          Message sent! I will reply within 24 hours.
-        </div>
-        <div id="formError" style="display:none;margin-bottom:16px;padding:14px 16px;border-radius:12px;font-size:.875rem;font-weight:500;text-align:center;background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.25);color:#fca5a5">
-          Something went wrong. Email me at dipak100kadam@gmail.com
-        </div>
-
         <button type="submit" id="submitBtn" class="btn-primary w-full justify-center py-3.5">
-          <span id="btnText">Send Message</span>
-          <span id="btnIcon" style="display:flex;align-items:center;margin-left:6px">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
-          </span>
-          <span id="btnSpinner" style="display:none;align-items:center;margin-left:6px">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="animation:spin 0.8s linear infinite"><path d="M21 12a9 9 0 11-6.219-8.56"/></svg>
-          </span>
+          Send Message
         </button>
-
-        <p class="text-center text-xs mt-3" style="color:#546380">
-          Prefer email? <a href="mailto:dipak100kadam@gmail.com" style="color:#1a56db" class="hover:underline">dipak100kadam@gmail.com</a>
-        </p>
       </form>
-
     </div>
   </div>
 </section>
 
-<!-- ══════════════════════════════════════════════
-     FOOTER
-═══════════════════════════════════════════════ -->
 <footer class="py-8 px-6 md:px-12" style="background:rgba(4,9,15,.8);border-top:1px solid rgba(255,255,255,.05)">
   <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
     <div class="flex items-center gap-2">
       <div class="w-7 h-7 rounded-lg bg-royal flex items-center justify-center text-white font-bold text-xs">DK</div>
-      <span class="text-sm" style="color:#546380">Dipak Kadam · AI Web Developer &amp; Zoho Specialist</span>
-    </div>
-    <div class="flex items-center gap-6">
-      <a href="mailto:dipak100kadam@gmail.com" class="transition-colors hover:opacity-80" style="color:#546380">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-      </a>
-      <a href="https://linkedin.com/in/dipakkadamb" target="_blank" rel="noreferrer" class="transition-colors hover:opacity-80" style="color:#546380">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
-      </a>
-      <a href="tel:+917796852335" class="transition-colors hover:opacity-80" style="color:#546380">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8 19.79 19.79 0 01.01 2.2 2 2 0 012 0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14h.01z"/></svg>
-      </a>
+      <span class="text-sm" style="color:#546380">Dipak Kadamb · AI Web Developer &amp; Zoho Specialist</span>
     </div>
     <p class="text-xs" style="color:#546380">© <span id="year"></span> All rights reserved.</p>
   </div>
 </footer>
 
-<!-- ══════════════════════════════════════════════
-     JAVASCRIPT
-═══════════════════════════════════════════════ -->
 <script>
-  // ── Year
-  document.getElementById('year').textContent = new Date().getFullYear()
+  document.getElementById('year').textContent = new Date().getFullYear();
 
-  // ── Scroll Progress Bar
   window.addEventListener('scroll', () => {
-    const scrolled = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight) * 100
-    document.getElementById('progress-bar').style.width = scrolled + '%'
-  })
+    const scrolled = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight) * 100;
+    document.getElementById('progress-bar').style.width = scrolled + '%';
+  });
 
-  // ── Navbar scroll effect
-  const navbar = document.getElementById('navbar')
+  const navbar = document.getElementById('navbar');
   window.addEventListener('scroll', () => {
-    navbar.classList.toggle('scrolled', window.scrollY > 20)
-  })
+    navbar.classList.toggle('scrolled', window.scrollY > 20);
+  });
 
-  // ── Hamburger Menu
-  const hamburger = document.getElementById('hamburger')
-  const mobileMenu = document.getElementById('mobile-menu')
-  const iconMenu   = document.getElementById('icon-menu')
-  const iconClose  = document.getElementById('icon-close')
-
-  hamburger.addEventListener('click', () => {
-    const open = mobileMenu.classList.toggle('open')
-    iconMenu.classList.toggle('hidden', open)
-    iconClose.classList.toggle('hidden', !open)
-  })
-
-  // Close mobile menu on link click
-  document.querySelectorAll('.mobile-link').forEach(link => {
-    link.addEventListener('click', () => {
-      mobileMenu.classList.remove('open')
-      iconMenu.classList.remove('hidden')
-      iconClose.classList.add('hidden')
-    })
-  })
-
-  // ── Hero underline animation
-  window.addEventListener('load', () => {
-    setTimeout(() => document.getElementById('heroUnderline').classList.add('expanded'), 600)
-  })
-
-  // ── Scroll Reveal (IntersectionObserver)
-  const revealEls = document.querySelectorAll('.reveal, .reveal-left')
+  const revealEls = document.querySelectorAll('.reveal, .reveal-left');
   const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry, i) => {
+    entries.forEach((entry) => {
       if (entry.isIntersecting) {
-        const delay = (entry.target.dataset.delay || 0)
-        setTimeout(() => entry.target.classList.add('visible'), delay)
-        observer.unobserve(entry.target)
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
       }
-    })
-  }, { threshold: 0.1, rootMargin: '-60px' })
+    });
+  }, { threshold: 0.1 });
 
-  // Stagger siblings
-  document.querySelectorAll('.card, .reveal, .reveal-left').forEach((el, i) => {
-    const parent = el.parentElement
-    const siblings = parent ? [...parent.querySelectorAll(':scope > .reveal, :scope > .reveal-left, :scope > .card')] : []
-    const idx = siblings.indexOf(el)
-    if (idx > 0) el.dataset.delay = idx * 80
-  })
+  revealEls.forEach(el => observer.observe(el));
 
-  revealEls.forEach(el => observer.observe(el))
-
-  // ── CV Button
-  document.getElementById('cvBtn').addEventListener('click', (e) => {
-    e.preventDefault()
-    // Replace this URL with your actual CV PDF URL or hosted file path
-     e.g. window.open('https://github.com/dipakkadamb/dipakkadamb.github.io/blob/main/dipakkadamb.pdf', '_blank')
-    alert('📄 Please host your CV PDF and update the href in the Download CV button.\n\nExample: href="/Dipak_Kadam_CV.pdf"')
-  })
-
-  // ── Contact Form → Web3Forms (delivers to dipak100kadam@gmail.com)
   document.getElementById('contactForm').addEventListener('submit', async function(e) {
-    e.preventDefault()
+    e.preventDefault();
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    btn.textContent = 'Sending...';
 
-    const btn      = document.getElementById('submitBtn')
-    const btnText  = document.getElementById('btnText')
-    const btnIcon  = document.getElementById('btnIcon')
-    const btnSpinner = document.getElementById('btnSpinner')
-    const successBox = document.getElementById('formSuccess')
-    const errorBox   = document.getElementById('formError')
-
-    // Hide previous status messages
-    successBox.style.display = 'none'
-    errorBox.style.display   = 'none'
-
-    // Show loading spinner
-    btn.disabled = true
-    btnText.textContent = 'Sending...'
-    btnIcon.style.display = 'none'
-    btnSpinner.style.display = 'flex'
+    const formData = new FormData(this);
+    const object = Object.fromEntries(formData);
+    const json = JSON.stringify(object);
 
     try {
-      const formData = new FormData(this)
-      const object   = Object.fromEntries(formData)
-      const json     = JSON.stringify(object)
-
       const response = await fetch('https://api.web3forms.com/submit', {
-        method:  'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body:    json
-      })
-
-      const result = await response.json()
-
-      if (response.ok && result.success) {
-        // SUCCESS
-        successBox.style.display = 'block'
-        this.reset()
-        // Reset button to green "Sent!" state
-        btnText.textContent = 'Message Sent!'
-        btn.style.background = '#14b8a6'
-        btn.style.boxShadow  = '0 0 20px rgba(20,184,166,.4)'
-        // Restore button after 5s
-        setTimeout(() => {
-          btnText.textContent  = 'Send Message'
-          btn.style.background = ''
-          btn.style.boxShadow  = ''
-          btnIcon.style.display   = 'flex'
-          btnSpinner.style.display = 'none'
-          btn.disabled = false
-          successBox.style.display = 'none'
-        }, 5000)
-      } else {
-        throw new Error(result.message || 'Submission failed')
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: json
+      });
+      if (response.ok) {
+        btn.textContent = 'Message Sent!';
+        this.reset();
       }
-
     } catch (err) {
-      console.error('Form error:', err)
-      errorBox.style.display = 'block'
-      // Restore button
-      btnText.textContent = 'Send Message'
-      btnIcon.style.display   = 'flex'
-      btnSpinner.style.display = 'none'
-      btn.disabled = false
+      btn.textContent = 'Error sending';
+      btn.disabled = false;
     }
-  })
-
-  // ── Smooth scroll for all anchor links
-  document.querySelectorAll('a[href^="#"]').forEach(a => {
-    a.addEventListener('click', (e) => {
-      const target = document.querySelector(a.getAttribute('href'))
-      if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }) }
-    })
-  })
+  });
 </script>
 
 </body>
