@@ -1,8 +1,9 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
-// Replace 'dipak-kadam-portfolio' with your actual GitHub repo name
+// For dipakkadamb.github.io (USER site), base MUST be '/'
+// Repo must be named exactly: dipakkadamb.github.io
 export default defineConfig({
   plugins: [react()],
-  base: '/dipak-kadam-portfolio/',  // ← must match your GitHub repo name
+  base: '/',
 })
