@@ -9,7 +9,7 @@ import {
 // ─── DATA ────────────────────────────────────────────────────────────────────
 
 const NAV_LINKS = ['About', 'Stack', 'Experience', 'Services', 'Contact']
-const EXTERNAL_LINKS = [{ label: 'Support / Docs', href: '/it-docs/' }]
+const EXTERNAL_LINKS = [{ label: 'Support', href: '/it-docs/' }]
 
 const TECH_STACK = [
   {
