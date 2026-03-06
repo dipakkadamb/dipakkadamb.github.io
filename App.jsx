@@ -9,6 +9,7 @@ import {
 // ─── DATA ────────────────────────────────────────────────────────────────────
 
 const NAV_LINKS = ['About', 'Stack', 'Experience', 'Services', 'Contact']
+const EXTERNAL_LINKS = [{ label: 'Support / Docs', href: '/it-docs/' }]
 
 const TECH_STACK = [
   {
@@ -196,9 +197,8 @@ function Navbar() {
 
   return (
     <nav
-      className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
-        scrolled ? 'bg-navy-900/95 backdrop-blur-xl border-b border-white/[0.06] py-3' : 'py-5'
-      }`}
+      className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${scrolled ? 'bg-navy-900/95 backdrop-blur-xl border-b border-white/[0.06] py-3' : 'py-5'
+        }`}
     >
       <div className="max-w-6xl mx-auto px-6 md:px-10 flex items-center justify-between">
         {/* Logo */}
@@ -265,15 +265,28 @@ function Navbar() {
           className="md:hidden bg-navy-800/98 backdrop-blur-xl border-t border-white/[0.06] px-6 py-6"
         >
           <ul className="flex flex-col gap-5">
-            {NAV_LINKS.map((link) => (
-              <li key={link}>
-                <button
-                  onClick={() => scrollTo(link)}
-                  className="text-text-secondary hover:text-white text-base font-medium w-full text-left transition-colors"
-                >
-                  {link}
-                </button>
-              </li>
+            {NAV_LINKS.map((link, i) => (
+              <button
+                key={link}
+                onClick={() => scrollTo(link.toLowerCase())}
+                className="nav-link text-sm font-medium text-slate-300 hover:text-white transition-colors py-2"
+              >
+                {link}
+              </button>
+            ))}
+            {EXTERNAL_LINKS.map((link, i) => (
+              <a
+                key={link.label}
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="nav-link text-sm font-medium text-accent-cyan hover:text-white transition-colors py-2 flex items-center gap-1"
+              >
+                {link.label}
+                <svg className="w-3 h-3 opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                </svg>
+              </a>
             ))}
           </ul>
           <button
