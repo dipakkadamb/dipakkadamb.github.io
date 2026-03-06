@@ -8,8 +8,14 @@ import {
 
 // ─── DATA ────────────────────────────────────────────────────────────────────
 
-const NAV_LINKS = ['About', 'Stack', 'Experience', 'Services', 'Contact']
-const EXTERNAL_LINKS = [{ label: 'Support', href: '/it-docs/' }]
+const NAV_LINKS = [
+  { label: 'About', id: 'about' },
+  { label: 'Stack', id: 'stack' },
+  { label: 'Experience', id: 'experience' },
+  { label: 'Services', id: 'services' },
+  { label: 'Contact', id: 'contact' },
+  { label: 'Support', href: '/it-docs/' }
+]
 
 const TECH_STACK = [
   {
@@ -224,13 +230,22 @@ function Navbar() {
           className="hidden md:flex items-center gap-8"
         >
           {NAV_LINKS.map((link) => (
-            <li key={link}>
-              <button
-                onClick={() => scrollTo(link)}
-                className="text-text-secondary hover:text-white text-sm font-medium tracking-wide transition-colors duration-200"
-              >
-                {link}
-              </button>
+            <li key={link.label}>
+              {link.href ? (
+                <a
+                  href={link.href}
+                  className="text-text-secondary hover:text-white text-sm font-medium tracking-wide transition-colors duration-200"
+                >
+                  {link.label}
+                </a>
+              ) : (
+                <button
+                  onClick={() => scrollTo(link.id)}
+                  className="text-text-secondary hover:text-white text-sm font-medium tracking-wide transition-colors duration-200"
+                >
+                  {link.label}
+                </button>
+              )}
             </li>
           ))}
         </motion.ul>
@@ -266,27 +281,23 @@ function Navbar() {
         >
           <ul className="flex flex-col gap-5">
             {NAV_LINKS.map((link, i) => (
-              <button
-                key={link}
-                onClick={() => scrollTo(link.toLowerCase())}
-                className="nav-link text-sm font-medium text-slate-300 hover:text-white transition-colors py-2"
-              >
-                {link}
-              </button>
-            ))}
-            {EXTERNAL_LINKS.map((link, i) => (
-              <a
-                key={link.label}
-                href={link.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="nav-link text-sm font-medium text-accent-cyan hover:text-white transition-colors py-2 flex items-center gap-1"
-              >
-                {link.label}
-                <svg className="w-3 h-3 opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                </svg>
-              </a>
+              link.href ? (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  className="nav-link text-sm font-medium text-slate-300 hover:text-white transition-colors py-2 text-left"
+                >
+                  {link.label}
+                </a>
+              ) : (
+                <button
+                  key={link.label}
+                  onClick={() => scrollTo(link.id)}
+                  className="nav-link text-sm font-medium text-slate-300 hover:text-white transition-colors py-2 text-left"
+                >
+                  {link.label}
+                </button>
+              )
             ))}
           </ul>
           <button
