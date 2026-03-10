@@ -88,4 +88,34 @@ document.addEventListener('DOMContentLoaded', () => {
         // Fallback for older browsers
         document.querySelectorAll('.reveal-up, .reveal-left, .reveal-right').forEach(el => el.classList.add('active'));
     }
+
+    // Welcome Modal Logic
+    const welcomeModal = document.getElementById('welcome-modal');
+    const welcomeModalContent = document.getElementById('welcome-modal-content');
+    const closeModalBtn = document.getElementById('close-modal-btn');
+
+    if (welcomeModal && closeModalBtn) {
+        // Show modal after a short delay on load
+        setTimeout(() => {
+            welcomeModal.classList.remove('opacity-0', 'pointer-events-none');
+            welcomeModalContent.classList.remove('scale-95');
+            welcomeModalContent.classList.add('scale-100');
+        }, 1000); // 1s delay
+
+        // Close modal function
+        const closeModal = () => {
+            welcomeModal.classList.add('opacity-0', 'pointer-events-none');
+            welcomeModalContent.classList.remove('scale-100');
+            welcomeModalContent.classList.add('scale-95');
+        };
+
+        closeModalBtn.addEventListener('click', closeModal);
+
+        // Close on outside click
+        welcomeModal.addEventListener('click', (e) => {
+            if (e.target === welcomeModal) {
+                closeModal();
+            }
+        });
+    }
 });
