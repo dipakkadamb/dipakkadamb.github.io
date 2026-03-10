@@ -118,4 +118,47 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    // Motivational Quotes Logic
+    const motivationalQuotes = [
+        "The only way to do great work is to love what you do.",
+        "Talk is cheap. Show me the code.",
+        "First, solve the problem. Then, write the code.",
+        "Make it work, make it right, make it fast.",
+        "Simplicity is the soul of efficiency.",
+        "Success is not final, failure is not fatal: it is the courage to continue that counts.",
+        "Optimism is an occupational hazard of programming.",
+        "Don't comment bad code - rewrite it.",
+        "It's not a bug. It's an undocumented feature!",
+        "Any fool can write code that a computer can understand. Good programmers write code that humans can understand."
+    ];
+
+    const motivationalToast = document.getElementById('motivational-toast');
+    const motivationalQuoteEl = document.getElementById('motivational-quote');
+
+    const showMotivationalQuote = () => {
+        if (!motivationalToast || !motivationalQuoteEl) return;
+
+        const randomQuote = motivationalQuotes[Math.floor(Math.random() * motivationalQuotes.length)];
+        motivationalQuoteEl.textContent = `"${randomQuote}"`;
+
+        // Slide in
+        motivationalToast.classList.remove('translate-x-[150%]');
+
+        // Hide after 5 seconds
+        setTimeout(() => {
+            motivationalToast.classList.add('translate-x-[150%]');
+        }, 5000);
+    };
+
+    // Show quote shortly after modal opens on initial load
+    if (welcomeModal) {
+        setTimeout(() => {
+            setTimeout(showMotivationalQuote, 800);
+        }, 1000);
+    }
+
+    // Also repeatedly show a new quote every 10 minutes (600,000 ms)
+    setInterval(showMotivationalQuote, 600000);
+
 });
