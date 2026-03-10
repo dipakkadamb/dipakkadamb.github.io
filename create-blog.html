@@ -80,6 +80,12 @@
             <h2 class="text-xl font-bold text-white mb-6 flex items-center gap-2"><i data-feather="settings" class="w-5 h-5 text-accent-blue"></i> Blog Settings</h2>
             
             <div class="space-y-5">
+                <div class="p-4 bg-accent-blue/10 border border-accent-blue/20 rounded-xl mb-4">
+                    <label class="form-label text-accent-cyan">GitHub Personal Access Token</label>
+                    <input type="password" id="github-token" class="form-input bg-navy-900 border-accent-blue/30 focus:border-accent-cyan transition-colors" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" autocomplete="off">
+                    <p class="text-[10px] sm:text-xs text-slate-400 mt-2 font-mono">Needed to publish directly to your repository. Saved locally on your browser only.</p>
+                </div>
+                
                 <div>
                     <label class="form-label">Article Title</label>
                     <input type="text" id="meta-title" class="form-input" placeholder="e.g. How I automated my workflows with Zoho" required>
@@ -250,8 +256,29 @@
                 .replace('<!-- TAGS_PLACEHOLDER -->', `<div class="flex flex-wrap gap-2">\n                    ${tagsHTML}\n                </div>`)
                 .replace('Write your article content here...', content);
 
-            // Trigger Download
-            const blob = new Blob([finalHTML], { type: 'text/html' });
+            // Trigger Download (Fallback or Backup) if no token
+            const token = document.getElementById('github-token').value.trim();
+            const jsonEntry = {
+                title: title,
+                snippet: snippet,
+                date: dateStr,
+                url: `blogs/${slug}.html`,
+                readTime: readTime,
+                tags: tags
+            };
+
+            if (!token) {
+                alert("No GitHub token provided. Generating file for manual download instead.");
+                triggerDownload(finalHTML, slug, jsonEntry);
+                return;
+            }
+
+            // GitHub API Push Logic
+            await publishToGitHub(token, slug, finalHTML, jsonEntry);
+        });
+
+        function triggerDownload(htmlContent, slug, jsonEntry) {
+            const blob = new Blob([htmlContent], { type: 'text/html' });
             const downloadUrl = URL.createObjectURL(blob);
             const a = document.createElement('a');
             const filename = `${slug}.html`;
@@ -261,32 +288,123 @@
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(downloadUrl);
-
-            // Create JSON Snippet
-            const jsonEntry = {
-                title: title,
-                snippet: snippet,
-                date: dateStr,
-                url: `blogs/${filename}`,
-                readTime: readTime,
-                tags: tags
-            };
             
+            showModal(filename, jsonEntry, false);
+        }
+
+        async function publishToGitHub(token, slug, htmlContent, jsonEntry) {
+            const btn = document.getElementById('publish-btn');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i data-feather="loader" class="w-4 h-4 animate-spin"></i> Publishing...';
+            btn.disabled = true;
+            feather.replace();
+
+            const owner = 'dipakkadamb'; // Hardcoded based on project repo
+            const repo = 'dipakkadamb.github.io';
+            const branch = 'main';
+            let blogsJsonSha = null;
+            let currentBlogs = [];
+
+            const headers = {
+                'Authorization': `token ${token}`,
+                'Accept': 'application/vnd.github.v3+json',
+                'Content-Type': 'application/json'
+            };
+
+            try {
+                // 1. Fetch current blogs.json to get its SHA and contents
+                const getJsonUrl = `https://api.github.com/repos/${owner}/${repo}/contents/blogs.json?ref=${branch}`;
+                const getResp = await fetch(getJsonUrl, { headers });
+                
+                if (getResp.ok) {
+                    const data = await getResp.json();
+                    blogsJsonSha = data.sha;
+                    // Decode base64
+                    const decodedContent = decodeURIComponent(escape(atob(data.content)));
+                    currentBlogs = JSON.parse(decodedContent);
+                }
+
+                // 2. Prepend new blog entry
+                currentBlogs.unshift(jsonEntry);
+                const updatedJsonContent = JSON.stringify(currentBlogs, null, 4);
+                // Encode to Base64 (supporting unicode)
+                const jsonBase64 = btoa(unescape(encodeURIComponent(updatedJsonContent)));
+
+                // 3. Encode HTML to Base64
+                const htmlBase64 = btoa(unescape(encodeURIComponent(htmlContent)));
+
+                // 4. Create new HTML file commit
+                const htmlFilename = `blogs/${slug}.html`;
+                const putHtmlUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${htmlFilename}`;
+                const htmlRes = await fetch(putHtmlUrl, {
+                    method: 'PUT',
+                    headers: headers,
+                    body: JSON.stringify({
+                        message: `content: published new blog article '${slug}'`,
+                        content: htmlBase64,
+                        branch: branch
+                    })
+                });
+
+                if(!htmlRes.ok) throw new Error("Failed to upload HTML file to GitHub.");
+
+                // 5. Update blogs.json commit
+                const putJsonUrl = `https://api.github.com/repos/${owner}/${repo}/contents/blogs.json`;
+                const jsonRes = await fetch(putJsonUrl, {
+                    method: 'PUT',
+                    headers: headers,
+                    body: JSON.stringify({
+                        message: `content: added '${slug}' to blogs index`,
+                        content: jsonBase64,
+                        sha: blogsJsonSha,
+                        branch: branch
+                    })
+                });
+
+                if(!jsonRes.ok) throw new Error("Failed to update blogs.json on GitHub.");
+
+                // Success!
+                showModal(`${slug}.html`, jsonEntry, true);
+
+            } catch (error) {
+                console.error(error);
+                alert(`Error publishing to GitHub: ${error.message}\nCheck console for details and ensure your Token is valid with Read/Write permissions.`);
+                // Fallback to manual download
+                triggerDownload(htmlContent, slug, jsonEntry);
+            } finally {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+                feather.replace();
+            }
+        }
+
+        function showModal(filename, jsonEntry, isAutoPublished) {
             document.getElementById('modal-filename').textContent = filename;
             document.getElementById('json-snippet').textContent = JSON.stringify(jsonEntry, null, 4) + ",";
             
-            // Show Modal
-            const modal = document.getElementById('success-modal');
             const modalContent = document.getElementById('modal-content');
+            
+            if (isAutoPublished) {
+                modalContent.innerHTML = `
+                    <div class="w-20 h-20 rounded-full bg-accent-teal/20 border-2 border-accent-teal flex items-center justify-center mx-auto mb-6">
+                        <i data-feather="check" class="w-10 h-10 text-accent-teal"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold text-white mb-4">Published Successfully!</h2>
+                    <p class="text-slate-400 mb-6">Your article <strong class="text-white">${filename}</strong> has been directly uploaded to GitHub. It will be live on your portfolio in 1-2 minutes.</p>
+                    <button onclick="closeModal()" class="w-full py-3 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold transition-colors">Awesome</button>
+                `;
+                feather.replace();
+            }
+
+            const modal = document.getElementById('success-modal');
             modal.classList.remove('hidden');
             modal.classList.add('flex');
-            // small delay for css transition
             setTimeout(() => {
                 modal.classList.remove('opacity-0');
                 modalContent.classList.remove('scale-95');
                 modalContent.classList.add('scale-100');
             }, 10);
-        });
+        }
 
         function closeModal() {
             const modal = document.getElementById('success-modal');
@@ -300,11 +418,16 @@
             }, 300);
         }
 
-        function copySnippet() {
-            const snippet = document.getElementById('json-snippet').textContent;
-            navigator.clipboard.writeText(snippet);
-            alert("Copied to clipboard! Add this inside the array in blogs.json");
-        }
+        // Initial Token Load
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedToken = localStorage.getItem('gh_blog_token');
+            if(savedToken) document.getElementById('github-token').value = savedToken;
+        });
+
+        // Save Token when typed
+        document.getElementById('github-token').addEventListener('change', (e) => {
+            localStorage.setItem('gh_blog_token', e.target.value.trim());
+        });
     </script>
 </body>
 </html>
