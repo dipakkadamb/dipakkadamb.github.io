@@ -324,14 +324,18 @@
                     currentBlogs = JSON.parse(decodedContent);
                 }
 
+                // Helper to safely base64 encode unicode strings
+                function utf8_to_b64(str) {
+                    return btoa(unescape(encodeURIComponent(str)));
+                }
+
                 // 2. Prepend new blog entry
                 currentBlogs.unshift(jsonEntry);
                 const updatedJsonContent = JSON.stringify(currentBlogs, null, 4);
-                // Encode to Base64 (supporting unicode)
-                const jsonBase64 = btoa(unescape(encodeURIComponent(updatedJsonContent)));
+                const jsonBase64 = utf8_to_b64(updatedJsonContent);
 
-                // 3. Encode HTML to Base64
-                const htmlBase64 = btoa(unescape(encodeURIComponent(htmlContent)));
+                // 3. Encode HTML to Base64 safely
+                const htmlBase64 = utf8_to_b64(htmlContent);
 
                 // 4. Create new HTML file commit
                 const htmlFilename = `blogs/${slug}.html`;
@@ -346,7 +350,10 @@
                     })
                 });
 
-                if(!htmlRes.ok) throw new Error("Failed to upload HTML file to GitHub.");
+                if(!htmlRes.ok) {
+                    const errObj = await htmlRes.json().catch(() => ({}));
+                    throw new Error(`Failed to upload HTML file to GitHub: ${errObj.message || htmlRes.statusText}`);
+                }
 
                 // 5. Update blogs.json commit
                 const putJsonUrl = `https://api.github.com/repos/${owner}/${repo}/contents/blogs.json`;
@@ -361,14 +368,21 @@
                     })
                 });
 
-                if(!jsonRes.ok) throw new Error("Failed to update blogs.json on GitHub.");
+                if(!jsonRes.ok) {
+                    const errObj = await jsonRes.json().catch(() => ({}));
+                    throw new Error(`Failed to update blogs.json on GitHub: ${errObj.message || jsonRes.statusText}`);
+                }
 
                 // Success!
                 showModal(`${slug}.html`, jsonEntry, true);
 
             } catch (error) {
                 console.error(error);
-                alert(`Error publishing to GitHub: ${error.message}\nCheck console for details and ensure your Token is valid with Read/Write permissions.`);
+                let errMsg = error.message;
+                if(errMsg.includes('upload HTML file')) {
+                    errMsg += "\nEnsure the token has 'Contents: Read & Write' permission.";
+                }
+                alert(`Error publishing to GitHub: ${errMsg}\nCheck console for details.`);
                 // Fallback to manual download
                 triggerDownload(htmlContent, slug, jsonEntry);
             } finally {
