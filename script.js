@@ -193,8 +193,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const appendMessage = (text, isUser = false) => {
         const msgDiv = document.createElement('div');
         msgDiv.className = `p-3 max-w-[85%] text-sm rounded-2xl ${isUser
-                ? 'self-end bg-gradient-to-r from-accent-blue to-accent-cyan text-white rounded-tr-sm shadow-md'
-                : 'self-start bg-white/10 border border-white/5 text-slate-200 rounded-tl-sm'
+            ? 'self-end bg-gradient-to-r from-accent-blue to-accent-cyan text-white rounded-tr-sm shadow-md'
+            : 'self-start bg-white/10 border border-white/5 text-slate-200 rounded-tl-sm'
             }`;
         msgDiv.textContent = text;
         aiChatMessages.appendChild(msgDiv);
@@ -222,19 +222,18 @@ document.addEventListener('DOMContentLoaded', () => {
         chatHistory.push({ role: "user", content: text });
 
         try {
-            const response = await fetch("https://api.anthropic.com/v1/messages", {
+            const response = await fetch("https://gateway.ai.cloudflare.com/v1/d434c7204b5d7b524330263418dbc74a/default/compat/chat/completions", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "x-api-key": ANTHROPIC_API_KEY,
-                    "anthropic-version": "2023-06-01",
-                    "anthropic-dangerous-direct-browser-access": "true"
+                    "Authorization": `Bearer ${ANTHROPIC_API_KEY}`
                 },
                 body: JSON.stringify({
-                    model: "claude-3-haiku-20240307",
-                    max_tokens: 300,
-                    system: "You are an AI assistant on Dipak Kadamb's portfolio website. Dipak is an AI Web Developer and Zoho Integration Specialist. Keep your answers brief, friendly, and helpful.",
-                    messages: chatHistory
+                    model: "anthropic/claude-sonnet-4-5",
+                    messages: [
+                        { role: "system", content: "You are an AI assistant on Dipak Kadamb's portfolio website. Dipak is an AI Web Developer and Zoho Integration Specialist. Keep your answers brief, friendly, and helpful." },
+                        ...chatHistory
+                    ]
                 })
             });
 
@@ -243,13 +242,13 @@ document.addEventListener('DOMContentLoaded', () => {
             // Remove thinking indicator
             document.getElementById(thinkingId)?.remove();
 
-            if (response.ok && data.content && data.content.length > 0) {
-                const aiReply = data.content[0].text;
+            if (response.ok && data.choices && data.choices.length > 0) {
+                const aiReply = data.choices[0].message.content;
                 chatHistory.push({ role: "assistant", content: aiReply });
                 appendMessage(aiReply, false);
             } else {
                 console.error("API Error:", data);
-                appendMessage("Sorry, I encountered an error connecting to my brain. Or CORS policy blocked the direct browser request.", false);
+                appendMessage("Sorry, I encountered an error connecting to the AI Gateway.", false);
             }
 
         } catch (error) {
