@@ -1,0 +1,10 @@
+[
+    {
+        "title": "Welcome to my new Blog!",
+        "snippet": "This is an example blog post to demonstrate the new markdown-based static blogging system on my portfolio.",
+        "date": "March 11, 2026",
+        "url": "blogs/welcome.html",
+        "readTime": "2 min read",
+        "tags": ["Technology", "Portfolio"]
+    }
+]

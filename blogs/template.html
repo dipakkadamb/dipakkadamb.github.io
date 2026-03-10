@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth antialiased bg-navy-900 selection:bg-accent-blue selection:text-white">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <!-- TITLE_PLACEHOLDER -->
+    <title>Blog Post | Dipak Kadamb</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: { 900: '#0a0f1c', 800: '#111827', 700: '#1e293b' },
+                        accent: { blue: '#2563eb', cyan: '#06b6d4', teal: '#0d9488', amber: '#f59e0b' }
+                    },
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Feather Icons -->
+    <script src="https://unpkg.com/feather-icons"></script>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../styles.css">
+    
+    <style>
+        .prose-custom p { margin-bottom: 1.5rem; line-height: 1.8; color: #cbd5e1; font-size: 1.125rem; }
+        .prose-custom h1 { font-size: 2.25rem; font-weight: 700; color: white; margin-top: 3rem; margin-bottom: 1.5rem; }
+        .prose-custom h2 { font-size: 1.875rem; font-weight: 700; color: white; margin-top: 2.5rem; margin-bottom: 1.25rem; }
+        .prose-custom h3 { font-size: 1.5rem; font-weight: 600; color: white; margin-top: 2rem; margin-bottom: 1rem; }
+        .prose-custom a { color: #06b6d4; text-decoration: none; border-bottom: 1px solid rgba(6, 182, 212, 0.3); transition: border-color 0.2s; }
+        .prose-custom a:hover { border-bottom-color: #06b6d4; }
+        .prose-custom ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 1.5rem; color: #cbd5e1; }
+        .prose-custom ol { list-style-type: decimal; padding-left: 1.5rem; margin-bottom: 1.5rem; color: #cbd5e1; }
+        .prose-custom li { margin-bottom: 0.5rem; }
+        .prose-custom blockquote { border-left: 4px solid #2563eb; padding-left: 1rem; font-style: italic; color: #94a3b8; margin: 2rem 0; background: rgba(37, 99, 235, 0.05); padding: 1rem; border-radius: 0 0.5rem 0.5rem 0; }
+        .prose-custom pre { background: rgba(10, 15, 28, 0.8); border: 1px solid rgba(255,255,255,0.1); border-radius: 0.5rem; padding: 1.5rem; overflow-x: auto; margin-bottom: 1.5rem; font-family: 'JetBrains Mono', monospace; font-size: 0.875rem; color: #e2e8f0; }
+        .prose-custom code { font-family: 'JetBrains Mono', monospace; background: rgba(255,255,255,0.1); padding: 0.2rem 0.4rem; border-radius: 0.25rem; font-size: 0.875em; color: #38bdf8; }
+        .prose-custom img { max-width: 100%; height: auto; border-radius: 0.75rem; border: 1px solid rgba(255,255,255,0.1); margin: 2rem auto; display: block; }
+    </style>
+</head>
+<body class="text-slate-300 font-sans overflow-x-hidden relative">
+    
+    <!-- Background Elements -->
+    <div class="fixed inset-0 z-[-1] bg-grid-texture opacity-20 pointer-events-none"></div>
+    <div class="fixed inset-0 z-[-1] bg-radial-glow opacity-30 pointer-events-none"></div>
+
+    <!-- Scroll Progress -->
+    <div id="scroll-progress" class="fixed top-0 left-0 h-1 bg-gradient-to-r from-accent-blue to-accent-cyan z-50 w-0 transition-all duration-150"></div>
+
+    <!-- Minimal Navbar -->
+    <nav class="fixed top-0 w-full z-40 transition-all duration-300 py-3 px-4 sm:px-6 lg:px-12 backdrop-blur-md border-b border-white/5 bg-navy-900/60">
+        <div class="max-w-4xl mx-auto flex justify-between items-center">
+            <a href="../index.html" class="flex items-center gap-2 text-slate-400 hover:text-white transition-colors group">
+                <i data-feather="arrow-left" class="w-5 h-5 group-hover:-translate-x-1 transition-transform"></i>
+                <span class="font-medium">Back to Portfolio</span>
+            </a>
+            <div class="flex items-center gap-3">
+                <span class="text-accent-cyan font-mono border-2 border-accent-cyan/50 rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">DK</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Blog Content -->
+    <main class="pt-32 pb-20 px-4 sm:px-6 lg:px-8 max-w-3xl mx-auto">
+        <article class="relative">
+            
+            <header class="mb-12 border-b border-white/10 pb-8 reveal-up">
+                <!-- META_PLACEHOLDER -->
+                <div class="flex flex-wrap items-center gap-3 text-sm font-mono text-slate-500 mb-6">
+                    <span class="flex items-center gap-1.5"><i data-feather="calendar" class="w-4 h-4"></i> <span id="blog-date">Loading...</span></span>
+                    <span class="text-white/20">•</span>
+                    <span class="flex items-center gap-1.5"><i data-feather="clock" class="w-4 h-4"></i> <span id="blog-read-time">Loading...</span></span>
+                </div>
+                
+                <!-- HEADER_PLACEHOLDER -->
+                <h1 class="text-4xl sm:text-5xl font-bold text-white tracking-tight leading-tight mb-6">Blog Post Title</h1>
+                
+                <!-- TAGS_PLACEHOLDER -->
+                <div class="flex flex-wrap gap-2">
+                    <span class="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs font-medium text-accent-cyan">Technology</span>
+                </div>
+            </header>
+
+            <!-- CONTENT_PLACEHOLDER -->
+            <div class="prose-custom reveal-up" style="animation-delay: 100ms;">
+                Write your article content here...
+            </div>
+            
+        </article>
+        
+        <!-- Author Footer -->
+        <footer class="mt-20 pt-10 border-t border-white/10 reveal-up">
+            <div class="glass-card p-6 md:p-8 rounded-2xl flex flex-col md:flex-row items-center md:items-start gap-6">
+                <img src="https://media.licdn.com/dms/image/v2/D4D03AQHpKhBr6vJ4SQ/profile-displayphoto-crop_800_800/B4DZx.RRhgIUAI-/0/1771644985573?e=1774483200&v=beta&t=gPkrxB-w1Tukfwojr0N_MZbndwGKa_-bSYPZakxSJ4Q" alt="Dipak Kadamb" class="w-20 h-20 rounded-full border-2 border-accent-cyan/30 object-cover">
+                <div class="text-center md:text-left">
+                    <h3 class="text-xl font-bold text-white mb-2">Dipak Kadamb</h3>
+                    <p class="text-slate-400 text-sm md:text-base leading-relaxed mb-4">AI Web Developer & Zoho Integration Specialist based in Pune, India. Passionate about building intelligent web solutions.</p>
+                    <div class="flex items-center justify-center md:justify-start gap-4">
+                        <a href="#" class="text-slate-500 hover:text-white transition-colors"><i data-feather="github" class="w-5 h-5"></i></a>
+                        <a href="#" class="text-slate-500 hover:text-accent-blue transition-colors"><i data-feather="linkedin" class="w-5 h-5"></i></a>
+                        <a href="#" class="text-slate-500 hover:text-accent-cyan transition-colors"><i data-feather="twitter" class="w-5 h-5"></i></a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </main>
+
+    <script>
+        feather.replace();
+        
+        // Scroll Progress indicator
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById("scroll-progress").style.width = scrolled + "%";
+        });
+        
+        // Intersection Observer for scroll animations
+        const observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal-up, .reveal-left, .reveal-right').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>

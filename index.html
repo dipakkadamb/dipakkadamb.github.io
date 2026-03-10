@@ -837,6 +837,35 @@
                     </div>
                 </div>
 
+            </div>
+        </section>
+
+        <!-- Blogs Section -->
+        <section id="blogs" class="py-20 lg:py-28 px-4 sm:px-6 lg:px-12 relative border-t border-white/5 bg-navy-900/40">
+            <div class="max-w-7xl mx-auto">
+                <div class="mb-12 lg:mb-16 flex flex-col md:flex-row justify-between items-center gap-6 reveal-up">
+                    <div class="text-center md:text-left">
+                        <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 tracking-tight">Recent Articles<span class="text-accent-cyan">.</span></h2>
+                        <div class="w-16 lg:w-20 h-1 bg-gradient-to-r from-accent-blue to-accent-cyan rounded-full mx-auto md:mx-0"></div>
+                    </div>
+                    <a href="create-blog.html" class="px-5 py-2.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-white text-sm font-medium transition-all shadow-sm flex items-center gap-2">
+                        <i data-feather="edit-2" class="w-4 h-4"></i> Write Article
+                    </a>
+                </div>
+
+                <div id="blog-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 mb-10">
+                    <!-- Blogs will be injected here via JavaScript -->
+                    <div class="col-span-full text-center py-10 text-slate-500">
+                        <i data-feather="loader" class="w-8 h-8 animate-spin mx-auto mb-4 text-accent-cyan"></i>
+                        <p>Loading articles...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="py-20 px-4 sm:px-6 lg:px-12 relative">
+            <div class="max-w-7xl mx-auto">
                 <!-- CTA Banner -->
                 <div
                     class="glass-card rounded-[2rem] p-8 md:p-12 lg:p-16 text-center max-w-4xl mx-auto border-accent-cyan/20 bg-gradient-to-br from-navy-800 via-navy-900 to-accent-blue/10 reveal-up relative overflow-hidden shadow-2xl">

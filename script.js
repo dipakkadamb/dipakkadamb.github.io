@@ -160,4 +160,88 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Also repeatedly show a new quote every 10 minutes (600,000 ms)
     setInterval(showMotivationalQuote, 600000);
+
+    // Blog Fetching Logic
+    const loadBlogs = async () => {
+        const blogGrid = document.getElementById('blog-grid');
+        if (!blogGrid) return; // Only run on index page with blog section
+
+        try {
+            const response = await fetch('blogs.json');
+            if (!response.ok) throw new Error('Failed to fetch blogs');
+            
+            const blogs = await response.json();
+            blogGrid.innerHTML = ''; // Clear loading state
+            
+            if (blogs.length === 0) {
+                blogGrid.innerHTML = `
+                    <div class="col-span-full text-center py-10 text-slate-500">
+                        <i data-feather="book" class="w-8 h-8 mx-auto mb-4 text-slate-400"></i>
+                        <p>No articles published yet. Check back soon!</p>
+                    </div>`;
+                feather.replace();
+                return;
+            }
+
+            blogs.forEach((blog, index) => {
+                const delay = index * 100;
+                
+                // Format tags safely
+                const tagsHtml = (blog.tags || []).slice(0, 2).map(tag => 
+                    `<span class="px-2 py-1 bg-white/5 border border-white/5 rounded text-[10px] uppercase tracking-wider font-mono text-slate-400">${tag}</span>`
+                ).join('');
+
+                const cardHtml = `
+                    <a href="${blog.url}" class="glass-card rounded-2xl overflow-hidden group hover:-translate-y-2 transition-transform duration-300 reveal-up flex flex-col h-full" style="animation-delay: ${delay}ms;">
+                        <div class="p-6 md:p-8 flex flex-col h-full">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex gap-2">
+                                    ${tagsHtml}
+                                </div>
+                                <span class="text-xs font-mono text-accent-cyan">${blog.readTime || '3 min read'}</span>
+                            </div>
+                            
+                            <h3 class="text-xl font-bold text-white mb-3 group-hover:text-accent-blue transition-colors leading-snug">${blog.title}</h3>
+                            
+                            <p class="text-slate-400 text-sm leading-relaxed mb-6 flex-grow">${blog.snippet}</p>
+                            
+                            <div class="flex items-center justify-between mt-auto pt-4 border-t border-white/5">
+                                <span class="text-xs font-mono text-slate-500 flex items-center gap-1.5"><i data-feather="calendar" class="w-3.5 h-3.5"></i> ${blog.date}</span>
+                                <span class="text-sm font-bold text-white flex items-center gap-1 group-hover:text-accent-cyan transition-colors">Read <i data-feather="arrow-right" class="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform"></i></span>
+                            </div>
+                        </div>
+                    </a>
+                `;
+                blogGrid.insertAdjacentHTML('beforeend', cardHtml);
+            });
+            
+            // Re-initialize feather icons for the new HTML
+            feather.replace();
+            
+            // Re-observe new elements for scroll animations
+            const observerOptions = { root: null, rootMargin: '0px 0px -50px 0px', threshold: 0.1 };
+            const observer = new IntersectionObserver((entries, obs) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        obs.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+            
+            document.querySelectorAll('#blog-grid .reveal-up').forEach(el => observer.observe(el));
+
+        } catch (error) {
+            console.error("Error loading blogs:", error);
+            blogGrid.innerHTML = `
+                <div class="col-span-full text-center py-10 text-slate-500">
+                    <i data-feather="alert-circle" class="w-8 h-8 mx-auto mb-4 text-red-400"></i>
+                    <p>Unable to load articles at this time.</p>
+                </div>`;
+            feather.replace();
+        }
+    };
+
+    // Initialize blog loading
+    loadBlogs();
 });
