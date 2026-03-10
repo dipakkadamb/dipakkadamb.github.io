@@ -1,12 +1,12 @@
 /* Base Styles and Custom Properties */
 
 :root {
-  --bg-grid: rgba(255, 255, 255, 0.03);
-  --glass-bg: rgba(30, 41, 59, 0.4);
-  --glass-border: rgba(255, 255, 255, 0.08);
-  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-  --accent-blue-glow: rgba(37, 99, 235, 0.15);
-  --accent-cyan-glow: rgba(6, 182, 212, 0.1);
+  --bg-grid: rgba(0, 0, 0, 0.05);
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(0, 0, 0, 0.08);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+  --accent-blue-glow: rgba(37, 99, 235, 0.1);
+  --accent-cyan-glow: rgba(6, 182, 212, 0.08);
 }
 
 /* Grid Texture Background (Optimized) */
@@ -43,7 +43,7 @@
 .glass-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
-  border-color: rgba(255, 255, 255, 0.15);
+  border-color: rgba(0, 0, 0, 0.15);
 }
 
 /* Animations Definition */
@@ -112,7 +112,7 @@
   height: 14px;
   border-radius: 50%;
   background-color: #06b6d4;
-  border: 3px solid #0a0f1c;
+  border: 3px solid #f8fafc;
   /* Seamless integration with bg */
   z-index: 10;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -143,23 +143,23 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #0a0f1c;
+  background: #f1f5f9;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #334155;
+  background: #cbd5e1;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #475569;
+  background: #94a3b8;
 }
 
 /* Input Styles - Form Optimization */
 .form-input {
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: white;
+  background: rgba(0, 0, 0, 0.02);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  color: #0f172a;
   border-radius: 0.5rem;
   padding: 0.875rem 1rem;
   /* Slightly more padding for touch */
@@ -173,7 +173,7 @@
   outline: none;
   border-color: #06b6d4;
   box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.25);
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(0, 0, 0, 0.04);
 }
 
 .form-label {
@@ -182,7 +182,7 @@
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: #94a3b8;
+  color: #64748b;
   margin-bottom: 0.5rem;
   font-weight: 500;
 }

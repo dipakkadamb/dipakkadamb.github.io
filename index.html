@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth antialiased bg-navy-900 selection:bg-accent-blue selection:text-white">
+<html lang="en" class="scroll-smooth antialiased bg-slate-50 selection:bg-accent-blue selection:text-slate-900">
 
 <head>
     <meta charset="UTF-8">
@@ -76,7 +76,7 @@
     </script>
 </head>
 
-<body class="text-slate-300 font-sans overflow-x-hidden relative">
+<body class="text-slate-600 font-sans overflow-x-hidden relative">
     <!-- Optimized Background Elements -->
     <div class="fixed inset-0 z-[-1] bg-grid-texture opacity-20 pointer-events-none"></div>
     <div class="fixed inset-0 z-[-1] bg-radial-glow opacity-30 pointer-events-none"></div>
@@ -88,27 +88,27 @@
 
     <!-- Navigation -->
     <nav id="navbar"
-        class="fixed top-0 w-full z-40 transition-all duration-300 py-3 px-4 sm:px-6 lg:px-12 backdrop-blur-md border-b border-white/5 bg-navy-900/60">
+        class="fixed top-0 w-full z-40 transition-all duration-300 py-3 px-4 sm:px-6 lg:px-12 backdrop-blur-md border-b border-slate-200 bg-slate-50/60">
         <div class="max-w-7xl mx-auto flex justify-end items-center">
 
             <!-- Desktop Nav -->
             <div class="hidden md:flex items-center justify-end w-full space-x-6 lg:space-x-8">
-                <a href="#about" class="text-sm font-semibold text-slate-300 hover:text-white transition-colors tracking-wide">About</a>
-                <a href="#stack" class="text-sm font-semibold text-slate-300 hover:text-white transition-colors tracking-wide">Stack</a>
+                <a href="#about" class="text-sm font-semibold text-slate-600 hover:text-slate-900 transition-colors tracking-wide">About</a>
+                <a href="#stack" class="text-sm font-semibold text-slate-600 hover:text-slate-900 transition-colors tracking-wide">Stack</a>
                 <a href="#experience"
-                    class="text-sm font-semibold text-slate-300 hover:text-white transition-colors tracking-wide">Experience</a>
+                    class="text-sm font-semibold text-slate-600 hover:text-slate-900 transition-colors tracking-wide">Experience</a>
                 <a href="#services"
-                    class="text-sm font-semibold text-slate-300 hover:text-white transition-colors tracking-wide">Services</a>
+                    class="text-sm font-semibold text-slate-600 hover:text-slate-900 transition-colors tracking-wide">Services</a>
                 <a href="#blogs"
-                    class="text-sm font-semibold text-slate-300 hover:text-white transition-colors tracking-wide">Blogs</a>
+                    class="text-sm font-semibold text-slate-600 hover:text-slate-900 transition-colors tracking-wide">Blogs</a>
                 <a href="#contact"
-                    class="px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 text-white text-sm font-bold tracking-wide transition-all hover:shadow-[0_0_15px_rgba(6,182,212,0.3)] ml-4">Hire
+                    class="px-5 py-2.5 rounded-full bg-slate-200/50 hover:bg-slate-300/50 border border-slate-200 text-slate-900 text-sm font-bold tracking-wide transition-all hover:shadow-[0_0_15px_rgba(6,182,212,0.3)] ml-4">Hire
                     Me</a>
             </div>
 
             <!-- Mobile Menu Toggle -->
             <button id="mobile-menu-btn" aria-label="Toggle Menu"
-                class="md:hidden p-2 text-white hover:text-accent-cyan focus:outline-none transition-colors">
+                class="md:hidden p-2 text-slate-900 hover:text-accent-cyan focus:outline-none transition-colors">
                 <i data-feather="menu" class="w-6 h-6"></i>
             </button>
         </div>
@@ -116,49 +116,49 @@
 
     <!-- Mobile Nav Overlay -->
     <div id="mobile-menu"
-        class="fixed inset-0 z-30 bg-navy-900/95 backdrop-blur-xl transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col pt-24 px-8 pb-10 md:hidden overflow-y-auto">
+        class="fixed inset-0 z-30 bg-slate-50/95 backdrop-blur-xl transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col pt-24 px-8 pb-10 md:hidden overflow-y-auto">
 
         <div class="flex-1 flex flex-col justify-center w-full max-w-sm mx-auto space-y-2">
             <a href="#about"
-                class="mobile-link flex items-center gap-4 text-xl font-semibold text-slate-300 hover:text-white hover:bg-white/5 p-4 rounded-2xl transition-all w-full group">
+                class="mobile-link flex items-center gap-4 text-xl font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/80 p-4 rounded-2xl transition-all w-full group">
                 <div
-                    class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 group-hover:bg-accent-blue/10 group-hover:text-accent-blue group-hover:border-accent-blue/20 transition-all">
+                    class="w-10 h-10 rounded-full bg-white/80 border border-slate-200 flex items-center justify-center text-slate-500 group-hover:bg-accent-blue/10 group-hover:text-accent-blue group-hover:border-accent-blue/20 transition-all">
                     <i data-feather="user" class="w-5 h-5"></i>
                 </div>
                 About Me
             </a>
 
             <a href="#stack"
-                class="mobile-link flex items-center gap-4 text-xl font-semibold text-slate-300 hover:text-white hover:bg-white/5 p-4 rounded-2xl transition-all w-full group">
+                class="mobile-link flex items-center gap-4 text-xl font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/80 p-4 rounded-2xl transition-all w-full group">
                 <div
-                    class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 group-hover:bg-accent-cyan/10 group-hover:text-accent-cyan group-hover:border-accent-cyan/20 transition-all">
+                    class="w-10 h-10 rounded-full bg-white/80 border border-slate-200 flex items-center justify-center text-slate-500 group-hover:bg-accent-cyan/10 group-hover:text-accent-cyan group-hover:border-accent-cyan/20 transition-all">
                     <i data-feather="layers" class="w-5 h-5"></i>
                 </div>
                 Tech Stack
             </a>
 
             <a href="#experience"
-                class="mobile-link flex items-center gap-4 text-xl font-semibold text-slate-300 hover:text-white hover:bg-white/5 p-4 rounded-2xl transition-all w-full group">
+                class="mobile-link flex items-center gap-4 text-xl font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/80 p-4 rounded-2xl transition-all w-full group">
                 <div
-                    class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 group-hover:bg-accent-teal/10 group-hover:text-accent-teal group-hover:border-accent-teal/20 transition-all">
+                    class="w-10 h-10 rounded-full bg-white/80 border border-slate-200 flex items-center justify-center text-slate-500 group-hover:bg-accent-teal/10 group-hover:text-accent-teal group-hover:border-accent-teal/20 transition-all">
                     <i data-feather="briefcase" class="w-5 h-5"></i>
                 </div>
                 Experience
             </a>
 
             <a href="#services"
-                class="mobile-link flex items-center gap-4 text-xl font-semibold text-slate-300 hover:text-white hover:bg-white/5 p-4 rounded-2xl transition-all w-full group">
+                class="mobile-link flex items-center gap-4 text-xl font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/80 p-4 rounded-2xl transition-all w-full group">
                 <div
-                    class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 group-hover:bg-accent-amber/10 group-hover:text-accent-amber group-hover:border-accent-amber/20 transition-all">
+                    class="w-10 h-10 rounded-full bg-white/80 border border-slate-200 flex items-center justify-center text-slate-500 group-hover:bg-accent-amber/10 group-hover:text-accent-amber group-hover:border-accent-amber/20 transition-all">
                     <i data-feather="star" class="w-5 h-5"></i>
                 </div>
                 Services
             </a>
 
             <a href="#blogs"
-                class="mobile-link flex items-center gap-4 text-xl font-semibold text-slate-300 hover:text-white hover:bg-white/5 p-4 rounded-2xl transition-all w-full group">
+                class="mobile-link flex items-center gap-4 text-xl font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/80 p-4 rounded-2xl transition-all w-full group">
                 <div
-                    class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 group-hover:bg-accent-blue/10 group-hover:text-accent-blue group-hover:border-accent-blue/20 transition-all">
+                    class="w-10 h-10 rounded-full bg-white/80 border border-slate-200 flex items-center justify-center text-slate-500 group-hover:bg-accent-blue/10 group-hover:text-accent-blue group-hover:border-accent-blue/20 transition-all">
                     <i data-feather="book-open" class="w-5 h-5"></i>
                 </div>
                 Blogs
@@ -169,13 +169,13 @@
             <div class="absolute inset-0 bg-gradient-to-r from-accent-blue/20 to-accent-cyan/20 blur-xl rounded-full">
             </div>
             <a href="#contact"
-                class="mobile-link relative w-full py-4 rounded-2xl bg-gradient-to-r from-accent-blue to-accent-cyan text-white text-lg font-bold shadow-lg shadow-accent-blue/20 flex items-center justify-center gap-2 hover:shadow-[0_0_20px_rgba(37,99,235,0.4)] transition-all">
+                class="mobile-link relative w-full py-4 rounded-2xl bg-gradient-to-r from-accent-blue to-accent-cyan text-slate-900 text-lg font-bold shadow-lg shadow-accent-blue/20 flex items-center justify-center gap-2 hover:shadow-[0_0_20px_rgba(37,99,235,0.4)] transition-all">
                 Hire Me <i data-feather="arrow-right" class="w-5 h-5"></i>
             </a>
         </div>
 
         <div class="w-full max-w-sm mx-auto mt-10 flex justify-center gap-6 pb-4">
-            <a href="#" class="text-slate-500 hover:text-white transition-colors"><i data-feather="github"
+            <a href="#" class="text-slate-500 hover:text-slate-900 transition-colors"><i data-feather="github"
                     class="w-6 h-6"></i></a>
             <a href="#" class="text-slate-500 hover:text-accent-blue transition-colors"><i data-feather="linkedin"
                     class="w-6 h-6"></i></a>
@@ -202,7 +202,7 @@
                 <!-- Profile Photo Placeholder (Removed) -->
 
                 <!-- Headline -->
-                <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white tracking-tight leading-[1.15] mb-6 reveal-up"
+                <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-slate-900 tracking-tight leading-[1.15] mb-6 reveal-up"
                     style="animation-delay: 100ms;">
                     Building <span
                         class="text-transparent bg-clip-text bg-gradient-to-r from-accent-blue via-accent-cyan to-accent-teal shimmer-text">Intelligent</span>
@@ -211,9 +211,9 @@
                     Business Workflows
                 </h1>
 
-                <p class="text-base sm:text-lg lg:text-xl text-slate-400 max-w-2xl lg:max-w-3xl mx-auto mb-10 leading-relaxed reveal-up"
+                <p class="text-base sm:text-lg lg:text-xl text-slate-500 max-w-2xl lg:max-w-3xl mx-auto mb-10 leading-relaxed reveal-up"
                     style="animation-delay: 200ms;">
-                    Hi, I'm <span class="text-white font-medium">Dipak Kadamb</span>. A blend of modern web
+                    Hi, I'm <span class="text-slate-900 font-medium">Dipak Kadamb</span>. A blend of modern web
                     technologies, AI-driven development, and deep Zoho ecosystem integrations to scale your business
                     seamlessly.
                 </p>
@@ -222,38 +222,38 @@
                 <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16 sm:mb-20 reveal-up"
                     style="animation-delay: 300ms;">
                     <a href="#work"
-                        class="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-white text-navy-900 font-bold hover:bg-slate-100 hover:-translate-y-1 transition-all duration-300 shadow-[0_0_20px_rgba(255,255,255,0.15)] flex justify-center items-center">
+                        class="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-slate-900 text-white font-bold hover:bg-slate-800 hover:-translate-y-1 transition-all duration-300 shadow-[0_0_20px_rgba(255,255,255,0.15)] flex justify-center items-center">
                         View Work
                     </a>
                     <a href="#"
-                        class="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-white/5 border border-white/10 text-white font-medium hover:bg-white/10 hover:border-white/20 transition-all duration-300 flex items-center justify-center gap-2">
+                        class="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-white/80 border border-slate-200 text-slate-900 font-medium hover:bg-slate-200/50 hover:border-slate-300 transition-all duration-300 flex items-center justify-center gap-2">
                         <i data-feather="download" class="w-4 h-4"></i>
                         Download CV
                     </a>
                 </div>
 
                 <!-- Stats Strip -->
-                <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 max-w-4xl mx-auto border-t border-white/10 pt-10 reveal-up"
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 max-w-4xl mx-auto border-t border-slate-200 pt-10 reveal-up"
                     style="animation-delay: 400ms;">
                     <div class="text-center group">
-                        <div class="text-3xl md:text-4xl font-bold text-white mb-2 tracking-tight"><span
+                        <div class="text-3xl md:text-4xl font-bold text-slate-900 mb-2 tracking-tight"><span
                                 class="shimmer-text">6+</span></div>
                         <div
-                            class="text-xs uppercase tracking-widest text-slate-500 font-mono group-hover:text-slate-400 transition-colors">
+                            class="text-xs uppercase tracking-widest text-slate-500 font-mono group-hover:text-slate-500 transition-colors">
                             Years in Tech</div>
                     </div>
                     <div class="text-center group">
-                        <div class="text-3xl md:text-4xl font-bold text-white mb-2 tracking-tight"><span
+                        <div class="text-3xl md:text-4xl font-bold text-slate-900 mb-2 tracking-tight"><span
                                 class="shimmer-text">3+</span></div>
                         <div
-                            class="text-xs uppercase tracking-widest text-slate-500 font-mono group-hover:text-slate-400 transition-colors">
+                            class="text-xs uppercase tracking-widest text-slate-500 font-mono group-hover:text-slate-500 transition-colors">
                             Zoho Products</div>
                     </div>
                     <div class="text-center group">
-                        <div class="text-3xl md:text-4xl font-bold text-white mb-2 tracking-tight"><span
+                        <div class="text-3xl md:text-4xl font-bold text-slate-900 mb-2 tracking-tight"><span
                                 class="shimmer-text">100%</span></div>
                         <div
-                            class="text-xs uppercase tracking-widest text-slate-500 font-mono group-hover:text-slate-400 transition-colors">
+                            class="text-xs uppercase tracking-widest text-slate-500 font-mono group-hover:text-slate-500 transition-colors">
                             AI-Assisted Dev</div>
                     </div>
                     <div class="text-center group flex flex-col justify-center items-center">
@@ -262,7 +262,7 @@
                                 class="text-4xl md:text-5xl text-accent-cyan group-hover:scale-110 transition-transform duration-300 font-light">&infin;</span>
                         </div>
                         <div
-                            class="text-xs uppercase tracking-widest text-slate-500 font-mono group-hover:text-slate-400 transition-colors">
+                            class="text-xs uppercase tracking-widest text-slate-500 font-mono group-hover:text-slate-500 transition-colors">
                             Automation</div>
                     </div>
                 </div>
@@ -271,11 +271,11 @@
 
         <!-- About Section -->
         <section id="about"
-            class="py-20 lg:py-28 px-4 sm:px-6 lg:px-12 relative border-t border-white/5 bg-navy-900/40">
+            class="py-20 lg:py-28 px-4 sm:px-6 lg:px-12 relative border-t border-slate-200 bg-slate-50/40">
             <div class="max-w-7xl mx-auto">
                 <!-- Section Header -->
                 <div class="mb-12 lg:mb-16 reveal-up">
-                    <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 tracking-tight">About Me<span
+                    <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-4 tracking-tight">About Me<span
                             class="text-accent-cyan">.</span></h2>
                     <div class="w-16 lg:w-20 h-1 bg-gradient-to-r from-accent-blue to-accent-cyan rounded-full"></div>
                 </div>
@@ -283,22 +283,22 @@
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
                     <!-- Text Content -->
                     <div class="reveal-left">
-                        <h3 class="text-2xl lg:text-3xl font-semibold text-white mb-6 leading-snug">Bridging the gap
+                        <h3 class="text-2xl lg:text-3xl font-semibold text-slate-900 mb-6 leading-snug">Bridging the gap
                             between Infrastructure, Web Dev, and AI Automation.</h3>
-                        <p class="text-slate-400 mb-8 leading-relaxed text-base lg:text-lg">
+                        <p class="text-slate-500 mb-8 leading-relaxed text-base lg:text-lg">
                             With over 6 years of experience in the tech industry, I've evolved from an IT Administrator
                             managing robust infrastructures to an AI Web Developer crafting intelligent, scalable
                             solutions. My background gives me a holistic view of the entire technology stack—from
                             servers to user interfaces.
                         </p>
-                        <ul class="space-y-5 text-slate-300">
+                        <ul class="space-y-5 text-slate-600">
                             <li class="flex items-start gap-4">
                                 <div
                                     class="mt-1 flex-shrink-0 w-6 h-6 rounded-full bg-accent-cyan/10 flex items-center justify-center border border-accent-cyan/20">
                                     <i data-feather="check" class="w-3.5 h-3.5 text-accent-cyan"></i>
                                 </div>
                                 <span class="text-sm lg:text-base leading-relaxed"><strong
-                                        class="text-white font-semibold">AI-Accelerated Development:</strong> Utilizing
+                                        class="text-slate-900 font-semibold">AI-Accelerated Development:</strong> Utilizing
                                     tools like ChatGPT and GitHub Copilot to deliver high-quality code at unprecedented
                                     speeds.</span>
                             </li>
@@ -308,7 +308,7 @@
                                     <i data-feather="check" class="w-3.5 h-3.5 text-accent-cyan"></i>
                                 </div>
                                 <span class="text-sm lg:text-base leading-relaxed"><strong
-                                        class="text-white font-semibold">Zoho Ecosystem Mastery:</strong> Architecting
+                                        class="text-slate-900 font-semibold">Zoho Ecosystem Mastery:</strong> Architecting
                                     complex workflows, custom CRM modules, and seamless integrations using Zoho Flow,
                                     Creator, and Deluge.</span>
                             </li>
@@ -318,7 +318,7 @@
                                     <i data-feather="check" class="w-3.5 h-3.5 text-accent-cyan"></i>
                                 </div>
                                 <span class="text-sm lg:text-base leading-relaxed"><strong
-                                        class="text-white font-semibold">Security-First API Design:</strong> Building
+                                        class="text-slate-900 font-semibold">Security-First API Design:</strong> Building
                                     robust RESTful APIs and webhooks with a strong emphasis on data integrity and
                                     security.</span>
                             </li>
@@ -329,7 +329,7 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 reveal-right">
                         <!-- Card 1 -->
                         <div
-                            class="glass-card p-6 rounded-2xl flex flex-col justify-between hover:bg-white/[0.03] transition-colors">
+                            class="glass-card p-6 rounded-2xl flex flex-col justify-between hover:bg-white/60 transition-colors">
                             <div
                                 class="w-12 h-12 rounded-xl bg-accent-blue/10 border border-accent-blue/20 flex items-center justify-center mb-5 text-accent-blue">
                                 <i data-feather="map-pin"></i>
@@ -337,13 +337,13 @@
                             <div>
                                 <div class="text-xs uppercase tracking-widest text-slate-500 font-mono mb-1">Location
                                 </div>
-                                <div class="font-bold text-white text-lg lg:text-xl">Pune, India</div>
+                                <div class="font-bold text-slate-900 text-lg lg:text-xl">Pune, India</div>
                             </div>
                         </div>
 
                         <!-- Card 2 -->
                         <div
-                            class="glass-card p-6 rounded-2xl flex flex-col justify-between hover:bg-white/[0.03] transition-colors">
+                            class="glass-card p-6 rounded-2xl flex flex-col justify-between hover:bg-white/60 transition-colors">
                             <div
                                 class="w-12 h-12 rounded-xl bg-accent-cyan/10 border border-accent-cyan/20 flex items-center justify-center mb-5 text-accent-cyan">
                                 <i data-feather="code"></i>
@@ -351,13 +351,13 @@
                             <div>
                                 <div class="text-xs uppercase tracking-widest text-slate-500 font-mono mb-1">
                                     Specialization</div>
-                                <div class="font-bold text-white text-lg lg:text-xl">AI Web & Auto</div>
+                                <div class="font-bold text-slate-900 text-lg lg:text-xl">AI Web & Auto</div>
                             </div>
                         </div>
 
                         <!-- Card 3 -->
                         <div
-                            class="glass-card p-6 rounded-2xl flex flex-col justify-between hover:bg-white/[0.03] transition-colors">
+                            class="glass-card p-6 rounded-2xl flex flex-col justify-between hover:bg-white/60 transition-colors">
                             <div
                                 class="w-12 h-12 rounded-xl bg-accent-teal/10 border border-accent-teal/20 flex items-center justify-center mb-5 text-accent-teal">
                                 <i data-feather="book-open"></i>
@@ -365,7 +365,7 @@
                             <div>
                                 <div class="text-xs uppercase tracking-widest text-slate-500 font-mono mb-1">Education
                                 </div>
-                                <div class="font-bold text-white text-[15px] sm:text-base leading-tight">M.Sc. Info
+                                <div class="font-bold text-slate-900 text-[15px] sm:text-base leading-tight">M.Sc. Info
                                     Technology</div>
                             </div>
                         </div>
@@ -383,7 +383,7 @@
                             <div class="relative z-10">
                                 <div class="text-xs uppercase tracking-widest text-accent-cyan font-mono mb-1">Current
                                     Role</div>
-                                <div class="font-bold text-white text-lg lg:text-xl">Consultant</div>
+                                <div class="font-bold text-slate-900 text-lg lg:text-xl">Consultant</div>
                             </div>
                         </div>
                     </div>
@@ -392,12 +392,12 @@
         </section>
 
         <!-- Tech Stack Section -->
-        <section id="stack" class="py-20 lg:py-28 px-4 sm:px-6 lg:px-12 relative border-t border-white/5">
+        <section id="stack" class="py-20 lg:py-28 px-4 sm:px-6 lg:px-12 relative border-t border-slate-200">
             <div class="max-w-7xl mx-auto">
                 <div class="mb-12 lg:mb-16 text-center reveal-up max-w-3xl mx-auto">
-                    <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 tracking-tight">Technical
+                    <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-4 tracking-tight">Technical
                         Arsenal<span class="text-accent-cyan">.</span></h2>
-                    <p class="text-slate-400 text-base lg:text-lg">A comprehensive view of the tools and technologies I
+                    <p class="text-slate-500 text-base lg:text-lg">A comprehensive view of the tools and technologies I
                         leverage to build state-of-the-art solutions.</p>
                 </div>
 
@@ -407,25 +407,25 @@
                         <div class="flex items-center gap-4 mb-6">
                             <div class="p-2.5 rounded-lg bg-accent-blue/10 text-accent-blue"><i data-feather="monitor"
                                     class="w-6 h-6"></i></div>
-                            <h3 class="text-xl lg:text-2xl font-bold text-white">Web & AI</h3>
+                            <h3 class="text-xl lg:text-2xl font-bold text-slate-900">Web & AI</h3>
                         </div>
                         <div class="h-px w-full bg-gradient-to-r from-white/10 to-transparent mb-6"></div>
                         <div class="flex flex-wrap gap-2.5">
                             <span
-                                class="px-3.5 py-1.5 bg-white/5 border border-white/10 rounded-lg text-sm font-medium text-slate-300 hover:border-accent-blue hover:bg-accent-blue/5 hover:text-white transition-all cursor-default">HTML5
+                                class="px-3.5 py-1.5 bg-white/80 border border-slate-200 rounded-lg text-sm font-medium text-slate-600 hover:border-accent-blue hover:bg-accent-blue/5 hover:text-slate-900 transition-all cursor-default">HTML5
                                 & CSS3</span>
                             <span
-                                class="px-3.5 py-1.5 bg-white/5 border border-white/10 rounded-lg text-sm font-medium text-slate-300 hover:border-accent-blue hover:bg-accent-blue/5 hover:text-white transition-all cursor-default">JavaScript</span>
+                                class="px-3.5 py-1.5 bg-white/80 border border-slate-200 rounded-lg text-sm font-medium text-slate-600 hover:border-accent-blue hover:bg-accent-blue/5 hover:text-slate-900 transition-all cursor-default">JavaScript</span>
                             <span
-                                class="px-3.5 py-1.5 bg-white/5 border border-white/10 rounded-lg text-sm font-medium text-slate-300 hover:border-accent-blue hover:bg-accent-blue/5 hover:text-white transition-all cursor-default">React.js</span>
+                                class="px-3.5 py-1.5 bg-white/80 border border-slate-200 rounded-lg text-sm font-medium text-slate-600 hover:border-accent-blue hover:bg-accent-blue/5 hover:text-slate-900 transition-all cursor-default">React.js</span>
                             <span
-                                class="px-3.5 py-1.5 bg-white/5 border border-accent-cyan/30 rounded-lg text-sm font-medium text-accent-cyan hover:bg-accent-cyan/10 transition-all cursor-default shadow-[0_0_10px_rgba(6,182,212,0.1)]">ChatGPT
+                                class="px-3.5 py-1.5 bg-white/80 border border-accent-cyan/30 rounded-lg text-sm font-medium text-accent-cyan hover:bg-accent-cyan/10 transition-all cursor-default shadow-[0_0_10px_rgba(6,182,212,0.1)]">ChatGPT
                                 API</span>
                             <span
-                                class="px-3.5 py-1.5 bg-white/5 border border-accent-cyan/30 rounded-lg text-sm font-medium text-accent-cyan hover:bg-accent-cyan/10 transition-all cursor-default shadow-[0_0_10px_rgba(6,182,212,0.1)]">GitHub
+                                class="px-3.5 py-1.5 bg-white/80 border border-accent-cyan/30 rounded-lg text-sm font-medium text-accent-cyan hover:bg-accent-cyan/10 transition-all cursor-default shadow-[0_0_10px_rgba(6,182,212,0.1)]">GitHub
                                 Copilot</span>
                             <span
-                                class="px-3.5 py-1.5 bg-white/5 border border-white/10 rounded-lg text-sm font-medium text-slate-300 hover:border-accent-blue hover:bg-accent-blue/5 hover:text-white transition-all cursor-default">Tailwind
+                                class="px-3.5 py-1.5 bg-white/80 border border-slate-200 rounded-lg text-sm font-medium text-slate-600 hover:border-accent-blue hover:bg-accent-blue/5 hover:text-slate-900 transition-all cursor-default">Tailwind
                                 CSS</span>
                         </div>
                     </div>
@@ -435,26 +435,26 @@
                         <div class="flex items-center gap-4 mb-6">
                             <div class="p-2.5 rounded-lg bg-accent-teal/10 text-accent-teal"><i data-feather="layers"
                                     class="w-6 h-6"></i></div>
-                            <h3 class="text-xl lg:text-2xl font-bold text-white">Zoho Ecosystem</h3>
+                            <h3 class="text-xl lg:text-2xl font-bold text-slate-900">Zoho Ecosystem</h3>
                         </div>
                         <div class="h-px w-full bg-gradient-to-r from-white/10 to-transparent mb-6"></div>
                         <div class="flex flex-wrap gap-2.5">
                             <span
-                                class="px-3.5 py-1.5 bg-white/5 border border-white/10 rounded-lg text-sm font-medium text-slate-300 hover:border-accent-teal hover:bg-accent-teal/5 hover:text-white transition-all cursor-default">Zoho
+                                class="px-3.5 py-1.5 bg-white/80 border border-slate-200 rounded-lg text-sm font-medium text-slate-600 hover:border-accent-teal hover:bg-accent-teal/5 hover:text-slate-900 transition-all cursor-default">Zoho
                                 CRM</span>
                             <span
-                                class="px-3.5 py-1.5 bg-white/5 border border-white/10 rounded-lg text-sm font-medium text-slate-300 hover:border-accent-teal hover:bg-accent-teal/5 hover:text-white transition-all cursor-default">Zoho
+                                class="px-3.5 py-1.5 bg-white/80 border border-slate-200 rounded-lg text-sm font-medium text-slate-600 hover:border-accent-teal hover:bg-accent-teal/5 hover:text-slate-900 transition-all cursor-default">Zoho
                                 Flow</span>
                             <span
-                                class="px-3.5 py-1.5 bg-white/5 border border-white/10 rounded-lg text-sm font-medium text-slate-300 hover:border-accent-teal hover:bg-accent-teal/5 hover:text-white transition-all cursor-default">Zoho
+                                class="px-3.5 py-1.5 bg-white/80 border border-slate-200 rounded-lg text-sm font-medium text-slate-600 hover:border-accent-teal hover:bg-accent-teal/5 hover:text-slate-900 transition-all cursor-default">Zoho
                                 Creator</span>
                             <span
                                 class="px-3.5 py-1.5 bg-accent-teal/10 border border-accent-teal/40 rounded-lg text-sm font-medium text-accent-teal shadow-[0_0_10px_rgba(13,148,136,0.15)] cursor-default">Deluge</span>
                             <span
-                                class="px-3.5 py-1.5 bg-white/5 border border-white/10 rounded-lg text-sm font-medium text-slate-300 hover:border-accent-teal hover:bg-accent-teal/5 hover:text-white transition-all cursor-default">REST
+                                class="px-3.5 py-1.5 bg-white/80 border border-slate-200 rounded-lg text-sm font-medium text-slate-600 hover:border-accent-teal hover:bg-accent-teal/5 hover:text-slate-900 transition-all cursor-default">REST
                                 APIs</span>
                             <span
-                                class="px-3.5 py-1.5 bg-white/5 border border-white/10 rounded-lg text-sm font-medium text-slate-300 hover:border-accent-teal hover:bg-accent-teal/5 hover:text-white transition-all cursor-default">Webhooks</span>
+                                class="px-3.5 py-1.5 bg-white/80 border border-slate-200 rounded-lg text-sm font-medium text-slate-600 hover:border-accent-teal hover:bg-accent-teal/5 hover:text-slate-900 transition-all cursor-default">Webhooks</span>
                         </div>
                     </div>
 
@@ -463,22 +463,22 @@
                         <div class="flex items-center gap-4 mb-6">
                             <div class="p-2.5 rounded-lg bg-accent-amber/10 text-accent-amber"><i data-feather="server"
                                     class="w-6 h-6"></i></div>
-                            <h3 class="text-xl lg:text-2xl font-bold text-white">IT Infrastructure</h3>
+                            <h3 class="text-xl lg:text-2xl font-bold text-slate-900">IT Infrastructure</h3>
                         </div>
                         <div class="h-px w-full bg-gradient-to-r from-white/10 to-transparent mb-6"></div>
                         <div class="flex flex-wrap gap-2.5">
                             <span
-                                class="px-3.5 py-1.5 bg-white/5 border border-white/10 rounded-lg text-sm font-medium text-slate-300 hover:border-accent-amber hover:bg-accent-amber/5 hover:text-white transition-all cursor-default">Windows
+                                class="px-3.5 py-1.5 bg-white/80 border border-slate-200 rounded-lg text-sm font-medium text-slate-600 hover:border-accent-amber hover:bg-accent-amber/5 hover:text-slate-900 transition-all cursor-default">Windows
                                 Server</span>
                             <span
-                                class="px-3.5 py-1.5 bg-white/5 border border-white/10 rounded-lg text-sm font-medium text-slate-300 hover:border-accent-amber hover:bg-accent-amber/5 hover:text-white transition-all cursor-default">Linux
+                                class="px-3.5 py-1.5 bg-white/80 border border-slate-200 rounded-lg text-sm font-medium text-slate-600 hover:border-accent-amber hover:bg-accent-amber/5 hover:text-slate-900 transition-all cursor-default">Linux
                                 Admin</span>
                             <span
-                                class="px-3.5 py-1.5 bg-white/5 border border-white/10 rounded-lg text-sm font-medium text-slate-300 hover:border-accent-amber hover:bg-accent-amber/5 hover:text-white transition-all cursor-default">Virtualization</span>
+                                class="px-3.5 py-1.5 bg-white/80 border border-slate-200 rounded-lg text-sm font-medium text-slate-600 hover:border-accent-amber hover:bg-accent-amber/5 hover:text-slate-900 transition-all cursor-default">Virtualization</span>
                             <span
-                                class="px-3.5 py-1.5 bg-white/5 border border-white/10 rounded-lg text-sm font-medium text-slate-300 hover:border-accent-amber hover:bg-accent-amber/5 hover:text-white transition-all cursor-default">Grafana</span>
+                                class="px-3.5 py-1.5 bg-white/80 border border-slate-200 rounded-lg text-sm font-medium text-slate-600 hover:border-accent-amber hover:bg-accent-amber/5 hover:text-slate-900 transition-all cursor-default">Grafana</span>
                             <span
-                                class="px-3.5 py-1.5 bg-white/5 border border-white/10 rounded-lg text-sm font-medium text-slate-300 hover:border-accent-amber hover:bg-accent-amber/5 hover:text-white transition-all cursor-default">PowerShell
+                                class="px-3.5 py-1.5 bg-white/80 border border-slate-200 rounded-lg text-sm font-medium text-slate-600 hover:border-accent-amber hover:bg-accent-amber/5 hover:text-slate-900 transition-all cursor-default">PowerShell
                                 & Bash</span>
                         </div>
                     </div>
@@ -490,16 +490,16 @@
                         class="text-xs lg:text-sm uppercase tracking-widest text-slate-500 font-mono whitespace-nowrap font-medium">Also
                         Proficient In:</span>
                     <div class="flex flex-wrap gap-2">
-                        <span class="text-xs px-2.5 py-1 bg-white/5 border border-white/5 rounded text-slate-400">Git &
+                        <span class="text-xs px-2.5 py-1 bg-white/80 border border-slate-200 rounded text-slate-500">Git &
                             GitHub</span>
                         <span
-                            class="text-xs px-2.5 py-1 bg-white/5 border border-white/5 rounded text-slate-400">Postman</span>
-                        <span class="text-xs px-2.5 py-1 bg-white/5 border border-white/5 rounded text-slate-400">Active
+                            class="text-xs px-2.5 py-1 bg-white/80 border border-slate-200 rounded text-slate-500">Postman</span>
+                        <span class="text-xs px-2.5 py-1 bg-white/80 border border-slate-200 rounded text-slate-500">Active
                             Directory</span>
-                        <span class="text-xs px-2.5 py-1 bg-white/5 border border-white/5 rounded text-slate-400">Office
+                        <span class="text-xs px-2.5 py-1 bg-white/80 border border-slate-200 rounded text-slate-500">Office
                             365 Admin</span>
                         <span
-                            class="text-xs px-2.5 py-1 bg-white/5 border border-white/5 rounded text-slate-400">Networking
+                            class="text-xs px-2.5 py-1 bg-white/80 border border-slate-200 rounded text-slate-500">Networking
                             Basics</span>
                     </div>
                 </div>
@@ -508,10 +508,10 @@
 
         <!-- Experience Section -->
         <section id="experience"
-            class="py-20 lg:py-28 px-4 sm:px-6 lg:px-12 relative border-t border-white/5 bg-navy-900/40">
+            class="py-20 lg:py-28 px-4 sm:px-6 lg:px-12 relative border-t border-slate-200 bg-slate-50/40">
             <div class="max-w-4xl mx-auto">
                 <div class="mb-16 reveal-up text-center md:text-left">
-                    <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 tracking-tight">Professional
+                    <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-4 tracking-tight">Professional
                         Journey<span class="text-accent-cyan">.</span></h2>
                     <div
                         class="w-16 lg:w-20 h-1 bg-gradient-to-r from-accent-blue to-accent-cyan rounded-full mx-auto md:mx-0">
@@ -520,15 +520,15 @@
 
                 <div class="relative pl-6 md:pl-0">
                     <!-- Timeline Line -->
-                    <div class="hidden md:block absolute left-1/2 top-4 bottom-4 w-px bg-white/10 -translate-x-1/2">
+                    <div class="hidden md:block absolute left-1/2 top-4 bottom-4 w-px bg-slate-200/50 -translate-x-1/2">
                     </div>
-                    <div class="md:hidden absolute left-0 top-4 bottom-4 w-px bg-white/10"></div>
+                    <div class="md:hidden absolute left-0 top-4 bottom-4 w-px bg-slate-200/50"></div>
 
                     <!-- Experience Item 1 -->
                     <div
                         class="relative flex flex-col md:flex-row justify-between mb-12 sm:mb-16 timeline-item reveal-up">
                         <div class="md:w-[45%] hidden md:block text-right pr-10 pt-1">
-                            <div class="text-xl font-bold text-white mb-1 tracking-tight">ZM Technologies</div>
+                            <div class="text-xl font-bold text-slate-900 mb-1 tracking-tight">ZM Technologies</div>
                             <div class="text-accent-cyan font-mono text-sm uppercase tracking-widest">Sep 2025 - Present
                             </div>
                         </div>
@@ -538,18 +538,18 @@
                         <div class="md:w-[45%] md:pl-10">
                             <div class="glass-card p-6 lg:p-8 rounded-2xl relative border-accent-cyan/20">
                                 <!-- Mobile Header -->
-                                <div class="md:hidden mb-5 border-b border-white/10 pb-4">
-                                    <div class="text-xl font-bold text-white mb-1">ZM Technologies</div>
+                                <div class="md:hidden mb-5 border-b border-slate-200 pb-4">
+                                    <div class="text-xl font-bold text-slate-900 mb-1">ZM Technologies</div>
                                     <div class="text-accent-cyan font-mono text-xs uppercase tracking-widest">Sep 2025 -
                                         Present</div>
                                 </div>
 
-                                <h3 class="text-lg lg:text-xl font-bold text-white mb-3 flex items-center gap-2">AI Web
+                                <h3 class="text-lg lg:text-xl font-bold text-slate-900 mb-3 flex items-center gap-2">AI Web
                                     Developer</h3>
-                                <div class="flex items-center gap-2 text-sm text-slate-400 mb-5 font-medium">
+                                <div class="flex items-center gap-2 text-sm text-slate-500 mb-5 font-medium">
                                     <i data-feather="map-pin" class="w-4 h-4"></i> Pune, India · On-site
                                 </div>
-                                <div class="space-y-4 text-slate-300 text-sm lg:text-base mb-6 leading-relaxed">
+                                <div class="space-y-4 text-slate-600 text-sm lg:text-base mb-6 leading-relaxed">
                                     <p>Building and enhancing web applications by leveraging artificial intelligence and
                                         Zoho automation tools to streamline development, improve performance, and
                                         automate business workflows.</p>
@@ -559,12 +559,12 @@
                                 </div>
                                 <div class="flex flex-wrap gap-2">
                                     <span
-                                        class="text-xs font-mono px-2.5 py-1 bg-white/5 rounded text-accent-cyan">AI-assisted
+                                        class="text-xs font-mono px-2.5 py-1 bg-white/80 rounded text-accent-cyan">AI-assisted
                                         Web Dev</span>
-                                    <span class="text-xs font-mono px-2.5 py-1 bg-white/5 rounded text-accent-cyan">Zoho
+                                    <span class="text-xs font-mono px-2.5 py-1 bg-white/80 rounded text-accent-cyan">Zoho
                                         CRM & Flow</span>
                                     <span
-                                        class="text-xs font-mono px-2.5 py-1 bg-white/5 rounded text-accent-cyan">Webhooks
+                                        class="text-xs font-mono px-2.5 py-1 bg-white/80 rounded text-accent-cyan">Webhooks
                                         & APIs</span>
                                 </div>
                             </div>
@@ -575,7 +575,7 @@
                     <div class="relative flex flex-col md:flex-row-reverse justify-between mb-12 sm:mb-16 timeline-item reveal-up"
                         style="animation-delay: 100ms;">
                         <div class="md:w-[45%] hidden md:block pl-10 pt-1">
-                            <div class="text-xl font-bold text-white mb-1 tracking-tight">Royaltech</div>
+                            <div class="text-xl font-bold text-slate-900 mb-1 tracking-tight">Royaltech</div>
                             <div class="text-slate-500 font-mono text-sm uppercase tracking-widest">Apr 2025 - Sep 2025
                             </div>
                         </div>
@@ -585,19 +585,19 @@
                         <div class="md:w-[45%] md:pr-10">
                             <div class="glass-card p-6 lg:p-8 rounded-2xl relative">
                                 <!-- Mobile Header -->
-                                <div class="md:hidden mb-5 border-b border-white/10 pb-4">
-                                    <div class="text-xl font-bold text-white mb-1">Royaltech</div>
+                                <div class="md:hidden mb-5 border-b border-slate-200 pb-4">
+                                    <div class="text-xl font-bold text-slate-900 mb-1">Royaltech</div>
                                     <div class="text-slate-500 font-mono text-xs uppercase tracking-widest">Apr 2025 -
                                         Sep 2025</div>
                                 </div>
 
-                                <h3 class="text-lg lg:text-xl font-bold text-white mb-3">System Engineer</h3>
+                                <h3 class="text-lg lg:text-xl font-bold text-slate-900 mb-3">System Engineer</h3>
                                 <div
-                                    class="flex items-center gap-2 text-sm text-slate-400 mb-5 font-medium md:justify-start">
+                                    class="flex items-center gap-2 text-sm text-slate-500 mb-5 font-medium md:justify-start">
                                     <i data-feather="map-pin" class="w-4 h-4"></i> Pune, India · Hybrid
                                 </div>
                                 <div
-                                    class="space-y-4 text-slate-300 text-sm lg:text-base mb-6 leading-relaxed md:text-left">
+                                    class="space-y-4 text-slate-600 text-sm lg:text-base mb-6 leading-relaxed md:text-left">
                                     <p>Responsible for designing, implementing, and maintaining complex IT systems,
                                         networks, and infrastructure to support business operations.</p>
                                     <p>Installing, configuring, and maintaining Windows Server and Linux systems,
@@ -607,12 +607,12 @@
                                 </div>
                                 <div class="flex flex-wrap gap-2 md:justify-start">
                                     <span
-                                        class="text-xs font-mono px-2.5 py-1 bg-white/5 rounded text-slate-400">Windows/Linux
+                                        class="text-xs font-mono px-2.5 py-1 bg-white/80 rounded text-slate-500">Windows/Linux
                                         Server</span>
                                     <span
-                                        class="text-xs font-mono px-2.5 py-1 bg-white/5 rounded text-slate-400">Networking
+                                        class="text-xs font-mono px-2.5 py-1 bg-white/80 rounded text-slate-500">Networking
                                         & Security</span>
-                                    <span class="text-xs font-mono px-2.5 py-1 bg-white/5 rounded text-slate-400">Python
+                                    <span class="text-xs font-mono px-2.5 py-1 bg-white/80 rounded text-slate-500">Python
                                         & PowerShell</span>
                                 </div>
                             </div>
@@ -623,37 +623,37 @@
                     <div class="relative flex flex-col md:flex-row justify-between mb-12 sm:mb-16 timeline-item reveal-up"
                         style="animation-delay: 200ms;">
                         <div class="md:w-[45%] hidden md:block text-right pr-10 pt-1">
-                            <div class="text-xl font-bold text-white mb-1 tracking-tight">SKS Engineering Solutions
+                            <div class="text-xl font-bold text-slate-900 mb-1 tracking-tight">SKS Engineering Solutions
                             </div>
                             <div class="text-slate-500 font-mono text-sm uppercase tracking-widest">Jul 2024 - Mar 2025
                             </div>
                         </div>
 
-                        <div class="timeline-dot md:left-1/2 md:-translate-x-1/2 bg-slate-600 border-slate-800"></div>
+                        <div class="timeline-dot md:left-1/2 md:-translate-x-1/2 bg-slate-300 border-white"></div>
 
                         <div class="md:w-[45%] md:pl-10">
                             <div
-                                class="glass-card p-6 lg:p-8 rounded-2xl relative border-white/5 bg-white/[0.02] shadow-none">
+                                class="glass-card p-6 lg:p-8 rounded-2xl relative border-slate-200 bg-white/50 shadow-none">
                                 <!-- Mobile Header -->
-                                <div class="md:hidden mb-4 border-b border-white/5 pb-3">
-                                    <div class="text-xl font-bold text-white mb-1">SKS Engineering Solutions</div>
+                                <div class="md:hidden mb-4 border-b border-slate-200 pb-3">
+                                    <div class="text-xl font-bold text-slate-900 mb-1">SKS Engineering Solutions</div>
                                     <div class="text-slate-500 font-mono text-xs uppercase tracking-widest">Jul 2024 -
                                         Mar 2025</div>
                                 </div>
 
-                                <h3 class="text-lg font-medium text-slate-300 mb-3">IT Admin</h3>
+                                <h3 class="text-lg font-medium text-slate-600 mb-3">IT Admin</h3>
                                 <div class="flex items-center gap-2 text-sm text-slate-500 mb-5 font-medium">
                                     <i data-feather="map-pin" class="w-4 h-4"></i> Pune, India · On-site
                                 </div>
-                                <p class="text-sm lg:text-base text-slate-400 leading-relaxed mb-6">Managing and
+                                <p class="text-sm lg:text-base text-slate-500 leading-relaxed mb-6">Managing and
                                     supporting the organization’s IT infrastructure, including servers, networks, and
                                     systems while providing timely technical support, backup & recovery, and maintaining
                                     business continuity.</p>
                                 <div class="flex flex-wrap gap-2">
-                                    <span class="text-xs font-mono px-2.5 py-1 bg-white/5 rounded text-slate-500">IT
+                                    <span class="text-xs font-mono px-2.5 py-1 bg-white/80 rounded text-slate-500">IT
                                         Services</span>
                                     <span
-                                        class="text-xs font-mono px-2.5 py-1 bg-white/5 rounded text-slate-500">Technical
+                                        class="text-xs font-mono px-2.5 py-1 bg-white/80 rounded text-slate-500">Technical
                                         Support</span>
                                 </div>
                             </div>
@@ -664,32 +664,32 @@
                     <div class="relative flex flex-col md:flex-row-reverse justify-between mb-12 sm:mb-16 timeline-item reveal-up"
                         style="animation-delay: 300ms;">
                         <div class="md:w-[45%] hidden md:block pl-10 pt-1">
-                            <div class="text-xl font-bold text-white mb-1 tracking-tight">PHN Technology Pvt Ltd</div>
+                            <div class="text-xl font-bold text-slate-900 mb-1 tracking-tight">PHN Technology Pvt Ltd</div>
                             <div class="text-slate-500 font-mono text-sm uppercase tracking-widest">May 2023 - May 2023
                             </div>
                         </div>
 
-                        <div class="timeline-dot md:left-1/2 md:-translate-x-1/2 bg-slate-600 border-slate-800"></div>
+                        <div class="timeline-dot md:left-1/2 md:-translate-x-1/2 bg-slate-300 border-white"></div>
 
                         <div class="md:w-[45%] md:pr-10">
                             <div
-                                class="glass-card p-6 lg:p-8 rounded-2xl relative border-white/5 bg-white/[0.02] shadow-none">
+                                class="glass-card p-6 lg:p-8 rounded-2xl relative border-slate-200 bg-white/50 shadow-none">
                                 <!-- Mobile Header -->
-                                <div class="md:hidden mb-4 border-b border-white/5 pb-3">
-                                    <div class="text-xl font-bold text-white mb-1">PHN Technology Pvt Ltd</div>
+                                <div class="md:hidden mb-4 border-b border-slate-200 pb-3">
+                                    <div class="text-xl font-bold text-slate-900 mb-1">PHN Technology Pvt Ltd</div>
                                     <div class="text-slate-500 font-mono text-xs uppercase tracking-widest">May 2023
                                     </div>
                                 </div>
 
-                                <h3 class="text-lg font-medium text-slate-300 mb-3">Test Engineer (Internship)</h3>
+                                <h3 class="text-lg font-medium text-slate-600 mb-3">Test Engineer (Internship)</h3>
                                 <div
                                     class="flex items-center gap-2 text-sm text-slate-500 mb-5 font-medium md:justify-start">
                                     <i data-feather="map-pin" class="w-4 h-4"></i> Hyderabad, India · Hybrid
                                 </div>
                                 <div class="flex flex-wrap gap-2 md:justify-start">
-                                    <span class="text-xs font-mono px-2.5 py-1 bg-white/5 rounded text-slate-500">Manual
+                                    <span class="text-xs font-mono px-2.5 py-1 bg-white/80 rounded text-slate-500">Manual
                                         Testing</span>
-                                    <span class="text-xs font-mono px-2.5 py-1 bg-white/5 rounded text-slate-500">Test
+                                    <span class="text-xs font-mono px-2.5 py-1 bg-white/80 rounded text-slate-500">Test
                                         Automation (Jira)</span>
                                 </div>
                             </div>
@@ -700,32 +700,32 @@
                     <div class="relative flex flex-col md:flex-row justify-between mb-12 sm:mb-16 timeline-item reveal-up"
                         style="animation-delay: 400ms;">
                         <div class="md:w-[45%] hidden md:block text-right pr-10 pt-1">
-                            <div class="text-xl font-bold text-white mb-1 tracking-tight">Naresh i Technologies</div>
+                            <div class="text-xl font-bold text-slate-900 mb-1 tracking-tight">Naresh i Technologies</div>
                             <div class="text-slate-500 font-mono text-sm uppercase tracking-widest">Dec 2019 - Feb 2020
                             </div>
                         </div>
 
-                        <div class="timeline-dot md:left-1/2 md:-translate-x-1/2 bg-slate-600 border-slate-800"></div>
+                        <div class="timeline-dot md:left-1/2 md:-translate-x-1/2 bg-slate-300 border-white"></div>
 
                         <div class="md:w-[45%] md:pl-10">
                             <div
-                                class="glass-card p-6 lg:p-8 rounded-2xl relative border-white/5 bg-white/[0.02] shadow-none">
+                                class="glass-card p-6 lg:p-8 rounded-2xl relative border-slate-200 bg-white/50 shadow-none">
                                 <!-- Mobile Header -->
-                                <div class="md:hidden mb-4 border-b border-white/5 pb-3">
-                                    <div class="text-xl font-bold text-white mb-1">Naresh i Technologies</div>
+                                <div class="md:hidden mb-4 border-b border-slate-200 pb-3">
+                                    <div class="text-xl font-bold text-slate-900 mb-1">Naresh i Technologies</div>
                                     <div class="text-slate-500 font-mono text-xs uppercase tracking-widest">Dec 2019 -
                                         Feb 2020</div>
                                 </div>
 
-                                <h3 class="text-lg font-medium text-slate-300 mb-3">Java Developer (Internship)</h3>
+                                <h3 class="text-lg font-medium text-slate-600 mb-3">Java Developer (Internship)</h3>
                                 <div class="flex items-center gap-2 text-sm text-slate-500 mb-5 font-medium">
                                     <i data-feather="map-pin" class="w-4 h-4"></i> Hyderabad, India · On-site
                                 </div>
                                 <div class="flex flex-wrap gap-2">
                                     <span
-                                        class="text-xs font-mono px-2.5 py-1 bg-white/5 rounded text-slate-500">Java</span>
+                                        class="text-xs font-mono px-2.5 py-1 bg-white/80 rounded text-slate-500">Java</span>
                                     <span
-                                        class="text-xs font-mono px-2.5 py-1 bg-white/5 rounded text-slate-500">Software
+                                        class="text-xs font-mono px-2.5 py-1 bg-white/80 rounded text-slate-500">Software
                                         Development</span>
                                 </div>
                             </div>
@@ -736,24 +736,24 @@
                     <div class="relative flex flex-col md:flex-row-reverse justify-between timeline-item reveal-up"
                         style="animation-delay: 500ms;">
                         <div class="md:w-[45%] hidden md:block pl-10 pt-1">
-                            <div class="text-xl font-bold text-white mb-1 tracking-tight">TCS iON</div>
+                            <div class="text-xl font-bold text-slate-900 mb-1 tracking-tight">TCS iON</div>
                             <div class="text-slate-500 font-mono text-sm uppercase tracking-widest">Nov 2017 - Mar 2018
                             </div>
                         </div>
 
-                        <div class="timeline-dot md:left-1/2 md:-translate-x-1/2 bg-slate-600 border-slate-800"></div>
+                        <div class="timeline-dot md:left-1/2 md:-translate-x-1/2 bg-slate-300 border-white"></div>
 
                         <div class="md:w-[45%] md:pr-10">
                             <div
-                                class="glass-card p-6 lg:p-8 rounded-2xl relative border-white/5 bg-white/[0.02] shadow-none">
+                                class="glass-card p-6 lg:p-8 rounded-2xl relative border-slate-200 bg-white/50 shadow-none">
                                 <!-- Mobile Header -->
-                                <div class="md:hidden mb-4 border-b border-white/5 pb-3">
-                                    <div class="text-xl font-bold text-white mb-1">TCS iON</div>
+                                <div class="md:hidden mb-4 border-b border-slate-200 pb-3">
+                                    <div class="text-xl font-bold text-slate-900 mb-1">TCS iON</div>
                                     <div class="text-slate-500 font-mono text-xs uppercase tracking-widest">Nov 2017 -
                                         Mar 2018</div>
                                 </div>
 
-                                <h3 class="text-lg font-medium text-slate-300 mb-3">Software Engineering Industrial
+                                <h3 class="text-lg font-medium text-slate-600 mb-3">Software Engineering Industrial
                                     Practice (Internship)</h3>
                                 <div class="flex items-center gap-2 text-sm text-slate-500 md:justify-start">
                                     <i data-feather="map-pin" class="w-4 h-4"></i> Hyderabad, India · Remote
@@ -766,12 +766,12 @@
         </section>
 
         <!-- Services Section -->
-        <section id="services" class="py-20 lg:py-28 px-4 sm:px-6 lg:px-12 relative border-t border-white/5">
+        <section id="services" class="py-20 lg:py-28 px-4 sm:px-6 lg:px-12 relative border-t border-slate-200">
             <div class="max-w-7xl mx-auto">
                 <div class="mb-12 lg:mb-16 text-center reveal-up max-w-3xl mx-auto">
-                    <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 tracking-tight">Services &
+                    <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-4 tracking-tight">Services &
                         Solutions<span class="text-accent-cyan">.</span></h2>
-                    <p class="text-slate-400 text-base lg:text-lg">Professional offerings designed to streamline
+                    <p class="text-slate-500 text-base lg:text-lg">Professional offerings designed to streamline
                         operations, enhance your digital presence, and build robust systems.</p>
                 </div>
 
@@ -780,13 +780,13 @@
                     <div
                         class="glass-card p-6 lg:p-10 rounded-2xl group hover:-translate-y-2 transition-transform duration-300 reveal-up">
                         <div
-                            class="w-14 h-14 rounded-xl bg-accent-blue/10 border border-accent-blue/20 flex items-center justify-center mb-6 text-accent-blue group-hover:bg-accent-blue group-hover:text-white transition-all duration-300 shadow-lg shadow-accent-blue/10">
+                            class="w-14 h-14 rounded-xl bg-accent-blue/10 border border-accent-blue/20 flex items-center justify-center mb-6 text-accent-blue group-hover:bg-accent-blue group-hover:text-slate-900 transition-all duration-300 shadow-lg shadow-accent-blue/10">
                             <i data-feather="layout" class="w-6 h-6"></i>
                         </div>
-                        <h3 class="text-xl lg:text-2xl font-bold text-white mb-3">AI Web Development</h3>
-                        <p class="text-slate-400 mb-6 text-sm lg:text-base leading-relaxed">Custom, high-performance web
+                        <h3 class="text-xl lg:text-2xl font-bold text-slate-900 mb-3">AI Web Development</h3>
+                        <p class="text-slate-500 mb-6 text-sm lg:text-base leading-relaxed">Custom, high-performance web
                             applications built with modern frameworks and supercharged by AI integrations.</p>
-                        <ul class="space-y-3 text-sm lg:text-base text-slate-300 font-medium">
+                        <ul class="space-y-3 text-sm lg:text-base text-slate-600 font-medium">
                             <li class="flex items-center gap-3"><i data-feather="check"
                                     class="w-4 h-4 text-accent-blue"></i> Responsive Front-ends</li>
                             <li class="flex items-center gap-3"><i data-feather="check"
@@ -800,13 +800,13 @@
                     <div class="glass-card p-6 lg:p-10 rounded-2xl group hover:-translate-y-2 transition-transform duration-300 reveal-up"
                         style="animation-delay: 100ms;">
                         <div
-                            class="w-14 h-14 rounded-xl bg-accent-teal/10 border border-accent-teal/20 flex items-center justify-center mb-6 text-accent-teal group-hover:bg-accent-teal group-hover:text-white transition-all duration-300 shadow-lg shadow-accent-teal/10">
+                            class="w-14 h-14 rounded-xl bg-accent-teal/10 border border-accent-teal/20 flex items-center justify-center mb-6 text-accent-teal group-hover:bg-accent-teal group-hover:text-slate-900 transition-all duration-300 shadow-lg shadow-accent-teal/10">
                             <i data-feather="repeat" class="w-6 h-6"></i>
                         </div>
-                        <h3 class="text-xl lg:text-2xl font-bold text-white mb-3">Zoho Automation</h3>
-                        <p class="text-slate-400 mb-6 text-sm lg:text-base leading-relaxed">End-to-end business
+                        <h3 class="text-xl lg:text-2xl font-bold text-slate-900 mb-3">Zoho Automation</h3>
+                        <p class="text-slate-500 mb-6 text-sm lg:text-base leading-relaxed">End-to-end business
                             automation using the Zoho Suite and custom Deluge scripting to eliminate manual work.</p>
-                        <ul class="space-y-3 text-sm lg:text-base text-slate-300 font-medium">
+                        <ul class="space-y-3 text-sm lg:text-base text-slate-600 font-medium">
                             <li class="flex items-center gap-3"><i data-feather="check"
                                     class="w-4 h-4 text-accent-teal"></i> CRM Customization</li>
                             <li class="flex items-center gap-3"><i data-feather="check"
@@ -820,13 +820,13 @@
                     <div class="glass-card p-6 lg:p-10 rounded-2xl group hover:-translate-y-2 transition-transform duration-300 reveal-up"
                         style="animation-delay: 200ms;">
                         <div
-                            class="w-14 h-14 rounded-xl bg-accent-amber/10 border border-accent-amber/20 flex items-center justify-center mb-6 text-accent-amber group-hover:bg-accent-amber group-hover:text-white transition-all duration-300 shadow-lg shadow-accent-amber/10">
+                            class="w-14 h-14 rounded-xl bg-accent-amber/10 border border-accent-amber/20 flex items-center justify-center mb-6 text-accent-amber group-hover:bg-accent-amber group-hover:text-slate-900 transition-all duration-300 shadow-lg shadow-accent-amber/10">
                             <i data-feather="hard-drive" class="w-6 h-6"></i>
                         </div>
-                        <h3 class="text-xl lg:text-2xl font-bold text-white mb-3">IT Infrastructure</h3>
-                        <p class="text-slate-400 mb-6 text-sm lg:text-base leading-relaxed">Consultancy and
+                        <h3 class="text-xl lg:text-2xl font-bold text-slate-900 mb-3">IT Infrastructure</h3>
+                        <p class="text-slate-500 mb-6 text-sm lg:text-base leading-relaxed">Consultancy and
                             implementation for robust, secure, and scalable server environments and network systems.</p>
-                        <ul class="space-y-3 text-sm lg:text-base text-slate-300 font-medium">
+                        <ul class="space-y-3 text-sm lg:text-base text-slate-600 font-medium">
                             <li class="flex items-center gap-3"><i data-feather="check"
                                     class="w-4 h-4 text-accent-amber"></i> Server Administration</li>
                             <li class="flex items-center gap-3"><i data-feather="check"
@@ -847,14 +847,14 @@
                         class="absolute -right-20 -top-20 w-64 h-64 bg-accent-blue/20 blur-[80px] rounded-full pointer-events-none">
                     </div>
 
-                    <h3 class="text-3xl md:text-4xl font-bold text-white mb-5 tracking-tight relative z-10">Have a
+                    <h3 class="text-3xl md:text-4xl font-bold text-slate-900 mb-5 tracking-tight relative z-10">Have a
                         project in mind?</h3>
                     <p
-                        class="text-slate-400 text-base lg:text-lg mb-10 max-w-2xl mx-auto leading-relaxed relative z-10">
+                        class="text-slate-500 text-base lg:text-lg mb-10 max-w-2xl mx-auto leading-relaxed relative z-10">
                         Whether you need a full-scale web application, a complex Zoho automation, or server
                         infrastructure guidance, I'm here to turn ideas into functional realities.</p>
                     <a href="#contact"
-                        class="inline-flex items-center justify-center gap-3 px-10 py-4 rounded-full bg-white text-navy-900 font-bold hover:bg-slate-100 hover:shadow-[0_0_25px_rgba(255,255,255,0.3)] transition-all duration-300 hover:-translate-y-1 relative z-10">
+                        class="inline-flex items-center justify-center gap-3 px-10 py-4 rounded-full bg-slate-900 text-white font-bold hover:bg-slate-800 hover:shadow-[0_0_25px_rgba(255,255,255,0.3)] transition-all duration-300 hover:-translate-y-1 relative z-10">
                         Let's Talk <i data-feather="arrow-right" class="w-5 h-5"></i>
                     </a>
                 </div>
@@ -863,10 +863,10 @@
 
         <!-- Contact Section -->
         <section id="contact"
-            class="py-20 lg:py-28 px-4 sm:px-6 lg:px-12 relative border-t border-white/5 bg-navy-900/40">
+            class="py-20 lg:py-28 px-4 sm:px-6 lg:px-12 relative border-t border-slate-200 bg-slate-50/40">
             <div class="max-w-7xl mx-auto">
                 <div class="mb-12 lg:mb-16 reveal-up text-center md:text-left">
-                    <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 tracking-tight">Get In
+                    <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-4 tracking-tight">Get In
                         Touch<span class="text-accent-cyan">.</span></h2>
                     <div
                         class="w-16 lg:w-20 h-1 bg-gradient-to-r from-accent-blue to-accent-cyan rounded-full mx-auto md:mx-0">
@@ -877,9 +877,9 @@
                     <!-- Contact Info -->
                     <div class="reveal-left flex flex-col justify-between">
                         <div>
-                            <h3 class="text-2xl lg:text-3xl font-semibold text-white mb-6 leading-snug">Let's build
+                            <h3 class="text-2xl lg:text-3xl font-semibold text-slate-900 mb-6 leading-snug">Let's build
                                 something extraordinary together.</h3>
-                            <p class="text-slate-400 text-base lg:text-lg mb-12 leading-relaxed">Feel free to reach out
+                            <p class="text-slate-500 text-base lg:text-lg mb-12 leading-relaxed">Feel free to reach out
                                 for collaborations, freelance projects, or just a friendly chat about technology and AI.
                             </p>
                         </div>
@@ -888,14 +888,14 @@
                             <a href="mailto:consultant@dipakkadamb.in"
                                 class="glass-card p-5 rounded-2xl flex items-center gap-5 hover:-translate-y-1 hover:border-accent-cyan/40 transition-all cursor-pointer group shadow-sm">
                                 <div
-                                    class="w-14 h-14 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-slate-300 group-hover:text-accent-cyan group-hover:bg-accent-cyan/10 transition-colors">
+                                    class="w-14 h-14 rounded-xl bg-white/80 border border-slate-200 flex items-center justify-center text-slate-600 group-hover:text-accent-cyan group-hover:bg-accent-cyan/10 transition-colors">
                                     <i data-feather="mail" class="w-6 h-6"></i>
                                 </div>
                                 <div>
                                     <div
                                         class="text-xs uppercase tracking-widest text-slate-500 font-mono mb-1.5 font-medium">
                                         Direct Email</div>
-                                    <div class="font-bold text-white text-base lg:text-lg">consultant@dipakkadamb.in
+                                    <div class="font-bold text-slate-900 text-base lg:text-lg">consultant@dipakkadamb.in
                                     </div>
                                 </div>
                             </a>
@@ -903,28 +903,28 @@
                             <a href="#" target="_blank" rel="noopener noreferrer"
                                 class="glass-card p-5 rounded-2xl flex items-center gap-5 hover:-translate-y-1 hover:border-accent-blue/40 transition-all cursor-pointer group shadow-sm">
                                 <div
-                                    class="w-14 h-14 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-slate-300 group-hover:text-accent-blue group-hover:bg-accent-blue/10 transition-colors">
+                                    class="w-14 h-14 rounded-xl bg-white/80 border border-slate-200 flex items-center justify-center text-slate-600 group-hover:text-accent-blue group-hover:bg-accent-blue/10 transition-colors">
                                     <i data-feather="linkedin" class="w-6 h-6"></i>
                                 </div>
                                 <div>
                                     <div
                                         class="text-xs uppercase tracking-widest text-slate-500 font-mono mb-1.5 font-medium">
                                         Professional Network</div>
-                                    <div class="font-bold text-white text-base lg:text-lg">linkedin.com/in/dipakkadamb
+                                    <div class="font-bold text-slate-900 text-base lg:text-lg">linkedin.com/in/dipakkadamb
                                     </div>
                                 </div>
                             </a>
 
-                            <div class="glass-card p-5 rounded-2xl flex items-center gap-5 shadow-sm border-white/5">
+                            <div class="glass-card p-5 rounded-2xl flex items-center gap-5 shadow-sm border-slate-200">
                                 <div
-                                    class="w-14 h-14 rounded-xl bg-white/5 border border-white/5 flex items-center justify-center text-slate-400">
+                                    class="w-14 h-14 rounded-xl bg-white/80 border border-slate-200 flex items-center justify-center text-slate-500">
                                     <i data-feather="map-pin" class="w-6 h-6"></i>
                                 </div>
                                 <div>
                                     <div
                                         class="text-xs uppercase tracking-widest text-slate-500 font-mono mb-1.5 font-medium">
                                         Current Location</div>
-                                    <div class="font-bold text-white text-base lg:text-lg">Pune, Maharashtra, India
+                                    <div class="font-bold text-slate-900 text-base lg:text-lg">Pune, Maharashtra, India
                                     </div>
                                 </div>
                             </div>
@@ -937,17 +937,17 @@
                             class="glass-card p-6 sm:p-8 lg:p-10 rounded-2xl relative h-full flex flex-col justify-center">
                             <!-- Success State Overlay -->
                             <div id="form-success"
-                                class="absolute inset-0 bg-navy-900/95 backdrop-blur-xl rounded-2xl flex flex-col items-center justify-center text-center p-8 z-20 transition-opacity duration-300 hidden opacity-0">
+                                class="absolute inset-0 bg-slate-50/95 backdrop-blur-xl rounded-2xl flex flex-col items-center justify-center text-center p-8 z-20 transition-opacity duration-300 hidden opacity-0">
                                 <div
                                     class="w-16 h-16 rounded-full bg-green-500/20 text-green-400 flex items-center justify-center mb-6 shadow-[0_0_20px_rgba(34,197,94,0.3)]">
                                     <i data-feather="check" class="w-8 h-8"></i>
                                 </div>
-                                <h3 class="text-2xl font-bold text-white mb-3">Message Sent!</h3>
-                                <p class="text-slate-400 text-base">Thank you for reaching out. I'll get back to you as
+                                <h3 class="text-2xl font-bold text-slate-900 mb-3">Message Sent!</h3>
+                                <p class="text-slate-500 text-base">Thank you for reaching out. I'll get back to you as
                                     soon as possible.</p>
                                 <button type="button"
                                     onclick="const successEl=document.getElementById('form-success'); successEl.classList.remove('opacity-100'); setTimeout(()=>successEl.classList.add('hidden'),300);"
-                                    class="mt-8 px-8 py-3 rounded-xl bg-white/10 text-white font-medium hover:bg-white/20 transition-colors border border-white/10">
+                                    class="mt-8 px-8 py-3 rounded-xl bg-slate-200/50 text-slate-900 font-medium hover:bg-slate-300/50 transition-colors border border-slate-200">
                                     Send Another
                                 </button>
                             </div>
@@ -970,7 +970,7 @@
                                     <label for="service" class="form-label">Primary Interest</label>
                                     <div class="relative">
                                         <select id="service"
-                                            class="form-input appearance-none cursor-pointer pr-10 bg-navy-900 border-white/10 focus:border-accent-cyan transition-colors"
+                                            class="form-input appearance-none cursor-pointer pr-10 bg-slate-50 border-slate-200 focus:border-accent-cyan transition-colors"
                                             style="background-color: rgba(15, 23, 42, 0.4);">
                                             <option value="web">AI Web Development</option>
                                             <option value="zoho">Zoho Automation Strategy</option>
@@ -978,7 +978,7 @@
                                             <option value="other">General Inquiry / Consultancy</option>
                                         </select>
                                         <div
-                                            class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-400">
+                                            class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500">
                                             <i data-feather="chevron-down" class="w-4 h-4"></i>
                                         </div>
                                     </div>
@@ -991,7 +991,7 @@
                                 </div>
 
                                 <button type="submit"
-                                    class="w-full py-4 rounded-xl bg-white text-navy-900 font-bold text-lg hover:bg-slate-100 transition-colors shadow-lg shadow-white/10 hover:shadow-white/20 flex items-center justify-center gap-3 mt-2">
+                                    class="w-full py-4 rounded-xl bg-slate-900 text-white font-bold text-lg hover:bg-slate-800 transition-colors shadow-lg shadow-white/10 hover:shadow-white/20 flex items-center justify-center gap-3 mt-2">
                                     Send Message <i data-feather="send" class="w-5 h-5"></i>
                                 </button>
                             </form>
@@ -1003,26 +1003,26 @@
     </main>
 
     <!-- Footer -->
-    <footer class="border-t border-white/10 bg-navy-900 py-10 px-4 sm:px-6 lg:px-12 relative z-10">
+    <footer class="border-t border-slate-200 bg-slate-50 py-10 px-4 sm:px-6 lg:px-12 relative z-10">
         <div class="max-w-7xl mx-auto flex flex-col lg:flex-row justify-between items-center gap-6 lg:gap-4">
             <div class="flex items-center gap-4">
                 <img src="https://media.licdn.com/dms/image/v2/D4D03AQHpKhBr6vJ4SQ/profile-displayphoto-crop_800_800/B4DZx.RRhgIUAI-/0/1771644985573?e=1774483200&v=beta&t=gPkrxB-w1Tukfwojr0N_MZbndwGKa_-bSYPZakxSJ4Q"
                     alt="DK" class="w-10 h-10 rounded-full border-2 border-accent-cyan/30 object-cover" loading="lazy">
                 <div class="flex flex-col">
-                    <span class="font-bold text-white text-sm">Dipak Kadamb</span>
+                    <span class="font-bold text-slate-900 text-sm">Dipak Kadamb</span>
                     <span class="text-xs text-slate-500 font-mono">Developer & Specialist</span>
                 </div>
             </div>
 
             <div class="flex gap-5">
                 <a href="#" aria-label="GitHub"
-                    class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 transition-colors border border-white/5"><i
+                    class="w-10 h-10 rounded-full bg-white/80 flex items-center justify-center text-slate-500 hover:text-slate-900 hover:bg-slate-200/50 transition-colors border border-slate-200"><i
                         data-feather="github" class="w-5 h-5"></i></a>
                 <a href="https://linkedin.com/in/dipakkadamb" target="_blank" aria-label="LinkedIn"
-                    class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 transition-colors border border-white/5"><i
+                    class="w-10 h-10 rounded-full bg-white/80 flex items-center justify-center text-slate-500 hover:text-slate-900 hover:bg-slate-200/50 transition-colors border border-slate-200"><i
                         data-feather="linkedin" class="w-5 h-5"></i></a>
                 <a href="#" aria-label="Twitter"
-                    class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 transition-colors border border-white/5"><i
+                    class="w-10 h-10 rounded-full bg-white/80 flex items-center justify-center text-slate-500 hover:text-slate-900 hover:bg-slate-200/50 transition-colors border border-slate-200"><i
                         data-feather="twitter" class="w-5 h-5"></i></a>
             </div>
 
@@ -1034,12 +1034,12 @@
 
     <!-- Welcome Popup Modal -->
     <div id="welcome-modal"
-        class="fixed inset-0 z-[100] flex items-center justify-center bg-navy-900/80 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300">
-        <div class="glass-card w-[90%] max-w-sm p-8 rounded-3xl relative transform scale-95 transition-transform duration-300 shadow-2xl border border-white/10"
+        class="fixed inset-0 z-[100] flex items-center justify-center bg-slate-50/80 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="glass-card w-[90%] max-w-sm p-8 rounded-3xl relative transform scale-95 transition-transform duration-300 shadow-2xl border border-slate-200"
             id="welcome-modal-content">
             <!-- Close Button -->
             <button id="close-modal-btn"
-                class="absolute top-4 right-4 text-slate-400 hover:text-white transition-colors focus:outline-none">
+                class="absolute top-4 right-4 text-slate-500 hover:text-slate-900 transition-colors focus:outline-none">
                 <i data-feather="x" class="w-6 h-6"></i>
             </button>
 
@@ -1051,32 +1051,32 @@
                         alt="Dipak Kadamb" class="w-full h-full object-cover border-none">
                 </div>
 
-                <h3 class="text-2xl font-bold text-white mb-1">Dipak Kadamb</h3>
+                <h3 class="text-2xl font-bold text-slate-900 mb-1">Dipak Kadamb</h3>
                 <div class="text-accent-cyan font-mono text-sm mb-2">AI Web Developer</div>
-                <div class="text-slate-400 text-sm mb-6">ZM Technologies / Consultant</div>
+                <div class="text-slate-500 text-sm mb-6">ZM Technologies / Consultant</div>
 
                 <div class="w-full space-y-3 mb-8 text-left">
                     <div
-                        class="flex items-center gap-3 text-slate-300 text-sm bg-white/5 p-3 rounded-xl border border-white/5">
+                        class="flex items-center gap-3 text-slate-600 text-sm bg-white/80 p-3 rounded-xl border border-slate-200">
                         <i data-feather="mail" class="w-4 h-4 text-accent-blue flex-shrink-0"></i>
                         <a href="mailto:consultant@dipakkadamb.in"
-                            class="hover:text-white transition-colors truncate">consultant@dipakkadamb.in</a>
+                            class="hover:text-slate-900 transition-colors truncate">consultant@dipakkadamb.in</a>
                     </div>
                     <div
-                        class="flex items-center gap-3 text-slate-300 text-sm bg-white/5 p-3 rounded-xl border border-white/5">
+                        class="flex items-center gap-3 text-slate-600 text-sm bg-white/80 p-3 rounded-xl border border-slate-200">
                         <i data-feather="phone" class="w-4 h-4 text-accent-teal flex-shrink-0"></i>
-                        <a href="tel:+917796852335" class="hover:text-white transition-colors truncate">+91 77968
+                        <a href="tel:+917796852335" class="hover:text-slate-900 transition-colors truncate">+91 77968
                             52335</a>
                     </div>
                 </div>
 
                 <div class="flex gap-3 w-full">
                     <a href="tel:+917796852335"
-                        class="flex-[3] py-3.5 rounded-xl bg-white/5 border border-white/10 text-white font-bold text-sm sm:text-base hover:bg-white/10 transition-all duration-300 flex items-center justify-center gap-2 hover:-translate-y-1">
+                        class="flex-[3] py-3.5 rounded-xl bg-white/80 border border-slate-200 text-slate-900 font-bold text-sm sm:text-base hover:bg-slate-200/50 transition-all duration-300 flex items-center justify-center gap-2 hover:-translate-y-1">
                         <i data-feather="phone-call" class="w-4 h-4"></i> Call
                     </a>
                     <a href="https://wa.me/917796852335?text=Hello" target="_blank" rel="noopener noreferrer"
-                        class="flex-1 py-3.5 rounded-xl bg-gradient-to-r from-[#25D366] to-[#128C7E] text-white hover:shadow-[0_0_20px_rgba(37,211,102,0.4)] transition-all duration-300 flex items-center justify-center hover:-translate-y-1">
+                        class="flex-1 py-3.5 rounded-xl bg-gradient-to-r from-[#25D366] to-[#128C7E] text-slate-900 hover:shadow-[0_0_20px_rgba(37,211,102,0.4)] transition-all duration-300 flex items-center justify-center hover:-translate-y-1">
                         <i data-feather="message-circle" class="w-5 h-5"></i>
                     </a>
                 </div>
@@ -1086,14 +1086,14 @@
 
     <!-- Motivational Toast Notification -->
     <div id="motivational-toast"
-        class="fixed top-6 right-6 z-[150] bg-navy-900/95 backdrop-blur-xl border border-white/10 shadow-2xl shadow-accent-blue/10 rounded-2xl p-4 flex items-start gap-4 transform translate-x-[150%] transition-all duration-500 ease-out max-w-[calc(100vw-3rem)] sm:max-w-sm pointer-events-none opacity-0">
+        class="fixed top-6 right-6 z-[150] bg-slate-50/95 backdrop-blur-xl border border-slate-200 shadow-2xl shadow-accent-blue/10 rounded-2xl p-4 flex items-start gap-4 transform translate-x-[150%] transition-all duration-500 ease-out max-w-[calc(100vw-3rem)] sm:max-w-sm pointer-events-none opacity-0">
         <div
             class="w-10 h-10 rounded-full bg-accent-blue/20 flex items-center justify-center flex-shrink-0 text-accent-cyan border border-accent-blue/30 shadow-[0_0_15px_rgba(6,182,212,0.2)]">
             <i data-feather="zap" class="w-5 h-5"></i>
         </div>
         <div>
-            <h4 class="text-white font-bold text-sm mb-1">Thought of the Day</h4>
-            <p id="motivational-quote" class="text-slate-300 text-xs leading-relaxed italic"></p>
+            <h4 class="text-slate-900 font-bold text-sm mb-1">Thought of the Day</h4>
+            <p id="motivational-quote" class="text-slate-600 text-xs leading-relaxed italic"></p>
         </div>
     </div>
 
