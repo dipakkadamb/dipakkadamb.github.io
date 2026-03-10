@@ -832,14 +832,14 @@
                                 <p class="text-slate-400 text-base">Thank you for reaching out. I'll get back to you as
                                     soon as possible.</p>
                                 <button type="button"
-                                    onclick="const s=document.getElementById('form-success'); s.classList.remove('opacity-100'); setTimeout(()=>s.classList.add('hidden'),300);"
+                                    onclick="const successEl=document.getElementById('form-success'); successEl.classList.remove('opacity-100'); setTimeout(()=>successEl.classList.add('hidden'),300);"
                                     class="mt-8 px-8 py-3 rounded-xl bg-white/10 text-white font-medium hover:bg-white/20 transition-colors border border-white/10">
                                     Send Another
                                 </button>
                             </div>
 
                             <form id="contact-form" class="space-y-6"
-                                onsubmit="event.preventDefault(); const s=document.getElementById('form-success'); s.classList.remove('hidden'); setTimeout(()=>s.classList.add('opacity-100'),10); this.reset();">
+                                onsubmit="event.preventDefault(); const successSubmit=document.getElementById('form-success'); successSubmit.classList.remove('hidden'); setTimeout(()=>successSubmit.classList.add('opacity-100'),10); this.reset();">
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div>
                                         <label for="name" class="form-label">Full Name</label>
