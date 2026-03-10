@@ -89,14 +89,10 @@
     <!-- Navigation -->
     <nav id="navbar"
         class="fixed top-0 w-full z-40 transition-all duration-300 py-3 px-4 sm:px-6 lg:px-12 backdrop-blur-md border-b border-white/5 bg-navy-900/60">
-        <div class="max-w-7xl mx-auto flex justify-between items-center">
+        <div class="max-w-7xl mx-auto flex justify-between items-center flex-row-reverse">
             <a href="#"
                 class="flex items-center gap-3 text-xl sm:text-2xl font-bold text-white tracking-tight hover:scale-105 transition-transform duration-300 group">
-                <img src="https://media.licdn.com/dms/image/v2/D4D03AQHpKhBr6vJ4SQ/profile-displayphoto-crop_800_800/B4DZx.RRhgIUAI-/0/1771644985573?e=1774483200&v=beta&t=gPkrxB-w1Tukfwojr0N_MZbndwGKa_-bSYPZakxSJ4Q"
-                    alt="DK Logo"
-                    class="w-9 h-9 sm:w-10 sm:h-10 rounded-full border-2 border-accent-cyan/50 object-cover group-hover:border-accent-cyan transition-colors"
-                    loading="lazy">
-
+                <span class="text-accent-cyan font-mono border-2 border-accent-cyan/50 rounded-full w-10 h-10 flex items-center justify-center text-lg">DK</span>
             </a>
 
             <!-- Desktop Nav -->
@@ -107,6 +103,8 @@
                     class="text-sm font-medium text-slate-300 hover:text-white transition-colors">Experience</a>
                 <a href="#services"
                     class="text-sm font-medium text-slate-300 hover:text-white transition-colors">Services</a>
+                <a href="#blogs"
+                    class="text-sm font-medium text-slate-300 hover:text-white transition-colors">Blogs</a>
                 <a href="#contact"
                     class="px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 text-white text-sm font-medium transition-all hover:shadow-[0_0_15px_rgba(6,182,212,0.3)]">Hire
                     Me</a>
@@ -160,6 +158,15 @@
                 </div>
                 Services
             </a>
+
+            <a href="#blogs"
+                class="mobile-link flex items-center gap-4 text-xl font-semibold text-slate-300 hover:text-white hover:bg-white/5 p-4 rounded-2xl transition-all w-full group">
+                <div
+                    class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 group-hover:bg-accent-blue/10 group-hover:text-accent-blue group-hover:border-accent-blue/20 transition-all">
+                    <i data-feather="book-open" class="w-5 h-5"></i>
+                </div>
+                Blogs
+            </a>
         </div>
 
         <div class="w-full max-w-sm mx-auto mt-8 relative">
@@ -196,13 +203,7 @@
 
             <div class="max-w-5xl mx-auto text-center z-10 w-full">
 
-                <!-- Profile Photo -->
-                <div class="mb-8 flex justify-center reveal-up" style="animation-delay: 50ms;">
-                    <img src="https://media.licdn.com/dms/image/v2/D4D03AQHpKhBr6vJ4SQ/profile-displayphoto-crop_800_800/B4DZx.RRhgIUAI-/0/1771644985573?e=1774483200&v=beta&t=gPkrxB-w1Tukfwojr0N_MZbndwGKa_-bSYPZakxSJ4Q"
-                        alt="Dipak Kadamb"
-                        class="w-28 h-28 sm:w-32 sm:h-32 lg:w-40 lg:h-40 rounded-full border-4 border-accent-blue/30 shadow-[0_0_40px_rgba(37,99,235,0.25)] object-cover hover:scale-105 transition-transform duration-300"
-                        fetchpriority="high">
-                </div>
+                <!-- Profile Photo Placeholder (Removed) -->
 
                 <!-- Headline -->
                 <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white tracking-tight leading-[1.15] mb-6 reveal-up"
