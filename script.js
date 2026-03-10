@@ -143,11 +143,11 @@ document.addEventListener('DOMContentLoaded', () => {
         motivationalQuoteEl.textContent = `"${randomQuote}"`;
 
         // Slide in
-        motivationalToast.classList.remove('translate-x-[150%]');
+        motivationalToast.classList.remove('translate-x-[150%]', 'opacity-0');
 
         // Hide after 5 seconds
         setTimeout(() => {
-            motivationalToast.classList.add('translate-x-[150%]');
+            motivationalToast.classList.add('translate-x-[150%]', 'opacity-0');
         }, 5000);
     };
 
