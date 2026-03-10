@@ -161,4 +161,112 @@ document.addEventListener('DOMContentLoaded', () => {
     // Also repeatedly show a new quote every 10 minutes (600,000 ms)
     setInterval(showMotivationalQuote, 600000);
 
+    // AI Chatbot Logic
+    const toggleAiBtn = document.getElementById('toggle-ai-chat');
+    const closeAiBtn = document.getElementById('close-ai-chat');
+    const aiChatWindow = document.getElementById('ai-chat-window');
+    const aiChatInput = document.getElementById('ai-chat-input');
+    const sendAiMsgBtn = document.getElementById('send-ai-msg');
+    const aiChatMessages = document.getElementById('ai-chat-messages');
+
+    let isAiChatOpen = false;
+    let chatHistory = [];
+
+    // Anthropic API Token (Direct client-side usage is not advised, per user override)
+    const ANTHROPIC_API_KEY = "jPJm90wwLvJa_uxrCsmQ-q9KlwNe7SS_1KRQdaZu";
+
+    const toggleAiChat = () => {
+        isAiChatOpen = !isAiChatOpen;
+        if (isAiChatOpen) {
+            aiChatWindow.classList.remove('opacity-0', 'translate-y-4', 'pointer-events-none');
+            toggleAiBtn.classList.add('scale-0');
+            setTimeout(() => aiChatInput.focus(), 300);
+        } else {
+            aiChatWindow.classList.add('opacity-0', 'translate-y-4', 'pointer-events-none');
+            toggleAiBtn.classList.remove('scale-0');
+        }
+    };
+
+    if (toggleAiBtn) toggleAiBtn.addEventListener('click', toggleAiChat);
+    if (closeAiBtn) closeAiBtn.addEventListener('click', toggleAiChat);
+
+    const appendMessage = (text, isUser = false) => {
+        const msgDiv = document.createElement('div');
+        msgDiv.className = `p-3 max-w-[85%] text-sm rounded-2xl ${isUser
+                ? 'self-end bg-gradient-to-r from-accent-blue to-accent-cyan text-white rounded-tr-sm shadow-md'
+                : 'self-start bg-white/10 border border-white/5 text-slate-200 rounded-tl-sm'
+            }`;
+        msgDiv.textContent = text;
+        aiChatMessages.appendChild(msgDiv);
+        aiChatMessages.scrollTop = aiChatMessages.scrollHeight;
+    };
+
+    const handleSend = async () => {
+        const text = aiChatInput.value.trim();
+        if (!text) return;
+
+        // Display user message
+        appendMessage(text, true);
+        aiChatInput.value = '';
+        sendAiMsgBtn.disabled = true;
+
+        // Append thinking indicator
+        const thinkingId = 'thinking-' + Date.now();
+        const thinkingDiv = document.createElement('div');
+        thinkingDiv.id = thinkingId;
+        thinkingDiv.className = 'self-start bg-white/5 border border-white/5 text-slate-400 p-3 rounded-2xl rounded-tl-sm text-xs italic flex items-center gap-2';
+        thinkingDiv.innerHTML = '<span class="flex gap-1"><span class="w-1.5 h-1.5 rounded-full bg-accent-cyan animate-bounce" style="animation-delay: 0s"></span><span class="w-1.5 h-1.5 rounded-full bg-accent-cyan animate-bounce" style="animation-delay: 0.1s"></span><span class="w-1.5 h-1.5 rounded-full bg-accent-cyan animate-bounce" style="animation-delay: 0.2s"></span></span> Thinking...';
+        aiChatMessages.appendChild(thinkingDiv);
+        aiChatMessages.scrollTop = aiChatMessages.scrollHeight;
+
+        chatHistory.push({ role: "user", content: text });
+
+        try {
+            const response = await fetch("https://api.anthropic.com/v1/messages", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "x-api-key": ANTHROPIC_API_KEY,
+                    "anthropic-version": "2023-06-01",
+                    "anthropic-dangerous-direct-browser-access": "true"
+                },
+                body: JSON.stringify({
+                    model: "claude-3-haiku-20240307",
+                    max_tokens: 300,
+                    system: "You are an AI assistant on Dipak Kadamb's portfolio website. Dipak is an AI Web Developer and Zoho Integration Specialist. Keep your answers brief, friendly, and helpful.",
+                    messages: chatHistory
+                })
+            });
+
+            const data = await response.json();
+
+            // Remove thinking indicator
+            document.getElementById(thinkingId)?.remove();
+
+            if (response.ok && data.content && data.content.length > 0) {
+                const aiReply = data.content[0].text;
+                chatHistory.push({ role: "assistant", content: aiReply });
+                appendMessage(aiReply, false);
+            } else {
+                console.error("API Error:", data);
+                appendMessage("Sorry, I encountered an error connecting to my brain. Or CORS policy blocked the direct browser request.", false);
+            }
+
+        } catch (error) {
+            console.error("Fetch Error:", error);
+            document.getElementById(thinkingId)?.remove();
+            appendMessage("Sorry, I could not reach the server right now. (CORS or Network Error)", false);
+        }
+
+        sendAiMsgBtn.disabled = false;
+        aiChatInput.focus();
+    };
+
+    if (sendAiMsgBtn) sendAiMsgBtn.addEventListener('click', handleSend);
+    if (aiChatInput) {
+        aiChatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') handleSend();
+        });
+    }
+
 });
