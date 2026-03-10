@@ -120,18 +120,63 @@
 
     <!-- Mobile Nav Overlay -->
     <div id="mobile-menu"
-        class="fixed inset-0 z-30 bg-navy-900/95 backdrop-blur-xl transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col justify-center items-center space-y-6 sm:space-y-8 md:hidden">
-        <a href="#about"
-            class="mobile-link text-2xl font-semibold text-slate-200 hover:text-white transition-colors">About</a>
-        <a href="#stack"
-            class="mobile-link text-2xl font-semibold text-slate-200 hover:text-white transition-colors">Stack</a>
-        <a href="#experience"
-            class="mobile-link text-2xl font-semibold text-slate-200 hover:text-white transition-colors">Experience</a>
-        <a href="#services"
-            class="mobile-link text-2xl font-semibold text-slate-200 hover:text-white transition-colors">Services</a>
-        <a href="#contact"
-            class="mobile-link mt-4 px-8 py-3 rounded-full bg-gradient-to-r from-accent-blue to-accent-cyan text-white text-lg font-bold shadow-lg shadow-accent-blue/20">Hire
-            Me</a>
+        class="fixed inset-0 z-30 bg-navy-900/95 backdrop-blur-xl transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col pt-24 px-8 pb-10 md:hidden overflow-y-auto">
+
+        <div class="flex-1 flex flex-col justify-center w-full max-w-sm mx-auto space-y-2">
+            <a href="#about"
+                class="mobile-link flex items-center gap-4 text-xl font-semibold text-slate-300 hover:text-white hover:bg-white/5 p-4 rounded-2xl transition-all w-full group">
+                <div
+                    class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 group-hover:bg-accent-blue/10 group-hover:text-accent-blue group-hover:border-accent-blue/20 transition-all">
+                    <i data-feather="user" class="w-5 h-5"></i>
+                </div>
+                About Me
+            </a>
+
+            <a href="#stack"
+                class="mobile-link flex items-center gap-4 text-xl font-semibold text-slate-300 hover:text-white hover:bg-white/5 p-4 rounded-2xl transition-all w-full group">
+                <div
+                    class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 group-hover:bg-accent-cyan/10 group-hover:text-accent-cyan group-hover:border-accent-cyan/20 transition-all">
+                    <i data-feather="layers" class="w-5 h-5"></i>
+                </div>
+                Tech Stack
+            </a>
+
+            <a href="#experience"
+                class="mobile-link flex items-center gap-4 text-xl font-semibold text-slate-300 hover:text-white hover:bg-white/5 p-4 rounded-2xl transition-all w-full group">
+                <div
+                    class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 group-hover:bg-accent-teal/10 group-hover:text-accent-teal group-hover:border-accent-teal/20 transition-all">
+                    <i data-feather="briefcase" class="w-5 h-5"></i>
+                </div>
+                Experience
+            </a>
+
+            <a href="#services"
+                class="mobile-link flex items-center gap-4 text-xl font-semibold text-slate-300 hover:text-white hover:bg-white/5 p-4 rounded-2xl transition-all w-full group">
+                <div
+                    class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 group-hover:bg-accent-amber/10 group-hover:text-accent-amber group-hover:border-accent-amber/20 transition-all">
+                    <i data-feather="star" class="w-5 h-5"></i>
+                </div>
+                Services
+            </a>
+        </div>
+
+        <div class="w-full max-w-sm mx-auto mt-8 relative">
+            <div class="absolute inset-0 bg-gradient-to-r from-accent-blue/20 to-accent-cyan/20 blur-xl rounded-full">
+            </div>
+            <a href="#contact"
+                class="mobile-link relative w-full py-4 rounded-2xl bg-gradient-to-r from-accent-blue to-accent-cyan text-white text-lg font-bold shadow-lg shadow-accent-blue/20 flex items-center justify-center gap-2 hover:shadow-[0_0_20px_rgba(37,99,235,0.4)] transition-all">
+                Hire Me <i data-feather="arrow-right" class="w-5 h-5"></i>
+            </a>
+        </div>
+
+        <div class="w-full max-w-sm mx-auto mt-10 flex justify-center gap-6 pb-4">
+            <a href="#" class="text-slate-500 hover:text-white transition-colors"><i data-feather="github"
+                    class="w-6 h-6"></i></a>
+            <a href="#" class="text-slate-500 hover:text-accent-blue transition-colors"><i data-feather="linkedin"
+                    class="w-6 h-6"></i></a>
+            <a href="#" class="text-slate-500 hover:text-accent-cyan transition-colors"><i data-feather="twitter"
+                    class="w-6 h-6"></i></a>
+        </div>
     </div>
 
     <!-- Main Content -->
