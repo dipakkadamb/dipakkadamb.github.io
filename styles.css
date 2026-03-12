@@ -211,17 +211,39 @@
   animation: glow-pulse 2.5s ease-in-out infinite;
 }
 
+/* Spring clockwise rotation keyframes */
+@keyframes spin-circular {
+  0%   { transform: rotate(0deg)   scale(1);    }
+  10%  { transform: rotate(40deg)  scale(1.04); }
+  20%  { transform: rotate(75deg)  scale(1);    }
+  30%  { transform: rotate(115deg) scale(1.03); }
+  40%  { transform: rotate(150deg) scale(1);    }
+  50%  { transform: rotate(190deg) scale(1.04); }
+  60%  { transform: rotate(225deg) scale(1);    }
+  70%  { transform: rotate(265deg) scale(1.03); }
+  80%  { transform: rotate(300deg) scale(1);    }
+  90%  { transform: rotate(340deg) scale(1.02); }
+  100% { transform: rotate(360deg) scale(1);    }
+}
+
+/* Counter-clockwise (scroll triggered) */
+@keyframes spin-backward {
+  0%   { transform: rotate(0deg);   }
+  100% { transform: rotate(-360deg); }
+}
+
 .animate-spin-circular {
-  animation: spin-circular 5s linear infinite;
+  animation: spin-circular 6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  transform-origin: center center;
 }
 
 .animate-spin-backward {
-  animation: spin-backward 5s linear infinite;
+  animation: spin-backward 6s linear infinite;
 }
 
 /* Scroll-triggered backward rotation */
 .scrolling .animate-spin-circular {
-  animation: spin-backward 5s linear infinite;
+  animation: spin-backward 6s linear infinite;
 }
 
 /* Custom Scrollbar - Cleaner Design */
