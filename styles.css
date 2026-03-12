@@ -211,10 +211,9 @@
   animation: glow-pulse 2.5s ease-in-out infinite;
 }
 
-/* mix-blend-mode: screen dissolves dark bg pixels into the dark page — no square visible */
+/* mix-blend-mode: multiply — white bg from logo disappears on dark navy */
 img[src="company-logo.png"] {
-  mix-blend-mode: screen;
-  isolation: isolate;
+  mix-blend-mode: multiply;
 }
 
 /* Spring clockwise rotation keyframes */
