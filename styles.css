@@ -357,7 +357,7 @@ img[src="company-logo.png"] {
 }
 
 /* ============================================================
-   3D SOLAR SYSTEM — Horizontal Orbit
+   3D SOLAR SYSTEM — Horizontal Orbit (Realistic & Bigger)
    ============================================================ */
 .solar-system-3d {
   position: absolute;
@@ -366,7 +366,7 @@ img[src="company-logo.png"] {
   transform: translate(-50%, -50%);
   width: 100%;
   height: 100%;
-  perspective: 1200px;
+  perspective: 1500px;
   pointer-events: none;
   z-index: 5;
 }
@@ -376,8 +376,8 @@ img[src="company-logo.png"] {
   top: 50%;
   left: 50%;
   width: 100%;
-  height: 60px; /* Flattened for horizontal look */
-  transform: translate(-50%, -50%) rotateX(75deg); /* Tilt the orbit */
+  height: 80px; /* Slightly taller for depth */
+  transform: translate(-50%, -50%) rotateX(75deg);
   transform-style: preserve-3d;
 }
 
@@ -385,77 +385,108 @@ img[src="company-logo.png"] {
   position: absolute;
   top: 0;
   left: 50%;
-  width: 14px;
-  height: 14px;
   border-radius: 50%;
   transform-style: preserve-3d;
   animation: orbit-3d-horizontal linear infinite;
+  overflow: hidden; /* Contains the surface spin */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* 3D Orbit Keyframes — Moves horizontally and handles depth */
+/* Simulated planetary surface spin */
+.planet-3d::before {
+  content: '';
+  position: absolute;
+  width: 200%;
+  height: 100%;
+  background-size: 50% 100%;
+  animation: surface-spin linear infinite;
+  opacity: 0.8;
+}
+
+@keyframes surface-spin {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
+}
+
+/* 3D Orbit Keyframes with realistic scaling */
 @keyframes orbit-3d-horizontal {
   0% {
-    transform: rotateY(0deg) translateX(var(--orbit-radius)) rotateY(0deg) rotateX(-75deg) scale(1.2);
-    z-index: 20; /* In front */
-  }
-  25% {
-    z-index: 20;
+    transform: rotateY(0deg) translateX(var(--orbit-radius)) rotateY(0deg) rotateX(-75deg) scale(1.3);
+    z-index: 25; /* Front */
+    filter: brightness(1.2) contrast(1.1);
   }
   50% {
-    transform: rotateY(180deg) translateX(var(--orbit-radius)) rotateY(-180deg) rotateX(-75deg) scale(0.8);
+    transform: rotateY(180deg) translateX(var(--orbit-radius)) rotateY(-180deg) rotateX(-75deg) scale(0.7);
     z-index: 1; /* Behind */
-  }
-  75% {
-    z-index: 1;
+    filter: brightness(0.6) contrast(0.9);
   }
   100% {
-    transform: rotateY(360deg) translateX(var(--orbit-radius)) rotateY(-360deg) rotateX(-75deg) scale(1.2);
-    z-index: 20;
+    transform: rotateY(360deg) translateX(var(--orbit-radius)) rotateY(-360deg) rotateX(-75deg) scale(1.3);
+    z-index: 25;
+    filter: brightness(1.2) contrast(1.1);
   }
 }
 
-/* Planet-specific properties */
+/* Planet-specific properties (Bigger & Realistic) */
 .p-moon-3d {
-  --orbit-radius: 90px;
-  background: radial-gradient(circle at 35% 30%, #f8fafc, #94a3b8);
-  box-shadow: 0 0 10px #fff, 0 0 20px rgba(226, 232, 240, 0.8);
-  animation-duration: 4s;
-  width: 10px; height: 10px;
+  --orbit-radius: 110px;
+  width: 18px; height: 18px;
+  background: #94a3b8;
+  box-shadow: inset -4px -4px 8px rgba(0,0,0,0.5), inset 4px 4px 8px rgba(255,255,255,0.4), 0 0 15px rgba(255,255,255,0.3);
+  animation-duration: 5s;
+}
+.p-moon-3d::before {
+  background: repeating-linear-gradient(90deg, #94a3b8, #cbd5e1 15%, #94a3b8 30%);
+  animation-duration: 2s;
 }
 
 .p-mercury-3d {
-  --orbit-radius: 120px;
-  background: radial-gradient(circle at 35% 30%, #e2e8f0, #475569);
-  box-shadow: 0 0 8px rgba(148, 163, 184, 0.8);
-  animation-duration: 7s;
-  animation-delay: -1s;
-  width: 8px; height: 8px;
+  --orbit-radius: 170px;
+  width: 12px; height: 12px;
+  background: #475569;
+  box-shadow: inset -3px -3px 6px rgba(0,0,0,0.6), inset 3px 3px 6px rgba(255,255,255,0.2), 0 0 10px rgba(148, 163, 184, 0.4);
+  animation-duration: 9s;
+  animation-delay: -2s;
+}
+.p-mercury-3d::before {
+  background: repeating-linear-gradient(90deg, #475569, #94a3b8 20%, #475569 40%);
+  animation-duration: 3s;
 }
 
 .p-venus-3d {
-  --orbit-radius: 160px;
-  background: radial-gradient(circle at 35% 28%, #fde68a, #f97316);
-  box-shadow: 0 0 12px rgba(249, 115, 22, 0.9);
-  animation-duration: 11s;
-  animation-delay: -3s;
-  width: 14px; height: 14px;
+  --orbit-radius: 240px;
+  width: 20px; height: 20px;
+  background: #f97316;
+  box-shadow: inset -5px -5px 10px rgba(0,0,0,0.5), inset 5px 5px 10px rgba(255,255,255,0.3), 0 0 20px rgba(249, 115, 22, 0.5);
+  animation-duration: 14s;
+  animation-delay: -5s;
+}
+.p-venus-3d::before {
+  background: repeating-linear-gradient(90deg, #f97316, #fb923c 25%, #f97316 50%);
+  animation-duration: 5s;
 }
 
 .p-jupiter-3d {
-  --orbit-radius: 210px;
-  background: radial-gradient(circle at 38% 30%, #fde68a, #d97706, #92400e);
-  box-shadow: 0 0 18px rgba(217, 119, 6, 0.9);
-  animation-duration: 18s;
-  animation-delay: -5s;
-  width: 22px; height: 22px;
+  --orbit-radius: 320px;
+  width: 34px; height: 34px;
+  background: #92400e;
+  box-shadow: inset -8px -8px 16px rgba(0,0,0,0.6), inset 8px 8px 16px rgba(255,255,255,0.2), 0 0 25px rgba(217, 119, 6, 0.4);
+  animation-duration: 24s;
+  animation-delay: -8s;
+}
+.p-jupiter-3d::before {
+  background: repeating-linear-gradient(90deg, #92400e, #d97706 10%, #92400e 20%, #78350f 30%);
+  animation-duration: 8s;
 }
 
 /* Adjust radius for small screens */
 @media (max-width: 640px) {
-  .p-moon-3d { --orbit-radius: 65px; }
-  .p-mercury-3d { --orbit-radius: 85px; }
-  .p-venus-3d { --orbit-radius: 110px; }
-  .p-jupiter-3d { --orbit-radius: 140px; }
+  .p-moon-3d { --orbit-radius: 80px; width: 14px; height: 14px; }
+  .p-mercury-3d { --orbit-radius: 110px; width: 10px; height: 10px; }
+  .p-venus-3d { --orbit-radius: 150px; width: 16px; height: 16px; }
+  .p-jupiter-3d { --orbit-radius: 200px; width: 26px; height: 26px; }
 }
 
 /* Custom Scrollbar - Cleaner Design */
