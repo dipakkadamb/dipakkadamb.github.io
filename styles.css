@@ -211,10 +211,10 @@
   animation: glow-pulse 2.5s ease-in-out infinite;
 }
 
-/* Logo blend fix - removes grey square artifact from PNG */
+/* Logo background matches page so the square blends in */
 img[src="company-logo.png"] {
-  mix-blend-mode: screen;
-  background: transparent;
+  background: #0a0f1c;
+  border-radius: 8px;
 }
 
 /* Spring clockwise rotation keyframes */
@@ -247,9 +247,9 @@ img[src="company-logo.png"] {
   animation: spin-backward 6s linear infinite;
 }
 
-/* Scroll-triggered backward rotation */
+/* Logo always spins forward only */
 .scrolling .animate-spin-circular {
-  animation: spin-backward 6s linear infinite;
+  animation: spin-circular 6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
 
 /* Custom Scrollbar - Cleaner Design */
