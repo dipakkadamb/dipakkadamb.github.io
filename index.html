@@ -201,20 +201,22 @@
 
             <div class="max-w-5xl mx-auto text-center z-10 w-full">
 
-                <!-- Profile Photo — circular with Moon/Sun numerology border -->
-                <div class="mb-8 reveal-up" style="animation-delay: 50ms;">
-                    <div class="relative inline-block group">
-                        <!-- Outer spinning ring (Moon orbit energy) -->
-                        <div class="absolute inset-0 rounded-full bg-gradient-to-tr from-accent-cyan via-white/30 to-accent-amber opacity-80 blur-sm animate-spin-circular scale-110 -z-10"></div>
-                        <!-- Border ring -->
-                        <div class="p-1 rounded-full bg-gradient-to-tr from-accent-cyan via-white/60 to-accent-amber shadow-[0_0_30px_rgba(6,182,212,0.5)]">
+                <!-- Profile Photo — circular with 3D Solar System -->
+                <div class="mb-12 reveal-up" style="animation-delay: 50ms;">
+                    <div class="relative inline-block">
+                        <!-- 3D Solar System Container -->
+                        <div class="solar-system-3d">
+                            <div class="orbit-3d"><div class="planet-3d p-moon-3d"></div></div>
+                            <div class="orbit-3d"><div class="planet-3d p-mercury-3d"></div></div>
+                            <div class="orbit-3d"><div class="planet-3d p-venus-3d"></div></div>
+                            <div class="orbit-3d"><div class="planet-3d p-jupiter-3d"></div></div>
+                        </div>
+                        
+                        <div class="relative z-10 p-1 rounded-full bg-gradient-to-tr from-accent-cyan via-white/60 to-accent-amber shadow-[0_0_30px_rgba(6,182,212,0.5)]">
                             <img src="profile.png" alt="Dipak Kadamb"
                                  class="h-36 w-36 lg:h-44 lg:w-44 rounded-full object-cover object-top block
-                                        drop-shadow-[0_0_15px_rgba(6,182,212,0.4)]
-                                        group-hover:scale-105 transition-transform duration-500">
+                                        drop-shadow-[0_0_15px_rgba(6,182,212,0.4)]">
                         </div>
-                        <!-- Glow ring pulse -->
-                        <div class="absolute inset-0 rounded-full bg-gradient-to-tr from-accent-cyan/20 to-accent-amber/20 animate-pulse-slow scale-125 -z-10"></div>
                     </div>
                 </div>
 
@@ -1090,11 +1092,18 @@
             </button>
 
             <div class="flex flex-col items-center text-center">
-                <!-- Profile Image -->
-                <div
-                    class="w-24 h-24 rounded-full border-4 border-accent-blue/30 shadow-[0_0_20px_rgba(37,99,235,0.2)] mb-5 overflow-hidden">
-                    <img src="https://media.licdn.com/dms/image/v2/D4D03AQHpKhBr6vJ4SQ/profile-displayphoto-crop_800_800/B4DZx.RRhgIUAI-/0/1771644985573?e=1774483200&v=beta&t=gPkrxB-w1Tukfwojr0N_MZbndwGKa_-bSYPZakxSJ4Q"
-                        alt="Dipak Kadamb" class="w-full h-full object-cover border-none">
+                <!-- Profile Image with 3D Orbits -->
+                <div class="relative mb-6">
+                    <!-- 3D Solar System for Modal -->
+                    <div class="solar-system-3d scale-75">
+                        <div class="orbit-3d"><div class="planet-3d p-moon-3d"></div></div>
+                        <div class="orbit-3d"><div class="planet-3d p-mercury-3d"></div></div>
+                        <div class="orbit-3d"><div class="planet-3d p-venus-3d"></div></div>
+                        <div class="orbit-3d"><div class="planet-3d p-jupiter-3d"></div></div>
+                    </div>
+                    <div class="w-24 h-24 rounded-full border-4 border-accent-blue/30 shadow-[0_0_20px_rgba(37,99,235,0.2)] overflow-hidden relative z-10">
+                        <img src="profile.png" alt="Dipak Kadamb" class="w-full h-full object-cover border-none">
+                    </div>
                 </div>
 
                 <h3 class="text-2xl font-bold text-white mb-1">Dipak Kadamb</h3>
