@@ -4,12 +4,24 @@ document.addEventListener('DOMContentLoaded', () => {
     const progressBar = document.getElementById('scroll-progress');
     const navbar = document.getElementById('navbar');
     let ticking = false;
+    let scrollTimeout;
 
     const onScroll = () => {
         if (!ticking) {
             window.requestAnimationFrame(() => {
                 const scrollTop = window.scrollY;
                 const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+
+                // Add scrolling class to body for logo backward rotation
+                document.body.classList.add('scrolling');
+                
+                // Clear existing timeout
+                clearTimeout(scrollTimeout);
+                
+                // Remove scrolling class after 5 seconds
+                scrollTimeout = setTimeout(() => {
+                    document.body.classList.remove('scrolling');
+                }, 5000);
 
                 // Progress Bar
                 if (docHeight > 0) {

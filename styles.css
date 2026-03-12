@@ -211,6 +211,19 @@
   animation: glow-pulse 2.5s ease-in-out infinite;
 }
 
+.animate-spin-circular {
+  animation: spin-circular 5s linear infinite;
+}
+
+.animate-spin-backward {
+  animation: spin-backward 5s linear infinite;
+}
+
+/* Scroll-triggered backward rotation */
+.scrolling .animate-spin-circular {
+  animation: spin-backward 5s linear infinite;
+}
+
 /* Custom Scrollbar - Cleaner Design */
 ::-webkit-scrollbar {
   width: 8px;
