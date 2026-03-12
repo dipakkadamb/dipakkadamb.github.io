@@ -91,8 +91,11 @@
             
             <!-- Company Logo -->
             <div class="flex items-center">
-                <img src="company-logo.jpg" alt="Company Logo" 
-                     class="h-10 w-10 lg:h-12 lg:w-12 object-contain hover:scale-105 transition-transform duration-300 drop-shadow-[0_0_10px_rgba(6,182,212,0.3)]">
+                <div class="relative group">
+                    <img src="company-logo.jpg" alt="Company Logo" 
+                         class="h-10 w-10 lg:h-12 lg:w-12 object-contain transition-all duration-500 drop-shadow-[0_0_15px_rgba(6,182,212,0.4)] group-hover:drop-shadow-[0_0_25px_rgba(6,182,212,0.6)] group-hover:scale-110 group-hover:rotate-6 animate-pulse-slow">
+                    <div class="absolute inset-0 rounded-lg bg-gradient-to-r from-accent-blue/20 to-accent-cyan/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-sm -z-10"></div>
+                </div>
             </div>
 
             <!-- Desktop Nav -->
@@ -124,8 +127,11 @@
 
         <!-- Mobile Logo -->
         <div class="flex justify-center mb-8">
-            <img src="company-logo.jpg" alt="Company Logo" 
-                 class="h-16 w-16 object-contain drop-shadow-[0_0_15px_rgba(6,182,212,0.4)]">
+            <div class="relative group">
+                <img src="company-logo.jpg" alt="Company Logo" 
+                     class="h-16 w-16 object-contain transition-all duration-500 drop-shadow-[0_0_20px_rgba(6,182,212,0.5)] group-hover:drop-shadow-[0_0_30px_rgba(6,182,212,0.7)] group-hover:scale-115 group-hover:rotate-12">
+                <div class="absolute inset-0 rounded-2xl bg-gradient-to-r from-accent-blue/30 to-accent-cyan/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-md -z-10"></div>
+            </div>
         </div>
 
         <div class="flex-1 flex flex-col justify-center w-full max-w-sm mx-auto space-y-2">
@@ -213,9 +219,10 @@
 
                 <!-- Company Logo Hero Display -->
                 <div class="mb-8 reveal-up" style="animation-delay: 50ms;">
-                    <div class="inline-flex items-center justify-center p-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm hover:bg-white/10 transition-all duration-300 group">
+                    <div class="inline-flex items-center justify-center p-6 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-sm hover:bg-white/10 transition-all duration-500 group">
                         <img src="company-logo.jpg" alt="Company Logo" 
-                             class="h-20 w-20 lg:h-24 lg:w-24 object-contain drop-shadow-[0_0_20px_rgba(6,182,212,0.5)] group-hover:scale-110 transition-transform duration-500">
+                             class="h-24 w-24 lg:h-32 lg:w-32 object-contain drop-shadow-[0_0_30px_rgba(6,182,212,0.6)] group-hover:drop-shadow-[0_0_40px_rgba(6,182,212,0.8)] group-hover:scale-120 group-hover:rotate-3 transition-all duration-500">
+                        <div class="absolute inset-0 rounded-3xl bg-gradient-to-r from-accent-blue/25 to-accent-cyan/25 opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-lg -z-10"></div>
                     </div>
                 </div>
 
