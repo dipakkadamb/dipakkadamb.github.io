@@ -201,9 +201,22 @@
 
             <div class="max-w-5xl mx-auto text-center z-10 w-full">
 
-                <!-- Profile Photo Placeholder (Removed) -->
-
-
+                <!-- Profile Photo — circular with Moon/Sun numerology border -->
+                <div class="mb-8 reveal-up" style="animation-delay: 50ms;">
+                    <div class="relative inline-block group">
+                        <!-- Outer spinning ring (Moon orbit energy) -->
+                        <div class="absolute inset-0 rounded-full bg-gradient-to-tr from-accent-cyan via-white/30 to-accent-amber opacity-80 blur-sm animate-spin-circular scale-110 -z-10"></div>
+                        <!-- Border ring -->
+                        <div class="p-1 rounded-full bg-gradient-to-tr from-accent-cyan via-white/60 to-accent-amber shadow-[0_0_30px_rgba(6,182,212,0.5)]">
+                            <img src="profile.png" alt="Dipak Kadamb"
+                                 class="h-36 w-36 lg:h-44 lg:w-44 rounded-full object-cover object-top block
+                                        drop-shadow-[0_0_15px_rgba(6,182,212,0.4)]
+                                        group-hover:scale-105 transition-transform duration-500">
+                        </div>
+                        <!-- Glow ring pulse -->
+                        <div class="absolute inset-0 rounded-full bg-gradient-to-tr from-accent-cyan/20 to-accent-amber/20 animate-pulse-slow scale-125 -z-10"></div>
+                    </div>
+                </div>
 
                 <!-- Headline -->
                 <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white tracking-tight leading-[1.15] mb-6 reveal-up"
