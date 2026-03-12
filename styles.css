@@ -211,6 +211,12 @@
   animation: glow-pulse 2.5s ease-in-out infinite;
 }
 
+/* Logo blend fix - removes grey square artifact from PNG */
+img[src="company-logo.png"] {
+  mix-blend-mode: screen;
+  background: transparent;
+}
+
 /* Spring clockwise rotation keyframes */
 @keyframes spin-circular {
   0%   { transform: rotate(0deg)   scale(1);    }
