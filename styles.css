@@ -211,10 +211,10 @@
   animation: glow-pulse 2.5s ease-in-out infinite;
 }
 
-/* Logo background matches page so the square blends in */
+/* mix-blend-mode: screen dissolves dark bg pixels into the dark page — no square visible */
 img[src="company-logo.png"] {
-  background: #0a0f1c;
-  border-radius: 8px;
+  mix-blend-mode: screen;
+  isolation: isolate;
 }
 
 /* Spring clockwise rotation keyframes */
