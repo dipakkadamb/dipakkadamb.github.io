@@ -77,6 +77,8 @@
 <body class="text-slate-300 font-sans overflow-x-hidden relative">
     <!-- Optimized Background Elements -->
     <div class="fixed inset-0 z-[-1] bg-grid-texture opacity-20 pointer-events-none"></div>
+    <!-- Particle Background Shell -->
+    <div id="star-dust" class="fixed inset-0 z-[-1] pointer-events-none overflow-hidden"></div>
     <div class="fixed inset-0 z-[-1] bg-radial-glow opacity-30 pointer-events-none"></div>
 
     <!-- Scroll Progress Bar -->
@@ -88,19 +90,21 @@
     <nav id="navbar"
         class="fixed top-0 w-full z-40 transition-all duration-300 py-3 px-4 sm:px-6 lg:px-12 backdrop-blur-md border-b border-white/5 bg-navy-900/60">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <!-- Branding -->
+            <a href="#" class="nav-brand">DK</a>
             
 
 
             <!-- Desktop Nav -->
             <div class="hidden md:flex items-center justify-end space-x-6 lg:space-x-8">
-                <a href="#about" class="text-sm font-semibold text-slate-300 hover:text-white transition-colors tracking-wide">About</a>
-                <a href="#stack" class="text-sm font-semibold text-slate-300 hover:text-white transition-colors tracking-wide">Stack</a>
+                <a href="#about" class="nav-link text-sm font-semibold text-slate-300 hover:text-white transition-colors tracking-wide">About</a>
+                <a href="#stack" class="nav-link text-sm font-semibold text-slate-300 hover:text-white transition-colors tracking-wide">Stack</a>
                 <a href="#experience"
-                    class="text-sm font-semibold text-slate-300 hover:text-white transition-colors tracking-wide">Experience</a>
+                    class="nav-link text-sm font-semibold text-slate-300 hover:text-white transition-colors tracking-wide">Experience</a>
                 <a href="#services"
-                    class="text-sm font-semibold text-slate-300 hover:text-white transition-colors tracking-wide">Services</a>
+                    class="nav-link text-sm font-semibold text-slate-300 hover:text-white transition-colors tracking-wide">Services</a>
                 <a href="#blogs"
-                    class="text-sm font-semibold text-slate-300 hover:text-white transition-colors tracking-wide">Blogs</a>
+                    class="nav-link text-sm font-semibold text-slate-300 hover:text-white transition-colors tracking-wide">Blogs</a>
                 <a href="#contact"
                     class="px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 text-white text-sm font-bold tracking-wide transition-all hover:shadow-[0_0_15px_rgba(6,182,212,0.3)] ml-4">Hire
                     Me</a>
@@ -177,11 +181,11 @@
         </div>
 
         <div class="w-full max-w-sm mx-auto mt-10 flex justify-center gap-6 pb-4">
-            <a href="#" class="text-slate-500 hover:text-white transition-colors"><i data-feather="github"
+            <a href="https://github.com/dipakkadamb" target="_blank" class="text-slate-500 hover:text-white transition-all transform hover:scale-110"><i data-feather="github"
                     class="w-6 h-6"></i></a>
-            <a href="#" class="text-slate-500 hover:text-accent-blue transition-colors"><i data-feather="linkedin"
+            <a href="https://linkedin.com/in/dipakkadamb" target="_blank" class="text-slate-500 hover:text-accent-blue transition-all transform hover:scale-110"><i data-feather="linkedin"
                     class="w-6 h-6"></i></a>
-            <a href="#" class="text-slate-500 hover:text-accent-cyan transition-colors"><i data-feather="twitter"
+            <a href="https://twitter.com/dipakkadamb" target="_blank" class="text-slate-500 hover:text-accent-cyan transition-all transform hover:scale-110"><i data-feather="twitter"
                     class="w-6 h-6"></i></a>
         </div>
     </div>
@@ -1064,7 +1068,7 @@
     <footer class="border-t border-white/10 bg-navy-900 py-10 px-4 sm:px-6 lg:px-12 relative z-10">
         <div class="max-w-7xl mx-auto flex flex-col lg:flex-row justify-between items-center gap-6 lg:gap-4">
             <div class="flex items-center gap-4">
-                <img src="https://media.licdn.com/dms/image/v2/D4D03AQHpKhBr6vJ4SQ/profile-displayphoto-crop_800_800/B4DZx.RRhgIUAI-/0/1771644985573?e=1774483200&v=beta&t=gPkrxB-w1Tukfwojr0N_MZbndwGKa_-bSYPZakxSJ4Q"
+                <img src="profile.png"
                     alt="DK" class="w-10 h-10 rounded-full border-2 border-accent-cyan/30 object-cover" loading="lazy">
                 <div class="flex flex-col">
                     <span class="font-bold text-white text-sm">Dipak Kadamb</span>
@@ -1073,13 +1077,13 @@
             </div>
 
             <div class="flex gap-5">
-                <a href="#" aria-label="GitHub"
+                <a href="https://github.com/dipakkadamb" target="_blank" aria-label="GitHub"
                     class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 transition-colors border border-white/5"><i
                         data-feather="github" class="w-5 h-5"></i></a>
                 <a href="https://linkedin.com/in/dipakkadamb" target="_blank" aria-label="LinkedIn"
                     class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 transition-colors border border-white/5"><i
                         data-feather="linkedin" class="w-5 h-5"></i></a>
-                <a href="#" aria-label="Twitter"
+                <a href="https://twitter.com/dipakkadamb" target="_blank" aria-label="Twitter"
                     class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 transition-colors border border-white/5"><i
                         data-feather="twitter" class="w-5 h-5"></i></a>
             </div>
@@ -1124,9 +1128,9 @@
                     </div>
                 </div>
 
-                <h3 class="text-2xl font-bold text-white mb-1">Dipak Kadamb</h3>
-                <div class="text-accent-cyan font-mono text-sm mb-2">AI Web Developer</div>
-                <div class="text-slate-400 text-sm mb-6">ZM Technologies / Consultant</div>
+                <h3 class="text-2xl lg:text-3xl font-bold text-white mb-2">Dipak Kadamb</h3>
+                <div class="text-accent-cyan font-mono text-sm mb-3">AI Web Developer</div>
+                <p class="text-slate-400 text-sm mb-6 max-w-xs mx-auto">Welcome to my space. Let's build something extraordinary together.</p>
 
                 <div class="w-full space-y-3 mb-8 text-left">
                     <div
@@ -1181,3 +1185,7 @@
 </body>
 
 </html>
+<!-- Star Dust Script -->
+<script>
+    // Generator logic is already in script.js
+</script>

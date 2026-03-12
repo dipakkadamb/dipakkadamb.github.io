@@ -256,4 +256,37 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initialize blog loading
     loadBlogs();
+
+    // Star Dust Effect Generator
+    const initStarDust = () => {
+        const container = document.getElementById('star-dust');
+        if (!container) return;
+
+        const starCount = window.innerWidth < 640 ? 30 : 60;
+        const fragment = document.createDocumentFragment();
+
+        for (let i = 0; i < starCount; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            
+            // Random properties
+            const size = Math.random() * 2 + 1;
+            const posX = Math.random() * 100;
+            const posY = Math.random() * 100;
+            const duration = Math.random() * 50 + 50;
+            const delay = Math.random() * -100;
+
+            star.style.width = `${size}px`;
+            star.style.height = `${size}px`;
+            star.style.left = `${posX}%`;
+            star.style.top = `${posY}%`;
+            star.style.animationDuration = `${duration}s`;
+            star.style.animationDelay = `${delay}s`;
+            
+            fragment.appendChild(star);
+        }
+        container.appendChild(fragment);
+    };
+
+    initStarDust();
 });
