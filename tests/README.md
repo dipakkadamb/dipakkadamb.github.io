@@ -11,7 +11,6 @@ Tests core website functionality including:
 - ✅ Mobile menu toggle functionality
 - ✅ Scroll progress bar updates
 - ✅ Scroll animations
-- ✅ Blog loading functionality
 - ✅ Responsive navigation
 - ✅ CSS custom properties
 - ✅ Glass card styling
@@ -99,7 +98,6 @@ Red status indicates failed tests that need attention.
 1. **Tests not running**: Ensure all test files are loaded properly
 2. **Performance tests failing**: May need to run on HTTP server (not file://)
 3. **Mobile menu test failing**: Check if mobile viewport is active
-4. **Blog loading test failing**: Verify `blogs.json` file exists
 
 ### Running on Local Server
 

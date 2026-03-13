@@ -116,21 +116,6 @@ tester.test('Scroll animations work', async () => {
     return hasAnimationClasses;
 });
 
-// Test 6: Test blog loading functionality
-tester.test('Blog loading functionality', async () => {
-    const blogGrid = document.getElementById('blog-grid');
-    if (!blogGrid) return true; // Blog section might not be on current page
-    
-    try {
-        const response = await fetch('blogs.json');
-        if (!response.ok) return false;
-        
-        const blogs = await response.json();
-        return Array.isArray(blogs);
-    } catch (error) {
-        return false;
-    }
-});
 
 // Test 7: Test responsive navigation
 tester.test('Responsive navigation', () => {

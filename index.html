@@ -54,7 +54,7 @@
     <script src="https://unpkg.com/feather-icons"></script>
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
 
     <!-- Structured Data -->
     <script type="application/ld+json">
@@ -101,8 +101,6 @@
                     class="nav-link text-sm font-semibold text-slate-300 hover:text-white transition-colors tracking-wide">Experience</a>
                 <a href="#services"
                     class="nav-link text-sm font-semibold text-slate-300 hover:text-white transition-colors tracking-wide">Services</a>
-                <a href="#blogs"
-                    class="nav-link text-sm font-semibold text-slate-300 hover:text-white transition-colors tracking-wide">Blogs</a>
                 <a href="#contact"
                     class="px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 text-white text-sm font-bold tracking-wide transition-all hover:shadow-[0_0_15px_rgba(6,182,212,0.3)] ml-4">Hire
                     Me</a>
@@ -159,14 +157,6 @@
                 Services
             </a>
 
-            <a href="#blogs"
-                class="mobile-link flex items-center gap-4 text-xl font-semibold text-slate-300 hover:text-white hover:bg-white/5 p-4 rounded-2xl transition-all w-full group">
-                <div
-                    class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 group-hover:bg-accent-blue/10 group-hover:text-accent-blue group-hover:border-accent-blue/20 transition-all">
-                    <i data-feather="book-open" class="w-5 h-5"></i>
-                </div>
-                Blogs
-            </a>
         </div>
 
         <div class="w-full max-w-sm mx-auto mt-8 relative">
@@ -209,7 +199,7 @@
                         <!-- Glowing aura ring -->
                         <div class="profile-aura"></div>
                         <div class="relative z-10 p-1 rounded-full bg-gradient-to-tr from-accent-cyan via-white/60 to-accent-amber shadow-[0_0_40px_rgba(6,182,212,0.6)]">
-                            <img src="profile.png" alt="Dipak Kadamb"
+                            <img src="assets/img/profile.png" alt="Dipak Kadamb"
                                  class="h-36 w-36 lg:h-44 lg:w-44 rounded-full object-cover object-top block
                                         drop-shadow-[0_0_20px_rgba(6,182,212,0.5)]">
                         </div>
@@ -855,28 +845,6 @@
             </div>
         </section>
 
-        <!-- Blogs Section -->
-        <section id="blogs" class="py-20 lg:py-28 px-4 sm:px-6 lg:px-12 relative border-t border-white/5 bg-navy-900/40">
-            <div class="max-w-7xl mx-auto">
-                <div class="mb-12 lg:mb-16 flex flex-col md:flex-row justify-between items-center gap-6 reveal-up">
-                    <div class="text-center md:text-left">
-                        <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 tracking-tight">Recent Articles<span class="text-accent-cyan">.</span></h2>
-                        <div class="w-16 lg:w-20 h-1 bg-gradient-to-r from-accent-blue to-accent-cyan rounded-full mx-auto md:mx-0"></div>
-                    </div>
-                    <a href="create-blog.html" class="px-5 py-2.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-white text-sm font-medium transition-all shadow-sm flex items-center gap-2">
-                        <i data-feather="edit-2" class="w-4 h-4"></i> Write Article
-                    </a>
-                </div>
-
-                <div id="blog-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 mb-10">
-                    <!-- Blogs will be injected here via JavaScript -->
-                    <div class="col-span-full text-center py-10 text-slate-500">
-                        <i data-feather="loader" class="w-8 h-8 animate-spin mx-auto mb-4 text-accent-cyan"></i>
-                        <p>Loading articles...</p>
-                    </div>
-                </div>
-            </div>
-        </section>
 
         <!-- CTA Section -->
         <section class="py-20 px-4 sm:px-6 lg:px-12 relative">
@@ -1050,7 +1018,7 @@
     <footer class="border-t border-white/10 bg-navy-900 py-10 px-4 sm:px-6 lg:px-12 relative z-10">
         <div class="max-w-7xl mx-auto flex flex-col lg:flex-row justify-between items-center gap-6 lg:gap-4">
             <div class="flex items-center gap-4">
-                <img src="profile.png"
+                <img src="assets/img/profile.png"
                     alt="DK" class="w-10 h-10 rounded-full border-2 border-accent-cyan/30 object-cover" loading="lazy">
                 <div class="flex flex-col">
                     <span class="font-bold text-white text-sm">Dipak Kadamb</span>
@@ -1106,7 +1074,7 @@
                         <div class="orbit-3d"><div class="planet-3d p-jupiter-3d"></div></div>
                     </div>
                     <div class="w-24 h-24 rounded-full border-4 border-accent-blue/40 shadow-[0_0_30px_rgba(6,182,212,0.3)] overflow-hidden relative z-10 mx-auto">
-                        <img src="profile.png" alt="Dipak Kadamb" class="w-full h-full object-cover border-none">
+                        <img src="assets/img/profile.png" alt="Dipak Kadamb" class="w-full h-full object-cover border-none">
                     </div>
                 </div>
 
@@ -1156,7 +1124,7 @@
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script src="assets/js/script.js"></script>
     <script>
         // Initialize Feather icons directly
         if (typeof feather !== 'undefined') {
