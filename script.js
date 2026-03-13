@@ -257,36 +257,46 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize blog loading
     loadBlogs();
 
-    // Star Dust Effect Generator
-    const initStarDust = () => {
+    // Confetti Effect Generator (Google Style)
+    const initConfetti = () => {
         const container = document.getElementById('star-dust');
         if (!container) return;
 
-        const starCount = window.innerWidth < 640 ? 30 : 60;
+        const googleColors = ['#4285F4', '#EA4335', '#FBBC05', '#34A853'];
+        const shapes = ['rect', 'circle', 'triangle'];
+        const particleCount = window.innerWidth < 640 ? 50 : 100;
         const fragment = document.createDocumentFragment();
 
-        for (let i = 0; i < starCount; i++) {
-            const star = document.createElement('div');
-            star.className = 'star';
+        for (let i = 0; i < particleCount; i++) {
+            const confetti = document.createElement('div');
+            const shape = shapes[Math.floor(Math.random() * shapes.length)];
+            const color = googleColors[Math.floor(Math.random() * googleColors.length)];
+            
+            confetti.className = `confetti ${shape}`;
+            if (shape === 'triangle') {
+               confetti.style.borderBottomColor = color;
+            } else {
+               confetti.style.backgroundColor = color;
+            }
             
             // Random properties
-            const size = Math.random() * 2 + 1;
-            const posX = Math.random() * 100;
-            const posY = Math.random() * 100;
-            const duration = Math.random() * 50 + 50;
-            const delay = Math.random() * -100;
+            const size = Math.random() * 8 + 6;
+            const posX = Math.random() * 105; // allow slightly off-screen
+            const duration = Math.random() * 8 + 5;
+            const delay = Math.random() * -20;
+            const rotation = Math.random() * 360;
 
-            star.style.width = `${size}px`;
-            star.style.height = `${size}px`;
-            star.style.left = `${posX}%`;
-            star.style.top = `${posY}%`;
-            star.style.animationDuration = `${duration}s`;
-            star.style.animationDelay = `${delay}s`;
+            confetti.style.width = shape === 'triangle' ? '0' : `${size}px`;
+            confetti.style.height = shape === 'triangle' ? '0' : `${size}px`;
+            confetti.style.left = `${posX}%`;
+            confetti.style.transform = `rotate(${rotation}deg)`;
+            confetti.style.animationDuration = `${duration}s`;
+            confetti.style.animationDelay = `${delay}s`;
             
-            fragment.appendChild(star);
+            fragment.appendChild(confetti);
         }
         container.appendChild(fragment);
     };
 
-    initStarDust();
+    initConfetti();
 });
