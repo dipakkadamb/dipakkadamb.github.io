@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Sales & Purchase Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+</head>
+<body class="min-h-screen flex items-center justify-center p-6">
+    <div class="glass-card w-full max-w-md p-8 animate-fade shadow-2xl">
+        <div class="text-center mb-8">
+            <div class="w-16 h-16 bg-accent-cyan/10 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-accent-cyan/20 text-accent-cyan">
+                <i data-feather="briefcase" class="w-8 h-8"></i>
+            </div>
+            <h1 class="text-2xl font-bold text-white">Document Hub</h1>
+            <p class="text-slate-400 text-sm mt-1">Sign in to manage sales & purchases</p>
+        </div>
+
+        <form id="login-form" class="space-y-5">
+            <div>
+                <label class="label-title">Username</label>
+                <div class="relative">
+                    <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500">
+                        <i data-feather="user" class="w-4 h-4"></i>
+                    </span>
+                    <input type="text" id="username" class="form-input pl-11" placeholder="admin" required>
+                </div>
+            </div>
+            <div>
+                <label class="label-title">Password</label>
+                <div class="relative">
+                    <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500">
+                        <i data-feather="lock" class="w-4 h-4"></i>
+                    </span>
+                    <input type="password" id="password" class="form-input pl-11" placeholder="••••••••" required>
+                </div>
+            </div>
+
+            <div id="login-error" class="text-red-400 text-xs hidden">Invalid credentials. Try admin/admin.</div>
+
+            <button type="submit" class="btn-primary w-full flex items-center justify-center gap-2">
+                Sign In <i data-feather="arrow-right" class="w-4 h-4"></i>
+            </button>
+        </form>
+
+        <p class="text-center text-slate-500 text-xs mt-8">
+            Default credentials: <span class="text-accent-cyan">admin / admin</span>
+        </p>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        feather.replace();
+        
+        document.getElementById('login-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const u = document.getElementById('username').value;
+            const p = document.getElementById('password').value;
+            
+            if (u === 'admin' && p === 'admin') {
+                localStorage.setItem('hub_auth', 'true');
+                window.location.href = 'dashboard.html';
+            } else {
+                document.getElementById('login-error').classList.remove('hidden');
+            }
+        });
+    </script>
+</body>
+</html>
