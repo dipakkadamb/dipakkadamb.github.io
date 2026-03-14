@@ -211,14 +211,49 @@ function openCreateModal(type, prefillData = null) {
     const items = prefillData && prefillData.lineItems ? prefillData.lineItems : [{ name: '', qty: 1, rate: 0, tax: 0 }];
     
     container.innerHTML = `
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8 mb-10">
-            <div>
-                <label class="block text-[10px] uppercase tracking-widest font-bold text-slate-500 mb-2">Entity / Client Name</label>
-                <input type="text" id="doc-client" class="form-input" value="${prefillData ? prefillData.client : ''}" placeholder="Enter name..." required>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
+            <!-- Billing Details -->
+            <div class="glass-panel p-6 bg-white/[0.02] border-white/10">
+                <h4 class="text-white font-bold text-sm uppercase tracking-wide mb-4 flex items-center gap-2">
+                    <i data-feather="file-text" class="w-4 h-4 text-accent-primary"></i> Billing To
+                </h4>
+                <div class="space-y-4">
+                    <input type="text" id="bill-company" class="form-input" placeholder="Company Name" value="${prefillData && prefillData.billing ? prefillData.billing.company : (prefillData ? prefillData.client : '')}" required>
+                    <textarea id="bill-address" class="form-input h-20" placeholder="Full Billing Address">${prefillData && prefillData.billing ? prefillData.billing.address : ''}</textarea>
+                    <div class="grid grid-cols-2 gap-4">
+                        <input type="text" id="bill-gst" class="form-input" placeholder="GST Number" value="${prefillData && prefillData.billing ? prefillData.billing.gst : ''}">
+                        <input type="text" id="bill-mobile" class="form-input" placeholder="Mobile Number" value="${prefillData && prefillData.billing ? prefillData.billing.mobile : ''}">
+                    </div>
+                </div>
             </div>
+
+            <!-- Shipping Details -->
+            <div class="glass-panel p-6 bg-white/[0.01] border-white/5">
+                <div class="flex justify-between items-center mb-4">
+                    <h4 class="text-white font-bold text-sm uppercase tracking-wide flex items-center gap-2">
+                        <i data-feather="truck" class="w-4 h-4 text-accent-secondary"></i> Shipping To
+                    </h4>
+                    <button onclick="copyBillingToShipping()" class="text-[9px] font-bold text-slate-500 uppercase tracking-widest hover:text-white transition-colors">Same as Billing</button>
+                </div>
+                <div class="space-y-4">
+                    <input type="text" id="ship-company" class="form-input" placeholder="Company Name" value="${prefillData && prefillData.shipping ? prefillData.shipping.company : ''}">
+                    <textarea id="ship-address" class="form-input h-20" placeholder="Full Shipping Address">${prefillData && prefillData.shipping ? prefillData.shipping.address : ''}</textarea>
+                    <div class="grid grid-cols-2 gap-4">
+                        <input type="text" id="ship-gst" class="form-input" placeholder="GST Number" value="${prefillData && prefillData.shipping ? prefillData.shipping.gst : ''}">
+                        <input type="text" id="ship-mobile" class="form-input" placeholder="Mobile Number" value="${prefillData && prefillData.shipping ? prefillData.shipping.mobile : ''}">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8 mb-10">
             <div>
                 <label class="block text-[10px] uppercase tracking-widest font-bold text-slate-500 mb-2">Transaction Date</label>
                 <input type="date" id="doc-date" class="form-input" value="${new Date().toISOString().split('T')[0]}" required>
+            </div>
+            <div>
+                <label class="block text-[10px] uppercase tracking-widest font-bold text-slate-500 mb-2">Source Reference</label>
+                <input type="text" id="doc-ref" class="form-input" placeholder="Enter Reference (e.g. PO #123)" value="${prefillData ? prefillData.ref : ''}">
             </div>
         </div>
 
@@ -248,8 +283,8 @@ function openCreateModal(type, prefillData = null) {
 
         <div class="flex flex-col md:flex-row gap-8 mt-12 pt-8 border-t border-white/5">
              <div class="flex-1">
-                <label class="block text-[10px] uppercase tracking-widest font-bold text-slate-500 mb-2">Source Reference</label>
-                <input type="text" id="doc-ref" class="form-input text-xs italic bg-white/[0.01] border-dashed" value="${prefillData ? prefillData.ref : 'N/A'}" disabled>
+                <label class="block text-[10px] uppercase tracking-widest font-bold text-slate-500 mb-2">Internal Note / Warranty</label>
+                <textarea id="doc-note" class="form-input h-24 text-xs italic bg-white/[0.01] border-dashed" placeholder="Add any terms, conditions or notes...">${prefillData ? (prefillData.note || '') : ''}</textarea>
             </div>
             <div class="w-full md:w-80 glass-panel p-6 bg-white/[0.02]">
                 <div class="flex justify-between text-xs font-bold uppercase tracking-wider mb-4">
@@ -271,6 +306,14 @@ function openCreateModal(type, prefillData = null) {
     items.forEach(item => addRow(item));
     document.getElementById('save-btn').onclick = () => saveDoc(type);
     
+    // Add copy function
+    window.copyBillingToShipping = () => {
+        document.getElementById('ship-company').value = document.getElementById('bill-company').value;
+        document.getElementById('ship-address').value = document.getElementById('bill-address').value;
+        document.getElementById('ship-gst').value = document.getElementById('bill-gst').value;
+        document.getElementById('ship-mobile').value = document.getElementById('bill-mobile').value;
+    };
+
     modal.classList.remove('hidden');
     setTimeout(() => modal.classList.remove('opacity-0'), 10);
     feather.replace();
@@ -339,9 +382,22 @@ function saveDoc(type) {
         tax: parseFloat(row.querySelector('.item-tax').value || 0)
     }));
 
-    const client = document.getElementById('doc-client').value.trim();
-    if (!client || lineItems.length === 0) {
-        alert('Validation Error: Client name and at least one item are required.');
+    const billing = {
+        company: document.getElementById('bill-company').value.trim(),
+        address: document.getElementById('bill-address').value.trim(),
+        gst: document.getElementById('bill-gst').value.trim(),
+        mobile: document.getElementById('bill-mobile').value.trim()
+    };
+
+    const shipping = {
+        company: document.getElementById('ship-company').value.trim(),
+        address: document.getElementById('ship-address').value.trim(),
+        gst: document.getElementById('ship-gst').value.trim(),
+        mobile: document.getElementById('ship-mobile').value.trim()
+    };
+
+    if (!billing.company || lineItems.length === 0) {
+        alert('Validation Error: Billing Company name and at least one item are required.');
         return;
     }
 
@@ -350,13 +406,16 @@ function saveDoc(type) {
 
     const doc = {
         id: (type.substring(0, 2).toUpperCase() + '-' + Math.floor(Math.random() * 90000 + 10000)),
-        client: client,
+        client: billing.company,
+        billing: billing,
+        shipping: shipping,
         date: document.getElementById('doc-date').value,
         lineItems: lineItems,
         subtotal: subtotal,
         tax: taxTotal,
         total: subtotal + taxTotal,
-        ref: document.getElementById('doc-ref').value || 'Manual Entry'
+        ref: document.getElementById('doc-ref').value || 'Manual Entry',
+        note: document.getElementById('doc-note').value.trim()
     };
 
     documents[type].unshift(doc);
@@ -377,9 +436,12 @@ function convertDocument(fromType, fromId, toType) {
     if (!parentDoc) return;
     openCreateModal(toType, {
         client: parentDoc.client,
+        billing: parentDoc.billing ? {...parentDoc.billing} : {company: parentDoc.client},
+        shipping: parentDoc.shipping ? {...parentDoc.shipping} : null,
         total: parentDoc.total,
         lineItems: parentDoc.lineItems.map(i => ({...i})),
-        ref: parentDoc.id
+        ref: parentDoc.id,
+        note: parentDoc.note
     });
 }
 
@@ -458,20 +520,29 @@ function printDocument(type, id) {
             
             <div class="info-section">
                 <div class="info-block">
-                    <h4>Bill To / Entity</h4>
-                    <p>${doc.client}</p>
-                    <div style="margin-top: 15px;">
-                        <h4>Reference Point</h4>
-                        <p style="font-size: 13px; font-weight: 500; color: #64748b;">${doc.ref}</p>
-                    </div>
+                    <h4>Billing Details</h4>
+                    <p style="font-size: 16px; margin-bottom: 4px;">${doc.billing ? doc.billing.company : doc.client}</p>
+                    <p style="font-size: 13px; font-weight: 400; color: #64748b; white-space: pre-line;">${doc.billing ? doc.billing.address : ''}</p>
+                    ${(doc.billing && doc.billing.gst) ? `<p style="font-size: 12px; margin-top: 8px;"><strong>GST:</strong> ${doc.billing.gst}</p>` : ''}
+                    ${(doc.billing && doc.billing.mobile) ? `<p style="font-size: 12px;"><strong>Mob:</strong> ${doc.billing.mobile}</p>` : ''}
                 </div>
                 <div class="info-block" style="text-align: right;">
-                    <h4>Issue Date</h4>
-                    <p>${doc.date}</p>
-                    <div style="margin-top: 15px;">
-                        <h4>Document Status</h4>
-                        <p style="color: #10b981;">Generated & Verified</p>
-                    </div>
+                    <h4>Shipping Details</h4>
+                    <p style="font-size: 16px; margin-bottom: 4px;">${doc.shipping && doc.shipping.company ? doc.shipping.company : (doc.billing ? doc.billing.company : doc.client)}</p>
+                    <p style="font-size: 13px; font-weight: 400; color: #64748b; white-space: pre-line;">${doc.shipping ? doc.shipping.address : ''}</p>
+                    ${(doc.shipping && doc.shipping.gst) ? `<p style="font-size: 12px; margin-top: 8px;"><strong>GST:</strong> ${doc.shipping.gst}</p>` : ''}
+                    ${(doc.shipping && doc.shipping.mobile) ? `<p style="font-size: 12px;"><strong>Mob:</strong> ${doc.shipping.mobile}</p>` : ''}
+                </div>
+            </div>
+
+            <div class="info-section" style="margin-top: -30px; margin-bottom: 40px; border-top: 1px dashed #e2e8f0; padding-top: 20px;">
+                <div class="info-block">
+                    <h4>Reference Information</h4>
+                    <p style="font-size: 14px; color: #64748b;">${doc.ref || 'N/A'}</p>
+                </div>
+                <div class="info-block" style="text-align: right;">
+                    <h4>Date of Issue</h4>
+                    <p style="font-size: 14px; color: #64748b;">${doc.date}</p>
                 </div>
             </div>
 
@@ -514,6 +585,13 @@ function printDocument(type, id) {
                     </div>
                 </div>
             </div>
+
+            ${doc.note ? `
+            <div style="margin-top: 40px; padding: 20px; background: #fdfdfd; border: 1px solid #f1f5f9; border-radius: 8px;">
+                <h4 style="font-size: 11px; text-transform: uppercase; color: #94a3b8; margin-bottom: 8px;">Terms & Notes</h4>
+                <p style="font-size: 12px; color: #64748b; margin: 0; white-space: pre-line;">${doc.note}</p>
+            </div>
+            ` : ''}
             
             <div class="footer">
                 This is a computer-generated transaction document from Hub Pro.<br>
