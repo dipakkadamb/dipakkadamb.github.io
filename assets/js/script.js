@@ -114,6 +114,13 @@ document.addEventListener('DOMContentLoaded', () => {
             welcomeModalContent.classList.add('scale-100');
         }, 1000); // 1s delay
 
+        // Expose open modal function globally
+        window.openWelcomeModal = () => {
+            welcomeModal.classList.remove('opacity-0', 'pointer-events-none');
+            welcomeModalContent.classList.remove('scale-95');
+            welcomeModalContent.classList.add('scale-100');
+        };
+
         // Close modal function
         const closeModal = () => {
             welcomeModal.classList.add('opacity-0', 'pointer-events-none');
