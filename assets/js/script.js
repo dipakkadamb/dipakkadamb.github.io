@@ -155,11 +155,11 @@ document.addEventListener('DOMContentLoaded', () => {
         motivationalQuoteEl.textContent = `"${randomQuote}"`;
 
         // Slide in
-        motivationalToast.classList.remove('-translate-x-[150%]', 'opacity-0');
+        motivationalToast.classList.remove('translate-x-[150%]', 'opacity-0');
 
         // Hide after 5 seconds
         setTimeout(() => {
-            motivationalToast.classList.add('-translate-x-[150%]', 'opacity-0');
+            motivationalToast.classList.add('translate-x-[150%]', 'opacity-0');
         }, 5000);
     };
 
@@ -174,46 +174,4 @@ document.addEventListener('DOMContentLoaded', () => {
     setInterval(showMotivationalQuote, 600000);
 
 
-    // Confetti Effect Generator (Google Style)
-    const initConfetti = () => {
-        const container = document.getElementById('star-dust');
-        if (!container) return;
-
-        const googleColors = ['#4285F4', '#EA4335', '#FBBC05', '#34A853'];
-        const shapes = ['rect', 'circle', 'triangle'];
-        const particleCount = window.innerWidth < 640 ? 50 : 100;
-        const fragment = document.createDocumentFragment();
-
-        for (let i = 0; i < particleCount; i++) {
-            const confetti = document.createElement('div');
-            const shape = shapes[Math.floor(Math.random() * shapes.length)];
-            const color = googleColors[Math.floor(Math.random() * googleColors.length)];
-            
-            confetti.className = `confetti ${shape}`;
-            if (shape === 'triangle') {
-               confetti.style.borderBottomColor = color;
-            } else {
-               confetti.style.backgroundColor = color;
-            }
-            
-            // Random properties
-            const size = Math.random() * 8 + 6;
-            const posX = Math.random() * 105; // allow slightly off-screen
-            const duration = Math.random() * 8 + 5;
-            const delay = Math.random() * -20;
-            const rotation = Math.random() * 360;
-
-            confetti.style.width = shape === 'triangle' ? '0' : `${size}px`;
-            confetti.style.height = shape === 'triangle' ? '0' : `${size}px`;
-            confetti.style.left = `${posX}%`;
-            confetti.style.transform = `rotate(${rotation}deg)`;
-            confetti.style.animationDuration = `${duration}s`;
-            confetti.style.animationDelay = `${delay}s`;
-            
-            fragment.appendChild(confetti);
-        }
-        container.appendChild(fragment);
-    };
-
-    initConfetti();
 });

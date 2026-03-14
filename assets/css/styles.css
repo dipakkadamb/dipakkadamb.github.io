@@ -269,38 +269,6 @@ img[src="company-logo.png"] {
   animation: spin-circular 6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
 
-/* ============================================================
-   CONFETTI PARTICLES — Google-Style Background
-   ============================================================ */
-#star-dust {
-  background: radial-gradient(circle at 50% 50%, #0a0f1c 0%, #050811 100%);
-}
-
-.confetti {
-  position: absolute;
-  width: 10px;
-  height: 10px;
-  opacity: 0.6;
-  border-radius: 2px;
-  will-change: transform, opacity;
-  animation: confetti-fall linear infinite;
-}
-
-.confetti.circle { border-radius: 50%; }
-.confetti.triangle { width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-bottom: 10px solid; background: none; }
-
-@keyframes confetti-fall {
-  0% {
-    transform: translateY(-100vh) translateX(0) rotate(0deg);
-    opacity: 0;
-  }
-  10% { opacity: 0.8; }
-  90% { opacity: 0.8; }
-  100% {
-    transform: translateY(100vh) translateX(100px) rotate(720deg);
-    opacity: 0;
-  }
-}
 
 .profile-aura {
   position: absolute;
