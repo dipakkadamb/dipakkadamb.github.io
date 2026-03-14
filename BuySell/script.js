@@ -11,10 +11,12 @@ const DOC_TYPES = {
     INVOICES: 'invoices',
     PAYMENTS_REC: 'payments-received',
     DC: 'delivery-chalans',
+    CREDIT_NOTES: 'credit-notes',
     EXPENSES: 'expenses',
     PO: 'purchase-orders',
     BILLS: 'bills',
     PAYMENTS_MADE: 'payments-made',
+    VENDOR_CREDITS: 'vendor-credits',
     REPORTS: 'reports'
 };
 
@@ -28,10 +30,12 @@ const STORAGE_KEYS = {
     [DOC_TYPES.INVOICES]: 'hub_invoices',
     [DOC_TYPES.PAYMENTS_REC]: 'hub_payments_rec',
     [DOC_TYPES.DC]: 'hub_dc',
+    [DOC_TYPES.CREDIT_NOTES]: 'hub_credit_notes',
     [DOC_TYPES.EXPENSES]: 'hub_expenses',
     [DOC_TYPES.PO]: 'hub_po',
     [DOC_TYPES.BILLS]: 'hub_bills',
-    [DOC_TYPES.PAYMENTS_MADE]: 'hub_payments_made'
+    [DOC_TYPES.PAYMENTS_MADE]: 'hub_payments_made',
+    [DOC_TYPES.VENDOR_CREDITS]: 'hub_vendor_credits'
 };
 
 let currentView = 'dashboard';
@@ -67,10 +71,12 @@ function switchView(viewId) {
         [DOC_TYPES.INVOICES]: 'Invoices',
         [DOC_TYPES.PAYMENTS_REC]: 'Payments Received',
         [DOC_TYPES.DC]: 'Delivery Challans',
+        [DOC_TYPES.CREDIT_NOTES]: 'Credit Notes',
         [DOC_TYPES.EXPENSES]: 'Expenses',
         [DOC_TYPES.PO]: 'Purchase Orders',
         [DOC_TYPES.BILLS]: 'Bills',
         [DOC_TYPES.PAYMENTS_MADE]: 'Payments Made',
+        [DOC_TYPES.VENDOR_CREDITS]: 'Vendor Credits',
         [DOC_TYPES.REPORTS]: 'Financial Reports'
     };
     const titleEl = document.getElementById('view-title');
@@ -688,9 +694,16 @@ function renderDocumentList(container, type) {
     const list = documents[type];
     const labels = {
         [DOC_TYPES.QUOTES]: 'Quote',
-        [DOC_TYPES.SO]: 'SO',
-        [DOC_TYPES.DC]: 'DC',
-        [DOC_TYPES.PO]: 'PO'
+        [DOC_TYPES.SO]: 'Sales Order',
+        [DOC_TYPES.DC]: 'Delivery Challan',
+        [DOC_TYPES.PO]: 'Purchase Order',
+        [DOC_TYPES.INVOICES]: 'Invoice',
+        [DOC_TYPES.BILLS]: 'Bill',
+        [DOC_TYPES.EXPENSES]: 'Expense',
+        [DOC_TYPES.CREDIT_NOTES]: 'Credit Note',
+        [DOC_TYPES.VENDOR_CREDITS]: 'Vendor Credit',
+        [DOC_TYPES.PAYMENTS_REC]: 'Payment Received',
+        [DOC_TYPES.PAYMENTS_MADE]: 'Payment Made'
     };
 
     let html = `
@@ -763,12 +776,21 @@ function renderConversionButtons(doc, type) {
     } else if (type === DOC_TYPES.SO) {
         return `
             <button onclick="convertDocument('${type}', '${doc.id}', '${DOC_TYPES.DC}')" class="px-3 py-1 bg-emerald-400/10 border border-emerald-400/20 text-emerald-400 text-[9px] font-bold uppercase rounded-md hover:bg-emerald-400/20 transition-all mr-2">To Chalan</button>
+            <button onclick="convertDocument('${type}', '${doc.id}', '${DOC_TYPES.INVOICES}')" class="px-3 py-1 bg-accent-primary/10 border border-accent-primary/20 text-accent-primary text-[9px] font-bold uppercase rounded-md hover:bg-accent-primary/20 transition-all mr-2">To Invoice</button>
             <button onclick="convertDocument('${type}', '${doc.id}', '${DOC_TYPES.PO}')" class="px-3 py-1 bg-amber-400/10 border border-amber-400/20 text-amber-400 text-[9px] font-bold uppercase rounded-md hover:bg-amber-400/20 transition-all mr-2">To Purchase</button>
         `;
+    } else if (type === DOC_TYPES.PO) {
+        return `<button onclick="convertDocument('${type}', '${doc.id}', '${DOC_TYPES.BILLS}')" class="px-3 py-1 bg-amber-400/10 border border-amber-400/20 text-amber-400 text-[9px] font-bold uppercase rounded-md hover:bg-amber-400/20 transition-all mr-2">To Bill</button>`;
     } else if (type === DOC_TYPES.INVOICES) {
-        return `<button onclick="openPaymentModal('${DOC_TYPES.PAYMENTS_REC}', { entityId: '${doc.billing.company}', refDoc: '${doc.id}', amount: ${doc.total} })" class="px-3 py-1 bg-emerald-400/10 border border-emerald-400/20 text-emerald-400 text-[9px] font-bold uppercase rounded-md hover:bg-emerald-400/20 transition-all mr-2">Record Payment</button>`;
+        return `
+            <button onclick="openPaymentModal('${DOC_TYPES.PAYMENTS_REC}', { entityId: '${doc.billing.company}', refDoc: '${doc.id}', amount: ${doc.total} })" class="px-3 py-1 bg-emerald-400/10 border border-emerald-400/20 text-emerald-400 text-[9px] font-bold uppercase rounded-md hover:bg-emerald-400/20 transition-all mr-2">Record Payment</button>
+            <button onclick="convertDocument('${type}', '${doc.id}', '${DOC_TYPES.CREDIT_NOTES}')" class="px-3 py-1 bg-red-400/10 border border-red-400/20 text-red-400 text-[9px] font-bold uppercase rounded-md hover:bg-red-400/20 transition-all mr-2">To Credit Note</button>
+        `;
     } else if (type === DOC_TYPES.BILLS) {
-        return `<button onclick="openPaymentModal('${DOC_TYPES.PAYMENTS_MADE}', { entityId: '${doc.billing.company}', refDoc: '${doc.id}', amount: ${doc.total} })" class="px-3 py-1 bg-amber-400/10 border border-amber-400/20 text-amber-400 text-[9px] font-bold uppercase rounded-md hover:bg-amber-400/20 transition-all mr-2">Record Payment</button>`;
+        return `
+            <button onclick="openPaymentModal('${DOC_TYPES.PAYMENTS_MADE}', { entityId: '${doc.billing.company}', refDoc: '${doc.id}', amount: ${doc.total} })" class="px-3 py-1 bg-amber-400/10 border border-amber-400/20 text-amber-400 text-[9px] font-bold uppercase rounded-md hover:bg-amber-400/20 transition-all mr-2">Record Payment</button>
+            <button onclick="convertDocument('${type}', '${doc.id}', '${DOC_TYPES.VENDOR_CREDITS}')" class="px-3 py-1 bg-red-400/10 border border-red-400/20 text-red-400 text-[9px] font-bold uppercase rounded-md hover:bg-red-400/20 transition-all mr-2">To Vendor Credit</button>
+        `;
     }
     return '';
 }
@@ -788,11 +810,13 @@ function openCreateModal(type, prefillData = null) {
         [DOC_TYPES.INVOICES]: 'Invoice',
         [DOC_TYPES.BILLS]: 'Bill',
         [DOC_TYPES.EXPENSES]: 'Expense',
+        [DOC_TYPES.CREDIT_NOTES]: 'Credit Note',
+        [DOC_TYPES.VENDOR_CREDITS]: 'Vendor Credit',
         [DOC_TYPES.PAYMENTS_REC]: 'Payment Received',
         [DOC_TYPES.PAYMENTS_MADE]: 'Payment Made'
     };
 
-    const isPurchase = [DOC_TYPES.PO, DOC_TYPES.BILLS, DOC_TYPES.PAYMENTS_MADE, DOC_TYPES.EXPENSES].includes(type);
+    const isPurchase = [DOC_TYPES.PO, DOC_TYPES.BILLS, DOC_TYPES.PAYMENTS_MADE, DOC_TYPES.EXPENSES, DOC_TYPES.VENDOR_CREDITS].includes(type);
     const entityLabel = isPurchase ? 'Vendor' : 'Customer';
     const entities = isPurchase ? documents[DOC_TYPES.VENDORS] : documents[DOC_TYPES.CUSTOMERS];
 
@@ -1103,9 +1127,14 @@ function printDocument(type, id) {
 
     const labels = { 
         [DOC_TYPES.QUOTES]: 'QUOTE', 
-        [DOC_TYPES.SO]: 'SO', 
-        [DOC_TYPES.DC]: 'DC', 
-        [DOC_TYPES.PO]: 'PO' 
+        [DOC_TYPES.SO]: 'SALES ORDER', 
+        [DOC_TYPES.DC]: 'CHALLAN', 
+        [DOC_TYPES.PO]: 'PURCHASE ORDER',
+        [DOC_TYPES.INVOICES]: 'INVOICE',
+        [DOC_TYPES.BILLS]: 'BILL',
+        [DOC_TYPES.EXPENSES]: 'EXPENSE',
+        [DOC_TYPES.CREDIT_NOTES]: 'CREDIT NOTE',
+        [DOC_TYPES.VENDOR_CREDITS]: 'VENDOR CREDIT'
     };
 
     const printWindow = window.open('', '_blank', 'width=900,height=800');

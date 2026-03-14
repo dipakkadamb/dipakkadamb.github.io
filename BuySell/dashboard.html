@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard | Sales & Purchase Hub</title>
+    <title>Dashboard | Aura Dynamic</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -55,7 +55,7 @@
                 <div class="w-8 h-8 bg-accent-primary/10 rounded-lg flex items-center justify-center border border-accent-primary/20 text-accent-primary">
                     <i data-feather="briefcase" class="w-5 h-5"></i>
                 </div>
-                <span class="font-bold text-white tracking-tight text-base font-mono">CRM</span>
+                <span class="font-bold text-white tracking-tight text-base font-mono">AURA</span>
             </div>
             <button onclick="toggleSidebar()" class="lg:hidden text-slate-400 hover:text-white">
                 <i data-feather="x" class="w-5 h-5"></i>
@@ -95,6 +95,9 @@
             <button onclick="switchView('delivery-chalans')" class="sidebar-link" id="tab-delivery-chalans">
                 <i data-feather="truck" class="w-4 h-4"></i> Delivery Challans
             </button>
+            <button onclick="switchView('credit-notes')" class="sidebar-link" id="tab-credit-notes">
+                <i data-feather="corner-up-left" class="w-4 h-4"></i> Credit Notes
+            </button>
             
             <!-- Purchases Section -->
             <div class="px-6 py-4 text-[10px] uppercase tracking-widest text-slate-500 font-bold mb-2">Purchases</div>
@@ -112,6 +115,9 @@
             </button>
             <button onclick="switchView('payments-made')" class="sidebar-link" id="tab-payments-made">
                 <i data-feather="upload" class="w-4 h-4"></i> Payments Made
+            </button>
+            <button onclick="switchView('vendor-credits')" class="sidebar-link" id="tab-vendor-credits">
+                <i data-feather="corner-down-left" class="w-4 h-4"></i> Vendor Credits
             </button>
             
             <!-- Reports Section -->
@@ -136,7 +142,7 @@
                 <button onclick="toggleSidebar()" class="p-2 -ml-2 text-white">
                     <i data-feather="menu" class="w-6 h-6"></i>
                 </button>
-                <span class="font-bold text-white uppercase tracking-tighter">CRM</span>
+                <span class="font-bold text-white uppercase tracking-tighter">AURA</span>
             </div>
             <div class="w-8 h-8 rounded-full bg-accent-primary/20 flex items-center justify-center text-accent-primary border border-accent-primary/30">
                 <i data-feather="user" class="w-4 h-4"></i>
@@ -150,7 +156,7 @@
                 <div class="h-8 w-px bg-white/5 mx-2"></div>
                 <div class="flex items-center gap-3">
                     <div class="text-right">
-                        <div class="text-xs font-bold text-white">Dipak Kadamb</div>
+                        <div class="text-xs font-bold text-white">AURA DYNAMIC</div>
                         <div class="text-[10px] text-accent-primary font-medium">Administrator</div>
                     </div>
                     <div class="w-10 h-10 rounded-xl bg-accent-secondary/20 border border-accent-secondary/30 flex items-center justify-center text-accent-secondary">
