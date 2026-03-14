@@ -5,12 +5,13 @@
 
 // Firebase Configuration - Replace with your own project keys
 const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "asyncrix-global.firebaseapp.com",
-    projectId: "asyncrix-global",
-    storageBucket: "asyncrix-global.appspot.com",
-    messagingSenderId: "YOUR_SENDER_ID",
-    appId: "YOUR_APP_ID"
+    apiKey: "AIzaSyBlovRd95y2LO3lPryO-7uqGDKWPh7w390",
+    authDomain: "asyncrix.firebaseapp.com",
+    projectId: "asyncrix",
+    storageBucket: "asyncrix.firebasestorage.app",
+    messagingSenderId: "690704617754",
+    appId: "1:690704617754:web:b4b5d5207a49c494a11ca3",
+    measurementId: "G-HFZTJFG8HR"
 };
 
 // Imports moved to dynamic loading in initDatabase() to prevent module hangs.
