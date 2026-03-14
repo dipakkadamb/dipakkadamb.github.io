@@ -134,12 +134,12 @@ function renderCustomers(container) {
             <div class="overflow-x-auto">
                 <table class="responsive-table w-full">
                     <thead class="bg-white/[0.02] border-b border-white/5">
-                        <tr class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">
-                            <th class="px-6 py-4 text-left">Name</th>
-                            <th class="px-6 py-4 text-left">Company</th>
-                            <th class="px-6 py-4 text-left">Contact Info</th>
-                            <th class="px-6 py-4 text-right">GST Details</th>
-                            <th class="px-6 py-4 text-right">Actions</th>
+                        <tr class="text-[9px] font-bold text-slate-500 uppercase tracking-widest">
+                            <th class="px-4 py-3 text-left">Name</th>
+                            <th class="px-4 py-3 text-left">Company</th>
+                            <th class="px-4 py-3 text-left">Contact Info</th>
+                            <th class="px-4 py-3 text-right">GST Details</th>
+                            <th class="px-4 py-3 text-right">Actions</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-white/5">
@@ -232,12 +232,12 @@ function renderDocumentList(container, type) {
             <div class="glass-panel overflow-hidden border-white/5 bg-navy-800/10 backdrop-blur-sm animate-up">
                 <table class="responsive-table">
                     <thead>
-                        <tr class="bg-white/[0.02] text-slate-500 text-[10px] uppercase tracking-widest font-bold border-b border-white/5">
-                            <th class="px-6 py-4">ID</th>
-                            <th class="px-6 py-4">Client/Entity</th>
-                            <th class="px-6 py-4">Date</th>
-                            <th class="px-6 py-4">Amount</th>
-                            <th class="px-6 py-4 text-right">Actions</th>
+                        <tr class="bg-white/[0.02] text-slate-500 text-[9px] uppercase tracking-widest font-bold border-b border-white/5">
+                            <th class="px-4 py-3">ID</th>
+                            <th class="px-4 py-3">Client/Entity</th>
+                            <th class="px-4 py-3">Date</th>
+                            <th class="px-4 py-3">Amount</th>
+                            <th class="px-4 py-3 text-right">Actions</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-white/[0.03]">
@@ -297,6 +297,24 @@ function openCreateModal(type, prefillData = null) {
     const items = prefillData && prefillData.lineItems ? prefillData.lineItems : [{ name: '', qty: 1, rate: 0, tax: 0 }];
     
     container.innerHTML = `
+        <div class="mb-6 p-4 bg-accent-primary/5 border border-accent-primary/10 rounded-lg flex items-center gap-4 animate-up">
+            <div class="flex-1">
+                <label class="block text-[10px] uppercase tracking-widest font-bold text-slate-500 mb-2">Search Customer</label>
+                <select id="doc-customer-select" class="form-input" onchange="prefillFromCustomer(this.value)">
+                    <option value="">-- Select Existing Customer --</option>
+                    ${documents[DOC_TYPES.CUSTOMERS].map(c => `<option value="${c.id}">${c.displayName} (${c.company || 'Individual'})</option>`).join('')}
+                </select>
+            </div>
+            <div class="pt-6">
+                <span class="text-slate-500 text-xs font-bold uppercase tracking-widest">OR</span>
+            </div>
+            <div class="flex-1 pt-6">
+                <button onclick="openCustomerModal()" class="text-accent-primary text-[10px] font-bold uppercase tracking-widest hover:underline flex items-center gap-1">
+                    <i data-feather="plus" class="w-3 h-3"></i> Add New Customer
+                </button>
+            </div>
+        </div>
+
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
             <!-- Billing Details -->
             <div class="glass-panel p-6 bg-white/[0.02] border-white/10">
@@ -405,6 +423,22 @@ function openCreateModal(type, prefillData = null) {
     feather.replace();
     updateCalculations();
 }
+
+window.prefillFromCustomer = (custId) => {
+    if (!custId) return;
+    const customer = documents[DOC_TYPES.CUSTOMERS].find(c => c.id === custId);
+    if (!customer) return;
+
+    document.getElementById('bill-company').value = customer.company || customer.displayName;
+    document.getElementById('bill-address').value = customer.billingAddress;
+    document.getElementById('bill-gst').value = customer.gstin;
+    document.getElementById('bill-mobile').value = customer.mobile;
+
+    document.getElementById('ship-company').value = customer.company || customer.displayName;
+    document.getElementById('ship-address').value = customer.shippingAddress || customer.billingAddress;
+    document.getElementById('ship-gst').value = customer.gstin;
+    document.getElementById('ship-mobile').value = customer.mobile;
+};
 
 function addRow(data = { name: '', qty: 1, rate: 0, tax: 0 }) {
     const tbody = document.getElementById('line-items-body');
