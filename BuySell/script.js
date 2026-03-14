@@ -388,6 +388,11 @@ function printDocument(type, id) {
 
     const printWindow = window.open('', '_blank', 'width=900,height=800');
     
+    if (!printWindow) {
+        alert('Popup Blocked: Please allow popups to print documents.');
+        return;
+    }
+    
     const html = `
         <!DOCTYPE html>
         <html>
@@ -396,8 +401,15 @@ function printDocument(type, id) {
             <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700&display=swap" rel="stylesheet">
             <style>
                 * { box-sizing: border-box; -webkit-print-color-adjust: exact; }
-                body { font-family: 'Plus Jakarta Sans', sans-serif; padding: 50px; color: #1e293b; line-height: 1.5; background: #fff; }
-                .header { display: flex; justify-content: space-between; border-bottom: 4px solid #06b6d4; padding-bottom: 25px; margin-bottom: 40px; }
+                body { 
+                    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+                    padding: 40px; 
+                    color: #1e293b; 
+                    line-height: 1.5; 
+                    background: #fff; 
+                    margin: 0;
+                }
+                .header { display: flex; justify-content: space-between; border-bottom: 4px solid #06b6d4; padding-bottom: 25px; margin-bottom: 40px; align-items: flex-end; }
                 .company-info { text-align: left; }
                 .company-name { font-size: 28px; font-weight: 800; color: #0f172a; margin-bottom: 5px; }
                 .company-sub { font-size: 13px; color: #64748b; font-weight: 500; }
@@ -507,19 +519,27 @@ function printDocument(type, id) {
     printWindow.document.write(html);
     printWindow.document.close();
 
-    // Give time for styles/fonts to load
-    printWindow.onload = function() {
-        printWindow.focus();
-        printWindow.print();
-    };
+    // Ensure content is rendered before printing
+    const checkReady = setInterval(() => {
+        if (printWindow.document.readyState === 'complete') {
+            clearInterval(checkReady);
+            setTimeout(() => {
+                printWindow.focus();
+                printWindow.print();
+                // Close window after print dialog is closed (optional)
+                // printWindow.close(); 
+            }, 500);
+        }
+    }, 100);
 
-    // Fallback if onload doesn't fire (e.g. cached)
+    // Fallback for older browsers or nested writing
     setTimeout(() => {
+        clearInterval(checkReady);
         if (printWindow) {
             printWindow.focus();
             printWindow.print();
         }
-    }, 1000);
+    }, 2500);
 }
 
 function closeModal() {
