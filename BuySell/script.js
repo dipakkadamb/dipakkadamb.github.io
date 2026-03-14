@@ -198,8 +198,8 @@ function updateTitle(viewId) {
     if (titleEl) titleEl.textContent = titleMap[viewId] || 'Document Hub';
 }
 
-// Start the app
-initializeApp();
+// Initial Boot Sequence (Consolidated)
+// Note: initializeApp() is and must be called at the end of the script to ensure all functions are defined.
 
 function switchView(viewId) {
     currentView = viewId;
