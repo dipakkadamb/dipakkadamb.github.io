@@ -1685,8 +1685,7 @@ function renderContactModal(label, editData, saveFn) {
     feather.replace();
 }
 
-async function saveCustomerWrapper(id) { await saveEntity(id, DOC_TYPES.CUSTOMERS, 'CUST'); }
-async function saveVendorWrapper(id) { await saveEntity(id, DOC_TYPES.VENDORS, 'VEND'); }
+async function saveVendor(id) { await saveEntity(id, DOC_TYPES.VENDORS, 'VEND'); }
 
 async function saveEntity(id, type, prefix) {
     const displayName = document.getElementById('entity-display').value.trim();
