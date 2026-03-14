@@ -8,106 +8,169 @@
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/feather-icons"></script>
     <style>
         .active-tab {
-            background: rgba(6, 182, 212, 0.1);
-            color: var(--accent-cyan);
-            border-left: 4px solid var(--accent-cyan);
+            background: rgba(6, 182, 212, 0.1) !important;
+            color: var(--accent-primary) !important;
+            border-left: 4px solid var(--accent-primary);
         }
         .sidebar-link {
             transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1.5rem;
+            width: 100%;
+            text-align: left;
+            color: var(--text-muted);
+            font-weight: 500;
         }
         .sidebar-link:hover {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.03);
+            color: white;
+        }
+        #mobile-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(4px);
+            z-index: 40;
+        }
+        #mobile-overlay.active {
+            display: block;
         }
     </style>
 </head>
-<body class="bg-navy-900 min-h-screen flex overflow-hidden">
+<body class="flex min-h-screen">
+    <div id="mobile-overlay" onclick="toggleSidebar()"></div>
+
     <!-- Sidebar -->
-    <aside class="w-64 border-r border-white/5 bg-navy-800 flex flex-col z-30">
-        <div class="p-6 border-b border-white/5 flex items-center gap-3">
-            <div class="w-10 h-10 bg-accent-cyan/10 rounded-xl flex items-center justify-center border border-accent-cyan/20 text-accent-cyan">
-                <i data-feather="briefcase" class="w-6 h-6"></i>
+    <aside id="sidebar" class="sidebar flex flex-col">
+        <div class="p-6 border-b border-white/5 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-accent-primary/10 rounded-xl flex items-center justify-center border border-accent-primary/20 text-accent-primary">
+                    <i data-feather="briefcase" class="w-6 h-6"></i>
+                </div>
+                <span class="font-bold text-white tracking-tight text-lg">Hub Pro</span>
             </div>
-            <span class="font-bold text-white tracking-tight">Hub v1.0</span>
+            <button onclick="toggleSidebar()" class="lg:hidden text-slate-400 hover:text-white">
+                <i data-feather="x" class="w-6 h-6"></i>
+            </button>
         </div>
         
-        <nav class="flex-1 py-6 space-y-1">
-            <button onclick="switchView('dashboard')" class="sidebar-link w-full flex items-center gap-3 px-6 py-3 text-slate-400 font-semibold" id="tab-dashboard">
-                <i data-feather="home" class="w-4 h-4"></i> Dashboard
+        <nav class="flex-1 py-6">
+            <div class="px-6 py-2 text-[10px] uppercase tracking-widest text-slate-500 font-bold mb-2">Main</div>
+            <button onclick="switchView('dashboard')" class="sidebar-link" id="tab-dashboard">
+                <i data-feather="grid" class="w-4 h-4"></i> Overview
             </button>
-            <div class="px-6 py-4 text-[10px] uppercase tracking-widest text-slate-600 font-bold">Sales</div>
-            <button onclick="switchView('quotes')" class="sidebar-link w-full flex items-center gap-3 px-6 py-3 text-slate-400 font-semibold" id="tab-quotes">
+            
+            <div class="px-6 py-4 text-[10px] uppercase tracking-widest text-slate-500 font-bold mb-2">Sales Department</div>
+            <button onclick="switchView('quotes')" class="sidebar-link" id="tab-quotes">
                 <i data-feather="file-text" class="w-4 h-4"></i> Quotations
             </button>
-            <button onclick="switchView('sales-orders')" class="sidebar-link w-full flex items-center gap-3 px-6 py-3 text-slate-400 font-semibold" id="tab-sales-orders">
-                <i data-feather="shopping-cart" class="w-4 h-4"></i> Sales Orders
+            <button onclick="switchView('sales-orders')" class="sidebar-link" id="tab-sales-orders">
+                <i data-feather="shopping-bag" class="w-4 h-4"></i> Sales Orders
             </button>
-            <button onclick="switchView('delivery-chalans')" class="sidebar-link w-full flex items-center gap-3 px-6 py-3 text-slate-400 font-semibold" id="tab-delivery-chalans">
+            <button onclick="switchView('delivery-chalans')" class="sidebar-link" id="tab-delivery-chalans">
                 <i data-feather="truck" class="w-4 h-4"></i> Delivery Chalans
             </button>
-            <div class="px-6 py-4 text-[10px] uppercase tracking-widest text-slate-600 font-bold">Purchase</div>
-            <button onclick="switchView('purchase-orders')" class="sidebar-link w-full flex items-center gap-3 px-6 py-3 text-slate-400 font-semibold" id="tab-purchase-orders">
+            
+            <div class="px-6 py-4 text-[10px] uppercase tracking-widest text-slate-500 font-bold mb-2">Purchase Department</div>
+            <button onclick="switchView('purchase-orders')" class="sidebar-link" id="tab-purchase-orders">
                 <i data-feather="package" class="w-4 h-4"></i> Purchase Orders
             </button>
         </nav>
 
         <div class="p-6 border-t border-white/5">
-            <button onclick="logout()" class="flex items-center gap-3 text-slate-500 hover:text-white transition-colors w-full font-semibold px-2">
-                <i data-feather="log-out" class="w-4 h-4"></i> Logout
+            <button onclick="logout()" class="flex items-center gap-3 text-slate-400 hover:text-red-400 transition-colors w-full font-semibold px-2">
+                <i data-feather="log-out" class="w-4 h-4"></i> Sign Out
             </button>
         </div>
     </aside>
 
     <!-- Main Content -->
-    <main class="flex-1 flex flex-col h-screen overflow-hidden">
-        <!-- Top Bar -->
-        <header class="h-16 border-b border-white/5 bg-navy-800/50 backdrop-blur-md px-8 flex items-center justify-between">
-            <h2 id="view-title" class="text-xl font-bold text-white">Dashboard Overview</h2>
-            <div class="flex items-center gap-4">
-                <div class="text-right">
-                    <div class="text-xs font-bold text-white">Admin User</div>
-                    <div class="text-[10px] text-accent-cyan">Hub Administrator</div>
-                </div>
-                <div class="w-8 h-8 rounded-full bg-accent-blue/20 border border-accent-blue/30 flex items-center justify-center text-accent-blue">
-                    <i data-feather="user" class="w-4 h-4"></i>
+    <div class="main-wrapper">
+        <!-- Mobile Header -->
+        <header class="mobile-header lg:hidden h-16 bg-navy-800/80 backdrop-blur-md border-b border-white/5 flex items-center justify-between px-6 sticky top-0 z-30">
+            <div class="flex items-center gap-3">
+                <button onclick="toggleSidebar()" class="p-2 -ml-2 text-white">
+                    <i data-feather="menu" class="w-6 h-6"></i>
+                </button>
+                <span class="font-bold text-white uppercase tracking-tighter">Hub Pro</span>
+            </div>
+            <div class="w-8 h-8 rounded-full bg-accent-primary/20 flex items-center justify-center text-accent-primary border border-accent-primary/30">
+                <i data-feather="user" class="w-4 h-4"></i>
+            </div>
+        </header>
+
+        <!-- Desktop Header -->
+        <header class="hidden lg:flex h-16 border-b border-white/5 bg-navy-800/40 backdrop-blur-md px-8 items-center justify-between sticky top-0 z-30">
+            <h2 id="view-title" class="text-xl font-bold text-white tracking-tight">Dashboard Overview</h2>
+            <div class="flex items-center gap-6">
+                <div class="h-8 w-px bg-white/5 mx-2"></div>
+                <div class="flex items-center gap-3">
+                    <div class="text-right">
+                        <div class="text-xs font-bold text-white">Dipak Kadamb</div>
+                        <div class="text-[10px] text-accent-primary font-medium">Administrator</div>
+                    </div>
+                    <div class="w-10 h-10 rounded-xl bg-accent-secondary/20 border border-accent-secondary/30 flex items-center justify-center text-accent-secondary">
+                        <i data-feather="user" class="w-5 h-5"></i>
+                    </div>
                 </div>
             </div>
         </header>
 
-        <!-- Content Area -->
-        <div id="content-viewport" class="flex-1 overflow-y-auto p-8 relative">
-            <!-- App views will be injected here -->
+        <!-- Responsive Content Area -->
+        <div id="content-viewport" class="flex-1 p-4 md:p-8 overflow-y-auto">
+            <!-- Content injected by script.js -->
         </div>
-    </main>
+    </div>
 
     <!-- Modal for Document Form -->
-    <div id="form-modal" class="fixed inset-0 z-[100] flex items-center justify-center bg-navy-900/80 backdrop-blur-sm hidden opacity-0 transition-opacity duration-300">
-        <div class="glass-card w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col shadow-2xl animate-fade">
-            <div class="p-6 border-b border-white/5 flex justify-between items-center bg-white/5">
-                <h3 id="modal-title" class="text-xl font-bold text-white">New Document</h3>
-                <button onclick="closeModal()" class="text-slate-400 hover:text-white transition-colors">
+    <div id="form-modal" class="fixed inset-0 z-[100] flex items-center justify-center bg-navy-900/90 backdrop-blur-md hidden opacity-0 transition-opacity duration-300 p-4">
+        <div class="glass-panel w-full max-w-5xl max-h-[95vh] overflow-hidden flex flex-col shadow-2xl animate-up">
+            <div class="p-5 md:p-6 border-b border-white/5 flex justify-between items-center bg-white/[0.02]">
+                <h3 id="modal-title" class="text-lg md:text-xl font-bold text-white">New Document</h3>
+                <button onclick="closeModal()" class="text-slate-400 hover:text-white transition-colors p-2">
                     <i data-feather="x" class="w-6 h-6"></i>
                 </button>
             </div>
-            <div class="p-8 overflow-y-auto flex-1 bg-navy-800/30" id="modal-form-container">
-                <!-- Form will be injected here -->
+            <div class="p-4 md:p-8 overflow-y-auto flex-1" id="modal-form-container">
+                <!-- Form injected here -->
             </div>
-            <div class="p-6 border-t border-white/5 bg-white/5 flex justify-end gap-4">
-                <button onclick="closeModal()" class="px-6 py-2 text-slate-400 font-bold hover:text-white transition-colors">Cancel</button>
-                <button id="save-btn" class="btn-primary">Save Document</button>
+            <div class="p-5 md:p-6 border-t border-white/5 bg-white/[0.02] flex flex-col md:flex-row justify-end gap-3">
+                <button onclick="closeModal()" class="px-6 py-2.5 text-slate-400 font-bold hover:text-white transition-colors">Cancel</button>
+                <button id="save-btn" class="btn-primary justify-center">Save & Continue</button>
             </div>
         </div>
     </div>
 
     <script src="script.js"></script>
     <script>
-        // Check Auth
+        // Auth Guard
         if (localStorage.getItem('hub_auth') !== 'true') {
             window.location.href = 'index.html';
         }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('mobile-overlay');
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+        }
+
+        // Auto-close sidebar on view change (mobile)
+        const originalSwitchView = window.switchView;
+        window.switchView = function(viewId) {
+            if (window.innerWidth < 1024) {
+                toggleSidebar();
+            }
+            originalSwitchView(viewId);
+        };
+
         feather.replace();
     </script>
 </body>
