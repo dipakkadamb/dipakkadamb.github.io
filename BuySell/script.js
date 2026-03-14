@@ -1180,7 +1180,7 @@ async function saveDoc(type) {
 
     documents[type].unshift(doc);
     localStorage.setItem(STORAGE_KEYS[type], JSON.stringify(documents[type]));
-    await saveToCloud(type, doc);
+    const success = await saveToCloud(type, doc);
 
     // --- Dynamic Flow: Stock & Banking Integration ---
     if ([DOC_TYPES.INVOICES, DOC_TYPES.SO, DOC_TYPES.PO, DOC_TYPES.BILLS, DOC_TYPES.CREDIT_NOTES, DOC_TYPES.VENDOR_CREDITS].includes(type)) {
@@ -1212,6 +1212,7 @@ async function saveDoc(type) {
 
     closeModal();
     renderContent();
+    showToast(`${type.toUpperCase()} recorded and synced!`, 'success');
 }
 
 async function deleteDoc(type, id) {
@@ -1250,10 +1251,10 @@ async function deleteDoc(type, id) {
         }
     }
 
-    documents[type] = documents[type].filter(d => d.id !== id);
-    localStorage.setItem(STORAGE_KEYS[type], JSON.stringify(documents[type]));
-    await deleteFromCloud(type, id);
+    const success = await deleteFromCloud(type, id);
     renderContent();
+    if (success) showToast('Record deleted permanentely.', 'success');
+    else showToast('Deleted locally, but Cloud sync failed.', 'error');
 }
 
 function convertDocument(fromType, fromId, toType) {
@@ -1597,9 +1598,11 @@ async function saveEntity(id, type, prefix) {
     }
 
     localStorage.setItem(STORAGE_KEYS[type], JSON.stringify(documents[type]));
-    await saveToCloud(type, entity);
+    const success = await saveToCloud(type, entity);
     closeModal();
     renderContent();
+    if (success) showToast(`${displayName} saved successfully!`, 'success');
+    else showToast('Sync failed. Please check internet/Firebase.', 'error');
 }
 
 function openItemModal(editData = null) {
@@ -1665,9 +1668,11 @@ async function saveItem(id) {
     }
 
     localStorage.setItem(STORAGE_KEYS[DOC_TYPES.ITEMS], JSON.stringify(documents[DOC_TYPES.ITEMS]));
-    await saveToCloud(DOC_TYPES.ITEMS, item);
+    const success = await saveToCloud(DOC_TYPES.ITEMS, item);
     closeModal();
     renderContent();
+    if (success) showToast(`Item "${name}" saved!`, 'success');
+    else showToast('Local save success, but Cloud Sync failed.', 'error');
 }
 
 async function deleteItem(id) {
@@ -1676,6 +1681,7 @@ async function deleteItem(id) {
     localStorage.setItem(STORAGE_KEYS[DOC_TYPES.ITEMS], JSON.stringify(documents[DOC_TYPES.ITEMS]));
     await deleteFromCloud(DOC_TYPES.ITEMS, id);
     renderContent();
+    showToast('Item deleted.', 'success');
 }
 
 function openBankModal(editData = null) {
@@ -1722,17 +1728,21 @@ async function saveBank(id) {
     }
 
     localStorage.setItem(STORAGE_KEYS[DOC_TYPES.BANKING], JSON.stringify(documents[DOC_TYPES.BANKING]));
-    await saveToCloud(DOC_TYPES.BANKING, bank);
+    const success = await saveToCloud(DOC_TYPES.BANKING, bank);
     closeModal();
     renderContent();
+    if (success) showToast(`Bank "${bankName}" updated!`, 'success');
+    else showToast('Cloud sync failed for banking.', 'error');
 }
 
 async function deleteBank(id) {
     if (!confirm('Are you sure you want to delete this bank account?')) return;
     documents[DOC_TYPES.BANKING] = documents[DOC_TYPES.BANKING].filter(b => b.id !== id);
     localStorage.setItem(STORAGE_KEYS[DOC_TYPES.BANKING], JSON.stringify(documents[DOC_TYPES.BANKING]));
-    await deleteFromCloud(DOC_TYPES.BANKING, id);
+    const success = await deleteFromCloud(DOC_TYPES.BANKING, id);
     renderContent();
+    if (success) showToast('Bank account removed.', 'success');
+    else showToast('Removed locally, but Cloud delete failed.', 'error');
 }
 
 function openPaymentModal(type, prefillData = null) {
@@ -1846,6 +1856,29 @@ async function savePayment(type) {
 
     closeModal();
     renderContent();
+    showToast(`${type.replace('-', ' ')} saved successfully!`, 'success');
+}
+
+function showToast(message, type = 'success') {
+    const container = document.getElementById('toast-container');
+    if (!container) return;
+
+    const toast = document.createElement('div');
+    toast.className = `toast toast-${type}`;
+    const icon = type === 'success' ? 'check-circle' : 'alert-circle';
+    
+    toast.innerHTML = `
+        <i data-feather="${icon}" class="w-4 h-4"></i>
+        <span>${message}</span>
+    `;
+    
+    container.appendChild(toast);
+    feather.replace();
+
+    setTimeout(() => {
+        toast.style.animation = 'toastSlideOut 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards';
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
 }
 
 // --- UI Utility Section ---
