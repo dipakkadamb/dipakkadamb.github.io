@@ -1,37 +1,54 @@
 // Hub Pro - Professional Document Engine & Responsive Logic
 
 const DOC_TYPES = {
+    DASHBOARD: 'dashboard',
+    ITEMS: 'items',
+    BANKING: 'banking',
+    CUSTOMERS: 'customers',
+    VENDORS: 'vendors',
     QUOTES: 'quotes',
     SO: 'sales-orders',
+    INVOICES: 'invoices',
+    PAYMENTS_REC: 'payments-received',
     DC: 'delivery-chalans',
+    EXPENSES: 'expenses',
     PO: 'purchase-orders',
-    CUSTOMERS: 'customers'
+    BILLS: 'bills',
+    PAYMENTS_MADE: 'payments-made',
+    REPORTS: 'reports'
 };
 
 const STORAGE_KEYS = {
+    [DOC_TYPES.ITEMS]: 'hub_items',
+    [DOC_TYPES.BANKING]: 'hub_banking',
+    [DOC_TYPES.CUSTOMERS]: 'hub_customers',
+    [DOC_TYPES.VENDORS]: 'hub_vendors',
     [DOC_TYPES.QUOTES]: 'hub_quotes',
     [DOC_TYPES.SO]: 'hub_so',
+    [DOC_TYPES.INVOICES]: 'hub_invoices',
+    [DOC_TYPES.PAYMENTS_REC]: 'hub_payments_rec',
     [DOC_TYPES.DC]: 'hub_dc',
+    [DOC_TYPES.EXPENSES]: 'hub_expenses',
     [DOC_TYPES.PO]: 'hub_po',
-    [DOC_TYPES.CUSTOMERS]: 'hub_customers'
+    [DOC_TYPES.BILLS]: 'hub_bills',
+    [DOC_TYPES.PAYMENTS_MADE]: 'hub_payments_made'
 };
 
 let currentView = 'dashboard';
 
 function formatCurrency(amount) {
-    return '₹' + amount.toLocaleString('en-IN', {
+    return '₹' + (amount || 0).toLocaleString('en-IN', {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
     });
 }
 
-let documents = {
-    [DOC_TYPES.QUOTES]: JSON.parse(localStorage.getItem(STORAGE_KEYS[DOC_TYPES.QUOTES]) || '[]'),
-    [DOC_TYPES.SO]: JSON.parse(localStorage.getItem(STORAGE_KEYS[DOC_TYPES.SO]) || '[]'),
-    [DOC_TYPES.DC]: JSON.parse(localStorage.getItem(STORAGE_KEYS[DOC_TYPES.DC]) || '[]'),
-    [DOC_TYPES.PO]: JSON.parse(localStorage.getItem(STORAGE_KEYS[DOC_TYPES.PO]) || '[]'),
-    [DOC_TYPES.CUSTOMERS]: JSON.parse(localStorage.getItem(STORAGE_KEYS[DOC_TYPES.CUSTOMERS]) || '[]')
-};
+let documents = {};
+Object.values(DOC_TYPES).forEach(type => {
+    if (STORAGE_KEYS[type]) {
+        documents[type] = JSON.parse(localStorage.getItem(STORAGE_KEYS[type]) || '[]');
+    }
+});
 
 function switchView(viewId) {
     currentView = viewId;
@@ -40,12 +57,21 @@ function switchView(viewId) {
     if (activeTab) activeTab.classList.add('active-tab');
 
     const titleMap = {
-        'dashboard': 'Dashboard Overview',
-        'quotes': 'Quotations',
-        'sales-orders': 'Sales Orders',
-        'delivery-chalans': 'Delivery Chalans',
-        'purchase-orders': 'Purchase Orders',
-        'customers': 'Customer Directory'
+        [DOC_TYPES.DASHBOARD]: 'Dashboard Overview',
+        [DOC_TYPES.ITEMS]: 'Inventory Items',
+        [DOC_TYPES.BANKING]: 'Banking & Cash',
+        [DOC_TYPES.CUSTOMERS]: 'Customer Directory',
+        [DOC_TYPES.VENDORS]: 'Vendor Directory',
+        [DOC_TYPES.QUOTES]: 'Quotations',
+        [DOC_TYPES.SO]: 'Sales Orders',
+        [DOC_TYPES.INVOICES]: 'Invoices',
+        [DOC_TYPES.PAYMENTS_REC]: 'Payments Received',
+        [DOC_TYPES.DC]: 'Delivery Challans',
+        [DOC_TYPES.EXPENSES]: 'Expenses',
+        [DOC_TYPES.PO]: 'Purchase Orders',
+        [DOC_TYPES.BILLS]: 'Bills',
+        [DOC_TYPES.PAYMENTS_MADE]: 'Payments Made',
+        [DOC_TYPES.REPORTS]: 'Financial Reports'
     };
     const titleEl = document.getElementById('view-title');
     if (titleEl) titleEl.textContent = titleMap[viewId] || 'Document Hub';
@@ -57,76 +83,138 @@ function renderContent() {
     const viewport = document.getElementById('content-viewport');
     viewport.innerHTML = '';
     
-    if (currentView === 'dashboard') {
-        renderDashboard(viewport);
-    } else if (currentView === 'customers') {
-        renderCustomers(viewport);
-    } else {
-        renderDocumentList(viewport, currentView);
+    switch(currentView) {
+        case DOC_TYPES.DASHBOARD: renderDashboard(viewport); break;
+        case DOC_TYPES.CUSTOMERS: renderCustomers(viewport); break;
+        case DOC_TYPES.VENDORS: renderVendors(viewport); break;
+        case DOC_TYPES.ITEMS: renderItems(viewport); break;
+        case DOC_TYPES.BANKING: renderBanking(viewport); break;
+        case DOC_TYPES.REPORTS: renderReports(viewport); break;
+        case DOC_TYPES.INVOICES:
+        case DOC_TYPES.BILLS:
+        case DOC_TYPES.EXPENSES:
+        case DOC_TYPES.PAYMENTS_REC:
+        case DOC_TYPES.PAYMENTS_MADE:
+        default: renderDocumentList(viewport, currentView); break;
     }
     feather.replace();
 }
 
 function renderDashboard(container) {
-    const stats = [
-        { label: 'Quotes', count: documents[DOC_TYPES.QUOTES].length, color: 'text-accent-primary', icon: 'file-text' },
-        { label: 'Sales Orders', count: documents[DOC_TYPES.SO].length, color: 'text-accent-secondary', icon: 'shopping-bag' },
-        { label: 'Delivery Chalans', count: documents[DOC_TYPES.DC].length, color: 'text-emerald-400', icon: 'truck' },
-        { label: 'Purchase Orders', count: documents[DOC_TYPES.PO].length, color: 'text-amber-400', icon: 'package' }
+    // 1. Calculations
+    const totalReceivables = documents[DOC_TYPES.INVOICES].reduce((sum, inv) => sum + inv.total, 0);
+    const totalPayables = documents[DOC_TYPES.BILLS].reduce((sum, bill) => sum + bill.total, 0);
+    const totalCash = documents[DOC_TYPES.BANKING].reduce((sum, bank) => sum + bank.balance, 0);
+    
+    // Recent Transactions (Last 5 from Invoices, Bills, Payments)
+    const recentTxns = [
+        ...documents[DOC_TYPES.INVOICES].map(d => ({ ...d, typeLabel: 'Invoice', color: 'text-accent-primary', icon: 'file' })),
+        ...documents[DOC_TYPES.BILLS].map(d => ({ ...d, typeLabel: 'Bill', color: 'text-amber-400', icon: 'file-minus' })),
+        ...documents[DOC_TYPES.PAYMENTS_REC].map(d => ({ ...d, typeLabel: 'Payment Rec', color: 'text-emerald-400', icon: 'download' })),
+        ...documents[DOC_TYPES.PAYMENTS_MADE].map(d => ({ ...d, typeLabel: 'Payment Made', color: 'text-red-400', icon: 'upload' })),
+    ].sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 5);
+
+    const mainStats = [
+        { label: 'Total Receivables', amount: totalReceivables, color: 'text-emerald-400', icon: 'trending-up', sub: 'Owed by customers' },
+        { label: 'Total Payables', amount: totalPayables, color: 'text-red-400', icon: 'trending-down', sub: 'Owed to vendors' },
+        { label: 'Cash in Hand', amount: totalCash, color: 'text-accent-primary', icon: 'briefcase', sub: 'Across all accounts' }
     ];
 
     let html = `
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8 md:mb-12">
-    `;
-    stats.forEach(stat => {
-        html += `
-            <div class="glass-panel p-4 border-white/5 hover:border-white/10 transition-all cursor-pointer group animate-up">
-                <div class="flex justify-between items-start mb-3">
-                    <div class="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center border border-white/10 group-hover:scale-110 transition-transform ${stat.color}">
-                        <i data-feather="${stat.icon}" class="w-5 h-5"></i>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+            ${mainStats.map(stat => `
+                <div class="glass-panel p-6 border-white/5 bg-navy-800/20 animate-up">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center border border-white/10 ${stat.color}">
+                            <i data-feather="${stat.icon}" class="w-5 h-5"></i>
+                        </div>
                     </div>
+                    <div class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">${stat.label}</div>
+                    <div class="text-2xl font-bold text-white tracking-tight">${formatCurrency(stat.amount)}</div>
+                    <div class="text-[9px] text-slate-600 mt-2 font-medium uppercase tracking-tighter">${stat.sub}</div>
                 </div>
-                <div class="text-2xl font-bold text-white mb-0.5 tracking-tight">${stat.count}</div>
-                <div class="text-[9px] font-bold text-slate-500 uppercase tracking-widest">${stat.label}</div>
-            </div>
-        `;
-    });
-    html += `</div>`;
+            `).join('')}
+        </div>
 
-    html += `
-        <div class="glass-panel p-6 md:p-8 border-white/5 bg-navy-800/20 animate-up" style="animation-delay: 100ms">
-            <h3 class="text-lg font-bold text-white mb-6 flex items-center gap-2">
-                <i data-feather="activity" class="w-4 h-4 text-accent-primary"></i> Recent Activity
-            </h3>
-            <div class="space-y-6">
-                <div class="flex items-center gap-4 text-sm">
-                    <div class="w-8 h-8 rounded-lg bg-emerald-400/10 flex items-center justify-center text-emerald-400 border border-emerald-400/20">
-                        <i data-feather="plus" class="w-4 h-4"></i>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 animate-up" style="animation-delay: 100ms">
+            <!-- Recent Transactions Feed -->
+            <div class="glass-panel p-6 border-white/5 bg-navy-800/10">
+                <div class="flex justify-between items-center mb-8">
+                    <h3 class="text-sm font-bold text-white uppercase tracking-widest flex items-center gap-2">
+                        <i data-feather="clock" class="w-4 h-4 text-accent-primary"></i> Recent Transactions
+                    </h3>
+                    <button onclick="switchView('${DOC_TYPES.REPORTS}')" class="text-[10px] font-bold text-accent-primary uppercase hover:underline">View All</button>
+                </div>
+                
+                <div class="space-y-4">
+                    ${recentTxns.length === 0 ? `
+                        <p class="text-slate-600 text-xs italic py-8 text-center">No transactions recorded yet.</p>
+                    ` : recentTxns.map(txn => `
+                        <div class="flex items-center gap-4 p-3 rounded-xl hover:bg-white/[0.02] transition-colors border border-transparent hover:border-white/5">
+                            <div class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center ${txn.color} border border-white/10">
+                                <i data-feather="${txn.icon}" class="w-4 h-4"></i>
+                            </div>
+                            <div class="flex-1">
+                                <div class="text-xs font-bold text-white">${txn.client}</div>
+                                <div class="text-[10px] text-slate-500 font-medium uppercase tracking-tight">${txn.typeLabel} • ${txn.id}</div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-xs font-bold text-white font-mono">${formatCurrency(txn.total)}</div>
+                                <div class="text-[9px] text-slate-600">${txn.date}</div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+
+            <!-- Quick Links / Shortcuts -->
+            <div class="glass-panel p-6 border-white/5 bg-navy-800/10 flex flex-col">
+                 <h3 class="text-sm font-bold text-white uppercase tracking-widest mb-8 flex items-center gap-2">
+                    <i data-feather="zap" class="w-4 h-4 text-amber-400"></i> Quick Actions
+                </h3>
+                <div class="grid grid-cols-2 gap-4">
+                    <button onclick="openCreateModal('${DOC_TYPES.QUOTES}')" class="flex flex-col items-center justify-center p-6 rounded-2xl bg-accent-primary/5 border border-accent-primary/10 hover:bg-accent-primary/10 transition-all group">
+                        <i data-feather="file-text" class="w-6 h-6 text-accent-primary mb-3"></i>
+                        <span class="text-[10px] font-bold text-white uppercase tracking-widest">New Quote</span>
+                    </button>
+                    <button onclick="openCreateModal('${DOC_TYPES.INVOICES}')" class="flex flex-col items-center justify-center p-6 rounded-2xl bg-emerald-400/5 border border-emerald-400/10 hover:bg-emerald-400/10 transition-all group">
+                        <i data-feather="file" class="w-6 h-6 text-emerald-400 mb-3"></i>
+                        <span class="text-[10px] font-bold text-white uppercase tracking-widest">New Invoice</span>
+                    </button>
+                    <button onclick="openCreateModal('${DOC_TYPES.BILLS}')" class="flex flex-col items-center justify-center p-6 rounded-2xl bg-amber-400/5 border border-amber-400/10 hover:bg-amber-400/10 transition-all group">
+                        <i data-feather="file-minus" class="w-6 h-6 text-amber-400 mb-3"></i>
+                        <span class="text-[10px] font-bold text-white uppercase tracking-widest">New Bill</span>
+                    </button>
+                    <button onclick="openContactModal(false)" class="flex flex-col items-center justify-center p-6 rounded-2xl bg-purple-400/5 border border-purple-400/10 hover:bg-purple-400/10 transition-all group">
+                        <i data-feather="user-plus" class="w-6 h-6 text-purple-400 mb-3"></i>
+                        <span class="text-[10px] font-bold text-white uppercase tracking-widest">New Customer</span>
+                    </button>
+                </div>
+                <div class="mt-auto pt-8">
+                    <div class="p-4 bg-white/[0.02] rounded-xl border border-white/5">
+                        <div class="text-[9px] font-bold text-slate-500 uppercase tracking-widest mb-2 text-center">System Integration Notice</div>
+                        <p class="text-[10px] text-slate-600 text-center leading-relaxed">Inventory and Banking are now live. All transactions automatically affect your reports and dashboard metrics.</p>
                     </div>
-                    <div>
-                        <div class="text-slate-200 font-medium">New Quote Created</div>
-                        <div class="text-[10px] text-slate-500 uppercase">System Auto-logger</div>
-                    </div>
-                    <span class="text-slate-500 text-xs ml-auto">Active</span>
                 </div>
             </div>
         </div>
     `;
 
     container.innerHTML = html;
+    feather.replace();
 }
 
-function renderCustomers(container) {
-    const list = documents[DOC_TYPES.CUSTOMERS];
+function renderVendors(container) {
+    const list = documents[DOC_TYPES.VENDORS];
     
     let html = `
         <div class="flex justify-between items-center mb-8 animate-up">
             <div>
-                <h3 class="text-2xl font-bold text-white tracking-tight">Customers</h3>
-                <p class="text-slate-500 text-sm mt-1">Manage your business relationships</p>
+                <h3 class="text-2xl font-bold text-white tracking-tight">Vendors</h3>
+                <p class="text-slate-500 text-sm mt-1">Manage your suppliers and vendors</p>
             </div>
-            <button onclick="openCustomerModal()" class="btn-primary">
-                <i data-feather="user-plus" class="w-4 h-4"></i> Add Customer
+            <button onclick="openVendorModal()" class="btn-primary">
+                <i data-feather="user-plus" class="w-4 h-4"></i> Add Vendor
             </button>
         </div>
 
@@ -147,40 +235,40 @@ function renderCustomers(container) {
                             <tr>
                                 <td colspan="5" class="px-6 py-20 text-center text-slate-500">
                                     <div class="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-4">
-                                        <i data-feather="users" class="w-8 h-8 opacity-20"></i>
+                                        <i data-feather="user-check" class="w-8 h-8 opacity-20"></i>
                                     </div>
-                                    <p class="font-bold text-lg">No customers found</p>
-                                    <p class="text-xs mt-1">Click "Add Customer" to populate your directory.</p>
+                                    <p class="font-bold text-lg">No vendors found</p>
+                                    <p class="text-xs mt-1">Click "Add Vendor" to populate your directory.</p>
                                 </td>
                             </tr>
-                        ` : list.map(cust => `
+                        ` : list.map(vend => `
                             <tr class="hover:bg-white/[0.01] transition-colors group">
                                 <td class="px-6 py-4" data-label="Name">
                                     <div class="flex items-center gap-3">
-                                        <div class="w-8 h-8 rounded-full bg-accent-primary/10 flex items-center justify-center text-accent-primary border border-accent-primary/20 text-xs font-bold">
-                                            ${cust.displayName.charAt(0)}
+                                        <div class="w-8 h-8 rounded-full bg-accent-secondary/10 flex items-center justify-center text-accent-secondary border border-accent-secondary/20 text-xs font-bold">
+                                            ${vend.displayName.charAt(0)}
                                         </div>
                                         <div>
-                                            <div class="text-white font-semibold">${cust.displayName}</div>
-                                            <div class="text-[9px] text-slate-500 uppercase tracking-widest font-bold">${cust.type}</div>
+                                            <div class="text-white font-semibold">${vend.displayName}</div>
+                                            <div class="text-[9px] text-slate-500 uppercase tracking-widest font-bold">${vend.type}</div>
                                         </div>
                                     </div>
                                 </td>
-                                <td class="px-6 py-4 text-slate-300" data-label="Company">${cust.company || '-'}</td>
+                                <td class="px-6 py-4 text-slate-300" data-label="Company">${vend.company || '-'}</td>
                                 <td class="px-6 py-4" data-label="Contact">
-                                    <div class="text-white text-sm">${cust.email || '-'}</div>
-                                    <div class="text-slate-500 text-xs">${cust.mobile || cust.phone || '-'}</div>
+                                    <div class="text-white text-sm">${vend.email || '-'}</div>
+                                    <div class="text-slate-500 text-xs">${vend.mobile || vend.phone || '-'}</div>
                                 </td>
                                 <td class="px-6 py-4 text-right" data-label="GST">
-                                    <div class="text-accent-primary text-[10px] font-bold uppercase tracking-wider">${cust.gstTreatment}</div>
-                                    <div class="text-white font-mono text-xs">${cust.gstin || '-'}</div>
+                                    <div class="text-accent-secondary text-[10px] font-bold uppercase tracking-wider">${vend.gstTreatment}</div>
+                                    <div class="text-white font-mono text-xs">${vend.gstin || '-'}</div>
                                 </td>
                                 <td class="px-6 py-4 text-right actions-cell">
                                     <div class="flex justify-end gap-1">
-                                        <button onclick="openCustomerModal(${JSON.stringify(cust).replace(/"/g, '&quot;')})" class="p-2 text-slate-500 hover:text-accent-primary transition-colors">
+                                        <button onclick="openVendorModal(${JSON.stringify(vend).replace(/"/g, '&quot;')})" class="p-2 text-slate-500 hover:text-accent-secondary transition-colors">
                                             <i data-feather="edit-2" class="w-4 h-4"></i>
                                         </button>
-                                        <button onclick="deleteCustomer('${cust.id}')" class="p-2 text-slate-500 hover:text-red-400 transition-colors">
+                                        <button onclick="deleteDoc('${DOC_TYPES.VENDORS}', '${vend.id}')" class="p-2 text-slate-500 hover:text-red-400 transition-colors">
                                             <i data-feather="trash-2" class="w-4 h-4"></i>
                                         </button>
                                     </div>
@@ -193,6 +281,406 @@ function renderCustomers(container) {
         </div>
     `;
     
+    container.innerHTML = html;
+}
+
+function renderItems(container) {
+    const list = documents[DOC_TYPES.ITEMS];
+    
+    let html = `
+        <div class="flex justify-between items-center mb-8 animate-up">
+            <div>
+                <h3 class="text-2xl font-bold text-white tracking-tight">Items</h3>
+                <p class="text-slate-500 text-sm mt-1">Manage your goods and services</p>
+            </div>
+            <button onclick="openItemModal()" class="btn-primary">
+                <i data-feather="plus" class="w-4 h-4"></i> Add Item
+            </button>
+        </div>
+
+        <div class="glass-panel overflow-hidden border-white/5 animate-up">
+            <div class="overflow-x-auto">
+                <table class="responsive-table w-full">
+                    <thead class="bg-white/[0.02] border-b border-white/5">
+                        <tr class="text-[9px] font-bold text-slate-500 uppercase tracking-widest">
+                            <th class="px-4 py-3 text-left">Item Name</th>
+                            <th class="px-4 py-3 text-left">Type</th>
+                            <th class="px-4 py-3 text-right">Rate</th>
+                            <th class="px-4 py-3 text-right">Tax (%)</th>
+                            <th class="px-4 py-3 text-right">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-white/5">
+                        ${list.length === 0 ? `
+                            <tr>
+                                <td colspan="5" class="px-6 py-20 text-center text-slate-500">
+                                    <div class="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-4">
+                                        <i data-feather="box" class="w-8 h-8 opacity-20"></i>
+                                    </div>
+                                    <p class="font-bold text-lg">No items found</p>
+                                    <p class="text-xs mt-1">Click "Add Item" to start your inventory.</p>
+                                </td>
+                            </tr>
+                        ` : list.map(item => `
+                            <tr class="hover:bg-white/[0.01] transition-colors group">
+                                <td class="px-6 py-4" data-label="Item Name">
+                                    <div class="text-white font-semibold">${item.name}</div>
+                                    <div class="text-[10px] text-slate-500">${item.description || 'No description'}</div>
+                                </td>
+                                <td class="px-6 py-4" data-label="Type">
+                                    <span class="px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider ${item.type === 'Goods' ? 'bg-emerald-400/10 text-emerald-400' : 'bg-amber-400/10 text-amber-400'}">
+                                        ${item.type}
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 text-right text-white font-bold" data-label="Rate">${formatCurrency(item.rate)}</td>
+                                <td class="px-6 py-4 text-right text-slate-400" data-label="Tax">${item.tax}%</td>
+                                <td class="px-6 py-4 text-right actions-cell">
+                                    <div class="flex justify-end gap-1">
+                                        <button onclick="openItemModal(${JSON.stringify(item).replace(/"/g, '&quot;')})" class="p-2 text-slate-500 hover:text-accent-primary transition-colors">
+                                            <i data-feather="edit-2" class="w-4 h-4"></i>
+                                        </button>
+                                        <button onclick="deleteDoc('${DOC_TYPES.ITEMS}', '${item.id}')" class="p-2 text-slate-500 hover:text-red-400 transition-colors">
+                                            <i data-feather="trash-2" class="w-4 h-4"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    `;
+    
+    container.innerHTML = html;
+}
+
+function renderBanking(container) {
+    const list = documents[DOC_TYPES.BANKING];
+    
+    let html = `
+        <div class="flex justify-between items-center mb-8 animate-up">
+            <div>
+                <h3 class="text-2xl font-bold text-white tracking-tight">Banking</h3>
+                <p class="text-slate-500 text-sm mt-1">Manage your bank accounts and cash flow</p>
+            </div>
+            <button onclick="openBankModal()" class="btn-primary">
+                <i data-feather="plus" class="w-4 h-4"></i> Add Account
+            </button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 animate-up">
+            ${list.length === 0 ? `
+                <div class="col-span-3 glass-panel p-20 text-center border-dashed border-2 border-white/5">
+                    <div class="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i data-feather="briefcase" class="w-8 h-8 opacity-20"></i>
+                    </div>
+                    <p class="text-slate-400 font-bold text-lg">No bank accounts linked</p>
+                    <p class="text-slate-500 text-sm mt-2">Connect your business bank accounts to track transactions.</p>
+                </div>
+            ` : list.map(bank => `
+                <div class="glass-panel p-6 border-white/5 hover:border-accent-primary/30 transition-all group">
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="w-12 h-12 bg-accent-primary/10 rounded-xl flex items-center justify-center text-accent-primary border border-accent-primary/20">
+                            <i data-feather="home" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex gap-1">
+                            <button onclick="openBankModal(${JSON.stringify(bank).replace(/"/g, '&quot;')})" class="p-1.5 text-slate-500 hover:text-white"><i data-feather="edit-2" class="w-3.5 h-3.5"></i></button>
+                            <button onclick="deleteDoc('${DOC_TYPES.BANKING}', '${bank.id}')" class="p-1.5 text-slate-500 hover:text-red-400"><i data-feather="trash-2" class="w-3.5 h-3.5"></i></button>
+                        </div>
+                    </div>
+                    <div class="text-sm font-bold text-slate-500 uppercase tracking-widest mb-1">${bank.bankName}</div>
+                    <div class="text-xl font-bold text-white mb-4 tracking-tight">${bank.accountName}</div>
+                    <div class="flex justify-between items-end">
+                        <div class="text-[10px] font-mono text-slate-400">${bank.accountNumber.replace(/.(?=.{4})/g, '*')}</div>
+                        <div class="text-right">
+                            <div class="text-[9px] font-bold text-slate-500 uppercase tracking-widest">Current Balance</div>
+                            <div class="text-lg font-bold text-accent-primary">${formatCurrency(bank.balance)}</div>
+                        </div>
+                    </div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.innerHTML = html;
+}
+
+function renderReports(container, subReport = null) {
+    if (subReport) {
+        switch(subReport) {
+            case 'profit-loss': renderProfitLoss(container); break;
+            case 'sales-by-customer': renderSalesByCustomer(container); break;
+            case 'inventory-summary': renderInventorySummary(container); break;
+        }
+        return;
+    }
+
+    let html = `
+        <div class="mb-8 animate-up">
+            <h3 class="text-2xl font-bold text-white tracking-tight">Reports</h3>
+            <p class="text-slate-500 text-sm mt-1">Insights into your business performance</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-up">
+            <div onclick="renderReports(document.getElementById('content-viewport'), 'profit-loss')" class="glass-panel p-6 border-white/5 hover:border-accent-primary/50 transition-all cursor-pointer group">
+                <div class="w-10 h-10 bg-emerald-400/10 rounded-lg flex items-center justify-center text-emerald-400 mb-4 group-hover:scale-110 transition-transform">
+                    <i data-feather="trending-up" class="w-5 h-5"></i>
+                </div>
+                <h4 class="text-white font-bold mb-2">Profit and Loss</h4>
+                <p class="text-slate-500 text-xs">A summary of your revenue, costs, and expenses.</p>
+            </div>
+            
+            <div onclick="renderReports(document.getElementById('content-viewport'), 'sales-by-customer')" class="glass-panel p-6 border-white/5 hover:border-accent-primary/50 transition-all cursor-pointer group">
+                <div class="w-10 h-10 bg-accent-primary/10 rounded-lg flex items-center justify-center text-accent-primary mb-4 group-hover:scale-110 transition-transform">
+                    <i data-feather="pie-chart" class="w-5 h-5"></i>
+                </div>
+                <h4 class="text-white font-bold mb-2">Sales by Customer</h4>
+                <p class="text-slate-500 text-xs">Breakdown of sales for each customer over time.</p>
+            </div>
+            
+            <div onclick="renderReports(document.getElementById('content-viewport'), 'inventory-summary')" class="glass-panel p-6 border-white/5 hover:border-accent-primary/50 transition-all cursor-pointer group">
+                <div class="w-10 h-10 bg-amber-400/10 rounded-lg flex items-center justify-center text-amber-400 mb-4 group-hover:scale-110 transition-transform">
+                    <i data-feather="archive" class="w-5 h-5"></i>
+                </div>
+                <h4 class="text-white font-bold mb-2">Inventory Summary</h4>
+                <p class="text-slate-500 text-xs">Summary of your items, rates, and tax classes.</p>
+            </div>
+        </div>
+    `;
+    
+    container.innerHTML = html;
+    feather.replace();
+}
+
+function renderProfitLoss(container) {
+    const totalSales = documents[DOC_TYPES.INVOICES].reduce((sum, inv) => sum + inv.total, 0);
+    const totalPurchases = documents[DOC_TYPES.BILLS].reduce((sum, bill) => sum + bill.total, 0);
+    const expenses = documents[DOC_TYPES.EXPENSES] || [];
+    const totalExpenses = expenses.reduce((sum, exp) => sum + exp.total, 0);
+    const totalOutflow = totalPurchases + totalExpenses;
+    const netProfit = totalSales - totalOutflow;
+
+    let html = `
+        <div class="mb-8 animate-up">
+            <button onclick="renderReports(document.getElementById('content-viewport'))" class="text-accent-primary text-xs font-bold uppercase tracking-widest hover:underline mb-4 flex items-center gap-1">
+                <i data-feather="arrow-left" class="w-3 h-3"></i> Back to Reports
+            </button>
+            <h3 class="text-2xl font-bold text-white tracking-tight">Profit and Loss</h3>
+            <p class="text-slate-500 text-sm mt-1">Financial summary of revenue and costs</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10 animate-up">
+            <div class="glass-panel p-6 border-emerald-400/20 bg-emerald-400/5">
+                <div class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Total Operating Income</div>
+                <div class="text-2xl font-bold text-emerald-400">${formatCurrency(totalSales)}</div>
+            </div>
+            <div class="glass-panel p-6 border-red-400/20 bg-red-400/5">
+                <div class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Total Operating Expenses</div>
+                <div class="text-2xl font-bold text-red-400">${formatCurrency(totalOutflow)}</div>
+            </div>
+            <div class="glass-panel p-6 border-accent-primary/20 bg-accent-primary/5">
+                <div class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Net Profit/Loss</div>
+                <div class="text-2xl font-bold text-white">${formatCurrency(netProfit)}</div>
+            </div>
+        </div>
+
+        <div class="glass-panel p-8 border-white/5 animate-up" style="animation-delay: 100ms">
+            <h4 class="text-white font-bold text-sm uppercase tracking-widest mb-8 border-b border-white/5 pb-4">Detailed Breakdown</h4>
+            <div class="space-y-6">
+                <div class="flex justify-between items-center text-sm">
+                    <span class="text-slate-400">Sales Income (Invoices)</span>
+                    <span class="text-white font-mono font-bold">${formatCurrency(totalSales)}</span>
+                </div>
+                 <div class="flex justify-between items-center text-sm">
+                    <span class="text-slate-400">Cost of Goods (Bills)</span>
+                    <span class="text-white font-mono font-bold">(${formatCurrency(totalPurchases)})</span>
+                </div>
+                 <div class="flex justify-between items-center text-sm">
+                    <span class="text-slate-400">Other Expenses</span>
+                    <span class="text-white font-mono font-bold">(${formatCurrency(totalExpenses)})</span>
+                </div>
+                <div class="border-t border-white/10 pt-4 flex justify-between items-center">
+                    <span class="text-white font-bold uppercase text-[10px] tracking-widest">Gross Profit</span>
+                    <span class="text-white font-mono font-bold text-xl">${formatCurrency(netProfit)}</span>
+                </div>
+            </div>
+        </div>
+    `;
+    container.innerHTML = html;
+    feather.replace();
+}
+
+function renderSalesByCustomer(container) {
+    const customerSales = {};
+    documents[DOC_TYPES.INVOICES].forEach(inv => {
+        customerSales[inv.client] = (customerSales[inv.client] || 0) + inv.total;
+    });
+
+    const sortedCustomers = Object.entries(customerSales).sort((a, b) => b[1] - a[1]);
+
+    let html = `
+        <div class="mb-8 animate-up">
+            <button onclick="renderReports(document.getElementById('content-viewport'))" class="text-accent-primary text-xs font-bold uppercase tracking-widest hover:underline mb-4 flex items-center gap-1">
+                <i data-feather="arrow-left" class="w-3 h-3"></i> Back to Reports
+            </button>
+            <h3 class="text-2xl font-bold text-white tracking-tight">Sales by Customer</h3>
+            <p class="text-slate-500 text-sm mt-1">Breakdown of revenue generated by each customer</p>
+        </div>
+
+        <div class="glass-panel overflow-hidden border-white/5 animate-up">
+            <table class="w-full">
+                <thead class="bg-white/[0.02] border-b border-white/5">
+                    <tr class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">
+                        <th class="px-6 py-4 text-left">Customer Name</th>
+                        <th class="px-6 py-4 text-right">Total Revenue</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-white/5 text-sm">
+                    ${sortedCustomers.length === 0 ? `
+                        <tr><td colspan="2" class="px-6 py-12 text-center text-slate-500">No sales data available.</td></tr>
+                    ` : sortedCustomers.map(([name, amount]) => `
+                        <tr class="hover:bg-white/[0.01] transition-colors">
+                            <td class="px-6 py-4 text-white font-medium">${name}</td>
+                            <td class="px-6 py-4 text-right text-white font-mono font-bold">${formatCurrency(amount)}</td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            </table>
+        </div>
+    `;
+    container.innerHTML = html;
+    feather.replace();
+}
+
+function renderInventorySummary(container) {
+    const items = documents[DOC_TYPES.ITEMS];
+
+    let html = `
+        <div class="mb-8 animate-up">
+            <button onclick="renderReports(document.getElementById('content-viewport'))" class="text-accent-primary text-xs font-bold uppercase tracking-widest hover:underline mb-4 flex items-center gap-1">
+                <i data-feather="arrow-left" class="w-3 h-3"></i> Back to Reports
+            </button>
+            <h3 class="text-2xl font-bold text-white tracking-tight">Inventory Summary</h3>
+            <p class="text-slate-500 text-sm mt-1">Listing of products, services, and pricing details</p>
+        </div>
+
+        <div class="glass-panel overflow-hidden border-white/5 animate-up">
+            <table class="w-full">
+                <thead class="bg-white/[0.02] border-b border-white/5">
+                    <tr class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">
+                        <th class="px-6 py-4 text-left">Item Name</th>
+                        <th class="px-6 py-4 text-left">Type</th>
+                        <th class="px-6 py-4 text-right">Standard Rate</th>
+                        <th class="px-6 py-4 text-right">Default Tax %</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-white/5 text-sm">
+                    ${items.length === 0 ? `
+                        <tr><td colspan="4" class="px-6 py-12 text-center text-slate-500">No items in inventory.</td></tr>
+                    ` : items.map(item => `
+                        <tr class="hover:bg-white/[0.01] transition-colors">
+                            <td class="px-6 py-4 text-white font-medium">${item.name}</td>
+                            <td class="px-6 py-4 text-slate-400 capitalize">${item.type}</td>
+                            <td class="px-6 py-4 text-right text-white font-mono font-bold">${formatCurrency(item.rate)}</td>
+                            <td class="px-6 py-4 text-right text-accent-secondary font-bold">${item.tax}%</td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            </table>
+        </div>
+    `;
+    container.innerHTML = html;
+    feather.replace();
+}
+
+function renderCustomers(container) {
+    const list = documents[DOC_TYPES.CUSTOMERS];
+    renderContactList(container, list, 'Customers', 'user-plus', 'openCustomerModal', DOC_TYPES.CUSTOMERS);
+}
+
+function renderVendors(container) {
+    const list = documents[DOC_TYPES.VENDORS];
+    renderContactList(container, list, 'Vendors', 'user-check', 'openVendorModal', DOC_TYPES.VENDORS);
+}
+
+function renderContactList(container, list, title, icon, modalFn, type) {
+    const isVendor = type === DOC_TYPES.VENDORS;
+    const accentColor = isVendor ? 'accent-secondary' : 'accent-primary';
+
+    let html = `
+        <div class="flex justify-between items-center mb-8 animate-up">
+            <div>
+                <h3 class="text-2xl font-bold text-white tracking-tight">${title}</h3>
+                <p class="text-slate-500 text-sm mt-1">Manage your business relationships</p>
+            </div>
+            <button onclick="${modalFn}()" class="btn-primary">
+                <i data-feather="${icon}" class="w-4 h-4"></i> Add ${title.slice(0, -1)}
+            </button>
+        </div>
+
+        <div class="glass-panel overflow-hidden border-white/5 animate-up">
+            <div class="overflow-x-auto">
+                <table class="responsive-table w-full">
+                    <thead class="bg-white/[0.02] border-b border-white/5">
+                        <tr class="text-[9px] font-bold text-slate-500 uppercase tracking-widest">
+                            <th class="px-4 py-3 text-left">Name</th>
+                            <th class="px-4 py-3 text-left">Company</th>
+                            <th class="px-4 py-3 text-left">Contact Info</th>
+                            <th class="px-4 py-3 text-right">GST Details</th>
+                            <th class="px-4 py-3 text-right">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-white/5">
+                        ${list.length === 0 ? `
+                            <tr>
+                                <td colspan="5" class="px-6 py-20 text-center text-slate-500">
+                                    <div class="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-4">
+                                        <i data-feather="${isVendor ? 'user-check' : 'users'}" class="w-8 h-8 opacity-20"></i>
+                                    </div>
+                                    <p class="font-bold text-lg">No ${title.toLowerCase()} found</p>
+                                    <p class="text-xs mt-1">Click "Add ${title.slice(0, -1)}" to populate your directory.</p>
+                                </td>
+                            </tr>
+                        ` : list.map(item => `
+                            <tr class="hover:bg-white/[0.01] transition-colors group">
+                                <td class="px-6 py-4" data-label="Name">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-8 h-8 rounded-full bg-${accentColor}/10 flex items-center justify-center text-${accentColor} border border-${accentColor}/20 text-xs font-bold">
+                                            ${item.displayName.charAt(0)}
+                                        </div>
+                                        <div>
+                                            <div class="text-white font-semibold">${item.displayName}</div>
+                                            <div class="text-[9px] text-slate-500 uppercase tracking-widest font-bold">${item.type}</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-slate-300" data-label="Company">${item.company || '-'}</td>
+                                <td class="px-6 py-4" data-label="Contact">
+                                    <div class="text-white text-sm">${item.email || '-'}</div>
+                                    <div class="text-slate-500 text-xs">${item.mobile || item.phone || '-'}</div>
+                                </td>
+                                <td class="px-6 py-4 text-right" data-label="GST">
+                                    <div class="text-${accentColor} text-[10px] font-bold uppercase tracking-wider">${item.gstTreatment}</div>
+                                    <div class="text-white font-mono text-xs">${item.gstin || '-'}</div>
+                                </td>
+                                <td class="px-6 py-4 text-right actions-cell">
+                                    <div class="flex justify-end gap-1">
+                                        <button onclick="${modalFn}(${JSON.stringify(item).replace(/"/g, '&quot;')})" class="p-2 text-slate-500 hover:text-accent-primary transition-colors">
+                                            <i data-feather="edit-2" class="w-4 h-4"></i>
+                                        </button>
+                                        <button onclick="deleteDoc('${type}', '${item.id}')" class="p-2 text-slate-500 hover:text-red-400 transition-colors">
+                                            <i data-feather="trash-2" class="w-4 h-4"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    `;
     container.innerHTML = html;
 }
 
@@ -277,6 +765,10 @@ function renderConversionButtons(doc, type) {
             <button onclick="convertDocument('${type}', '${doc.id}', '${DOC_TYPES.DC}')" class="px-3 py-1 bg-emerald-400/10 border border-emerald-400/20 text-emerald-400 text-[9px] font-bold uppercase rounded-md hover:bg-emerald-400/20 transition-all mr-2">To Chalan</button>
             <button onclick="convertDocument('${type}', '${doc.id}', '${DOC_TYPES.PO}')" class="px-3 py-1 bg-amber-400/10 border border-amber-400/20 text-amber-400 text-[9px] font-bold uppercase rounded-md hover:bg-amber-400/20 transition-all mr-2">To Purchase</button>
         `;
+    } else if (type === DOC_TYPES.INVOICES) {
+        return `<button onclick="openPaymentModal('${DOC_TYPES.PAYMENTS_REC}', { entityId: '${doc.billing.company}', refDoc: '${doc.id}', amount: ${doc.total} })" class="px-3 py-1 bg-emerald-400/10 border border-emerald-400/20 text-emerald-400 text-[9px] font-bold uppercase rounded-md hover:bg-emerald-400/20 transition-all mr-2">Record Payment</button>`;
+    } else if (type === DOC_TYPES.BILLS) {
+        return `<button onclick="openPaymentModal('${DOC_TYPES.PAYMENTS_MADE}', { entityId: '${doc.billing.company}', refDoc: '${doc.id}', amount: ${doc.total} })" class="px-3 py-1 bg-amber-400/10 border border-amber-400/20 text-amber-400 text-[9px] font-bold uppercase rounded-md hover:bg-amber-400/20 transition-all mr-2">Record Payment</button>`;
     }
     return '';
 }
@@ -284,13 +776,26 @@ function renderConversionButtons(doc, type) {
 // --- CRUD & Flow Logic ---
 
 function openCreateModal(type, prefillData = null) {
+    if (type === DOC_TYPES.PAYMENTS_REC || type === DOC_TYPES.PAYMENTS_MADE) {
+        return openPaymentModal(type, prefillData);
+    }
     const modal = document.getElementById('form-modal');
     const labels = {
         [DOC_TYPES.QUOTES]: 'Quote',
-        [DOC_TYPES.SO]: 'SO',
-        [DOC_TYPES.DC]: 'DC',
-        [DOC_TYPES.PO]: 'PO'
+        [DOC_TYPES.SO]: 'Sales Order',
+        [DOC_TYPES.DC]: 'Delivery Challan',
+        [DOC_TYPES.PO]: 'Purchase Order',
+        [DOC_TYPES.INVOICES]: 'Invoice',
+        [DOC_TYPES.BILLS]: 'Bill',
+        [DOC_TYPES.EXPENSES]: 'Expense',
+        [DOC_TYPES.PAYMENTS_REC]: 'Payment Received',
+        [DOC_TYPES.PAYMENTS_MADE]: 'Payment Made'
     };
+
+    const isPurchase = [DOC_TYPES.PO, DOC_TYPES.BILLS, DOC_TYPES.PAYMENTS_MADE, DOC_TYPES.EXPENSES].includes(type);
+    const entityLabel = isPurchase ? 'Vendor' : 'Customer';
+    const entities = isPurchase ? documents[DOC_TYPES.VENDORS] : documents[DOC_TYPES.CUSTOMERS];
+
     document.getElementById('modal-title').textContent = `Create New ${labels[type]}`;
     
     const container = document.getElementById('modal-form-container');
@@ -299,18 +804,18 @@ function openCreateModal(type, prefillData = null) {
     container.innerHTML = `
         <div class="mb-6 p-4 bg-accent-primary/5 border border-accent-primary/10 rounded-lg flex items-center gap-4 animate-up">
             <div class="flex-1">
-                <label class="block text-[10px] uppercase tracking-widest font-bold text-slate-500 mb-2">Search Customer</label>
-                <select id="doc-customer-select" class="form-input" onchange="prefillFromCustomer(this.value)">
-                    <option value="">-- Select Existing Customer --</option>
-                    ${documents[DOC_TYPES.CUSTOMERS].map(c => `<option value="${c.id}">${c.displayName} (${c.company || 'Individual'})</option>`).join('')}
+                <label class="block text-[10px] uppercase tracking-widest font-bold text-slate-500 mb-2">Search ${entityLabel}</label>
+                <select id="doc-entity-select" class="form-input" onchange="prefillFromEntity(this.value, ${isPurchase})">
+                    <option value="">-- Select Existing ${entityLabel} --</option>
+                    ${entities.map(e => `<option value="${e.id}">${e.displayName} (${e.company || 'Individual'})</option>`).join('')}
                 </select>
             </div>
             <div class="pt-6">
                 <span class="text-slate-500 text-xs font-bold uppercase tracking-widest">OR</span>
             </div>
             <div class="flex-1 pt-6">
-                <button onclick="openCustomerModal()" class="text-accent-primary text-[10px] font-bold uppercase tracking-widest hover:underline flex items-center gap-1">
-                    <i data-feather="plus" class="w-3 h-3"></i> Add New Customer
+                <button onclick="${isPurchase ? 'openVendorModal()' : 'openCustomerModal()'}" class="text-accent-primary text-[10px] font-bold uppercase tracking-widest hover:underline flex items-center gap-1">
+                    <i data-feather="plus" class="w-3 h-3"></i> Add New ${entityLabel}
                 </button>
             </div>
         </div>
@@ -319,7 +824,7 @@ function openCreateModal(type, prefillData = null) {
             <!-- Billing Details -->
             <div class="glass-panel p-6 bg-white/[0.02] border-white/10">
                 <h4 class="text-white font-bold text-sm uppercase tracking-wide mb-4 flex items-center gap-2">
-                    <i data-feather="file-text" class="w-4 h-4 text-accent-primary"></i> Billing To
+                    <i data-feather="file-text" class="w-4 h-4 text-accent-primary"></i> ${isPurchase ? 'Billing From' : 'Billing To'}
                 </h4>
                 <div class="space-y-4">
                     <input type="text" id="bill-company" class="form-input" placeholder="Company Name" value="${prefillData && prefillData.billing ? prefillData.billing.company : (prefillData ? prefillData.client : '')}" required>
@@ -424,29 +929,43 @@ function openCreateModal(type, prefillData = null) {
     updateCalculations();
 }
 
-window.prefillFromCustomer = (custId) => {
-    if (!custId) return;
-    const customer = documents[DOC_TYPES.CUSTOMERS].find(c => c.id === custId);
-    if (!customer) return;
+window.prefillFromEntity = (id, isVendor) => {
+    if (!id) return;
+    const entities = isVendor ? documents[DOC_TYPES.VENDORS] : documents[DOC_TYPES.CUSTOMERS];
+    const entity = entities.find(e => e.id === id);
+    if (!entity) return;
 
-    document.getElementById('bill-company').value = customer.company || customer.displayName;
-    document.getElementById('bill-address').value = customer.billingAddress;
-    document.getElementById('bill-gst').value = customer.gstin;
-    document.getElementById('bill-mobile').value = customer.mobile;
+    document.getElementById('bill-company').value = entity.company || entity.displayName;
+    document.getElementById('bill-address').value = entity.billingAddress;
+    document.getElementById('bill-gst').value = entity.gstin;
+    document.getElementById('bill-mobile').value = entity.mobile;
 
-    document.getElementById('ship-company').value = customer.company || customer.displayName;
-    document.getElementById('ship-address').value = customer.shippingAddress || customer.billingAddress;
-    document.getElementById('ship-gst').value = customer.gstin;
-    document.getElementById('ship-mobile').value = customer.mobile;
+    if (document.getElementById('ship-company')) {
+        document.getElementById('ship-company').value = entity.company || entity.displayName;
+        document.getElementById('ship-address').value = entity.shippingAddress || entity.billingAddress;
+        document.getElementById('ship-gst').value = entity.gstin;
+        document.getElementById('ship-mobile').value = entity.mobile;
+    }
 };
 
 function addRow(data = { name: '', qty: 1, rate: 0, tax: 0 }) {
     const tbody = document.getElementById('line-items-body');
     const row = document.createElement('tr');
     row.className = 'group transition-colors hover:bg-white/[0.01]';
+    
+    const itemOptions = documents[DOC_TYPES.ITEMS].map(item => 
+        `<option value="${item.id}" ${item.name === data.name ? 'selected' : ''}>${item.name}</option>`
+    ).join('');
+
     row.innerHTML = `
         <td class="py-4 pr-4">
-            <input type="text" class="form-input text-sm item-name" value="${data.name}" placeholder="Enter item description...">
+            <div class="flex flex-col gap-1">
+                <select class="form-input text-xs item-picker" onchange="pickItem(this)">
+                    <option value="">-- Select Item --</option>
+                    ${itemOptions}
+                </select>
+                <input type="text" class="form-input text-sm item-name" value="${data.name}" placeholder="Or enter manual description...">
+            </div>
         </td>
         <td class="py-4 px-4">
             <input type="number" class="form-input text-sm item-qty text-center" value="${data.qty}" min="1" oninput="updateCalculations()">
@@ -468,6 +987,19 @@ function addRow(data = { name: '', qty: 1, rate: 0, tax: 0 }) {
     feather.replace();
     updateCalculations();
 }
+
+window.pickItem = (select) => {
+    const itemId = select.value;
+    if (!itemId) return;
+    const item = documents[DOC_TYPES.ITEMS].find(i => i.id === itemId);
+    if (!item) return;
+
+    const row = select.closest('tr');
+    row.querySelector('.item-name').value = item.name;
+    row.querySelector('.item-rate').value = item.rate;
+    row.querySelector('.item-tax').value = item.tax;
+    updateCalculations();
+};
 
 function updateCalculations() {
     let subtotal = 0;
@@ -545,7 +1077,7 @@ function saveDoc(type) {
 }
 
 function deleteDoc(type, id) {
-    if(!confirm('Security Protocol: Are you sure you want to permanently delete this document?')) return;
+    if(!confirm('Security Protocol: Are you sure you want to permanently delete this record?')) return;
     documents[type] = documents[type].filter(d => d.id !== id);
     localStorage.setItem(STORAGE_KEYS[type], JSON.stringify(documents[type]));
     renderContent();
@@ -896,3 +1428,337 @@ window.addEventListener('resize', () => { if(window.innerWidth >= 1024) {
     document.getElementById('sidebar').classList.add('active'); 
     document.getElementById('mobile-overlay').classList.remove('active');
 }});
+
+// --- New Zoho Books Modules Logic ---
+
+function openVendorModal(editData = null) {
+    renderContactModal('Vendor', editData, saveVendor);
+}
+
+function openCustomerModal(editData = null) {
+    renderContactModal('Customer', editData, saveCustomer);
+}
+
+function renderContactModal(label, editData, saveFn) {
+    const modal = document.getElementById('form-modal');
+    document.getElementById('modal-title').textContent = editData ? `Edit ${label}` : `Add New ${label}`;
+    const container = document.getElementById('modal-form-container');
+    
+    container.innerHTML = `
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+            <div class="space-y-6">
+                <div>
+                    <label class="block text-[10px] uppercase tracking-widest font-bold text-slate-500 mb-2">${label} Type</label>
+                    <div class="flex gap-4">
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="radio" name="entity-type" value="Business" ${!editData || editData.type === 'Business' ? 'checked' : ''} class="accent-accent-primary">
+                            <span class="text-sm text-white">Business</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="radio" name="entity-type" value="Individual" ${editData && editData.type === 'Individual' ? 'checked' : ''} class="accent-accent-primary">
+                            <span class="text-sm text-white">Individual</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 gap-4">
+                    <input type="text" id="entity-display" class="form-input" placeholder="Display Name *" value="${editData ? editData.displayName : ''}" required>
+                    <input type="text" id="entity-company" class="form-input" placeholder="Company Name" value="${editData ? editData.company : ''}">
+                </div>
+                <div class="grid grid-cols-1 gap-4">
+                    <input type="email" id="entity-email" class="form-input" placeholder="Email Address" value="${editData ? editData.email : ''}">
+                    <div class="grid grid-cols-2 gap-4">
+                        <input type="text" id="entity-mobile" class="form-input" placeholder="Mobile Number" value="${editData ? editData.mobile : ''}">
+                        <input type="text" id="entity-phone" class="form-input" placeholder="Phone" value="${editData ? editData.phone : ''}">
+                    </div>
+                </div>
+            </div>
+            <div class="space-y-6">
+                <div>
+                    <label class="block text-[10px] uppercase tracking-widest font-bold text-slate-500 mb-2">GST Details</label>
+                    <select id="entity-gst-treatment" class="form-input mb-4">
+                        <option value="Registered Business - Regular" ${editData && editData.gstTreatment === 'Registered Business - Regular' ? 'selected' : ''}>Registered Business - Regular</option>
+                        <option value="Registered Business - Composition" ${editData && editData.gstTreatment === 'Registered Business - Composition' ? 'selected' : ''}>Registered Business - Composition</option>
+                        <option value="Unregistered Business" ${editData && editData.gstTreatment === 'Unregistered Business' ? 'selected' : ''}>Unregistered Business</option>
+                        <option value="Consumer" ${editData && editData.gstTreatment === 'Consumer' ? 'selected' : ''}>Consumer</option>
+                    </select>
+                    <input type="text" id="entity-gstin" class="form-input" placeholder="GSTIN" value="${editData ? editData.gstin : ''}">
+                </div>
+                <div>
+                    <label class="block text-[10px] uppercase tracking-widest font-bold text-slate-500 mb-2">Place of Supply</label>
+                    <input type="text" id="entity-place" class="form-input" placeholder="Select State" value="${editData ? editData.place : ''}">
+                </div>
+            </div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-8 border-t border-white/5">
+            <div>
+                <h4 class="text-white font-bold text-xs uppercase tracking-widest mb-4">Billing Address</h4>
+                <textarea id="entity-bill-address" class="form-input h-24" placeholder="Street, City, Zip, State">${editData ? editData.billingAddress : ''}</textarea>
+            </div>
+            <div>
+                <div class="flex justify-between items-center mb-4">
+                    <h4 class="text-white font-bold text-xs uppercase tracking-widest">Shipping Address</h4>
+                    <button onclick="copyEntityAddress()" class="text-[9px] font-bold text-accent-primary uppercase tracking-widest">Copy from Billing</button>
+                </div>
+                <textarea id="entity-ship-address" class="form-input h-24" placeholder="Street, City, Zip, State">${editData ? editData.shippingAddress : ''}</textarea>
+            </div>
+        </div>
+    `;
+
+    window.copyEntityAddress = () => {
+        document.getElementById('entity-ship-address').value = document.getElementById('entity-bill-address').value;
+    };
+
+    document.getElementById('save-btn').onclick = () => saveFn(editData ? editData.id : null);
+    modal.classList.remove('hidden');
+    setTimeout(() => modal.classList.remove('opacity-0'), 10);
+    feather.replace();
+}
+
+function saveCustomer(id) { saveEntity(id, DOC_TYPES.CUSTOMERS, 'CUST'); }
+function saveVendor(id) { saveEntity(id, DOC_TYPES.VENDORS, 'VEND'); }
+
+function saveEntity(id, type, prefix) {
+    const displayName = document.getElementById('entity-display').value.trim();
+    if (!displayName) { alert('Display Name is required.'); return; }
+
+    const entity = {
+        id: id || (prefix + '-' + Math.floor(Math.random() * 9000 + 1000)),
+        type: document.querySelector('input[name="entity-type"]:checked').value,
+        displayName: displayName,
+        company: document.getElementById('entity-company').value.trim(),
+        email: document.getElementById('entity-email').value.trim(),
+        mobile: document.getElementById('entity-mobile').value.trim(),
+        phone: document.getElementById('entity-phone').value.trim(),
+        gstTreatment: document.getElementById('entity-gst-treatment').value,
+        gstin: document.getElementById('entity-gstin').value.trim(),
+        place: document.getElementById('entity-place').value.trim(),
+        billingAddress: document.getElementById('entity-bill-address').value.trim(),
+        shippingAddress: document.getElementById('entity-ship-address').value.trim()
+    };
+
+    if (id) {
+        const index = documents[type].findIndex(e => e.id === id);
+        if (index !== -1) documents[type][index] = entity;
+    } else {
+        documents[type].unshift(entity);
+    }
+
+    localStorage.setItem(STORAGE_KEYS[type], JSON.stringify(documents[type]));
+    closeModal();
+    renderContent();
+}
+
+function openItemModal(editData = null) {
+    const modal = document.getElementById('form-modal');
+    document.getElementById('modal-title').textContent = editData ? 'Edit Item' : 'New Item';
+    const container = document.getElementById('modal-form-container');
+    
+    container.innerHTML = `
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+            <div class="space-y-6">
+                <div>
+                    <label class="block text-[10px] uppercase tracking-widest font-bold text-slate-500 mb-2">Item Type</label>
+                    <div class="flex gap-4">
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="radio" name="item-type" value="Goods" ${!editData || editData.type === 'Goods' ? 'checked' : ''} class="accent-accent-primary">
+                            <span class="text-sm text-white">Goods</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="radio" name="item-type" value="Services" ${editData && editData.type === 'Services' ? 'checked' : ''} class="accent-accent-primary">
+                            <span class="text-sm text-white">Services</span>
+                        </label>
+                    </div>
+                </div>
+                <input type="text" id="item-name" class="form-input" placeholder="Item Name *" value="${editData ? editData.name : ''}" required>
+                <textarea id="item-desc" class="form-input h-24" placeholder="Item Description">${editData ? (editData.description || '') : ''}</textarea>
+            </div>
+            <div class="space-y-6">
+                <div>
+                    <label class="block text-[10px] uppercase tracking-widest font-bold text-slate-500 mb-2">Sales Information</label>
+                    <div class="grid grid-cols-2 gap-4">
+                        <input type="number" id="item-rate" class="form-input" placeholder="Selling Price *" value="${editData ? editData.rate : ''}">
+                        <input type="number" id="item-tax" class="form-input" placeholder="Tax (%)" value="${editData ? editData.tax : 0}">
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+
+    document.getElementById('save-btn').onclick = () => saveItem(editData ? editData.id : null);
+    modal.classList.remove('hidden');
+    setTimeout(() => modal.classList.remove('opacity-0'), 10);
+    feather.replace();
+}
+
+function saveItem(id) {
+    const name = document.getElementById('item-name').value.trim();
+    if (!name) { alert('Item Name is required.'); return; }
+
+    const item = {
+        id: id || ('ITEM-' + Math.floor(Math.random() * 9000 + 1000)),
+        name: name,
+        type: document.querySelector('input[name="item-type"]:checked').value,
+        description: document.getElementById('item-desc').value.trim(),
+        rate: parseFloat(document.getElementById('item-rate').value || 0),
+        tax: parseFloat(document.getElementById('item-tax').value || 0)
+    };
+
+    if (id) {
+        const index = documents[DOC_TYPES.ITEMS].findIndex(i => i.id === id);
+        if (index !== -1) documents[DOC_TYPES.ITEMS][index] = item;
+    } else {
+        documents[DOC_TYPES.ITEMS].unshift(item);
+    }
+
+    localStorage.setItem(STORAGE_KEYS[DOC_TYPES.ITEMS], JSON.stringify(documents[DOC_TYPES.ITEMS]));
+    closeModal();
+    renderContent();
+}
+
+function openBankModal(editData = null) {
+    const modal = document.getElementById('form-modal');
+    document.getElementById('modal-title').textContent = editData ? 'Edit Bank Account' : 'Add Bank Account';
+    const container = document.getElementById('modal-form-container');
+    
+    container.innerHTML = `
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+            <div class="space-y-6">
+                <input type="text" id="bank-name" class="form-input" placeholder="Bank Name *" value="${editData ? editData.bankName : ''}" required>
+                <input type="text" id="bank-acc-name" class="form-input" placeholder="Account Name *" value="${editData ? editData.accountName : ''}">
+                <input type="text" id="bank-acc-num" class="form-input" placeholder="Account Number *" value="${editData ? editData.accountNumber : ''}">
+            </div>
+            <div class="space-y-6">
+                <input type="number" id="bank-balance" class="form-input" placeholder="Initial Balance" value="${editData ? editData.balance : 0}">
+            </div>
+        </div>
+    `;
+
+    document.getElementById('save-btn').onclick = () => saveBank(editData ? editData.id : null);
+    modal.classList.remove('hidden');
+    setTimeout(() => modal.classList.remove('opacity-0'), 10);
+    feather.replace();
+}
+
+function saveBank(id) {
+    const bankName = document.getElementById('bank-name').value.trim();
+    if (!bankName) { alert('Bank Name is required.'); return; }
+
+    const bank = {
+        id: id || ('BANK-' + Math.floor(Math.random() * 9000 + 1000)),
+        bankName: bankName,
+        accountName: document.getElementById('bank-acc-name').value.trim(),
+        accountNumber: document.getElementById('bank-acc-num').value.trim(),
+        balance: parseFloat(document.getElementById('bank-balance').value || 0)
+    };
+
+    if (id) {
+        const index = documents[DOC_TYPES.BANKING].findIndex(b => b.id === id);
+        if (index !== -1) documents[DOC_TYPES.BANKING][index] = bank;
+    } else {
+        documents[DOC_TYPES.BANKING].unshift(bank);
+    }
+
+    localStorage.setItem(STORAGE_KEYS[DOC_TYPES.BANKING], JSON.stringify(documents[DOC_TYPES.BANKING]));
+    closeModal();
+    renderContent();
+}
+
+function openPaymentModal(type, prefillData = null) {
+    const modal = document.getElementById('form-modal');
+    const labels = {
+        [DOC_TYPES.PAYMENTS_REC]: 'Payment Received',
+        [DOC_TYPES.PAYMENTS_MADE]: 'Payment Made'
+    };
+    
+    const isPurchase = type === DOC_TYPES.PAYMENTS_MADE;
+    const entityLabel = isPurchase ? 'Vendor' : 'Customer';
+    const entities = isPurchase ? documents[DOC_TYPES.VENDORS] : documents[DOC_TYPES.CUSTOMERS];
+    const docsToLink = isPurchase ? documents[DOC_TYPES.BILLS] : documents[DOC_TYPES.INVOICES];
+
+    document.getElementById('modal-title').textContent = labels[type];
+    const container = document.getElementById('modal-form-container');
+    
+    container.innerHTML = `
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8 animate-up">
+            <div class="space-y-6">
+                <div>
+                    <label class="block text-[10px] uppercase tracking-widest font-bold text-slate-500 mb-2">Select ${entityLabel}</label>
+                    <select id="payment-entity" class="form-input" onchange="updateRefDocs(this.value, ${isPurchase})">
+                        <option value="">-- Select ${entityLabel} --</option>
+                        ${entities.map(e => `<option value="${e.company || e.displayName}" ${prefillData && prefillData.entityId === (e.company || e.displayName) ? 'selected' : ''}>${e.displayName}</option>`).join('')}
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-[10px] uppercase tracking-widest font-bold text-slate-500 mb-2">Linked Document (Invoice/Bill)</label>
+                    <select id="payment-ref-doc" class="form-input">
+                        <option value="">-- Select Document --</option>
+                        ${docsToLink.map(d => `<option value="${d.id}" ${prefillData && prefillData.refDoc === d.id ? 'selected' : ''}>${d.id} (₹${d.total})</option>`).join('')}
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-[10px] uppercase tracking-widest font-bold text-slate-500 mb-2">Payment Mode</label>
+                    <select id="payment-mode" class="form-input">
+                        <option value="Cash">Cash</option>
+                        <option value="Bank Transfer">Bank Transfer</option>
+                        <option value="Cheque">Cheque</option>
+                        <option value="UPI">UPI/Digital</option>
+                    </select>
+                </div>
+            </div>
+            <div class="space-y-6">
+                <div>
+                    <label class="block text-[10px] uppercase tracking-widest font-bold text-slate-500 mb-2">Payment Date</label>
+                    <input type="date" id="payment-date" class="form-input" value="${new Date().toISOString().split('T')[0]}">
+                </div>
+                <div>
+                    <label class="block text-[10px] uppercase tracking-widest font-bold text-slate-500 mb-2">Amount Paid</label>
+                    <input type="number" id="payment-amount" class="form-input" placeholder="0.00" value="${prefillData ? prefillData.amount : ''}">
+                </div>
+                <div>
+                    <label class="block text-[10px] uppercase tracking-widest font-bold text-slate-500 mb-2">Reference / Transaction ID</label>
+                    <input type="text" id="payment-ref-num" class="form-input" placeholder="Enter txn id, check #, etc.">
+                </div>
+            </div>
+        </div>
+    `;
+
+    document.getElementById('save-btn').onclick = () => savePayment(type);
+    modal.classList.remove('hidden');
+    setTimeout(() => modal.classList.remove('opacity-0'), 10);
+    feather.replace();
+}
+
+function updateRefDocs(entityName, isPurchase) {
+    const refSelect = document.getElementById('payment-ref-doc');
+    const docs = isPurchase ? documents[DOC_TYPES.BILLS] : documents[DOC_TYPES.INVOICES];
+    const filtered = docs.filter(d => d.client === entityName);
+    
+    refSelect.innerHTML = `<option value="">-- Select Document --</option>` + 
+        filtered.map(d => `<option value="${d.id}">${d.id} (₹${d.total})</option>`).join('');
+}
+
+function savePayment(type) {
+    const amount = parseFloat(document.getElementById('payment-amount').value || 0);
+    const client = document.getElementById('payment-entity').value;
+    
+    if (!client || amount <= 0) {
+        alert('Please select an entity and enter a valid amount.');
+        return;
+    }
+
+    const payment = {
+        id: (type === DOC_TYPES.PAYMENTS_REC ? 'PAY-IN-' : 'PAY-OUT-') + Math.floor(Math.random() * 90000 + 10000),
+        client: client,
+        date: document.getElementById('payment-date').value,
+        total: amount,
+        refDoc: document.getElementById('payment-ref-doc').value,
+        mode: document.getElementById('payment-mode').value,
+        txnId: document.getElementById('payment-ref-num').value,
+        type: type
+    };
+
+    documents[type].unshift(payment);
+    localStorage.setItem(STORAGE_KEYS[type], JSON.stringify(documents[type]));
+    closeModal();
+    renderContent();
+}

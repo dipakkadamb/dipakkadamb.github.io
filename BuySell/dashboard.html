@@ -62,31 +62,62 @@
             </button>
         </div>
         
-        <nav class="flex-1 py-6">
-            <div class="px-6 py-2 text-[10px] uppercase tracking-widest text-slate-500 font-bold mb-2">Main</div>
-            <button onclick="switchView('dashboard')" class="sidebar-link" id="tab-dashboard">
-                <i data-feather="grid" class="w-4 h-4"></i> Overview
+        <nav class="flex-1 py-6 overflow-y-auto custom-scrollbar">
+            <!-- Dashboard Section -->
+            <div class="px-6 py-2 text-[10px] uppercase tracking-widest text-slate-500 font-bold mb-2">General</div>
+            <button onclick="switchView('dashboard')" class="sidebar-link active-tab" id="tab-dashboard">
+                <i data-feather="grid" class="w-4 h-4"></i> Dashboard
+            </button>
+            <button onclick="switchView('items')" class="sidebar-link" id="tab-items">
+                <i data-feather="box" class="w-4 h-4"></i> Items
+            </button>
+            <button onclick="switchView('banking')" class="sidebar-link" id="tab-banking">
+                <i data-feather="briefcase" class="w-4 h-4"></i> Banking
             </button>
             
-            <div class="px-6 py-4 text-[10px] uppercase tracking-widest text-slate-500 font-bold mb-2">Relationship</div>
+            <!-- Sales Section -->
+            <div class="px-6 py-4 text-[10px] uppercase tracking-widest text-slate-500 font-bold mb-2">Sales</div>
             <button onclick="switchView('customers')" class="sidebar-link" id="tab-customers">
                 <i data-feather="users" class="w-4 h-4"></i> Customers
             </button>
-            
-            <div class="px-6 py-4 text-[10px] uppercase tracking-widest text-slate-500 font-bold mb-2">Sales Department</div>
             <button onclick="switchView('quotes')" class="sidebar-link" id="tab-quotes">
                 <i data-feather="file-text" class="w-4 h-4"></i> Quotes
             </button>
             <button onclick="switchView('sales-orders')" class="sidebar-link" id="tab-sales-orders">
-                <i data-feather="shopping-bag" class="w-4 h-4"></i> SO
+                <i data-feather="shopping-bag" class="w-4 h-4"></i> Sales Orders
+            </button>
+            <button onclick="switchView('invoices')" class="sidebar-link" id="tab-invoices">
+                <i data-feather="file" class="w-4 h-4"></i> Invoices
+            </button>
+            <button onclick="switchView('payments-received')" class="sidebar-link" id="tab-payments-received">
+                <i data-feather="download" class="w-4 h-4"></i> Payments Received
             </button>
             <button onclick="switchView('delivery-chalans')" class="sidebar-link" id="tab-delivery-chalans">
-                <i data-feather="truck" class="w-4 h-4"></i> DC
+                <i data-feather="truck" class="w-4 h-4"></i> Delivery Challans
             </button>
             
-            <div class="px-6 py-4 text-[10px] uppercase tracking-widest text-slate-500 font-bold mb-2">Purchase Department</div>
+            <!-- Purchases Section -->
+            <div class="px-6 py-4 text-[10px] uppercase tracking-widest text-slate-500 font-bold mb-2">Purchases</div>
+            <button onclick="switchView('vendors')" class="sidebar-link" id="tab-vendors">
+                <i data-feather="user-check" class="w-4 h-4"></i> Vendors
+            </button>
+            <button onclick="switchView('expenses')" class="sidebar-link" id="tab-expenses">
+                <i data-feather="credit-card" class="w-4 h-4"></i> Expenses
+            </button>
             <button onclick="switchView('purchase-orders')" class="sidebar-link" id="tab-purchase-orders">
-                <i data-feather="package" class="w-4 h-4"></i> PO
+                <i data-feather="package" class="w-4 h-4"></i> Purchase Orders
+            </button>
+            <button onclick="switchView('bills')" class="sidebar-link" id="tab-bills">
+                <i data-feather="file-minus" class="w-4 h-4"></i> Bills
+            </button>
+            <button onclick="switchView('payments-made')" class="sidebar-link" id="tab-payments-made">
+                <i data-feather="upload" class="w-4 h-4"></i> Payments Made
+            </button>
+            
+            <!-- Reports Section -->
+            <div class="px-6 py-4 text-[10px] uppercase tracking-widest text-slate-500 font-bold mb-2">Analytics</div>
+            <button onclick="switchView('reports')" class="sidebar-link" id="tab-reports">
+                <i data-feather="bar-chart-2" class="w-4 h-4"></i> Reports
             </button>
         </nav>
 
