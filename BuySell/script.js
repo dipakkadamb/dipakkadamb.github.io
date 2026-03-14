@@ -47,6 +47,22 @@ function formatCurrency(amount) {
     });
 }
 
+function getDocBalance(doc, type) {
+    let balance = doc.total;
+    if (type === DOC_TYPES.INVOICES) {
+        const relatedPayments = documents[DOC_TYPES.PAYMENTS_REC].filter(p => p.refDoc === doc.id);
+        const relatedCredits = documents[DOC_TYPES.CREDIT_NOTES].filter(c => c.ref === doc.id);
+        balance -= relatedPayments.reduce((sum, p) => sum + p.total, 0);
+        balance -= relatedCredits.reduce((sum, c) => sum + c.total, 0);
+    } else if (type === DOC_TYPES.BILLS) {
+        const relatedPayments = documents[DOC_TYPES.PAYMENTS_MADE].filter(p => p.refDoc === doc.id);
+        const relatedCredits = documents[DOC_TYPES.VENDOR_CREDITS].filter(c => c.ref === doc.id);
+        balance -= relatedPayments.reduce((sum, p) => sum + p.total, 0);
+        balance -= relatedCredits.reduce((sum, c) => sum + c.total, 0);
+    }
+    return Math.max(0, balance);
+}
+
 let documents = {};
 Object.values(DOC_TYPES).forEach(type => {
     if (STORAGE_KEYS[type]) {
@@ -107,25 +123,7 @@ function renderContent() {
 }
 
 function renderDashboard(container) {
-    // 1. Utility Function for Dynamic Balances
-    const getDocBalance = (doc, type) => {
-        let balance = doc.total;
-        
-        if (type === DOC_TYPES.INVOICES) {
-            const relatedPayments = documents[DOC_TYPES.PAYMENTS_REC].filter(p => p.refDoc === doc.id);
-            const relatedCredits = documents[DOC_TYPES.CREDIT_NOTES].filter(c => c.ref === doc.id);
-            balance -= relatedPayments.reduce((sum, p) => sum + p.total, 0);
-            balance -= relatedCredits.reduce((sum, c) => sum + c.total, 0);
-        } else if (type === DOC_TYPES.BILLS) {
-            const relatedPayments = documents[DOC_TYPES.PAYMENTS_MADE].filter(p => p.refDoc === doc.id);
-            const relatedCredits = documents[DOC_TYPES.VENDOR_CREDITS].filter(c => c.ref === doc.id);
-            balance -= relatedPayments.reduce((sum, p) => sum + p.total, 0);
-            balance -= relatedCredits.reduce((sum, c) => sum + c.total, 0);
-        }
-        return Math.max(0, balance);
-    };
-
-    // 2. Calculations
+    // 1. Calculations
     const totalReceivables = documents[DOC_TYPES.INVOICES].reduce((sum, inv) => sum + getDocBalance(inv, DOC_TYPES.INVOICES), 0);
     const totalPayables = documents[DOC_TYPES.BILLS].reduce((sum, bill) => sum + getDocBalance(bill, DOC_TYPES.BILLS), 0);
     const totalCash = documents[DOC_TYPES.BANKING].reduce((sum, bank) => sum + bank.balance, 0);
@@ -480,12 +478,19 @@ function renderReports(container, subReport = null) {
 }
 
 function renderProfitLoss(container) {
-    const totalSales = documents[DOC_TYPES.INVOICES].reduce((sum, inv) => sum + inv.total, 0);
-    const totalPurchases = documents[DOC_TYPES.BILLS].reduce((sum, bill) => sum + bill.total, 0);
+    const totalInvoices = documents[DOC_TYPES.INVOICES].reduce((sum, inv) => sum + inv.total, 0);
+    const totalCreditNotes = documents[DOC_TYPES.CREDIT_NOTES].reduce((sum, cn) => sum + cn.total, 0);
+    const netSales = totalInvoices - totalCreditNotes;
+
+    const totalBills = documents[DOC_TYPES.BILLS].reduce((sum, bill) => sum + bill.total, 0);
+    const totalVendorCredits = documents[DOC_TYPES.VENDOR_CREDITS].reduce((sum, vc) => sum + vc.total, 0);
+    const netPurchases = totalBills - totalVendorCredits;
+
     const expenses = documents[DOC_TYPES.EXPENSES] || [];
     const totalExpenses = expenses.reduce((sum, exp) => sum + exp.total, 0);
-    const totalOutflow = totalPurchases + totalExpenses;
-    const netProfit = totalSales - totalOutflow;
+    
+    const totalOutflow = netPurchases + totalExpenses;
+    const netProfit = netSales - totalOutflow;
 
     let html = `
         <div class="mb-8 animate-up">
@@ -498,8 +503,8 @@ function renderProfitLoss(container) {
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10 animate-up">
             <div class="glass-panel p-6 border-emerald-400/20 bg-emerald-400/5">
-                <div class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Total Operating Income</div>
-                <div class="text-2xl font-bold text-emerald-400">${formatCurrency(totalSales)}</div>
+                <div class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Net Operating Income</div>
+                <div class="text-2xl font-bold text-emerald-400">${formatCurrency(netSales)}</div>
             </div>
             <div class="glass-panel p-6 border-red-400/20 bg-red-400/5">
                 <div class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Total Operating Expenses</div>
@@ -515,12 +520,12 @@ function renderProfitLoss(container) {
             <h4 class="text-white font-bold text-sm uppercase tracking-widest mb-8 border-b border-white/5 pb-4">Detailed Breakdown</h4>
             <div class="space-y-6">
                 <div class="flex justify-between items-center text-sm">
-                    <span class="text-slate-400">Sales Income (Invoices)</span>
-                    <span class="text-white font-mono font-bold">${formatCurrency(totalSales)}</span>
+                    <span class="text-slate-400">Net Sales Income (Invoices - Credits)</span>
+                    <span class="text-white font-mono font-bold">${formatCurrency(netSales)}</span>
                 </div>
-                 <div class="flex justify-between items-center text-sm">
-                    <span class="text-slate-400">Cost of Goods (Bills)</span>
-                    <span class="text-white font-mono font-bold">(${formatCurrency(totalPurchases)})</span>
+                <div class="flex justify-between items-center text-sm">
+                    <span class="text-slate-400">Net Cost of Goods (Bills - Credits)</span>
+                    <span class="text-white font-mono font-bold">(${formatCurrency(netPurchases)})</span>
                 </div>
                  <div class="flex justify-between items-center text-sm">
                     <span class="text-slate-400">Other Expenses</span>
@@ -541,6 +546,9 @@ function renderSalesByCustomer(container) {
     const customerSales = {};
     documents[DOC_TYPES.INVOICES].forEach(inv => {
         customerSales[inv.client] = (customerSales[inv.client] || 0) + inv.total;
+    });
+    documents[DOC_TYPES.CREDIT_NOTES].forEach(cn => {
+        customerSales[cn.client] = (customerSales[cn.client] || 0) - cn.total;
     });
 
     const sortedCustomers = Object.entries(customerSales).sort((a, b) => b[1] - a[1]);
@@ -759,7 +767,8 @@ function renderDocumentList(container, type) {
                             <th class="px-4 py-3">ID</th>
                             <th class="px-4 py-3">Client/Entity</th>
                             <th class="px-4 py-3">Date</th>
-                            <th class="px-4 py-3">Amount</th>
+                            <th class="px-4 py-3">Total</th>
+                            <th class="px-4 py-3">Balance Due</th>
                             <th class="px-4 py-3 text-right">Actions</th>
                         </tr>
                     </thead>
@@ -772,7 +781,8 @@ function renderDocumentList(container, type) {
                     <td class="px-6 py-4 font-mono text-sm text-accent-primary" data-label="ID">${doc.id}</td>
                     <td class="px-6 py-4 text-white font-semibold" data-label="Client">${doc.client}</td>
                     <td class="px-6 py-4 text-slate-400 text-sm" data-label="Date">${doc.date}</td>
-                    <td class="px-6 py-4 text-white font-bold" data-label="Total">${formatCurrency(doc.total)}</td>
+                    <td class="px-6 py-4 text-slate-500 text-sm" data-label="Total">${formatCurrency(doc.total)}</td>
+                    <td class="px-6 py-4 text-white font-bold" data-label="Balance">${formatCurrency(getDocBalance(doc, type))}</td>
                     <td class="px-6 py-4 text-right space-x-1 flex items-center justify-end actions-cell" data-label="Control">
                         ${renderConversionButtons(doc, type)}
                         <button onclick="printDocument('${type}', '${doc.id}')" class="p-2 text-slate-500 hover:text-accent-primary transition-colors" title="Print">
@@ -804,13 +814,15 @@ function renderConversionButtons(doc, type) {
     } else if (type === DOC_TYPES.PO) {
         return `<button onclick="convertDocument('${type}', '${doc.id}', '${DOC_TYPES.BILLS}')" class="px-3 py-1 bg-amber-400/10 border border-amber-400/20 text-amber-400 text-[9px] font-bold uppercase rounded-md hover:bg-amber-400/20 transition-all mr-2">To Bill</button>`;
     } else if (type === DOC_TYPES.INVOICES) {
+        const balance = getDocBalance(doc, type);
         return `
-            <button onclick="openPaymentModal('${DOC_TYPES.PAYMENTS_REC}', { entityId: '${doc.billing.company}', refDoc: '${doc.id}', amount: ${doc.total} })" class="px-3 py-1 bg-emerald-400/10 border border-emerald-400/20 text-emerald-400 text-[9px] font-bold uppercase rounded-md hover:bg-emerald-400/20 transition-all mr-2">Record Payment</button>
+            <button onclick="openPaymentModal('${DOC_TYPES.PAYMENTS_REC}', { entityId: '${doc.client}', refDoc: '${doc.id}', amount: ${balance} })" class="px-3 py-1 bg-emerald-400/10 border border-emerald-400/20 text-emerald-400 text-[9px] font-bold uppercase rounded-md hover:bg-emerald-400/20 transition-all mr-2">Record Payment</button>
             <button onclick="convertDocument('${type}', '${doc.id}', '${DOC_TYPES.CREDIT_NOTES}')" class="px-3 py-1 bg-red-400/10 border border-red-400/20 text-red-400 text-[9px] font-bold uppercase rounded-md hover:bg-red-400/20 transition-all mr-2">To Credit Note</button>
         `;
     } else if (type === DOC_TYPES.BILLS) {
+        const balance = getDocBalance(doc, type);
         return `
-            <button onclick="openPaymentModal('${DOC_TYPES.PAYMENTS_MADE}', { entityId: '${doc.billing.company}', refDoc: '${doc.id}', amount: ${doc.total} })" class="px-3 py-1 bg-amber-400/10 border border-amber-400/20 text-amber-400 text-[9px] font-bold uppercase rounded-md hover:bg-amber-400/20 transition-all mr-2">Record Payment</button>
+            <button onclick="openPaymentModal('${DOC_TYPES.PAYMENTS_MADE}', { entityId: '${doc.client}', refDoc: '${doc.id}', amount: ${balance} })" class="px-3 py-1 bg-amber-400/10 border border-amber-400/20 text-amber-400 text-[9px] font-bold uppercase rounded-md hover:bg-amber-400/20 transition-all mr-2">Record Payment</button>
             <button onclick="convertDocument('${type}', '${doc.id}', '${DOC_TYPES.VENDOR_CREDITS}')" class="px-3 py-1 bg-red-400/10 border border-red-400/20 text-red-400 text-[9px] font-bold uppercase rounded-md hover:bg-red-400/20 transition-all mr-2">To Vendor Credit</button>
         `;
     }
@@ -1057,8 +1069,8 @@ function updateCalculations() {
         const rate = parseFloat(row.querySelector('.item-rate').value || 0);
         const taxPercent = parseFloat(row.querySelector('.item-tax').value || 0);
         
-        const amount = qty * rate;
-        const tax = amount * (taxPercent / 100);
+        const amount = Math.round(qty * rate * 100) / 100;
+        const tax = Math.round(amount * (taxPercent / 100) * 100) / 100;
         
         subtotal += amount;
         taxTotal += tax;
@@ -1066,9 +1078,13 @@ function updateCalculations() {
         row.querySelector('.item-amount').textContent = formatCurrency(amount);
     });
     
+    subtotal = Math.round(subtotal * 100) / 100;
+    taxTotal = Math.round(taxTotal * 100) / 100;
+    const grandTotal = Math.round((subtotal + taxTotal) * 100) / 100;
+
     document.getElementById('summary-subtotal').textContent = formatCurrency(subtotal);
     document.getElementById('summary-tax').textContent = formatCurrency(taxTotal);
-    document.getElementById('summary-total').textContent = formatCurrency(subtotal + taxTotal);
+    document.getElementById('summary-total').textContent = formatCurrency(grandTotal);
 }
 
 function saveDoc(type) {
@@ -1099,8 +1115,8 @@ function saveDoc(type) {
         return;
     }
 
-    const subtotal = lineItems.reduce((acc, i) => acc + (i.qty * i.rate), 0);
-    const taxTotal = lineItems.reduce((acc, i) => acc + (i.qty * i.rate * (i.tax / 100)), 0);
+    const subtotal = Math.round(lineItems.reduce((acc, i) => acc + (i.qty * i.rate), 0) * 100) / 100;
+    const taxTotal = Math.round(lineItems.reduce((acc, i) => acc + (i.qty * i.rate * (i.tax / 100)), 0) * 100) / 100;
 
     const doc = {
         id: (type.substring(0, 2).toUpperCase() + '-' + Math.floor(Math.random() * 90000 + 10000)),
@@ -1111,7 +1127,7 @@ function saveDoc(type) {
         lineItems: lineItems,
         subtotal: subtotal,
         tax: taxTotal,
-        total: subtotal + taxTotal,
+        total: Math.round((subtotal + taxTotal) * 100) / 100,
         ref: document.getElementById('doc-ref').value || 'Manual Entry',
         note: document.getElementById('doc-note').value.trim()
     };
@@ -1270,8 +1286,8 @@ function printDocument(type, id) {
         <body>
             <div class="header">
                 <div class="company-info">
-                    <div class="company-name">Dipak Kadamb</div>
-                    <div class="company-sub" style="color: #06b6d4; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;">Make It Simple</div>
+                    <div class="company-name">ASYNCRIX GLOBAL</div>
+                    <div class="company-sub" style="color: #06b6d4; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;">Innovating the Async Future</div>
                 </div>
                 <div class="doc-type">
                     <h1 class="doc-label">${labels[type]}</h1>
@@ -1341,9 +1357,19 @@ function printDocument(type, id) {
                         <span>${formatCurrency(doc.tax)}</span>
                     </div>
                     <div class="total-row grand">
-                        <span>Total Due</span>
+                        <span>Total Amount</span>
                         <span>${formatCurrency(doc.total)}</span>
                     </div>
+                    ${(type === DOC_TYPES.INVOICES || type === DOC_TYPES.BILLS) ? `
+                        <div class="total-row" style="margin-top: 10px; color: #10b981; font-weight: 600;">
+                            <span>Amount Paid</span>
+                            <span>${formatCurrency(doc.total - getDocBalance(doc, type))}</span>
+                        </div>
+                        <div class="total-row" style="margin-top: 5px; color: #ef4444; font-weight: 800; font-size: 18px; border-top: 1px solid #e2e8f0; padding-top: 10px;">
+                            <span>Balance Due</span>
+                            <span>${formatCurrency(getDocBalance(doc, type))}</span>
+                        </div>
+                    ` : ''}
                 </div>
             </div>
 
@@ -1355,8 +1381,8 @@ function printDocument(type, id) {
             ` : ''}
             
             <div class="footer">
-                This is a computer-generated transaction document from CRM.<br>
-                For any queries, please visit dipakkadamb.github.io
+                This is a computer-generated transaction document from ASYNCRIX GLOBAL.<br>
+                For any queries, contact support@asyncrix.tech
             </div>
         </body>
         </html>
