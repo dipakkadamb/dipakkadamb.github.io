@@ -114,9 +114,9 @@ function renderDocumentList(container, type) {
     const list = documents[type];
     const labels = {
         [DOC_TYPES.QUOTES]: 'Quote',
-        [DOC_TYPES.SO]: 'Sales Order',
-        [DOC_TYPES.DC]: 'Delivery Chalan',
-        [DOC_TYPES.PO]: 'Purchase Order'
+        [DOC_TYPES.SO]: 'SO',
+        [DOC_TYPES.DC]: 'DC',
+        [DOC_TYPES.PO]: 'PO'
     };
 
     let html = `
@@ -200,10 +200,10 @@ function renderConversionButtons(doc, type) {
 function openCreateModal(type, prefillData = null) {
     const modal = document.getElementById('form-modal');
     const labels = {
-        [DOC_TYPES.QUOTES]: 'Quotation',
-        [DOC_TYPES.SO]: 'Sales Order',
-        [DOC_TYPES.DC]: 'Delivery Chalan',
-        [DOC_TYPES.PO]: 'Purchase Order'
+        [DOC_TYPES.QUOTES]: 'Quote',
+        [DOC_TYPES.SO]: 'SO',
+        [DOC_TYPES.DC]: 'DC',
+        [DOC_TYPES.PO]: 'PO'
     };
     document.getElementById('modal-title').textContent = `Create New ${labels[type]}`;
     
@@ -450,10 +450,10 @@ function printDocument(type, id) {
     if (!doc) return;
 
     const labels = { 
-        [DOC_TYPES.QUOTES]: 'QUOTATION', 
-        [DOC_TYPES.SO]: 'SALES ORDER', 
-        [DOC_TYPES.DC]: 'DELIVERY CHALAN', 
-        [DOC_TYPES.PO]: 'PURCHASE ORDER' 
+        [DOC_TYPES.QUOTES]: 'QUOTE', 
+        [DOC_TYPES.SO]: 'SO', 
+        [DOC_TYPES.DC]: 'DC', 
+        [DOC_TYPES.PO]: 'PO' 
     };
 
     const printWindow = window.open('', '_blank', 'width=900,height=800');
@@ -510,7 +510,7 @@ function printDocument(type, id) {
             <div class="header">
                 <div class="company-info">
                     <div class="company-name">Dipak Kadamb</div>
-                    <div class="company-sub">Advanced Business Automation Hub</div>
+                    <div class="company-sub" style="color: #06b6d4; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;">Make It Simple</div>
                 </div>
                 <div class="doc-type">
                     <h1 class="doc-label">${labels[type]}</h1>
