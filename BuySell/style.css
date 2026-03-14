@@ -161,6 +161,35 @@ body {
     }
 }
 
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-navy);
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-primary);
+}
+
+/* Stat Card Hover Effects */
+.glass-panel {
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.glass-panel:hover {
+    border-color: rgba(6, 182, 212, 0.2);
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+}
+
 /* Animations */
 @keyframes slideUp {
     from { opacity: 0; transform: translateY(15px); }
@@ -178,4 +207,10 @@ body {
     }
     body { background: white; color: black; }
     .glass-panel { border: none; background: none; }
+}
+
+/* Logout Hover */
+.sidebar-link.logout-btn:hover {
+    color: #f87171 !important;
+    background: rgba(239, 68, 68, 0.05) !important;
 }

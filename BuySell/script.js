@@ -1183,9 +1183,9 @@ async function saveDoc(type) {
     await saveToCloud(type, doc);
 
     // --- Dynamic Flow: Stock & Banking Integration ---
-    if (type === DOC_TYPES.INVOICES || type === DOC_TYPES.SO || type === DOC_TYPES.PO || type === DOC_TYPES.BILLS) {
+    if ([DOC_TYPES.INVOICES, DOC_TYPES.SO, DOC_TYPES.PO, DOC_TYPES.BILLS, DOC_TYPES.CREDIT_NOTES, DOC_TYPES.VENDOR_CREDITS].includes(type)) {
         for (const line of lineItems) {
-            const item = documents[DOC_TYPES.ITEMS].find(i => i.name === line.name);
+            const item = documents[DOC_TYPES.ITEMS].find(i => i.name.trim() === line.name.trim());
             if (item && item.type === 'Goods') {
                 if (!item.stock) item.stock = 0;
                 // Correct accounting stock rules
@@ -1193,6 +1193,8 @@ async function saveDoc(type) {
                 else if (type === DOC_TYPES.CREDIT_NOTES) item.stock += line.qty;
                 else if (type === DOC_TYPES.BILLS) item.stock += line.qty;
                 else if (type === DOC_TYPES.VENDOR_CREDITS) item.stock -= line.qty;
+                // SO and PO don't affect accounting stock immediately usually, 
+                // but if the app design uses them for 'commited' stock, we could add here.
                 
                 await saveToCloud(DOC_TYPES.ITEMS, item);
             }
