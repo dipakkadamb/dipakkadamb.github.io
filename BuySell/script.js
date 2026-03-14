@@ -82,11 +82,11 @@ const globalBridge = {
     deleteDoc: (t, id) => deleteDoc(t, id),
     convertDocument: (s, id, t) => convertDocument(s, id, t),
     printDocument: (t, id) => printDocument(t, id),
+    closeModal: () => closeModal(),
+    logout: () => logout(),
     openCustomerModal: (d) => openCustomerModal(d),
     saveCustomer: (id) => saveCustomer(id),
     deleteCustomer: (id) => deleteCustomer(id),
-    closeModal: () => closeModal(),
-    logout: () => logout(),
     openVendorModal: (d) => openVendorModal(d),
     saveVendor: (id) => saveVendor(id),
     deleteVendor: (id) => deleteVendor(id),
@@ -338,85 +338,7 @@ function renderDashboard(container) {
     feather.replace();
 }
 
-function renderVendors(container) {
-    const list = documents[DOC_TYPES.VENDORS];
-    
-    let html = `
-        <div class="flex justify-between items-center mb-8 animate-up">
-            <div>
-                <h3 class="text-2xl font-bold text-white tracking-tight">Vendors</h3>
-                <p class="text-slate-500 text-sm mt-1">Manage your suppliers and vendors</p>
-            </div>
-            <button onclick="openVendorModal()" class="btn-primary">
-                <i data-feather="user-plus" class="w-4 h-4"></i> Add Vendor
-            </button>
-        </div>
-
-        <div class="glass-panel overflow-hidden border-white/5 animate-up">
-            <div class="overflow-x-auto">
-                <table class="responsive-table w-full">
-                    <thead class="bg-white/[0.02] border-b border-white/5">
-                        <tr class="text-[9px] font-bold text-slate-500 uppercase tracking-widest">
-                            <th class="px-4 py-3 text-left">Name</th>
-                            <th class="px-4 py-3 text-left">Company</th>
-                            <th class="px-4 py-3 text-left">Contact Info</th>
-                            <th class="px-4 py-3 text-right">GST Details</th>
-                            <th class="px-4 py-3 text-right">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-white/5">
-                        ${list.length === 0 ? `
-                            <tr>
-                                <td colspan="5" class="px-6 py-20 text-center text-slate-500">
-                                    <div class="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-4">
-                                        <i data-feather="user-check" class="w-8 h-8 opacity-20"></i>
-                                    </div>
-                                    <p class="font-bold text-lg">No vendors found</p>
-                                    <p class="text-xs mt-1">Click "Add Vendor" to populate your directory.</p>
-                                </td>
-                            </tr>
-                        ` : list.map(vend => `
-                            <tr class="hover:bg-white/[0.01] transition-colors group">
-                                <td class="px-6 py-4" data-label="Name">
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-8 h-8 rounded-full bg-accent-secondary/10 flex items-center justify-center text-accent-secondary border border-accent-secondary/20 text-xs font-bold">
-                                            ${vend.displayName.charAt(0)}
-                                        </div>
-                                        <div>
-                                            <div class="text-white font-semibold">${vend.displayName}</div>
-                                            <div class="text-[9px] text-slate-500 uppercase tracking-widest font-bold">${vend.type}</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 text-slate-300" data-label="Company">${vend.company || '-'}</td>
-                                <td class="px-6 py-4" data-label="Contact">
-                                    <div class="text-white text-sm">${vend.email || '-'}</div>
-                                    <div class="text-slate-500 text-xs">${vend.mobile || vend.phone || '-'}</div>
-                                </td>
-                                <td class="px-6 py-4 text-right" data-label="GST">
-                                    <div class="text-accent-secondary text-[10px] font-bold uppercase tracking-wider">${vend.gstTreatment}</div>
-                                    <div class="text-white font-mono text-xs">${vend.gstin || '-'}</div>
-                                </td>
-                                <td class="px-6 py-4 text-right actions-cell">
-                                    <div class="flex justify-end gap-1">
-                                        <button onclick="openVendorModal(${JSON.stringify(vend).replace(/"/g, '&quot;')})" class="p-2 text-slate-500 hover:text-accent-secondary transition-colors">
-                                            <i data-feather="edit-2" class="w-4 h-4"></i>
-                                        </button>
-                                        <button onclick="deleteDoc('${DOC_TYPES.VENDORS}', '${vend.id}')" class="p-2 text-slate-500 hover:text-red-400 transition-colors">
-                                            <i data-feather="trash-2" class="w-4 h-4"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        `).join('')}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    `;
-    
-    container.innerHTML = html;
-}
+// Rendering functions handled in consolidated block below.
 
 function renderItems(container) {
     const list = documents[DOC_TYPES.ITEMS];
@@ -1544,147 +1466,7 @@ function printDocument(type, id) {
     }, 2500);
 }
 
-function openCustomerModal(editData = null) {
-    const modal = document.getElementById('form-modal');
-    document.getElementById('modal-title').textContent = editData ? 'Edit Customer' : 'Add New Customer';
-    
-    const container = document.getElementById('modal-form-container');
-    
-    container.innerHTML = `
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-            <!-- Basic Info -->
-            <div class="space-y-6">
-                <div>
-                    <label class="block text-[10px] uppercase tracking-widest font-bold text-slate-500 mb-2">Customer Type</label>
-                    <div class="flex gap-4">
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="radio" name="cust-type" value="Business" ${!editData || editData.type === 'Business' ? 'checked' : ''} class="accent-accent-primary">
-                            <span class="text-sm text-white">Business</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="radio" name="cust-type" value="Individual" ${editData && editData.type === 'Individual' ? 'checked' : ''} class="accent-accent-primary">
-                            <span class="text-sm text-white">Individual</span>
-                        </label>
-                    </div>
-                </div>
-                
-                <div class="grid grid-cols-1 gap-4">
-                    <input type="text" id="cust-display" class="form-input" placeholder="Customer Display Name *" value="${editData ? editData.displayName : ''}" required>
-                    <input type="text" id="cust-company" class="form-input" placeholder="Company Name" value="${editData ? editData.company : ''}">
-                </div>
-
-                <div class="grid grid-cols-1 gap-4">
-                    <input type="email" id="cust-email" class="form-input" placeholder="Email Address" value="${editData ? editData.email : ''}">
-                    <div class="grid grid-cols-2 gap-4">
-                        <input type="text" id="cust-mobile" class="form-input" placeholder="Mobile Number" value="${editData ? editData.mobile : ''}">
-                        <input type="text" id="cust-phone" class="form-input" placeholder="Work Phone" value="${editData ? editData.phone : ''}">
-                    </div>
-                </div>
-            </div>
-
-            <!-- Tax/GST Info -->
-            <div class="space-y-6">
-                <div>
-                    <label class="block text-[10px] uppercase tracking-widest font-bold text-slate-500 mb-2">GST Details</label>
-                    <select id="cust-gst-treatment" class="form-input mb-4">
-                        <option value="Registered Business - Regular" ${editData && editData.gstTreatment === 'Registered Business - Regular' ? 'selected' : ''}>Registered Business - Regular</option>
-                        <option value="Registered Business - Composition" ${editData && editData.gstTreatment === 'Registered Business - Composition' ? 'selected' : ''}>Registered Business - Composition</option>
-                        <option value="Unregistered Business" ${editData && editData.gstTreatment === 'Unregistered Business' ? 'selected' : ''}>Unregistered Business</option>
-                        <option value="Consumer" ${editData && editData.gstTreatment === 'Consumer' ? 'selected' : ''}>Consumer</option>
-                        <option value="Overseas" ${editData && editData.gstTreatment === 'Overseas' ? 'selected' : ''}>Overseas</option>
-                    </select>
-                    <input type="text" id="cust-gstin" class="form-input" placeholder="GSTIN" value="${editData ? editData.gstin : ''}">
-                </div>
-
-                <div>
-                    <label class="block text-[10px] uppercase tracking-widest font-bold text-slate-500 mb-2">Place of Supply</label>
-                    <input type="text" id="cust-place" class="form-input" placeholder="Select State (e.g. Maharashtra)" value="${editData ? editData.place : ''}">
-                </div>
-            </div>
-        </div>
-
-        <!-- Address Section -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-8 border-t border-white/5">
-            <div>
-                <h4 class="text-white font-bold text-xs uppercase tracking-widest mb-4">Billing Address</h4>
-                <textarea id="cust-bill-address" class="form-input h-24" placeholder="Street, City, Zip, State">${editData ? editData.billingAddress : ''}</textarea>
-            </div>
-            <div>
-                <div class="flex justify-between items-center mb-4">
-                    <h4 class="text-white font-bold text-xs uppercase tracking-widest">Shipping Address</h4>
-                    <button onclick="copyCustBillingToShipping()" class="text-[9px] font-bold text-accent-primary uppercase tracking-widest">Copy from Billing</button>
-                </div>
-                <textarea id="cust-ship-address" class="form-input h-24" placeholder="Street, City, Zip, State">${editData ? editData.shippingAddress : ''}</textarea>
-            </div>
-        </div>
-
-        <div class="mt-8">
-            <label class="block text-[10px] uppercase tracking-widest font-bold text-slate-500 mb-2">Internal Remarks</label>
-            <textarea id="cust-remarks" class="form-input h-20 text-xs italic" placeholder="Added notes for internal reference...">${editData ? editData.remarks : ''}</textarea>
-        </div>
-    `;
-
-    window.copyCustBillingToShipping = () => {
-        document.getElementById('cust-ship-address').value = document.getElementById('cust-bill-address').value;
-    };
-
-    document.getElementById('save-btn').onclick = () => saveCustomer(editData ? editData.id : null);
-    
-    modal.classList.remove('hidden');
-    feather.replace();
-}
-
-async function saveCustomer(id = null) {
-    const displayName = document.getElementById('cust-display').value.trim();
-    if (!displayName) {
-        alert('Display Name is required.');
-        return;
-    }
-
-    const customer = {
-        id: id || ('CUST-' + Math.floor(Math.random() * 9000 + 1000)),
-        type: document.querySelector('input[name="cust-type"]:checked').value,
-        displayName: displayName,
-        company: document.getElementById('cust-company').value.trim(),
-        email: document.getElementById('cust-email').value.trim(),
-        mobile: document.getElementById('cust-mobile').value.trim(),
-        phone: document.getElementById('cust-phone').value.trim(),
-        gstTreatment: document.getElementById('cust-gst-treatment').value,
-        gstin: document.getElementById('cust-gstin').value.trim(),
-        place: document.getElementById('cust-place').value.trim(),
-        billingAddress: document.getElementById('cust-bill-address').value.trim(),
-        shippingAddress: document.getElementById('cust-ship-address').value.trim(),
-        remarks: document.getElementById('cust-remarks').value.trim()
-    };
-
-    if (id) {
-        const index = documents[DOC_TYPES.CUSTOMERS].findIndex(c => c.id === id);
-        if (index !== -1) documents[DOC_TYPES.CUSTOMERS][index] = customer;
-    } else {
-        documents[DOC_TYPES.CUSTOMERS].unshift(customer);
-    }
-
-    localStorage.setItem(STORAGE_KEYS[DOC_TYPES.CUSTOMERS], JSON.stringify(documents[DOC_TYPES.CUSTOMERS]));
-    await saveToCloud(DOC_TYPES.CUSTOMERS, customer);
-    closeModal();
-    renderContent();
-}
-
-async function deleteCustomer(id) {
-    if (!confirm('Are you sure you want to delete this customer?')) return;
-    documents[DOC_TYPES.CUSTOMERS] = documents[DOC_TYPES.CUSTOMERS].filter(c => c.id !== id);
-    localStorage.setItem(STORAGE_KEYS[DOC_TYPES.CUSTOMERS], JSON.stringify(documents[DOC_TYPES.CUSTOMERS]));
-    await deleteFromCloud(DOC_TYPES.CUSTOMERS, id);
-    renderContent();
-}
-
-async function deleteVendor(id) {
-    if (!confirm('Are you sure you want to delete this vendor?')) return;
-    documents[DOC_TYPES.VENDORS] = documents[DOC_TYPES.VENDORS].filter(v => v.id !== id);
-    localStorage.setItem(STORAGE_KEYS[DOC_TYPES.VENDORS], JSON.stringify(documents[DOC_TYPES.VENDORS]));
-    await deleteFromCloud(DOC_TYPES.VENDORS, id);
-    renderContent();
-}
+// Consolidated block handled below.
 
 function closeModal() {
     const modal = document.getElementById('form-modal');
