@@ -4,14 +4,16 @@ const DOC_TYPES = {
     QUOTES: 'quotes',
     SO: 'sales-orders',
     DC: 'delivery-chalans',
-    PO: 'purchase-orders'
+    PO: 'purchase-orders',
+    CUSTOMERS: 'customers'
 };
 
 const STORAGE_KEYS = {
     [DOC_TYPES.QUOTES]: 'hub_quotes',
     [DOC_TYPES.SO]: 'hub_so',
     [DOC_TYPES.DC]: 'hub_dc',
-    [DOC_TYPES.PO]: 'hub_po'
+    [DOC_TYPES.PO]: 'hub_po',
+    [DOC_TYPES.CUSTOMERS]: 'hub_customers'
 };
 
 let currentView = 'dashboard';
@@ -42,7 +44,8 @@ function switchView(viewId) {
         'quotes': 'Quotations',
         'sales-orders': 'Sales Orders',
         'delivery-chalans': 'Delivery Chalans',
-        'purchase-orders': 'Purchase Orders'
+        'purchase-orders': 'Purchase Orders',
+        'customers': 'Customer Directory'
     };
     const titleEl = document.getElementById('view-title');
     if (titleEl) titleEl.textContent = titleMap[viewId] || 'Document Hub';
@@ -56,6 +59,8 @@ function renderContent() {
     
     if (currentView === 'dashboard') {
         renderDashboard(viewport);
+    } else if (currentView === 'customers') {
+        renderCustomers(viewport);
     } else {
         renderDocumentList(viewport, currentView);
     }
@@ -108,6 +113,86 @@ function renderDashboard(container) {
         </div>
     `;
 
+    container.innerHTML = html;
+}
+
+function renderCustomers(container) {
+    const list = documents[DOC_TYPES.CUSTOMERS];
+    
+    let html = `
+        <div class="flex justify-between items-center mb-8 animate-up">
+            <div>
+                <h3 class="text-2xl font-bold text-white tracking-tight">Customers</h3>
+                <p class="text-slate-500 text-sm mt-1">Manage your business relationships</p>
+            </div>
+            <button onclick="openCustomerModal()" class="btn-primary">
+                <i data-feather="user-plus" class="w-4 h-4"></i> Add Customer
+            </button>
+        </div>
+
+        <div class="glass-panel overflow-hidden border-white/5 animate-up">
+            <div class="overflow-x-auto">
+                <table class="responsive-table w-full">
+                    <thead class="bg-white/[0.02] border-b border-white/5">
+                        <tr class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">
+                            <th class="px-6 py-4 text-left">Name</th>
+                            <th class="px-6 py-4 text-left">Company</th>
+                            <th class="px-6 py-4 text-left">Contact Info</th>
+                            <th class="px-6 py-4 text-right">GST Details</th>
+                            <th class="px-6 py-4 text-right">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-white/5">
+                        ${list.length === 0 ? `
+                            <tr>
+                                <td colspan="5" class="px-6 py-20 text-center text-slate-500">
+                                    <div class="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-4">
+                                        <i data-feather="users" class="w-8 h-8 opacity-20"></i>
+                                    </div>
+                                    <p class="font-bold text-lg">No customers found</p>
+                                    <p class="text-xs mt-1">Click "Add Customer" to populate your directory.</p>
+                                </td>
+                            </tr>
+                        ` : list.map(cust => `
+                            <tr class="hover:bg-white/[0.01] transition-colors group">
+                                <td class="px-6 py-4" data-label="Name">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-8 h-8 rounded-full bg-accent-primary/10 flex items-center justify-center text-accent-primary border border-accent-primary/20 text-xs font-bold">
+                                            ${cust.displayName.charAt(0)}
+                                        </div>
+                                        <div>
+                                            <div class="text-white font-semibold">${cust.displayName}</div>
+                                            <div class="text-[9px] text-slate-500 uppercase tracking-widest font-bold">${cust.type}</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-slate-300" data-label="Company">${cust.company || '-'}</td>
+                                <td class="px-6 py-4" data-label="Contact">
+                                    <div class="text-white text-sm">${cust.email || '-'}</div>
+                                    <div class="text-slate-500 text-xs">${cust.mobile || cust.phone || '-'}</div>
+                                </td>
+                                <td class="px-6 py-4 text-right" data-label="GST">
+                                    <div class="text-accent-primary text-[10px] font-bold uppercase tracking-wider">${cust.gstTreatment}</div>
+                                    <div class="text-white font-mono text-xs">${cust.gstin || '-'}</div>
+                                </td>
+                                <td class="px-6 py-4 text-right actions-cell">
+                                    <div class="flex justify-end gap-1">
+                                        <button onclick="openCustomerModal(${JSON.stringify(cust).replace(/"/g, '&quot;')})" class="p-2 text-slate-500 hover:text-accent-primary transition-colors">
+                                            <i data-feather="edit-2" class="w-4 h-4"></i>
+                                        </button>
+                                        <button onclick="deleteCustomer('${cust.id}')" class="p-2 text-slate-500 hover:text-red-400 transition-colors">
+                                            <i data-feather="trash-2" class="w-4 h-4"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    `;
+    
     container.innerHTML = html;
 }
 
