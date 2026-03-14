@@ -15,6 +15,14 @@ const STORAGE_KEYS = {
 };
 
 let currentView = 'dashboard';
+
+function formatCurrency(amount) {
+    return '₹' + amount.toLocaleString('en-IN', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    });
+}
+
 let documents = {
     [DOC_TYPES.QUOTES]: JSON.parse(localStorage.getItem(STORAGE_KEYS[DOC_TYPES.QUOTES]) || '[]'),
     [DOC_TYPES.SO]: JSON.parse(localStorage.getItem(STORAGE_KEYS[DOC_TYPES.SO]) || '[]'),
@@ -155,7 +163,7 @@ function renderDocumentList(container, type) {
                     <td class="px-6 py-4 font-mono text-sm text-accent-primary" data-label="ID">${doc.id}</td>
                     <td class="px-6 py-4 text-white font-semibold" data-label="Client">${doc.client}</td>
                     <td class="px-6 py-4 text-slate-400 text-sm" data-label="Date">${doc.date}</td>
-                    <td class="px-6 py-4 text-white font-bold" data-label="Total">$${doc.total.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
+                    <td class="px-6 py-4 text-white font-bold" data-label="Total">${formatCurrency(doc.total)}</td>
                     <td class="px-6 py-4 text-right space-x-1 flex items-center justify-end actions-cell" data-label="Control">
                         ${renderConversionButtons(doc, type)}
                         <button onclick="printDocument('${type}', '${doc.id}')" class="p-2 text-slate-500 hover:text-accent-primary transition-colors" title="Print">
@@ -246,15 +254,15 @@ function openCreateModal(type, prefillData = null) {
             <div class="w-full md:w-80 glass-panel p-6 bg-white/[0.02]">
                 <div class="flex justify-between text-xs font-bold uppercase tracking-wider mb-4">
                     <span class="text-slate-500">Subtotal</span>
-                    <span class="text-white" id="summary-subtotal">$0.00</span>
+                    <span class="text-white" id="summary-subtotal">₹0.00</span>
                 </div>
                 <div class="flex justify-between text-xs font-bold uppercase tracking-wider mb-6">
                     <span class="text-slate-500">Tax Payable</span>
-                    <span class="text-white" id="summary-tax">$0.00</span>
+                    <span class="text-white" id="summary-tax">₹0.00</span>
                 </div>
                 <div class="flex justify-between items-end border-t border-white/10 pt-4">
                     <span class="text-[10px] font-bold text-accent-primary uppercase tracking-[0.2em]">Grand Total</span>
-                    <span class="text-2xl font-bold text-white tracking-tighter" id="summary-total">$0.00</span>
+                    <span class="text-2xl font-bold text-white tracking-tighter" id="summary-total">₹0.00</span>
                 </div>
             </div>
         </div>
@@ -286,7 +294,7 @@ function addRow(data = { name: '', qty: 1, rate: 0, tax: 0 }) {
         <td class="py-4 px-4">
             <input type="number" class="form-input text-sm item-tax text-right" value="${data.tax}" step="0.1" oninput="updateCalculations()">
         </td>
-        <td class="py-4 pl-4 text-right text-sm font-mono font-bold text-white item-amount">$0.00</td>
+        <td class="py-4 pl-4 text-right text-sm font-mono font-bold text-white item-amount">₹0.00</td>
         <td class="py-4 pl-4">
             <button onclick="this.closest('tr').remove(); updateCalculations();" class="text-slate-700 hover:text-red-400 transition-colors p-1">
                 <i data-feather="minus-circle" class="w-4 h-4"></i>
@@ -314,12 +322,12 @@ function updateCalculations() {
         subtotal += amount;
         taxTotal += tax;
         
-        row.querySelector('.item-amount').textContent = `$${amount.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
+        row.querySelector('.item-amount').textContent = formatCurrency(amount);
     });
     
-    document.getElementById('summary-subtotal').textContent = `$${subtotal.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
-    document.getElementById('summary-tax').textContent = `$${taxTotal.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
-    document.getElementById('summary-total').textContent = `$${(subtotal + taxTotal).toLocaleString(undefined, {minimumFractionDigits: 2})}`;
+    document.getElementById('summary-subtotal').textContent = formatCurrency(subtotal);
+    document.getElementById('summary-tax').textContent = formatCurrency(taxTotal);
+    document.getElementById('summary-total').textContent = formatCurrency(subtotal + taxTotal);
 }
 
 function saveDoc(type) {
@@ -482,9 +490,9 @@ function printDocument(type, id) {
                         <tr>
                             <td style="font-weight: 600;">${item.name}</td>
                             <td class="text-center">${item.qty}</td>
-                            <td class="text-right">$${item.rate.toFixed(2)}</td>
+                            <td class="text-right">${formatCurrency(item.rate)}</td>
                             <td class="text-right">${item.tax}%</td>
-                            <td class="text-right" style="font-weight: 700;">$${(item.qty * item.rate).toFixed(2)}</td>
+                            <td class="text-right" style="font-weight: 700;">${formatCurrency(item.qty * item.rate)}</td>
                         </tr>
                     `).join('')}
                 </tbody>
@@ -494,15 +502,15 @@ function printDocument(type, id) {
                 <div class="totals-box">
                     <div class="total-row">
                         <span style="color: #64748b;">Subtotal</span>
-                        <span>$${doc.subtotal.toFixed(2)}</span>
+                        <span>${formatCurrency(doc.subtotal)}</span>
                     </div>
                     <div class="total-row">
                         <span style="color: #64748b;">Tax Amount</span>
-                        <span>$${doc.tax.toFixed(2)}</span>
+                        <span>${formatCurrency(doc.tax)}</span>
                     </div>
                     <div class="total-row grand">
                         <span>Total Due</span>
-                        <span>$${doc.total.toFixed(2)}</span>
+                        <span>${formatCurrency(doc.total)}</span>
                     </div>
                 </div>
             </div>
