@@ -27,7 +27,8 @@ let documents = {
     [DOC_TYPES.QUOTES]: JSON.parse(localStorage.getItem(STORAGE_KEYS[DOC_TYPES.QUOTES]) || '[]'),
     [DOC_TYPES.SO]: JSON.parse(localStorage.getItem(STORAGE_KEYS[DOC_TYPES.SO]) || '[]'),
     [DOC_TYPES.DC]: JSON.parse(localStorage.getItem(STORAGE_KEYS[DOC_TYPES.DC]) || '[]'),
-    [DOC_TYPES.PO]: JSON.parse(localStorage.getItem(STORAGE_KEYS[DOC_TYPES.PO]) || '[]')
+    [DOC_TYPES.PO]: JSON.parse(localStorage.getItem(STORAGE_KEYS[DOC_TYPES.PO]) || '[]'),
+    [DOC_TYPES.CUSTOMERS]: JSON.parse(localStorage.getItem(STORAGE_KEYS[DOC_TYPES.CUSTOMERS]) || '[]')
 };
 
 function switchView(viewId) {
@@ -626,6 +627,138 @@ function printDocument(type, id) {
             printWindow.print();
         }
     }, 2500);
+}
+
+function openCustomerModal(editData = null) {
+    const modal = document.getElementById('form-modal');
+    document.getElementById('modal-title').textContent = editData ? 'Edit Customer' : 'Add New Customer';
+    
+    const container = document.getElementById('modal-form-container');
+    
+    container.innerHTML = `
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+            <!-- Basic Info -->
+            <div class="space-y-6">
+                <div>
+                    <label class="block text-[10px] uppercase tracking-widest font-bold text-slate-500 mb-2">Customer Type</label>
+                    <div class="flex gap-4">
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="radio" name="cust-type" value="Business" ${!editData || editData.type === 'Business' ? 'checked' : ''} class="accent-accent-primary">
+                            <span class="text-sm text-white">Business</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="radio" name="cust-type" value="Individual" ${editData && editData.type === 'Individual' ? 'checked' : ''} class="accent-accent-primary">
+                            <span class="text-sm text-white">Individual</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 gap-4">
+                    <input type="text" id="cust-display" class="form-input" placeholder="Customer Display Name *" value="${editData ? editData.displayName : ''}" required>
+                    <input type="text" id="cust-company" class="form-input" placeholder="Company Name" value="${editData ? editData.company : ''}">
+                </div>
+
+                <div class="grid grid-cols-1 gap-4">
+                    <input type="email" id="cust-email" class="form-input" placeholder="Email Address" value="${editData ? editData.email : ''}">
+                    <div class="grid grid-cols-2 gap-4">
+                        <input type="text" id="cust-mobile" class="form-input" placeholder="Mobile Number" value="${editData ? editData.mobile : ''}">
+                        <input type="text" id="cust-phone" class="form-input" placeholder="Work Phone" value="${editData ? editData.phone : ''}">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tax/GST Info -->
+            <div class="space-y-6">
+                <div>
+                    <label class="block text-[10px] uppercase tracking-widest font-bold text-slate-500 mb-2">GST Details</label>
+                    <select id="cust-gst-treatment" class="form-input mb-4">
+                        <option value="Registered Business - Regular" ${editData && editData.gstTreatment === 'Registered Business - Regular' ? 'selected' : ''}>Registered Business - Regular</option>
+                        <option value="Registered Business - Composition" ${editData && editData.gstTreatment === 'Registered Business - Composition' ? 'selected' : ''}>Registered Business - Composition</option>
+                        <option value="Unregistered Business" ${editData && editData.gstTreatment === 'Unregistered Business' ? 'selected' : ''}>Unregistered Business</option>
+                        <option value="Consumer" ${editData && editData.gstTreatment === 'Consumer' ? 'selected' : ''}>Consumer</option>
+                        <option value="Overseas" ${editData && editData.gstTreatment === 'Overseas' ? 'selected' : ''}>Overseas</option>
+                    </select>
+                    <input type="text" id="cust-gstin" class="form-input" placeholder="GSTIN" value="${editData ? editData.gstin : ''}">
+                </div>
+
+                <div>
+                    <label class="block text-[10px] uppercase tracking-widest font-bold text-slate-500 mb-2">Place of Supply</label>
+                    <input type="text" id="cust-place" class="form-input" placeholder="Select State (e.g. Maharashtra)" value="${editData ? editData.place : ''}">
+                </div>
+            </div>
+        </div>
+
+        <!-- Address Section -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-8 border-t border-white/5">
+            <div>
+                <h4 class="text-white font-bold text-xs uppercase tracking-widest mb-4">Billing Address</h4>
+                <textarea id="cust-bill-address" class="form-input h-24" placeholder="Street, City, Zip, State">${editData ? editData.billingAddress : ''}</textarea>
+            </div>
+            <div>
+                <div class="flex justify-between items-center mb-4">
+                    <h4 class="text-white font-bold text-xs uppercase tracking-widest">Shipping Address</h4>
+                    <button onclick="copyCustBillingToShipping()" class="text-[9px] font-bold text-accent-primary uppercase tracking-widest">Copy from Billing</button>
+                </div>
+                <textarea id="cust-ship-address" class="form-input h-24" placeholder="Street, City, Zip, State">${editData ? editData.shippingAddress : ''}</textarea>
+            </div>
+        </div>
+
+        <div class="mt-8">
+            <label class="block text-[10px] uppercase tracking-widest font-bold text-slate-500 mb-2">Internal Remarks</label>
+            <textarea id="cust-remarks" class="form-input h-20 text-xs italic" placeholder="Added notes for internal reference...">${editData ? editData.remarks : ''}</textarea>
+        </div>
+    `;
+
+    window.copyCustBillingToShipping = () => {
+        document.getElementById('cust-ship-address').value = document.getElementById('cust-bill-address').value;
+    };
+
+    document.getElementById('save-btn').onclick = () => saveCustomer(editData ? editData.id : null);
+    
+    modal.classList.remove('hidden');
+    feather.replace();
+}
+
+function saveCustomer(id = null) {
+    const displayName = document.getElementById('cust-display').value.trim();
+    if (!displayName) {
+        alert('Display Name is required.');
+        return;
+    }
+
+    const customer = {
+        id: id || ('CUST-' + Math.floor(Math.random() * 9000 + 1000)),
+        type: document.querySelector('input[name="cust-type"]:checked').value,
+        displayName: displayName,
+        company: document.getElementById('cust-company').value.trim(),
+        email: document.getElementById('cust-email').value.trim(),
+        mobile: document.getElementById('cust-mobile').value.trim(),
+        phone: document.getElementById('cust-phone').value.trim(),
+        gstTreatment: document.getElementById('cust-gst-treatment').value,
+        gstin: document.getElementById('cust-gstin').value.trim(),
+        place: document.getElementById('cust-place').value.trim(),
+        billingAddress: document.getElementById('cust-bill-address').value.trim(),
+        shippingAddress: document.getElementById('cust-ship-address').value.trim(),
+        remarks: document.getElementById('cust-remarks').value.trim()
+    };
+
+    if (id) {
+        const index = documents[DOC_TYPES.CUSTOMERS].findIndex(c => c.id === id);
+        if (index !== -1) documents[DOC_TYPES.CUSTOMERS][index] = customer;
+    } else {
+        documents[DOC_TYPES.CUSTOMERS].unshift(customer);
+    }
+
+    localStorage.setItem(STORAGE_KEYS[DOC_TYPES.CUSTOMERS], JSON.stringify(documents[DOC_TYPES.CUSTOMERS]));
+    closeModal();
+    renderCustomers();
+}
+
+function deleteCustomer(id) {
+    if (!confirm('Are you sure you want to delete this customer?')) return;
+    documents[DOC_TYPES.CUSTOMERS] = documents[DOC_TYPES.CUSTOMERS].filter(c => c.id !== id);
+    localStorage.setItem(STORAGE_KEYS[DOC_TYPES.CUSTOMERS], JSON.stringify(documents[DOC_TYPES.CUSTOMERS]));
+    renderCustomers();
 }
 
 function closeModal() {
