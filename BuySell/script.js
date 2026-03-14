@@ -64,41 +64,47 @@ function getDocBalance(doc, type) {
     return Math.max(0, balance);
 }
 
-let documents = {};
+let documents = Object.values(DOC_TYPES).reduce((acc, type) => {
+    acc[type] = [];
+    return acc;
+}, {});
 
 async function initializeApp() {
-    const cloudConnected = await initDatabase();
-    
-    // Load documents
-    for (const type of Object.values(DOC_TYPES)) {
-        if (STORAGE_KEYS[type]) {
+    try {
+        const cloudConnected = await initDatabase();
+        
+        // Parallel Loading for performance
+        const loadPromises = Object.entries(DOC_TYPES).map(async ([key, type]) => {
+            if (!STORAGE_KEYS[type]) return;
+            
             const localData = JSON.parse(localStorage.getItem(STORAGE_KEYS[type]) || '[]');
             
             if (cloudConnected) {
                 const cloudData = await loadFromCloud(type);
                 if (cloudData.length > 0) {
                     documents[type] = cloudData;
-                    // Keep local storage in sync as cache
                     localStorage.setItem(STORAGE_KEYS[type], JSON.stringify(cloudData));
                 } else if (localData.length > 0) {
-                    // First time: Migrate local to cloud
                     documents[type] = localData;
                     await migrateLocalToCloud({ [type]: localData });
-                } else {
-                    documents[type] = [];
                 }
             } else {
                 documents[type] = localData;
             }
-        }
-    }
-    
-    // Set initial title and render
-    updateTitle(currentView);
-    renderContent();
-    feather.replace();
+        });
 
-    // Listeners
+        await Promise.all(loadPromises);
+        console.log("ASYNCRIX: Initialization complete. State ready.");
+    } catch (error) {
+        console.error("ASYNCRIX: Critical Initialization Error:", error);
+    } finally {
+        // Essential UI boot sequence
+        updateTitle(currentView);
+        renderContent();
+        feather.replace();
+    }
+
+    // Mobile Responsive Listeners
     window.addEventListener('resize', () => { 
         if(window.innerWidth >= 1024) { 
             const sidebar = document.getElementById('sidebar');
@@ -164,7 +170,7 @@ function renderContent() {
         case DOC_TYPES.EXPENSES:
         case DOC_TYPES.PAYMENTS_REC:
         case DOC_TYPES.PAYMENTS_MADE:
-        default: renderDocumentList(currentView, viewport); break;
+        default: renderDocumentList(viewport, currentView); break;
     }
     feather.replace();
 }
@@ -254,7 +260,7 @@ function renderDashboard(container) {
                         <i data-feather="file-minus" class="w-6 h-6 text-amber-400 mb-3"></i>
                         <span class="text-[10px] font-bold text-white uppercase tracking-widest">New Bill</span>
                     </button>
-                    <button onclick="openContactModal(false)" class="flex flex-col items-center justify-center p-6 rounded-2xl bg-purple-400/5 border border-purple-400/10 hover:bg-purple-400/10 transition-all group">
+                    <button onclick="openCustomerModal()" class="flex flex-col items-center justify-center p-6 rounded-2xl bg-purple-400/5 border border-purple-400/10 hover:bg-purple-400/10 transition-all group">
                         <i data-feather="user-plus" class="w-6 h-6 text-purple-400 mb-3"></i>
                         <span class="text-[10px] font-bold text-white uppercase tracking-widest">New Customer</span>
                     </button>
@@ -679,15 +685,15 @@ function renderInventorySummary(container) {
 
 function renderCustomers(container) {
     const list = documents[DOC_TYPES.CUSTOMERS];
-    renderContactList(container, list, 'Customers', 'user-plus', 'openCustomerModal', DOC_TYPES.CUSTOMERS);
+    renderContactList(container, list, 'Customers', 'user-plus', 'openCustomerModal', 'deleteCustomer', DOC_TYPES.CUSTOMERS);
 }
 
 function renderVendors(container) {
     const list = documents[DOC_TYPES.VENDORS];
-    renderContactList(container, list, 'Vendors', 'user-check', 'openVendorModal', DOC_TYPES.VENDORS);
+    renderContactList(container, list, 'Vendors', 'user-check', 'openVendorModal', 'deleteVendor', DOC_TYPES.VENDORS);
 }
 
-function renderContactList(container, list, title, icon, modalFn, type) {
+function renderContactList(container, list, title, icon, modalFn, deleteFn, type) {
     const isVendor = type === DOC_TYPES.VENDORS;
     const accentColor = isVendor ? 'accent-secondary' : 'accent-primary';
 
@@ -752,7 +758,7 @@ function renderContactList(container, list, title, icon, modalFn, type) {
                                         <button onclick="${modalFn}(${JSON.stringify(item).replace(/"/g, '&quot;')})" class="p-2 text-slate-500 hover:text-accent-primary transition-colors">
                                             <i data-feather="edit-2" class="w-4 h-4"></i>
                                         </button>
-                                        <button onclick="deleteDoc('${type}', '${item.id}')" class="p-2 text-slate-500 hover:text-red-400 transition-colors">
+                                        <button onclick="${deleteFn}('${item.id}')" class="p-2 text-slate-500 hover:text-red-400 transition-colors">
                                             <i data-feather="trash-2" class="w-4 h-4"></i>
                                         </button>
                                     </div>
@@ -1602,7 +1608,7 @@ async function saveCustomer(id = null) {
     localStorage.setItem(STORAGE_KEYS[DOC_TYPES.CUSTOMERS], JSON.stringify(documents[DOC_TYPES.CUSTOMERS]));
     await saveToCloud(DOC_TYPES.CUSTOMERS, customer);
     closeModal();
-    renderCustomers();
+    renderContent();
 }
 
 async function deleteCustomer(id) {
@@ -1610,7 +1616,7 @@ async function deleteCustomer(id) {
     documents[DOC_TYPES.CUSTOMERS] = documents[DOC_TYPES.CUSTOMERS].filter(c => c.id !== id);
     localStorage.setItem(STORAGE_KEYS[DOC_TYPES.CUSTOMERS], JSON.stringify(documents[DOC_TYPES.CUSTOMERS]));
     await deleteFromCloud(DOC_TYPES.CUSTOMERS, id);
-    renderCustomers();
+    renderContent();
 }
 
 async function deleteVendor(id) {
@@ -1618,7 +1624,7 @@ async function deleteVendor(id) {
     documents[DOC_TYPES.VENDORS] = documents[DOC_TYPES.VENDORS].filter(v => v.id !== id);
     localStorage.setItem(STORAGE_KEYS[DOC_TYPES.VENDORS], JSON.stringify(documents[DOC_TYPES.VENDORS]));
     await deleteFromCloud(DOC_TYPES.VENDORS, id);
-    renderVendors();
+    renderContent();
 }
 
 function closeModal() {
@@ -2027,6 +2033,6 @@ Object.assign(window, {
     openCreateModal, saveDoc, deleteDoc, convertDocument, printDocument, 
     openCustomerModal, saveCustomer, deleteCustomer, closeModal, logout,
     openVendorModal, saveVendor, deleteVendor, openItemModal, saveItem, deleteItem, openBankModal, 
-    saveBank, deleteBank, openPaymentModal, savePayment, updateRefDocs, pickItem, addLineItem,
+    saveBank, deleteBank, openPaymentModal, savePayment, updateRefDocs, pickItem, addRow,
     updateCalculations, DOC_TYPES, toggleSidebar
 });
