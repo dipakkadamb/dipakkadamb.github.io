@@ -107,6 +107,23 @@ body {
     box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
 }
 
+/* Modal Specific: White backgrounds for fields */
+#form-modal .form-input {
+    background: white !important;
+    color: #1e293b !important;
+    border: 1px solid #e2e8f0 !important;
+}
+
+#form-modal .form-input::placeholder {
+    color: #94a3b8;
+}
+
+#form-modal .form-input:focus {
+    border-color: var(--accent-primary) !important;
+    background: white !important;
+    box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1) !important;
+}
+
 /* Responsive Table / Card View */
 .responsive-table {
     width: 100%;
