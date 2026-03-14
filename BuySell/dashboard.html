@@ -191,30 +191,13 @@
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script type="module" src="script.js"></script>
     <script>
         // Auth Guard
         if (localStorage.getItem('hub_auth') !== 'true') {
             window.location.href = 'index.html';
         }
-
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('mobile-overlay');
-            sidebar.classList.toggle('active');
-            overlay.classList.toggle('active');
-        }
-
-        // Auto-close sidebar on view change (mobile)
-        const originalSwitchView = window.switchView;
-        window.switchView = function(viewId) {
-            if (window.innerWidth < 1024) {
-                toggleSidebar();
-            }
-            originalSwitchView(viewId);
-        };
-
-        feather.replace();
+        // Feather icons will be replaced by script.js after cloud init
     </script>
 </body>
 </html>

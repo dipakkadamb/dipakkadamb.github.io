@@ -1,4 +1,5 @@
 // Hub Pro - Professional Document Engine & Responsive Logic
+import { initDatabase, saveToCloud, deleteFromCloud, loadFromCloud, migrateLocalToCloud } from './database.js';
 
 const DOC_TYPES = {
     DASHBOARD: 'dashboard',
@@ -64,11 +65,41 @@ function getDocBalance(doc, type) {
 }
 
 let documents = {};
-Object.values(DOC_TYPES).forEach(type => {
-    if (STORAGE_KEYS[type]) {
-        documents[type] = JSON.parse(localStorage.getItem(STORAGE_KEYS[type]) || '[]');
+
+async function initializeApp() {
+    const cloudConnected = await initDatabase();
+    
+    // Load documents
+    for (const type of Object.values(DOC_TYPES)) {
+        if (STORAGE_KEYS[type]) {
+            const localData = JSON.parse(localStorage.getItem(STORAGE_KEYS[type]) || '[]');
+            
+            if (cloudConnected) {
+                const cloudData = await loadFromCloud(type);
+                if (cloudData.length > 0) {
+                    documents[type] = cloudData;
+                    // Keep local storage in sync as cache
+                    localStorage.setItem(STORAGE_KEYS[type], JSON.stringify(cloudData));
+                } else if (localData.length > 0) {
+                    // First time: Migrate local to cloud
+                    documents[type] = localData;
+                    await migrateLocalToCloud({ [type]: localData });
+                } else {
+                    documents[type] = [];
+                }
+            } else {
+                documents[type] = localData;
+            }
+        }
     }
-});
+    
+    // Initial render
+    renderContent();
+    feather.replace();
+}
+
+// Start the app
+initializeApp();
 
 function switchView(viewId) {
     currentView = viewId;
@@ -1087,7 +1118,7 @@ function updateCalculations() {
     document.getElementById('summary-total').textContent = formatCurrency(grandTotal);
 }
 
-function saveDoc(type) {
+async function saveDoc(type) {
     const rows = document.querySelectorAll('#line-items-body tr');
     const lineItems = Array.from(rows).map(row => ({
         name: row.querySelector('.item-name').value,
@@ -1134,29 +1165,30 @@ function saveDoc(type) {
 
     documents[type].unshift(doc);
     localStorage.setItem(STORAGE_KEYS[type], JSON.stringify(documents[type]));
+    await saveToCloud(type, doc);
 
     // --- Dynamic Flow: Stock & Banking Integration ---
     if (type === DOC_TYPES.INVOICES || type === DOC_TYPES.SO || type === DOC_TYPES.PO || type === DOC_TYPES.BILLS) {
-        lineItems.forEach(line => {
+        for (const line of lineItems) {
             const item = documents[DOC_TYPES.ITEMS].find(i => i.name === line.name);
             if (item && item.type === 'Goods') {
                 if (!item.stock) item.stock = 0;
-                // Invoices/SO decrease stock, Bills/PO increase stock
                 if (type === DOC_TYPES.INVOICES || type === DOC_TYPES.SO) {
                     item.stock -= line.qty;
                 } else {
                     item.stock += line.qty;
                 }
+                await saveToCloud(DOC_TYPES.ITEMS, item);
             }
-        });
+        }
         localStorage.setItem(STORAGE_KEYS[DOC_TYPES.ITEMS], JSON.stringify(documents[DOC_TYPES.ITEMS]));
     }
 
     if (type === DOC_TYPES.EXPENSES) {
-        // Subtract expense from first available bank account
         if (documents[DOC_TYPES.BANKING].length > 0) {
             documents[DOC_TYPES.BANKING][0].balance -= doc.total;
             localStorage.setItem(STORAGE_KEYS[DOC_TYPES.BANKING], JSON.stringify(documents[DOC_TYPES.BANKING]));
+            await saveToCloud(DOC_TYPES.BANKING, documents[DOC_TYPES.BANKING][0]);
         }
     }
 
@@ -1164,7 +1196,7 @@ function saveDoc(type) {
     renderContent();
 }
 
-function deleteDoc(type, id) {
+async function deleteDoc(type, id) {
     if(!confirm('Security Protocol: Are you sure you want to permanently delete this record?')) return;
     
     const docToDelete = documents[type].find(d => d.id === id);
@@ -1172,17 +1204,17 @@ function deleteDoc(type, id) {
 
     // --- Dynamic Flow Reversal ---
     if (type === DOC_TYPES.INVOICES || type === DOC_TYPES.SO || type === DOC_TYPES.PO || type === DOC_TYPES.BILLS) {
-        docToDelete.lineItems?.forEach(line => {
+        for (const line of docToDelete.lineItems || []) {
             const item = documents[DOC_TYPES.ITEMS].find(i => i.name === line.name);
             if (item && item.type === 'Goods') {
-                // Reverse the original action
                 if (type === DOC_TYPES.INVOICES || type === DOC_TYPES.SO) {
                     item.stock += line.qty;
                 } else {
                     item.stock -= line.qty;
                 }
+                await saveToCloud(DOC_TYPES.ITEMS, item);
             }
-        });
+        }
         localStorage.setItem(STORAGE_KEYS[DOC_TYPES.ITEMS], JSON.stringify(documents[DOC_TYPES.ITEMS]));
     }
 
@@ -1195,11 +1227,13 @@ function deleteDoc(type, id) {
                 documents[DOC_TYPES.BANKING][0].balance += amount;
             }
             localStorage.setItem(STORAGE_KEYS[DOC_TYPES.BANKING], JSON.stringify(documents[DOC_TYPES.BANKING]));
+            await saveToCloud(DOC_TYPES.BANKING, documents[DOC_TYPES.BANKING][0]);
         }
     }
 
     documents[type] = documents[type].filter(d => d.id !== id);
     localStorage.setItem(STORAGE_KEYS[type], JSON.stringify(documents[type]));
+    await deleteFromCloud(type, id);
     renderContent();
 }
 
@@ -1505,7 +1539,7 @@ function openCustomerModal(editData = null) {
     feather.replace();
 }
 
-function saveCustomer(id = null) {
+async function saveCustomer(id = null) {
     const displayName = document.getElementById('cust-display').value.trim();
     if (!displayName) {
         alert('Display Name is required.');
@@ -1536,14 +1570,16 @@ function saveCustomer(id = null) {
     }
 
     localStorage.setItem(STORAGE_KEYS[DOC_TYPES.CUSTOMERS], JSON.stringify(documents[DOC_TYPES.CUSTOMERS]));
+    await saveToCloud(DOC_TYPES.CUSTOMERS, customer);
     closeModal();
     renderCustomers();
 }
 
-function deleteCustomer(id) {
+async function deleteCustomer(id) {
     if (!confirm('Are you sure you want to delete this customer?')) return;
     documents[DOC_TYPES.CUSTOMERS] = documents[DOC_TYPES.CUSTOMERS].filter(c => c.id !== id);
     localStorage.setItem(STORAGE_KEYS[DOC_TYPES.CUSTOMERS], JSON.stringify(documents[DOC_TYPES.CUSTOMERS]));
+    await deleteFromCloud(DOC_TYPES.CUSTOMERS, id);
     renderCustomers();
 }
 
@@ -1649,10 +1685,10 @@ function renderContactModal(label, editData, saveFn) {
     feather.replace();
 }
 
-function saveCustomer(id) { saveEntity(id, DOC_TYPES.CUSTOMERS, 'CUST'); }
-function saveVendor(id) { saveEntity(id, DOC_TYPES.VENDORS, 'VEND'); }
+async function saveCustomerWrapper(id) { await saveEntity(id, DOC_TYPES.CUSTOMERS, 'CUST'); }
+async function saveVendorWrapper(id) { await saveEntity(id, DOC_TYPES.VENDORS, 'VEND'); }
 
-function saveEntity(id, type, prefix) {
+async function saveEntity(id, type, prefix) {
     const displayName = document.getElementById('entity-display').value.trim();
     if (!displayName) { alert('Display Name is required.'); return; }
 
@@ -1679,6 +1715,7 @@ function saveEntity(id, type, prefix) {
     }
 
     localStorage.setItem(STORAGE_KEYS[type], JSON.stringify(documents[type]));
+    await saveToCloud(type, entity);
     closeModal();
     renderContent();
 }
@@ -1725,7 +1762,7 @@ function openItemModal(editData = null) {
     feather.replace();
 }
 
-function saveItem(id) {
+async function saveItem(id) {
     const name = document.getElementById('item-name').value.trim();
     if (!name) { alert('Item Name is required.'); return; }
 
@@ -1746,6 +1783,7 @@ function saveItem(id) {
     }
 
     localStorage.setItem(STORAGE_KEYS[DOC_TYPES.ITEMS], JSON.stringify(documents[DOC_TYPES.ITEMS]));
+    await saveToCloud(DOC_TYPES.ITEMS, item);
     closeModal();
     renderContent();
 }
@@ -1774,7 +1812,7 @@ function openBankModal(editData = null) {
     feather.replace();
 }
 
-function saveBank(id) {
+async function saveBank(id) {
     const bankName = document.getElementById('bank-name').value.trim();
     if (!bankName) { alert('Bank Name is required.'); return; }
 
@@ -1794,6 +1832,7 @@ function saveBank(id) {
     }
 
     localStorage.setItem(STORAGE_KEYS[DOC_TYPES.BANKING], JSON.stringify(documents[DOC_TYPES.BANKING]));
+    await saveToCloud(DOC_TYPES.BANKING, bank);
     closeModal();
     renderContent();
 }
@@ -1872,7 +1911,7 @@ function updateRefDocs(entityName, isPurchase) {
         filtered.map(d => `<option value="${d.id}">${d.id} (₹${d.total})</option>`).join('');
 }
 
-function savePayment(type) {
+async function savePayment(type) {
     const amount = parseFloat(document.getElementById('payment-amount').value || 0);
     const client = document.getElementById('payment-entity').value;
     
@@ -1894,19 +1933,51 @@ function savePayment(type) {
 
     documents[type].unshift(payment);
     localStorage.setItem(STORAGE_KEYS[type], JSON.stringify(documents[type]));
+    await saveToCloud(type, payment);
 
     // --- Dynamic Flow: Bank Balance Integration ---
     if (documents[DOC_TYPES.BANKING].length > 0) {
-        // Find the first account or ideally pick matching account if we had that mapping
-        // For now, we update the main (first) account
         if (type === DOC_TYPES.PAYMENTS_REC) {
             documents[DOC_TYPES.BANKING][0].balance += amount;
         } else {
             documents[DOC_TYPES.BANKING][0].balance -= amount;
         }
         localStorage.setItem(STORAGE_KEYS[DOC_TYPES.BANKING], JSON.stringify(documents[DOC_TYPES.BANKING]));
+        await saveToCloud(DOC_TYPES.BANKING, documents[DOC_TYPES.BANKING][0]);
     }
 
     closeModal();
     renderContent();
 }
+
+// --- UI Utility Section ---
+
+function toggleSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('mobile-overlay');
+    if (sidebar && overlay) {
+        sidebar.classList.toggle('active');
+        overlay.classList.toggle('active');
+    }
+}
+
+// Wrap switchView to handle mobile sidebar
+const _switchView = switchView;
+function switchViewWrapped(viewId) {
+    if (window.innerWidth < 1024) {
+        toggleSidebar();
+    }
+    _switchView(viewId);
+}
+
+// --- Global Export Section ---
+// This ensures HTML onclick handlers and other non-module scripts can still access these functions.
+Object.assign(window, {
+    switchView: switchViewWrapped, renderContent, renderDashboard, renderCustomers, renderVendors,
+    renderItems, renderBanking, renderReports, renderDocumentList, 
+    openCreateModal, saveDoc, deleteDoc, convertDocument, printDocument, 
+    openCustomerModal, saveCustomer, deleteCustomer, closeModal, logout,
+    openVendorModal, saveVendor, openItemModal, saveItem, openBankModal, 
+    saveBank, openPaymentModal, savePayment, updateRefDocs, pickItem, addLineItem,
+    updateCalculations, DOC_TYPES, toggleSidebar
+});
