@@ -13,9 +13,7 @@ const firebaseConfig = {
     appId: "YOUR_APP_ID"
 };
 
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs, doc, setDoc, deleteDoc, query, orderBy, limit, onSnapshot } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
+// Imports moved to dynamic loading in initDatabase() to prevent module hangs.
 
 let app;
 let db;
@@ -27,8 +25,19 @@ export async function initDatabase() {
             console.warn("ASYNCRIX DB: Cloud configuration missing. Falling back to Local Storage mode.");
             return false;
         }
-        app = initializeApp(firebaseConfig);
-        db = getFirestore(app);
+
+        // Dynamic Loading for resiliency
+        const firebaseApp = await import("https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js");
+        const firestore = await import("https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js");
+
+        app = firebaseApp.initializeApp(firebaseConfig);
+        db = firestore.getFirestore(app);
+        
+        // Export needed functions to global/internal state if needed, 
+        // but here we use them via the imported modules.
+        window.firebaseDB = db;
+        window.firestore = firestore;
+
         dbInitialized = true;
         console.log("ASYNCRIX DB: Cloud connected successfully.");
         return true;
@@ -44,6 +53,7 @@ export async function initDatabase() {
 export async function saveToCloud(type, data) {
     if (!dbInitialized) return false;
     try {
+        const { doc, setDoc } = window.firestore;
         // We use the 'id' as the document path for consistency
         await setDoc(doc(db, type, data.id), data);
         return true;
@@ -56,6 +66,7 @@ export async function saveToCloud(type, data) {
 export async function deleteFromCloud(type, id) {
     if (!dbInitialized) return false;
     try {
+        const { doc, deleteDoc } = window.firestore;
         await deleteDoc(doc(db, type, id));
         return true;
     } catch (error) {
@@ -67,6 +78,7 @@ export async function deleteFromCloud(type, id) {
 export async function loadFromCloud(type) {
     if (!dbInitialized) return [];
     try {
+        const { collection, getDocs } = window.firestore;
         const querySnapshot = await getDocs(collection(db, type));
         const data = [];
         querySnapshot.forEach((doc) => {

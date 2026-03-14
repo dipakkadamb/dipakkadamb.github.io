@@ -1,5 +1,6 @@
-// Hub Pro - Professional Document Engine & Responsive Logic
 import { initDatabase, saveToCloud, deleteFromCloud, loadFromCloud, migrateLocalToCloud } from './database.js';
+
+console.log("ASYNCRIX: Script execution starting...");
 
 const DOC_TYPES = {
     DASHBOARD: 'dashboard',
@@ -112,8 +113,10 @@ let documents = Object.values(DOC_TYPES).reduce((acc, type) => {
 }, {});
 
 async function initializeApp() {
+    let cloudConnected = false;
+    console.log("ASYNCRIX: Starting initial database load...");
     try {
-        const cloudConnected = await initDatabase();
+        cloudConnected = await initDatabase();
         
         // Parallel Loading for performance
         const loadPromises = Object.entries(DOC_TYPES).map(async ([key, type]) => {
@@ -2102,3 +2105,6 @@ function switchViewWrapped(viewId) {
     }
     _switchView(viewId);
 }
+
+// Kick off initialization
+initializeApp();
