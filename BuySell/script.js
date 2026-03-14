@@ -93,20 +93,23 @@ async function initializeApp() {
         }
     }
     
-    // Initial render
+    // Set initial title and render
+    updateTitle(currentView);
     renderContent();
     feather.replace();
+
+    // Listeners
+    window.addEventListener('resize', () => { 
+        if(window.innerWidth >= 1024) { 
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('mobile-overlay');
+            if (sidebar) sidebar.classList.add('active'); 
+            if (overlay) overlay.classList.remove('active');
+        }
+    });
 }
 
-// Start the app
-initializeApp();
-
-function switchView(viewId) {
-    currentView = viewId;
-    document.querySelectorAll('.sidebar-link').forEach(btn => btn.classList.remove('active-tab'));
-    const activeTab = document.getElementById(`tab-${viewId}`);
-    if (activeTab) activeTab.classList.add('active-tab');
-
+function updateTitle(viewId) {
     const titleMap = {
         [DOC_TYPES.DASHBOARD]: 'Dashboard Overview',
         [DOC_TYPES.ITEMS]: 'Inventory Items',
@@ -128,12 +131,25 @@ function switchView(viewId) {
     };
     const titleEl = document.getElementById('view-title');
     if (titleEl) titleEl.textContent = titleMap[viewId] || 'Document Hub';
+}
+
+// Start the app
+initializeApp();
+
+function switchView(viewId) {
+    currentView = viewId;
+    document.querySelectorAll('.sidebar-link').forEach(btn => btn.classList.remove('active-tab'));
+    const activeTab = document.getElementById(`tab-${viewId}`);
+    if (activeTab) activeTab.classList.add('active-tab');
+
+    updateTitle(viewId);
     
     renderContent();
 }
 
 function renderContent() {
     const viewport = document.getElementById('content-viewport');
+    if (!viewport) return; // Exit if not on dashboard page
     viewport.innerHTML = '';
     
     switch(currentView) {
@@ -148,7 +164,7 @@ function renderContent() {
         case DOC_TYPES.EXPENSES:
         case DOC_TYPES.PAYMENTS_REC:
         case DOC_TYPES.PAYMENTS_MADE:
-        default: renderDocumentList(viewport, currentView); break;
+        default: renderDocumentList(currentView, viewport); break;
     }
     feather.replace();
 }
@@ -1053,7 +1069,10 @@ function addRow(data = { name: '', qty: 1, rate: 0, tax: 0 }) {
                     <option value="">-- Select Item --</option>
                     ${itemOptions}
                 </select>
-                <input type="text" class="form-input text-sm item-name" value="${data.name}" placeholder="Or enter manual description...">
+                <div class="flex justify-between items-center px-1">
+                    <input type="text" class="form-input text-sm item-name border-none bg-transparent p-0 focus:ring-0 w-2/3" value="${data.name}" placeholder="Description...">
+                    <span class="text-[9px] font-bold text-slate-500 uppercase stock-label">${data.name ? 'Stock: ' + (documents[DOC_TYPES.ITEMS].find(i => i.name === data.name)?.stock || 0) : ''}</span>
+                </div>
             </div>
         </td>
         <td class="py-4 px-4">
@@ -1087,6 +1106,15 @@ window.pickItem = (select) => {
     row.querySelector('.item-name').value = item.name;
     row.querySelector('.item-rate').value = item.rate;
     row.querySelector('.item-tax').value = item.tax;
+    
+    // Update stock label
+    const stockLabel = row.querySelector('.stock-label');
+    if (stockLabel) {
+        const stock = item.stock || 0;
+        stockLabel.textContent = `Stock: ${stock}`;
+        stockLabel.className = `text-[9px] font-bold uppercase stock-label ${stock <= 0 ? 'text-red-400' : 'text-slate-500'}`;
+    }
+    
     updateCalculations();
 };
 
@@ -1173,11 +1201,12 @@ async function saveDoc(type) {
             const item = documents[DOC_TYPES.ITEMS].find(i => i.name === line.name);
             if (item && item.type === 'Goods') {
                 if (!item.stock) item.stock = 0;
-                if (type === DOC_TYPES.INVOICES || type === DOC_TYPES.SO) {
-                    item.stock -= line.qty;
-                } else {
-                    item.stock += line.qty;
-                }
+                // Correct accounting stock rules
+                if (type === DOC_TYPES.INVOICES) item.stock -= line.qty;
+                else if (type === DOC_TYPES.CREDIT_NOTES) item.stock += line.qty;
+                else if (type === DOC_TYPES.BILLS) item.stock += line.qty;
+                else if (type === DOC_TYPES.VENDOR_CREDITS) item.stock -= line.qty;
+                
                 await saveToCloud(DOC_TYPES.ITEMS, item);
             }
         }
@@ -1202,16 +1231,17 @@ async function deleteDoc(type, id) {
     const docToDelete = documents[type].find(d => d.id === id);
     if (!docToDelete) return;
 
-    // --- Dynamic Flow Reversal ---
-    if (type === DOC_TYPES.INVOICES || type === DOC_TYPES.SO || type === DOC_TYPES.PO || type === DOC_TYPES.BILLS) {
+    // --- Dynamic Flow Reversal (Professional Rules) ---
+    if ([DOC_TYPES.INVOICES, DOC_TYPES.BILLS, DOC_TYPES.CREDIT_NOTES, DOC_TYPES.VENDOR_CREDITS].includes(type)) {
         for (const line of docToDelete.lineItems || []) {
             const item = documents[DOC_TYPES.ITEMS].find(i => i.name === line.name);
             if (item && item.type === 'Goods') {
-                if (type === DOC_TYPES.INVOICES || type === DOC_TYPES.SO) {
-                    item.stock += line.qty;
-                } else {
-                    item.stock -= line.qty;
-                }
+                // Reverse the original adjustment
+                if (type === DOC_TYPES.INVOICES) item.stock += line.qty;
+                else if (type === DOC_TYPES.CREDIT_NOTES) item.stock -= line.qty;
+                else if (type === DOC_TYPES.BILLS) item.stock -= line.qty;
+                else if (type === DOC_TYPES.VENDOR_CREDITS) item.stock += line.qty;
+                
                 await saveToCloud(DOC_TYPES.ITEMS, item);
             }
         }
@@ -1583,6 +1613,14 @@ async function deleteCustomer(id) {
     renderCustomers();
 }
 
+async function deleteVendor(id) {
+    if (!confirm('Are you sure you want to delete this vendor?')) return;
+    documents[DOC_TYPES.VENDORS] = documents[DOC_TYPES.VENDORS].filter(v => v.id !== id);
+    localStorage.setItem(STORAGE_KEYS[DOC_TYPES.VENDORS], JSON.stringify(documents[DOC_TYPES.VENDORS]));
+    await deleteFromCloud(DOC_TYPES.VENDORS, id);
+    renderVendors();
+}
+
 function closeModal() {
     const modal = document.getElementById('form-modal');
     modal.classList.add('opacity-0');
@@ -1594,11 +1632,7 @@ function logout() {
     window.location.href = 'index.html';
 }
 
-window.onload = () => switchView('dashboard');
-window.addEventListener('resize', () => { if(window.innerWidth >= 1024) { 
-    document.getElementById('sidebar').classList.add('active'); 
-    document.getElementById('mobile-overlay').classList.remove('active');
-}});
+// Lifecycle handled by initializeApp()
 
 // --- New Zoho Books Modules Logic ---
 
@@ -1787,6 +1821,14 @@ async function saveItem(id) {
     renderContent();
 }
 
+async function deleteItem(id) {
+    if (!confirm('Are you sure you want to delete this item?')) return;
+    documents[DOC_TYPES.ITEMS] = documents[DOC_TYPES.ITEMS].filter(i => i.id !== id);
+    localStorage.setItem(STORAGE_KEYS[DOC_TYPES.ITEMS], JSON.stringify(documents[DOC_TYPES.ITEMS]));
+    await deleteFromCloud(DOC_TYPES.ITEMS, id);
+    renderContent();
+}
+
 function openBankModal(editData = null) {
     const modal = document.getElementById('form-modal');
     document.getElementById('modal-title').textContent = editData ? 'Edit Bank Account' : 'Add Bank Account';
@@ -1833,6 +1875,14 @@ async function saveBank(id) {
     localStorage.setItem(STORAGE_KEYS[DOC_TYPES.BANKING], JSON.stringify(documents[DOC_TYPES.BANKING]));
     await saveToCloud(DOC_TYPES.BANKING, bank);
     closeModal();
+    renderContent();
+}
+
+async function deleteBank(id) {
+    if (!confirm('Are you sure you want to delete this bank account?')) return;
+    documents[DOC_TYPES.BANKING] = documents[DOC_TYPES.BANKING].filter(b => b.id !== id);
+    localStorage.setItem(STORAGE_KEYS[DOC_TYPES.BANKING], JSON.stringify(documents[DOC_TYPES.BANKING]));
+    await deleteFromCloud(DOC_TYPES.BANKING, id);
     renderContent();
 }
 
@@ -1976,7 +2026,7 @@ Object.assign(window, {
     renderItems, renderBanking, renderReports, renderDocumentList, 
     openCreateModal, saveDoc, deleteDoc, convertDocument, printDocument, 
     openCustomerModal, saveCustomer, deleteCustomer, closeModal, logout,
-    openVendorModal, saveVendor, openItemModal, saveItem, openBankModal, 
-    saveBank, openPaymentModal, savePayment, updateRefDocs, pickItem, addLineItem,
+    openVendorModal, saveVendor, deleteVendor, openItemModal, saveItem, deleteItem, openBankModal, 
+    saveBank, deleteBank, openPaymentModal, savePayment, updateRefDocs, pickItem, addLineItem,
     updateCalculations, DOC_TYPES, toggleSidebar
 });
