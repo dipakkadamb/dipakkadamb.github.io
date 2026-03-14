@@ -107,9 +107,27 @@ function renderContent() {
 }
 
 function renderDashboard(container) {
-    // 1. Calculations
-    const totalReceivables = documents[DOC_TYPES.INVOICES].reduce((sum, inv) => sum + inv.total, 0);
-    const totalPayables = documents[DOC_TYPES.BILLS].reduce((sum, bill) => sum + bill.total, 0);
+    // 1. Utility Function for Dynamic Balances
+    const getDocBalance = (doc, type) => {
+        let balance = doc.total;
+        
+        if (type === DOC_TYPES.INVOICES) {
+            const relatedPayments = documents[DOC_TYPES.PAYMENTS_REC].filter(p => p.refDoc === doc.id);
+            const relatedCredits = documents[DOC_TYPES.CREDIT_NOTES].filter(c => c.ref === doc.id);
+            balance -= relatedPayments.reduce((sum, p) => sum + p.total, 0);
+            balance -= relatedCredits.reduce((sum, c) => sum + c.total, 0);
+        } else if (type === DOC_TYPES.BILLS) {
+            const relatedPayments = documents[DOC_TYPES.PAYMENTS_MADE].filter(p => p.refDoc === doc.id);
+            const relatedCredits = documents[DOC_TYPES.VENDOR_CREDITS].filter(c => c.ref === doc.id);
+            balance -= relatedPayments.reduce((sum, p) => sum + p.total, 0);
+            balance -= relatedCredits.reduce((sum, c) => sum + c.total, 0);
+        }
+        return Math.max(0, balance);
+    };
+
+    // 2. Calculations
+    const totalReceivables = documents[DOC_TYPES.INVOICES].reduce((sum, inv) => sum + getDocBalance(inv, DOC_TYPES.INVOICES), 0);
+    const totalPayables = documents[DOC_TYPES.BILLS].reduce((sum, bill) => sum + getDocBalance(bill, DOC_TYPES.BILLS), 0);
     const totalCash = documents[DOC_TYPES.BANKING].reduce((sum, bank) => sum + bank.balance, 0);
     
     // Recent Transactions (Last 5 from Invoices, Bills, Payments)
@@ -312,6 +330,7 @@ function renderItems(container) {
                             <th class="px-4 py-3 text-left">Item Name</th>
                             <th class="px-4 py-3 text-left">Type</th>
                             <th class="px-4 py-3 text-right">Rate</th>
+                            <th class="px-4 py-3 text-right">Stock</th>
                             <th class="px-4 py-3 text-right">Tax (%)</th>
                             <th class="px-4 py-3 text-right">Actions</th>
                         </tr>
@@ -339,6 +358,7 @@ function renderItems(container) {
                                     </span>
                                 </td>
                                 <td class="px-6 py-4 text-right text-white font-bold" data-label="Rate">${formatCurrency(item.rate)}</td>
+                                <td class="px-6 py-4 text-right text-accent-primary font-bold" data-label="Stock">${item.stock || 0}</td>
                                 <td class="px-6 py-4 text-right text-slate-400" data-label="Tax">${item.tax}%</td>
                                 <td class="px-6 py-4 text-right actions-cell">
                                     <div class="flex justify-end gap-1">
@@ -577,6 +597,7 @@ function renderInventorySummary(container) {
                     <tr class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">
                         <th class="px-6 py-4 text-left">Item Name</th>
                         <th class="px-6 py-4 text-left">Type</th>
+                        <th class="px-6 py-4 text-right">Stock</th>
                         <th class="px-6 py-4 text-right">Standard Rate</th>
                         <th class="px-6 py-4 text-right">Default Tax %</th>
                     </tr>
@@ -588,6 +609,7 @@ function renderInventorySummary(container) {
                         <tr class="hover:bg-white/[0.01] transition-colors">
                             <td class="px-6 py-4 text-white font-medium">${item.name}</td>
                             <td class="px-6 py-4 text-slate-400 capitalize">${item.type}</td>
+                            <td class="px-6 py-4 text-right text-accent-primary font-bold">${item.stock || 0}</td>
                             <td class="px-6 py-4 text-right text-white font-mono font-bold">${formatCurrency(item.rate)}</td>
                             <td class="px-6 py-4 text-right text-accent-secondary font-bold">${item.tax}%</td>
                         </tr>
@@ -1096,12 +1118,70 @@ function saveDoc(type) {
 
     documents[type].unshift(doc);
     localStorage.setItem(STORAGE_KEYS[type], JSON.stringify(documents[type]));
+
+    // --- Dynamic Flow: Stock & Banking Integration ---
+    if (type === DOC_TYPES.INVOICES || type === DOC_TYPES.SO || type === DOC_TYPES.PO || type === DOC_TYPES.BILLS) {
+        lineItems.forEach(line => {
+            const item = documents[DOC_TYPES.ITEMS].find(i => i.name === line.name);
+            if (item && item.type === 'Goods') {
+                if (!item.stock) item.stock = 0;
+                // Invoices/SO decrease stock, Bills/PO increase stock
+                if (type === DOC_TYPES.INVOICES || type === DOC_TYPES.SO) {
+                    item.stock -= line.qty;
+                } else {
+                    item.stock += line.qty;
+                }
+            }
+        });
+        localStorage.setItem(STORAGE_KEYS[DOC_TYPES.ITEMS], JSON.stringify(documents[DOC_TYPES.ITEMS]));
+    }
+
+    if (type === DOC_TYPES.EXPENSES) {
+        // Subtract expense from first available bank account
+        if (documents[DOC_TYPES.BANKING].length > 0) {
+            documents[DOC_TYPES.BANKING][0].balance -= doc.total;
+            localStorage.setItem(STORAGE_KEYS[DOC_TYPES.BANKING], JSON.stringify(documents[DOC_TYPES.BANKING]));
+        }
+    }
+
     closeModal();
     renderContent();
 }
 
 function deleteDoc(type, id) {
     if(!confirm('Security Protocol: Are you sure you want to permanently delete this record?')) return;
+    
+    const docToDelete = documents[type].find(d => d.id === id);
+    if (!docToDelete) return;
+
+    // --- Dynamic Flow Reversal ---
+    if (type === DOC_TYPES.INVOICES || type === DOC_TYPES.SO || type === DOC_TYPES.PO || type === DOC_TYPES.BILLS) {
+        docToDelete.lineItems?.forEach(line => {
+            const item = documents[DOC_TYPES.ITEMS].find(i => i.name === line.name);
+            if (item && item.type === 'Goods') {
+                // Reverse the original action
+                if (type === DOC_TYPES.INVOICES || type === DOC_TYPES.SO) {
+                    item.stock += line.qty;
+                } else {
+                    item.stock -= line.qty;
+                }
+            }
+        });
+        localStorage.setItem(STORAGE_KEYS[DOC_TYPES.ITEMS], JSON.stringify(documents[DOC_TYPES.ITEMS]));
+    }
+
+    if (type === DOC_TYPES.PAYMENTS_REC || type === DOC_TYPES.PAYMENTS_MADE || type === DOC_TYPES.EXPENSES) {
+        if (documents[DOC_TYPES.BANKING].length > 0) {
+            const amount = docToDelete.total;
+            if (type === DOC_TYPES.PAYMENTS_REC) {
+                documents[DOC_TYPES.BANKING][0].balance -= amount;
+            } else {
+                documents[DOC_TYPES.BANKING][0].balance += amount;
+            }
+            localStorage.setItem(STORAGE_KEYS[DOC_TYPES.BANKING], JSON.stringify(documents[DOC_TYPES.BANKING]));
+        }
+    }
+
     documents[type] = documents[type].filter(d => d.id !== id);
     localStorage.setItem(STORAGE_KEYS[type], JSON.stringify(documents[type]));
     renderContent();
@@ -1788,6 +1868,19 @@ function savePayment(type) {
 
     documents[type].unshift(payment);
     localStorage.setItem(STORAGE_KEYS[type], JSON.stringify(documents[type]));
+
+    // --- Dynamic Flow: Bank Balance Integration ---
+    if (documents[DOC_TYPES.BANKING].length > 0) {
+        // Find the first account or ideally pick matching account if we had that mapping
+        // For now, we update the main (first) account
+        if (type === DOC_TYPES.PAYMENTS_REC) {
+            documents[DOC_TYPES.BANKING][0].balance += amount;
+        } else {
+            documents[DOC_TYPES.BANKING][0].balance -= amount;
+        }
+        localStorage.setItem(STORAGE_KEYS[DOC_TYPES.BANKING], JSON.stringify(documents[DOC_TYPES.BANKING]));
+    }
+
     closeModal();
     renderContent();
 }
