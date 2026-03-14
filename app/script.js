@@ -378,20 +378,148 @@ function convertDocument(fromType, fromId, toType) {
 function printDocument(type, id) {
     const doc = documents[type].find(d => d.id === id);
     if (!doc) return;
-    const printWindow = window.open('', '_blank');
-    const labels = { [DOC_TYPES.QUOTES]: 'QUOTATION', [DOC_TYPES.SO]: 'SALES ORDER', [DOC_TYPES.DC]: 'DELIVERY CHALAN', [DOC_TYPES.PO]: 'PURCHASE ORDER' };
+
+    const labels = { 
+        [DOC_TYPES.QUOTES]: 'QUOTATION', 
+        [DOC_TYPES.SO]: 'SALES ORDER', 
+        [DOC_TYPES.DC]: 'DELIVERY CHALAN', 
+        [DOC_TYPES.PO]: 'PURCHASE ORDER' 
+    };
+
+    const printWindow = window.open('', '_blank', 'width=900,height=800');
     
-    printWindow.document.write(`
-        <html><head><title>${doc.id}</title>
-        <style>body{font-family:Sans-Serif;padding:40px} .hr{border-top:2px solid #06b6d4;margin:20px 0} .tbl{width:100%;border-collapse:collapse} .tbl th{text-align:left;background:#f1f5f9;padding:10px} .tbl td{padding:10px;border-bottom:1px solid #eee} .total{text-align:right;margin-top:20px;font-weight:bold;font-size:20px;color:#06b6d4}</style></head>
-        <body><h1 style="color:#06b6d4">${labels[type]}</h1><div class="hr"></div>
-        <p><strong>To:</strong> ${doc.client} | <strong>Date:</strong> ${doc.date} | <strong>Ref:</strong> ${doc.ref}</p>
-        <table class="tbl"><tr><th>Item</th><th>Qty</th><th>Rate</th><th>Tax</th><th>Amount</th></tr>
-        ${doc.lineItems.map(i => `<tr><td>${i.name}</td><td>${i.qty}</td><td>$${i.rate.toFixed(2)}</td><td>${i.tax}%</td><td>$${(i.qty*i.rate).toFixed(2)}</td></tr>`).join('')}
-        </table><div class="total">Total Payable: $${doc.total.toFixed(2)}</div></body></html>
-    `);
+    const html = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>${doc.id} - ${doc.client}</title>
+            <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700&display=swap" rel="stylesheet">
+            <style>
+                * { box-sizing: border-box; -webkit-print-color-adjust: exact; }
+                body { font-family: 'Plus Jakarta Sans', sans-serif; padding: 50px; color: #1e293b; line-height: 1.5; background: #fff; }
+                .header { display: flex; justify-content: space-between; border-bottom: 4px solid #06b6d4; padding-bottom: 25px; margin-bottom: 40px; }
+                .company-info { text-align: left; }
+                .company-name { font-size: 28px; font-weight: 800; color: #0f172a; margin-bottom: 5px; }
+                .company-sub { font-size: 13px; color: #64748b; font-weight: 500; }
+                .doc-type { text-align: right; }
+                .doc-label { font-size: 36px; font-weight: 800; color: #06b6d4; margin: 0; }
+                .doc-id { font-size: 16px; color: #64748b; font-weight: 600; margin-top: 5px; }
+                
+                .info-section { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; margin-bottom: 50px; }
+                .info-block h4 { font-size: 11px; text-transform: uppercase; tracking: 0.1em; color: #94a3b8; margin-bottom: 8px; }
+                .info-block p { font-size: 15px; font-weight: 700; margin: 0; color: #1e293b; }
+                
+                table { width: 100%; border-collapse: collapse; margin-bottom: 40px; }
+                th { background: #f8fafc; border-bottom: 2px solid #e2e8f0; padding: 15px; text-align: left; font-size: 11px; text-transform: uppercase; color: #64748b; }
+                td { padding: 15px; border-bottom: 1px solid #f1f5f9; font-size: 14px; color: #334155; }
+                .text-right { text-align: right; }
+                .text-center { text-align: center; }
+                
+                .totals-container { display: flex; justify-content: flex-end; }
+                .totals-box { width: 300px; background: #f8fafc; padding: 25px; border-radius: 12px; }
+                .total-row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 14px; }
+                .total-row.grand { margin-top: 15px; padding-top: 15px; border-top: 2px solid #e2e8f0; font-size: 20px; font-weight: 800; color: #06b6d4; }
+                
+                .footer { margin-top: 80px; text-align: center; font-size: 11px; color: #94a3b8; border-top: 1px solid #f1f5f9; padding-top: 30px; }
+                @media print { body { padding: 20px; } }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <div class="company-info">
+                    <div class="company-name">Dipak Kadamb Hub</div>
+                    <div class="company-sub">Advanced Business Automation Hub</div>
+                </div>
+                <div class="doc-type">
+                    <h1 class="doc-label">${labels[type]}</h1>
+                    <div class="doc-id">REF: ${doc.id}</div>
+                </div>
+            </div>
+            
+            <div class="info-section">
+                <div class="info-block">
+                    <h4>Bill To / Entity</h4>
+                    <p>${doc.client}</p>
+                    <div style="margin-top: 15px;">
+                        <h4>Reference Point</h4>
+                        <p style="font-size: 13px; font-weight: 500; color: #64748b;">${doc.ref}</p>
+                    </div>
+                </div>
+                <div class="info-block" style="text-align: right;">
+                    <h4>Issue Date</h4>
+                    <p>${doc.date}</p>
+                    <div style="margin-top: 15px;">
+                        <h4>Document Status</h4>
+                        <p style="color: #10b981;">Generated & Verified</p>
+                    </div>
+                </div>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 45%;">Description</th>
+                        <th class="text-center">Quantity</th>
+                        <th class="text-right">Unit Rate</th>
+                        <th class="text-right">Tax (%)</th>
+                        <th class="text-right">Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${doc.lineItems.map(item => `
+                        <tr>
+                            <td style="font-weight: 600;">${item.name}</td>
+                            <td class="text-center">${item.qty}</td>
+                            <td class="text-right">$${item.rate.toFixed(2)}</td>
+                            <td class="text-right">${item.tax}%</td>
+                            <td class="text-right" style="font-weight: 700;">$${(item.qty * item.rate).toFixed(2)}</td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            </table>
+
+            <div class="totals-container">
+                <div class="totals-box">
+                    <div class="total-row">
+                        <span style="color: #64748b;">Subtotal</span>
+                        <span>$${doc.subtotal.toFixed(2)}</span>
+                    </div>
+                    <div class="total-row">
+                        <span style="color: #64748b;">Tax Amount</span>
+                        <span>$${doc.tax.toFixed(2)}</span>
+                    </div>
+                    <div class="total-row grand">
+                        <span>Total Due</span>
+                        <span>$${doc.total.toFixed(2)}</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer">
+                This is a computer-generated transaction document from Hub Pro.<br>
+                For any queries, please visit dipakkadamb.github.io
+            </div>
+        </body>
+        </html>
+    `;
+
+    printWindow.document.open();
+    printWindow.document.write(html);
     printWindow.document.close();
-    printWindow.print();
+
+    // Give time for styles/fonts to load
+    printWindow.onload = function() {
+        printWindow.focus();
+        printWindow.print();
+    };
+
+    // Fallback if onload doesn't fire (e.g. cached)
+    setTimeout(() => {
+        if (printWindow) {
+            printWindow.focus();
+            printWindow.print();
+        }
+    }, 1000);
 }
 
 function closeModal() {

@@ -57,16 +57,24 @@
     <script>
         feather.replace();
         
-        document.getElementById('login-form').addEventListener('submit', (e) => {
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const u = document.getElementById('username').value;
             const p = document.getElementById('password').value;
             
-            if (u === 'admin' && p === 'admin') {
-                localStorage.setItem('hub_auth', 'true');
-                window.location.href = 'dashboard.html';
-            } else {
-                document.getElementById('login-error').classList.remove('hidden');
+            try {
+                const response = await fetch('key.txt');
+                const adminPass = (await response.text()).trim();
+                
+                if (u === 'admin' && p === adminPass) {
+                    localStorage.setItem('hub_auth', 'true');
+                    window.location.href = 'dashboard.html';
+                } else {
+                    document.getElementById('login-error').classList.remove('hidden');
+                }
+            } catch (err) {
+                console.error('Failed to load key:', err);
+                alert('Authentication system error. Please check server.');
             }
         });
     </script>
