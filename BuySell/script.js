@@ -509,7 +509,7 @@ function printDocument(type, id) {
         <body>
             <div class="header">
                 <div class="company-info">
-                    <div class="company-name">Dipak Kadamb Hub</div>
+                    <div class="company-name">Dipak Kadamb</div>
                     <div class="company-sub">Advanced Business Automation Hub</div>
                 </div>
                 <div class="doc-type">
@@ -594,7 +594,7 @@ function printDocument(type, id) {
             ` : ''}
             
             <div class="footer">
-                This is a computer-generated transaction document from Hub Pro.<br>
+                This is a computer-generated transaction document from CRM.<br>
                 For any queries, please visit dipakkadamb.github.io
             </div>
         </body>
