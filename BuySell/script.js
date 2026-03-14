@@ -64,6 +64,48 @@ function getDocBalance(doc, type) {
     return Math.max(0, balance);
 }
 
+// --- Global UI Bridge ---
+// Immediate export to ensure buttons work even if initialization hangs
+const globalBridge = {
+    switchView: (v) => switchViewWrapped(v),
+    renderContent: () => renderContent(),
+    renderDashboard: (c) => renderDashboard(c),
+    renderCustomers: (c) => renderCustomers(c),
+    renderVendors: (c) => renderVendors(c),
+    renderItems: (c) => renderItems(c),
+    renderBanking: (c) => renderBanking(c),
+    renderReports: (c) => renderReports(c),
+    renderDocumentList: (c, t) => renderDocumentList(c, t),
+    openCreateModal: (t, p) => openCreateModal(t, p),
+    saveDoc: (t) => saveDoc(t),
+    deleteDoc: (t, id) => deleteDoc(t, id),
+    convertDocument: (s, id, t) => convertDocument(s, id, t),
+    printDocument: (t, id) => printDocument(t, id),
+    openCustomerModal: (d) => openCustomerModal(d),
+    saveCustomer: (id) => saveCustomer(id),
+    deleteCustomer: (id) => deleteCustomer(id),
+    closeModal: () => closeModal(),
+    logout: () => logout(),
+    openVendorModal: (d) => openVendorModal(d),
+    saveVendor: (id) => saveVendor(id),
+    deleteVendor: (id) => deleteVendor(id),
+    openItemModal: (d) => openItemModal(d),
+    saveItem: (id) => saveItem(id),
+    deleteItem: (id) => deleteItem(id),
+    openBankModal: (d) => openBankModal(d),
+    saveBank: (id) => saveBank(id),
+    deleteBank: (id) => deleteBank(id),
+    openPaymentModal: (t, p) => openPaymentModal(t, p),
+    savePayment: (t) => savePayment(t),
+    updateRefDocs: (n, p) => updateRefDocs(n, p),
+    pickItem: (s) => pickItem(s),
+    addRow: (d) => addRow(d),
+    updateCalculations: () => updateCalculations(),
+    toggleSidebar: () => toggleSidebar(),
+    DOC_TYPES: DOC_TYPES
+};
+Object.assign(window, globalBridge);
+
 let documents = Object.values(DOC_TYPES).reduce((acc, type) => {
     acc[type] = [];
     return acc;
@@ -94,6 +136,15 @@ async function initializeApp() {
         });
 
         await Promise.all(loadPromises);
+        
+        // 3. Demo Data Fallback for first-time or broken cloud
+        const allEmpty = Object.values(documents).every(list => list.length === 0);
+        if (allEmpty) {
+            console.log("ASYNCRIX: No data found. Pre-populating demo data.");
+            documents[DOC_TYPES.BANKING] = [{ id: 'BANK-DEMO', bankName: 'Sample Bank', balance: 50000 }];
+            documents[DOC_TYPES.ITEMS] = [{ id: 'ITEM-DEMO', name: 'Premium Service', rate: 1500, tax: 18, type: 'Services', stock: 100 }];
+        }
+
         console.log("ASYNCRIX: Initialization complete. State ready.");
     } catch (error) {
         console.error("ASYNCRIX: Critical Initialization Error:", error);
@@ -102,6 +153,11 @@ async function initializeApp() {
         updateTitle(currentView);
         renderContent();
         feather.replace();
+        
+        // Cloud Status Warning
+        if (typeof cloudConnected !== 'undefined' && !cloudConnected) {
+            showCloudWarning();
+        }
     }
 
     // Mobile Responsive Listeners
@@ -2007,6 +2063,28 @@ async function savePayment(type) {
 
 // --- UI Utility Section ---
 
+// --- Resuscitation Utilities ---
+
+function showCloudWarning() {
+    const viewport = document.getElementById('content-viewport');
+    if (!viewport) return;
+    
+    const banner = document.createElement('div');
+    banner.className = 'bg-amber-400/10 border border-amber-400/20 p-4 rounded-xl mb-6 flex items-center justify-between animate-up';
+    banner.innerHTML = `
+        <div class="flex items-center gap-3">
+            <i data-feather="alert-triangle" class="text-amber-400 w-5 h-5"></i>
+            <div>
+                <div class="text-white text-xs font-bold uppercase tracking-widest">Cloud Configuration Required</div>
+                <div class="text-slate-500 text-[10px] font-medium leading-relaxed">Your application is currently running in <b>Local Mode</b>. To enable cloud sync and real-time database, please update <code>database.js</code> with your Firebase API keys.</div>
+            </div>
+        </div>
+        <button onclick="this.parentElement.remove()" class="text-slate-500 hover:text-white"><i data-feather="x" class="w-4 h-4"></i></button>
+    `;
+    viewport.prepend(banner);
+    feather.replace();
+}
+
 function toggleSidebar() {
     const sidebar = document.getElementById('sidebar');
     const overlay = document.getElementById('mobile-overlay');
@@ -2024,15 +2102,3 @@ function switchViewWrapped(viewId) {
     }
     _switchView(viewId);
 }
-
-// --- Global Export Section ---
-// This ensures HTML onclick handlers and other non-module scripts can still access these functions.
-Object.assign(window, {
-    switchView: switchViewWrapped, renderContent, renderDashboard, renderCustomers, renderVendors,
-    renderItems, renderBanking, renderReports, renderDocumentList, 
-    openCreateModal, saveDoc, deleteDoc, convertDocument, printDocument, 
-    openCustomerModal, saveCustomer, deleteCustomer, closeModal, logout,
-    openVendorModal, saveVendor, deleteVendor, openItemModal, saveItem, deleteItem, openBankModal, 
-    saveBank, deleteBank, openPaymentModal, savePayment, updateRefDocs, pickItem, addRow,
-    updateCalculations, DOC_TYPES, toggleSidebar
-});
