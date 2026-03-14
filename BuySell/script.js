@@ -1183,7 +1183,10 @@ async function saveDoc(type) {
     const success = await saveToCloud(type, doc);
 
     // --- Dynamic Flow: Stock & Banking Integration ---
-    if ([DOC_TYPES.INVOICES, DOC_TYPES.SO, DOC_TYPES.PO, DOC_TYPES.BILLS, DOC_TYPES.CREDIT_NOTES, DOC_TYPES.VENDOR_CREDITS].includes(type)) {
+    // Only process stock for documents that affect immediate accounting (Invoices, Bills, Credits)
+    const stockAffectingTypes = [DOC_TYPES.INVOICES, DOC_TYPES.BILLS, DOC_TYPES.CREDIT_NOTES, DOC_TYPES.VENDOR_CREDITS];
+    
+    if (stockAffectingTypes.includes(type)) {
         for (const line of lineItems) {
             const item = documents[DOC_TYPES.ITEMS].find(i => i.name.trim() === line.name.trim());
             if (item && item.type === 'Goods') {
@@ -1203,10 +1206,14 @@ async function saveDoc(type) {
     }
 
     if (type === DOC_TYPES.EXPENSES) {
-        if (documents[DOC_TYPES.BANKING].length > 0) {
-            documents[DOC_TYPES.BANKING][0].balance -= doc.total;
+        const primaryBank = documents[DOC_TYPES.BANKING][0];
+        if (primaryBank) {
+            primaryBank.balance -= doc.total;
             localStorage.setItem(STORAGE_KEYS[DOC_TYPES.BANKING], JSON.stringify(documents[DOC_TYPES.BANKING]));
-            await saveToCloud(DOC_TYPES.BANKING, documents[DOC_TYPES.BANKING][0]);
+            await saveToCloud(DOC_TYPES.BANKING, primaryBank);
+        } else {
+            console.warn("ASYNCRIX: Expense recorded but no bank found to deduct from.");
+            showToast("Expense saved, but no bank balance found to update.", "warning");
         }
     }
 
@@ -1333,8 +1340,8 @@ function printDocument(type, id) {
                 .total-row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 14px; }
                 .total-row.grand { margin-top: 15px; padding-top: 15px; border-top: 2px solid #e2e8f0; font-size: 20px; font-weight: 800; color: #06b6d4; }
                 
-                .footer { margin-top: 80px; text-align: center; font-size: 11px; color: #94a3b8; border-top: 1px solid #f1f5f9; padding-top: 30px; }
-                @media print { body { padding: 20px; } }
+                .footer { margin-top: 80px; text-align: center; font-size: 11px; color: #94a3b8; border-top: 1px solid #f1f5f9; padding-top: 30px; letter-spacing: 0.5px; }
+                @media print { body { padding: 20px; } .no-print { display: none; } }
             </style>
         </head>
         <body>
@@ -1359,10 +1366,14 @@ function printDocument(type, id) {
                 </div>
                 <div class="info-block" style="text-align: right;">
                     <h4>Shipping Details</h4>
-                    <p style="font-size: 16px; margin-bottom: 4px;">${doc.shipping && doc.shipping.company ? doc.shipping.company : (doc.billing ? doc.billing.company : doc.client)}</p>
-                    <p style="font-size: 13px; font-weight: 400; color: #64748b; white-space: pre-line;">${doc.shipping ? doc.shipping.address : ''}</p>
-                    ${(doc.shipping && doc.shipping.gst) ? `<p style="font-size: 12px; margin-top: 8px;"><strong>GST:</strong> ${doc.shipping.gst}</p>` : ''}
-                    ${(doc.shipping && doc.shipping.mobile) ? `<p style="font-size: 12px;"><strong>Mob:</strong> ${doc.shipping.mobile}</p>` : ''}
+                    ${(doc.shipping && doc.shipping.address && doc.shipping.address !== doc.billing.address) ? `
+                        <p style="font-size: 16px; margin-bottom: 4px;">${doc.shipping.company || doc.billing.company}</p>
+                        <p style="font-size: 13px; font-weight: 400; color: #64748b; white-space: pre-line;">${doc.shipping.address}</p>
+                        ${doc.shipping.gst ? `<p style="font-size: 12px; margin-top: 8px;"><strong>GST:</strong> ${doc.shipping.gst}</p>` : ''}
+                        ${doc.shipping.mobile ? `<p style="font-size: 12px;"><strong>Mob:</strong> ${doc.shipping.mobile}</p>` : ''}
+                    ` : `
+                        <p style="font-size: 13px; font-weight: 500; color: #64748b;">Same as Billing Address</p>
+                    `}
                 </div>
             </div>
 
@@ -1841,9 +1852,10 @@ async function savePayment(type) {
 
     documents[type].unshift(payment);
     localStorage.setItem(STORAGE_KEYS[type], JSON.stringify(documents[type]));
-    await saveToCloud(type, payment);
+    const successMain = await saveToCloud(type, payment);
 
     // --- Dynamic Flow: Bank Balance Integration ---
+    let bankSuccess = true;
     if (documents[DOC_TYPES.BANKING].length > 0) {
         if (type === DOC_TYPES.PAYMENTS_REC) {
             documents[DOC_TYPES.BANKING][0].balance += amount;
@@ -1851,12 +1863,17 @@ async function savePayment(type) {
             documents[DOC_TYPES.BANKING][0].balance -= amount;
         }
         localStorage.setItem(STORAGE_KEYS[DOC_TYPES.BANKING], JSON.stringify(documents[DOC_TYPES.BANKING]));
-        await saveToCloud(DOC_TYPES.BANKING, documents[DOC_TYPES.BANKING][0]);
+        bankSuccess = await saveToCloud(DOC_TYPES.BANKING, documents[DOC_TYPES.BANKING][0]);
     }
 
     closeModal();
     renderContent();
-    showToast(`${type.replace('-', ' ')} saved successfully!`, 'success');
+    
+    if (successMain && bankSuccess) {
+        showToast(`${type.replace('-', ' ')} recorded & synced!`, 'success');
+    } else {
+        showToast("Payment saved locally, but Cloud Sync failed.", "error");
+    }
 }
 
 function showToast(message, type = 'success') {
@@ -1923,5 +1940,5 @@ function switchViewWrapped(viewId) {
     _switchView(viewId);
 }
 
-// Kick off initialization
+// Final check: start the app
 initializeApp();
