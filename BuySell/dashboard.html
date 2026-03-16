@@ -51,7 +51,7 @@
     </style>
 </head>
 <body class="flex min-h-screen">
-    <div id="mobile-overlay" onclick="toggleSidebar()"></div>
+    <div id="mobile-overlay" onclick="globalBridge.toggleSidebar()"></div>
 
     <!-- Sidebar -->
     <aside id="sidebar" class="sidebar flex flex-col overflow-hidden">
@@ -72,80 +72,80 @@
         <nav class="flex-1 py-8 overflow-y-auto custom-scrollbar px-3 space-y-1">
             <!-- General Section -->
             <div class="px-5 py-2 text-[9px] uppercase tracking-[0.2em] text-slate-500 font-bold mb-2">Core Hub</div>
-            <button onclick="switchView('dashboard')" class="sidebar-link active-tab" id="tab-dashboard">
+            <button onclick="globalBridge.switchView('dashboard')" class="sidebar-link active-tab" id="tab-dashboard">
                 <i data-feather="activity" class="w-4 h-4"></i> Overview
             </button>
-            <button onclick="switchView('items')" class="sidebar-link" id="tab-items">
+            <button onclick="globalBridge.switchView('items')" class="sidebar-link" id="tab-items">
                 <i data-feather="layers" class="w-4 h-4"></i> Inventory
             </button>
-            <button onclick="switchView('banking')" class="sidebar-link" id="tab-banking">
+            <button onclick="globalBridge.switchView('banking')" class="sidebar-link" id="tab-banking">
                 <i data-feather="credit-card" class="w-4 h-4"></i> Treasury
             </button>
             
             <!-- Sales Section -->
             <div class="px-5 py-2 text-[9px] uppercase tracking-[0.2em] text-slate-500 font-bold mb-2">Sales Department</div>
-            <button onclick="switchView('customers')" class="sidebar-link" id="tab-customers">
+            <button onclick="globalBridge.switchView('customers')" class="sidebar-link" id="tab-customers">
                 <i data-feather="users" class="w-4 h-4"></i> Customers
             </button>
-            <button onclick="switchView('quotes')" class="sidebar-link" id="tab-quotes">
+            <button onclick="globalBridge.switchView('quotes')" class="sidebar-link" id="tab-quotes">
                 <i data-feather="file" class="w-4 h-4"></i> Estimates / Quotes
             </button>
-            <button onclick="switchView('sales-orders')" class="sidebar-link" id="tab-sales-orders">
+            <button onclick="globalBridge.switchView('sales-orders')" class="sidebar-link" id="tab-sales-orders">
                 <i data-feather="shopping-cart" class="w-4 h-4"></i> Sales Orders
             </button>
-            <button onclick="switchView('delivery-chalans')" class="sidebar-link" id="tab-delivery-chalans">
+            <button onclick="globalBridge.switchView('delivery-chalans')" class="sidebar-link" id="tab-delivery-chalans">
                 <i data-feather="truck" class="w-4 h-4"></i> Delivery Challans
             </button>
-            <button onclick="switchView('invoices')" class="sidebar-link" id="tab-invoices">
+            <button onclick="globalBridge.switchView('invoices')" class="sidebar-link" id="tab-invoices">
                 <i data-feather="file-text" class="w-4 h-4"></i> Invoices
             </button>
-            <button onclick="switchView('proforma-invoices')" class="sidebar-link" id="tab-proforma-invoices">
+            <button onclick="globalBridge.switchView('proforma-invoices')" class="sidebar-link" id="tab-proforma-invoices">
                 <i data-feather="file-plus" class="w-4 h-4"></i> Proforma Invoices
             </button>
-            <button onclick="switchView('payments-received')" class="sidebar-link" id="tab-payments-received">
+            <button onclick="globalBridge.switchView('payments-received')" class="sidebar-link" id="tab-payments-received">
                 <i data-feather="arrow-down-circle" class="w-4 h-4"></i> Payments Received
             </button>
-            <button onclick="switchView('credit-notes')" class="sidebar-link" id="tab-credit-notes">
+            <button onclick="globalBridge.switchView('credit-notes')" class="sidebar-link" id="tab-credit-notes">
                 <i data-feather="refresh-ccw" class="w-4 h-4"></i> Credit Notes
             </button>
             
             <!-- Purchase Section -->
             <div class="px-5 py-4 text-[9px] uppercase tracking-[0.2em] text-slate-500 font-bold mb-2">Purchases Department</div>
-            <button onclick="switchView('vendors')" class="sidebar-link" id="tab-vendors">
+            <button onclick="globalBridge.switchView('vendors')" class="sidebar-link" id="tab-vendors">
                 <i data-feather="briefcase" class="w-4 h-4"></i> Vendors
             </button>
-            <button onclick="switchView('expenses')" class="sidebar-link" id="tab-expenses">
+            <button onclick="globalBridge.switchView('expenses')" class="sidebar-link" id="tab-expenses">
                 <i data-feather="pie-chart" class="w-4 h-4"></i> Expenses
             </button>
-            <button onclick="switchView('purchase-orders')" class="sidebar-link" id="tab-purchase-orders">
+            <button onclick="globalBridge.switchView('purchase-orders')" class="sidebar-link" id="tab-purchase-orders">
                 <i data-feather="shopping-bag" class="w-4 h-4"></i> Purchase Orders
             </button>
-            <button onclick="switchView('bills')" class="sidebar-link" id="tab-bills">
+            <button onclick="globalBridge.switchView('bills')" class="sidebar-link" id="tab-bills">
                 <i data-feather="file-minus" class="w-4 h-4"></i> Bills
             </button>
-            <button onclick="switchView('payments-made')" class="sidebar-link" id="tab-payments-made">
+            <button onclick="globalBridge.switchView('payments-made')" class="sidebar-link" id="tab-payments-made">
                 <i data-feather="arrow-up-circle" class="w-4 h-4"></i> Payments Made
             </button>
-            <button onclick="switchView('vendor-credits')" class="sidebar-link" id="tab-vendor-credits">
+            <button onclick="globalBridge.switchView('vendor-credits')" class="sidebar-link" id="tab-vendor-credits">
                 <i data-feather="refresh-cw" class="w-4 h-4"></i> Vendor Credits
             </button>
 
             <!-- Admin Section -->
             <div class="px-5 py-4 text-[9px] uppercase tracking-[0.2em] text-slate-500 font-bold mb-2">Administration</div>
-            <button onclick="switchView('users')" class="sidebar-link" id="tab-users">
+            <button onclick="globalBridge.switchView('users')" class="sidebar-link" id="tab-users">
                 <i data-feather="settings" class="w-4 h-4"></i> User Management
             </button>
-            <button onclick="switchView('reports')" class="sidebar-link" id="tab-reports">
+            <button onclick="globalBridge.switchView('reports')" class="sidebar-link" id="tab-reports">
                 <i data-feather="bar-chart-2" class="w-4 h-4"></i> Reports
             </button>
         </nav>
 
         <div class="p-4 logout-btn-wrapper">
-            <button onclick="logout()" class="flex items-center gap-3 text-slate-500 hover:text-red-400 transition-all w-full font-bold px-4 py-3 rounded-xl hover:bg-red-400/5 group">
+            <button onclick="globalBridge.logout()" class="flex items-center gap-3 text-slate-500 hover:text-red-400 transition-all w-full font-bold px-4 py-3 rounded-xl hover:bg-red-400/5 group">
                 <i data-feather="power" class="w-4 h-4 group-hover:rotate-12 transition-transform"></i> 
                 <span class="text-xs uppercase tracking-widest">Terminate Session</span>
             </button>
-            <button onclick="systemReset()" class="flex items-center gap-3 text-slate-600 hover:text-red-500 transition-all w-full font-bold px-4 py-2 mt-2 rounded-xl hover:bg-red-500/5 group">
+            <button onclick="globalBridge.systemReset()" class="flex items-center gap-3 text-slate-600 hover:text-red-500 transition-all w-full font-bold px-4 py-2 mt-2 rounded-xl hover:bg-red-500/5 group">
                 <i data-feather="trash-2" class="w-3 h-3"></i> 
                 <span class="text-[9px] uppercase tracking-widest">Wipe Data</span>
             </button>
@@ -157,7 +157,7 @@
         <!-- Dashboard Header -->
         <header class="h-20 border-b border-slate-200 bg-white/90 backdrop-blur-xl px-4 md:px-10 flex items-center justify-between sticky top-0 z-30">
             <div class="flex items-center gap-4">
-                <button onclick="toggleSidebar()" class="lg:hidden p-2 -ml-2 text-slate-800 glass-panel bg-slate-50 !rounded-lg border-slate-200">
+                <button onclick="globalBridge.toggleSidebar()" class="lg:hidden p-2 -ml-2 text-slate-800 glass-panel bg-slate-50 !rounded-lg border-slate-200">
                     <i data-feather="menu" class="w-5 h-5"></i>
                 </button>
                 <h2 id="view-title" class="text-xl md:text-2xl font-bold text-slate-900 tracking-tight">System Overview</h2>
@@ -193,7 +193,7 @@
         <div class="glass-panel w-full max-w-5xl max-h-[95vh] overflow-hidden flex flex-col shadow-2xl animate-up">
             <div class="p-5 md:p-6 border-b border-slate-200 flex justify-between items-center bg-slate-50/50">
                 <h3 id="modal-title" class="text-lg md:text-xl font-bold text-slate-900">New Document</h3>
-                <button onclick="closeModal()" class="text-slate-400 hover:text-red-400 transition-colors p-2">
+                <button onclick="globalBridge.closeModal()" class="text-slate-400 hover:text-red-400 transition-colors p-2">
                     <i data-feather="x" class="w-6 h-6"></i>
                 </button>
             </div>
@@ -201,7 +201,7 @@
                 <!-- Form injected here -->
             </div>
             <div class="p-5 md:p-6 border-t border-slate-200 bg-slate-50/50 flex flex-col md:flex-row justify-end gap-3">
-                <button onclick="closeModal()" class="px-6 py-2.5 text-slate-500 font-bold hover:text-slate-900 transition-colors">Cancel</button>
+                <button onclick="globalBridge.closeModal()" class="px-6 py-2.5 text-slate-500 font-bold hover:text-slate-900 transition-colors">Cancel</button>
                 <button id="save-btn" class="btn-primary justify-center">Save & Continue</button>
             </div>
         </div>
