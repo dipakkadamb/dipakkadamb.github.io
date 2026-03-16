@@ -84,11 +84,30 @@ export async function loadFromCloud(type) {
 export async function testConnection() {
     try {
         const start = Date.now();
-        const response = await fetch(`${GOOGLE_SHEETS_URL}?type=ping`);
+        // Use a controller to timeout long-hanging requests
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 8000);
+
+        const response = await fetch(`${GOOGLE_SHEETS_URL}?type=ping`, { 
+            signal: controller.signal,
+            cache: 'no-store' 
+        });
+        
+        clearTimeout(timeoutId);
         const status = response.ok;
         const latency = Date.now() - start;
+        
+        if (!status) {
+            console.warn(`ASYNCRIX DB: Connection test returned status ${response.status}`);
+        }
+        
         return { success: status, latency: latency };
     } catch (error) {
+        if (error.name === 'AbortError') {
+            console.error("ASYNCRIX DB: Connection test timed out.");
+        } else {
+            console.error("ASYNCRIX DB: Connection test failed:", error);
+        }
         return { success: false, error: error.toString() };
     }
 }
