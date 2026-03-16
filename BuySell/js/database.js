@@ -1,24 +1,25 @@
 /**
- * ASYNCRIX GLOBAL - Database Synchronizer (Google Sheets Edition)
- * Handles data synchronization between local storage and Google Sheets.
+ * ASYNCRIX GLOBAL - Database Synchronizer (Supabase Edition)
+ * Handles data synchronization between local storage and Supabase PostgreSQL.
  */
 
-const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbwwdQKD0YF4l7BLy9xHUeq-gvaqJGfenWHQbv2o_yTPvdbblphduCSY1vMi8yn5TFnm/exec";
+const SUPABASE_URL = "YOUR_SUPABASE_URL"; 
+const SUPABASE_KEY = "YOUR_SUPABASE_ANON_KEY";
 
 let dbInitialized = false;
-let cloudOnline = true; // Optimistic default
+let cloudOnline = true;
 
 export async function initDatabase() {
-    if (GOOGLE_SHEETS_URL.includes("YOUR_APPS_SCRIPT")) {
-        console.warn("ASYNCRIX DB: Google Sheets URL missing. Falling back to Local Storage mode.");
+    if (SUPABASE_URL.includes("YOUR_SUPABASE") || SUPABASE_KEY.includes("YOUR_SUPABASE")) {
+        console.warn("ASYNCRIX DB: Supabase credentials missing. Cloud Sync disabled.");
         return false;
     }
     dbInitialized = true;
-    console.log("ASYNCRIX DB: Google Sheets sync ready.");
+    console.log("ASYNCRIX DB: Supabase engine active.");
     
     // Initial health check
     checkConnection();
-    // Periodic health check every 30 seconds
+    // Periodic health check
     setInterval(checkConnection, 30000);
     
     return true;
@@ -30,92 +31,94 @@ export function isCloudOnline() {
 
 async function checkConnection() {
     try {
-        const response = await fetch(`${GOOGLE_SHEETS_URL}?type=ping`, { cache: 'no-store' });
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/items?select=id&limit=1`, {
+            headers: {
+                'apikey': SUPABASE_KEY,
+                'Authorization': `Bearer ${SUPABASE_KEY}`
+            }
+        });
         cloudOnline = response.ok;
     } catch (err) {
         cloudOnline = false;
     }
-    // Dispatch event for UI listeners
     window.dispatchEvent(new CustomEvent('cloudStatusChanged', { detail: { online: cloudOnline } }));
 }
 
 /**
- * Google Sheets Persistence Logic
+ * Supabase Persistence Logic (Upsert)
  */
 export async function saveToCloud(type, data) {
     if (!dbInitialized) return false;
     try {
-        const body = JSON.stringify({
-            action: 'save',
-            type: type,
-            id: data.id,
-            data: data
-        });
-        
-        console.log(`ASYNCRIX DB: Sending ${type} data to cloud...`);
-        
-        const response = await fetch(GOOGLE_SHEETS_URL, {
+        const tableName = type.replace(/-/g, '_'); // Supabase prefers underscores
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/${tableName}`, {
             method: 'POST',
-            mode: 'no-cors',
-            headers: { 'Content-Type': 'text/plain' },
-            body: body
+            headers: {
+                'apikey': SUPABASE_KEY,
+                'Authorization': `Bearer ${SUPABASE_KEY}`,
+                'Content-Type': 'application/json',
+                'Prefer': 'resolution=merge-duplicates' // Handle Upsert
+            },
+            body: JSON.stringify({
+                id: data.id,
+                data: data // Store flexible structure in JSONB
+            })
         });
         
-        // With no-cors, we can't check response.ok, but we can detect network errors in catch
-        cloudOnline = true;
-        window.dispatchEvent(new CustomEvent('cloudStatusChanged', { detail: { online: true } }));
-        return true;
+        cloudOnline = response.ok;
+        window.dispatchEvent(new CustomEvent('cloudStatusChanged', { detail: { online: cloudOnline } }));
+        return response.ok;
     } catch (error) {
         cloudOnline = false;
         window.dispatchEvent(new CustomEvent('cloudStatusChanged', { detail: { online: false } }));
-        console.error(`ASYNCRIX DB: Save failed for ${type}. Possible causes: No internet, Ad-blocker, or invalid Script URL. Details:`, error);
+        console.error(`ASYNCRIX DB: Supabase save failed for ${type}:`, error);
         return false;
     }
 }
 
 /**
- * Batch Save Optimization
+ * Batch Upsert Support
  */
 export async function batchSaveToCloud(type, dataArray) {
     if (!dbInitialized || !dataArray || dataArray.length === 0) return false;
     try {
-        console.log(`ASYNCRIX DB: Sending batch update for ${type} (${dataArray.length} items)...`);
-        await fetch(GOOGLE_SHEETS_URL, {
+        const tableName = type.replace(/-/g, '_');
+        const payload = dataArray.map(item => ({
+            id: item.id,
+            data: item
+        }));
+
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/${tableName}`, {
             method: 'POST',
-            mode: 'no-cors',
-            body: JSON.stringify({
-                action: 'batchSave',
-                type: type,
-                data: dataArray
-            })
+            headers: {
+                'apikey': SUPABASE_KEY,
+                'Authorization': `Bearer ${SUPABASE_KEY}`,
+                'Content-Type': 'application/json',
+                'Prefer': 'resolution=merge-duplicates'
+            },
+            body: JSON.stringify(payload)
         });
-        return true;
+        return response.ok;
     } catch (error) {
-        console.error(`ASYNCRIX DB: Batch save failed for ${type}:`, error);
+        console.error(`ASYNCRIX DB: Supabase batch save failed for ${type}:`, error);
         return false;
     }
 }
 
 export async function deleteFromCloud(type, id) {
-    if (!dbInitialized) {
-        console.warn("ASYNCRIX DB: Delete failed - Database not initialized.");
-        return false;
-    }
+    if (!dbInitialized) return false;
     try {
-        console.log(`ASYNCRIX DB: Attempting cloud delete for ${type} (${id})...`);
-        await fetch(GOOGLE_SHEETS_URL, {
-            method: 'POST',
-            mode: 'no-cors',
-            body: JSON.stringify({
-                action: 'delete',
-                type: type,
-                id: id
-            })
+        const tableName = type.replace(/-/g, '_');
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/${tableName}?id=eq.${id}`, {
+            method: 'DELETE',
+            headers: {
+                'apikey': SUPABASE_KEY,
+                'Authorization': `Bearer ${SUPABASE_KEY}`
+            }
         });
-        console.log(`ASYNCRIX DB: Cloud delete request sent for ${type} (${id}).`);
-        return true;
+        return response.ok;
     } catch (error) {
-        console.error(`ASYNCRIX DB: Error deleting ${type} from Google Sheets:`, error);
+        console.error(`ASYNCRIX DB: Supabase delete failed for ${type}:`, error);
         return false;
     }
 }
@@ -123,60 +126,44 @@ export async function deleteFromCloud(type, id) {
 export async function loadFromCloud(type) {
     if (!dbInitialized) return [];
     try {
-        const url = `${GOOGLE_SHEETS_URL}?type=${type}&_=${Date.now()}`;
-        const response = await fetch(url);
-        const data = await response.json();
-        return Array.isArray(data) ? data : [];
+        const tableName = type.replace(/-/g, '_');
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/${tableName}?select=data`, {
+            headers: {
+                'apikey': SUPABASE_KEY,
+                'Authorization': `Bearer ${SUPABASE_KEY}`
+            }
+        });
+        const rows = await response.json();
+        return rows.map(r => r.data);
     } catch (error) {
-        console.error(`Error loading ${type} from Google Sheets:`, error);
+        console.error(`ASYNCRIX DB: Error loading ${type} from Supabase:`, error);
         return [];
     }
 }
 
-/**
- * Diagnostic tool to check if the Web App is responsive
- */
 export async function testConnection() {
-    console.log("ASYNCRIX DB: Running connection test to:", GOOGLE_SHEETS_URL);
     try {
         const start = Date.now();
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 10000);
-
-        const response = await fetch(`${GOOGLE_SHEETS_URL}?type=ping`, { 
-            signal: controller.signal,
-            cache: 'no-store' 
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/items?select=id&limit=1`, {
+            headers: {
+                'apikey': SUPABASE_KEY,
+                'Authorization': `Bearer ${SUPABASE_KEY}`
+            }
         });
-        
-        clearTimeout(timeoutId);
-        const status = response.ok;
         const latency = Date.now() - start;
-        
-        console.log(`ASYNCRIX DB: Ping response status: ${response.status} (${response.statusText})`);
-        
-        return { success: status, latency: latency };
+        return { success: response.ok, latency: latency };
     } catch (error) {
-        if (error.name === 'AbortError') {
-            console.error("ASYNCRIX DB: Connection test timed out (10s).");
-        } else {
-            console.error("ASYNCRIX DB: Connection test failed. This usually means the URL is wrong or CORS is blocking it. Error:", error);
-        }
         return { success: false, error: error.toString() };
     }
 }
 
-
-/**
- * Migration Utility: LocalStorage -> Google Sheets
- */
 export async function migrateLocalToCloud(localDocuments) {
     if (!dbInitialized) return;
-    console.log("ASYNCRIX DB: Starting batch migration to Google Sheets...");
-    
+    console.log("ASYNCRIX DB: Starting migration to Supabase...");
     for (const [type, list] of Object.entries(localDocuments)) {
         if (Array.isArray(list) && list.length > 0) {
             await batchSaveToCloud(type, list);
         }
     }
-    console.log("ASYNCRIX DB: Batch migration complete.");
+    console.log("ASYNCRIX DB: Migration complete.");
 }
