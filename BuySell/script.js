@@ -11,7 +11,7 @@ import {
 } from './js/ui.js';
 import { 
     saveEntity, deleteEntity, saveItem, saveBank, saveUser, deleteUser,
-    saveDoc, deleteDoc, savePayment, systemSetupAndMap, convertDocument
+    saveDoc, deleteDoc, savePayment, convertDocument
 } from './js/handlers.js';
 import { migrateLocalToCloud, testConnection } from './js/database.js';
 
