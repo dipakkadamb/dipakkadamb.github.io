@@ -23,6 +23,12 @@ export async function initDatabase() {
 export async function saveToCloud(type, data) {
     if (!dbInitialized) return false;
     try {
+        const body = JSON.stringify({
+            action: 'save',
+            type: type,
+            id: data.id,
+            data: data
+        });
         console.log(`ASYNCRIX DB: Sending ${type} data to cloud...`, body);
         const response = await fetch(GOOGLE_SHEETS_URL, {
             method: 'POST',
