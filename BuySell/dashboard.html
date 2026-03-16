@@ -34,8 +34,8 @@
             font-size: 0.85rem;
         }
         .sidebar-link:hover {
-            background: rgba(255, 255, 255, 0.03);
-            color: white;
+            background: rgba(0, 0, 0, 0.03);
+            color: var(--text-main);
         }
         #mobile-overlay {
             display: none;
@@ -57,7 +57,7 @@
     <aside id="sidebar" class="sidebar flex flex-col overflow-hidden">
         <div class="px-6 py-8 border-b border-slate-200 relative">
             <div class="flex items-center gap-3 relative z-10">
-                <div class="w-10 h-10 bg-gradient-to-tr from-accent-primary/20 to-accent-secondary/20 rounded-xl flex items-center justify-center border border-white/10 text-accent-primary shadow-inner">
+                <div class="w-10 h-10 bg-gradient-to-tr from-accent-primary/20 to-accent-secondary/20 rounded-xl flex items-center justify-center border border-slate-200 text-accent-primary shadow-inner">
                     <i data-feather="command" class="w-6 h-6"></i>
                 </div>
                 <div>
@@ -166,7 +166,7 @@
                         <div class="text-sm font-bold text-slate-900 tracking-wide">ADMINISTRATOR</div>
                         <div class="text-[9px] text-accent-primary font-bold uppercase tracking-widest mt-0.5">Full System Access</div>
                     </div>
-                    <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-accent-primary/20 to-accent-secondary/20 border border-white/10 flex items-center justify-center text-accent-primary shadow-lg">
+                    <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-accent-primary/20 to-accent-secondary/20 border border-slate-200 flex items-center justify-center text-accent-primary shadow-lg">
                         <i data-feather="shield" class="w-5 h-5"></i>
                     </div>
                 </div>
@@ -184,7 +184,7 @@
         <div class="glass-panel w-full max-w-5xl max-h-[95vh] overflow-hidden flex flex-col shadow-2xl animate-up">
             <div class="p-5 md:p-6 border-b border-slate-200 flex justify-between items-center bg-slate-50/50">
                 <h3 id="modal-title" class="text-lg md:text-xl font-bold text-slate-900">New Document</h3>
-                <button onclick="closeModal()" class="text-slate-400 hover:text-white transition-colors p-2">
+                <button onclick="closeModal()" class="text-slate-400 hover:text-red-400 transition-colors p-2">
                     <i data-feather="x" class="w-6 h-6"></i>
                 </button>
             </div>
@@ -192,7 +192,7 @@
                 <!-- Form injected here -->
             </div>
             <div class="p-5 md:p-6 border-t border-slate-200 bg-slate-50/50 flex flex-col md:flex-row justify-end gap-3">
-                <button onclick="closeModal()" class="px-6 py-2.5 text-slate-400 font-bold hover:text-white transition-colors">Cancel</button>
+                <button onclick="closeModal()" class="px-6 py-2.5 text-slate-500 font-bold hover:text-slate-900 transition-colors">Cancel</button>
                 <button id="save-btn" class="btn-primary justify-center">Save & Continue</button>
             </div>
         </div>

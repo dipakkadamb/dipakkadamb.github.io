@@ -352,17 +352,17 @@ function renderDashboard(container) {
     let html = `
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
             ${mainStats.map(stat => `
-                <div class="glass-panel p-6 bg-white/[0.02] border-white/5 relative overflow-hidden group">
-                    <div class="absolute -top-12 -right-12 w-24 h-24 bg-white/5 blur-2xl rounded-full group-hover:bg-accent-primary/5 transition-all"></div>
+                <div class="glass-panel p-6 bg-white border-slate-200 relative overflow-hidden group">
+                    <div class="absolute -top-12 -right-12 w-24 h-24 bg-slate-50 blur-2xl rounded-full group-hover:bg-accent-primary/5 transition-all"></div>
                     <div class="flex justify-between items-start mb-6 relative z-10">
-                        <div class="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center border border-white/10 ${stat.color} shadow-inner">
+                        <div class="w-12 h-12 bg-slate-50 rounded-2xl flex items-center justify-center border border-slate-100 ${stat.color} shadow-inner">
                             <i data-feather="${stat.icon}" class="w-6 h-6"></i>
                         </div>
-                        <div class="text-[9px] font-extrabold text-slate-600 uppercase tracking-[0.2em] pt-1">Live Feed</div>
+                        <div class="text-[9px] font-extrabold text-slate-500 uppercase tracking-[0.2em] pt-1">Live Feed</div>
                     </div>
                     <div class="relative z-10">
                         <div class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">${stat.label}</div>
-                        <div class="text-3xl font-bold text-white tracking-tighter">${formatCurrency(stat.amount)}</div>
+                        <div class="text-3xl font-bold text-slate-900 tracking-tighter">${formatCurrency(stat.amount)}</div>
                         <p class="text-[10px] text-slate-500 mt-3 font-medium flex items-center gap-1.5 uppercase tracking-tighter">
                              <span class="w-1 h-1 rounded-full bg-accent-primary animate-pulse"></span> ${stat.sub}
                         </p>
@@ -373,9 +373,9 @@ function renderDashboard(container) {
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 animate-up" style="animation-delay: 100ms">
             <!-- Recent Transactions Feed -->
-            <div class="glass-panel p-6 border-white/5 bg-navy-800/10">
+            <div class="glass-panel p-6 border-slate-200 bg-white shadow-sm">
                 <div class="flex justify-between items-center mb-8">
-                    <h3 class="text-sm font-bold text-white uppercase tracking-widest flex items-center gap-2">
+                    <h3 class="text-sm font-bold text-slate-800 uppercase tracking-widest flex items-center gap-2">
                         <i data-feather="clock" class="w-4 h-4 text-accent-primary"></i> Recent Transactions
                     </h3>
                     <button onclick="switchView('${DOC_TYPES.REPORTS}')" class="text-[10px] font-bold text-accent-primary uppercase hover:underline">View All</button>
@@ -383,19 +383,19 @@ function renderDashboard(container) {
                 
                 <div class="space-y-4">
                     ${recentTxns.length === 0 ? `
-                        <p class="text-slate-600 text-xs italic py-8 text-center">No transactions recorded yet.</p>
+                        <p class="text-slate-500 text-xs italic py-8 text-center">No transactions recorded yet.</p>
                     ` : recentTxns.map(txn => `
-                        <div class="flex items-center gap-4 p-3 rounded-xl hover:bg-white/[0.02] transition-colors border border-transparent hover:border-white/5">
-                            <div class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center ${txn.color} border border-white/10">
+                        <div class="flex items-center gap-4 p-3 rounded-xl hover:bg-slate-50 transition-colors border border-transparent hover:border-slate-100">
+                            <div class="w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center ${txn.color} border border-slate-100">
                                 <i data-feather="${txn.icon}" class="w-4 h-4"></i>
                             </div>
                             <div class="flex-1">
-                                <div class="text-xs font-bold text-white">${txn.client}</div>
+                                <div class="text-xs font-bold text-slate-900">${txn.client}</div>
                                 <div class="text-[10px] text-slate-500 font-medium uppercase tracking-tight">${txn.typeLabel} • ${txn.id}</div>
                             </div>
                             <div class="text-right">
-                                <div class="text-xs font-bold text-white font-mono">${formatCurrency(txn.total)}</div>
-                                <div class="text-[9px] text-slate-600">${txn.date}</div>
+                                <div class="text-xs font-bold text-slate-900 font-mono">${formatCurrency(txn.total)}</div>
+                                <div class="text-[9px] text-slate-500">${txn.date}</div>
                             </div>
                         </div>
                     `).join('')}
@@ -492,7 +492,7 @@ function renderItems(container) {
                                 </td>
                                 <td class="px-6 py-4 text-right text-white font-bold" data-label="Rate">${formatCurrency(item.rate)}</td>
                                 <td class="px-6 py-4 text-right text-accent-primary font-bold" data-label="Stock">${item.stock || 0}</td>
-                                <td class="px-6 py-4 text-right text-slate-400" data-label="Tax">${item.tax}%</td>
+                                <td class="px-6 py-4 text-right text-slate-500" data-label="Tax">${item.tax}%</td>
                                 <td class="px-6 py-4 text-right actions-cell">
                                     <div class="flex justify-end gap-1">
                                         <button onclick="openItemModal(${JSON.stringify(item).replace(/"/g, '&quot;')})" class="p-2 text-slate-500 hover:text-accent-primary transition-colors">
@@ -534,7 +534,7 @@ function renderBanking(container) {
                     <div class="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-4">
                         <i data-feather="briefcase" class="w-8 h-8 opacity-20"></i>
                     </div>
-                    <p class="text-slate-400 font-bold text-lg">No bank accounts linked</p>
+                    <p class="text-slate-500 font-bold text-lg">No bank accounts linked</p>
                     <p class="text-slate-500 text-sm mt-2">Connect your business bank accounts to track transactions.</p>
                 </div>
             ` : list.map(bank => `
@@ -549,9 +549,9 @@ function renderBanking(container) {
                         </div>
                     </div>
                     <div class="text-sm font-bold text-slate-500 uppercase tracking-widest mb-1">${bank.bankName}</div>
-                    <div class="text-xl font-bold text-white mb-4 tracking-tight">${bank.accountName}</div>
+                    <div class="text-xl font-bold text-slate-900 mb-4 tracking-tight">${bank.accountName}</div>
                     <div class="flex justify-between items-end">
-                        <div class="text-[10px] font-mono text-slate-400">${bank.accountNumber.replace(/.(?=.{4})/g, '*')}</div>
+                        <div class="text-[10px] font-mono text-slate-500">${bank.accountNumber.replace(/.(?=.{4})/g, '*')}</div>
                         <div class="text-right">
                             <div class="text-[9px] font-bold text-slate-500 uppercase tracking-widest">Current Balance</div>
                             <div class="text-lg font-bold text-accent-primary">${formatCurrency(bank.balance)}</div>
@@ -577,32 +577,32 @@ function renderReports(container, subReport = null) {
 
     let html = `
         <div class="mb-8 animate-up">
-            <h3 class="text-2xl font-bold text-white tracking-tight">Reports</h3>
+            <h3 class="text-2xl font-bold text-slate-900 tracking-tight">Reports</h3>
             <p class="text-slate-500 text-sm mt-1">Insights into your business performance</p>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-up">
-            <div onclick="renderReports(document.getElementById('content-viewport'), 'profit-loss')" class="glass-panel p-6 border-white/5 hover:border-accent-primary/50 transition-all cursor-pointer group">
+            <div onclick="renderReports(document.getElementById('content-viewport'), 'profit-loss')" class="glass-panel p-6 border-slate-200 bg-white hover:border-accent-primary/50 transition-all cursor-pointer group shadow-sm">
                 <div class="w-10 h-10 bg-emerald-400/10 rounded-lg flex items-center justify-center text-emerald-400 mb-4 group-hover:scale-110 transition-transform">
                     <i data-feather="trending-up" class="w-5 h-5"></i>
                 </div>
-                <h4 class="text-white font-bold mb-2">Profit and Loss</h4>
+                <h4 class="text-slate-900 font-bold mb-2">Profit and Loss</h4>
                 <p class="text-slate-500 text-xs">A summary of your revenue, costs, and expenses.</p>
             </div>
             
-            <div onclick="renderReports(document.getElementById('content-viewport'), 'sales-by-customer')" class="glass-panel p-6 border-white/5 hover:border-accent-primary/50 transition-all cursor-pointer group">
+            <div onclick="renderReports(document.getElementById('content-viewport'), 'sales-by-customer')" class="glass-panel p-6 border-slate-200 bg-white hover:border-accent-primary/50 transition-all cursor-pointer group shadow-sm">
                 <div class="w-10 h-10 bg-accent-primary/10 rounded-lg flex items-center justify-center text-accent-primary mb-4 group-hover:scale-110 transition-transform">
                     <i data-feather="pie-chart" class="w-5 h-5"></i>
                 </div>
-                <h4 class="text-white font-bold mb-2">Sales by Customer</h4>
+                <h4 class="text-slate-900 font-bold mb-2">Sales by Customer</h4>
                 <p class="text-slate-500 text-xs">Breakdown of sales for each customer over time.</p>
             </div>
             
-            <div onclick="renderReports(document.getElementById('content-viewport'), 'inventory-summary')" class="glass-panel p-6 border-white/5 hover:border-accent-primary/50 transition-all cursor-pointer group">
+            <div onclick="renderReports(document.getElementById('content-viewport'), 'inventory-summary')" class="glass-panel p-6 border-slate-200 bg-white hover:border-accent-primary/50 transition-all cursor-pointer group shadow-sm">
                 <div class="w-10 h-10 bg-amber-400/10 rounded-lg flex items-center justify-center text-amber-400 mb-4 group-hover:scale-110 transition-transform">
                     <i data-feather="archive" class="w-5 h-5"></i>
                 </div>
-                <h4 class="text-white font-bold mb-2">Inventory Summary</h4>
+                <h4 class="text-slate-900 font-bold mb-2">Inventory Summary</h4>
                 <p class="text-slate-500 text-xs">Summary of your items, rates, and tax classes.</p>
             </div>
         </div>
@@ -632,43 +632,43 @@ function renderProfitLoss(container) {
             <button onclick="renderReports(document.getElementById('content-viewport'))" class="text-accent-primary text-xs font-bold uppercase tracking-widest hover:underline mb-4 flex items-center gap-1">
                 <i data-feather="arrow-left" class="w-3 h-3"></i> Back to Reports
             </button>
-            <h3 class="text-2xl font-bold text-white tracking-tight">Profit and Loss</h3>
+            <h3 class="text-2xl font-bold text-slate-900 tracking-tight">Profit and Loss</h3>
             <p class="text-slate-500 text-sm mt-1">Financial summary of revenue and costs</p>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10 animate-up">
             <div class="glass-panel p-6 border-emerald-400/20 bg-emerald-400/5">
                 <div class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Net Operating Income</div>
-                <div class="text-2xl font-bold text-emerald-400">${formatCurrency(netSales)}</div>
+                <div class="text-2xl font-bold text-emerald-500">${formatCurrency(netSales)}</div>
             </div>
             <div class="glass-panel p-6 border-red-400/20 bg-red-400/5">
                 <div class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Total Operating Expenses</div>
-                <div class="text-2xl font-bold text-red-400">${formatCurrency(totalOutflow)}</div>
+                <div class="text-2xl font-bold text-red-500">${formatCurrency(totalOutflow)}</div>
             </div>
             <div class="glass-panel p-6 border-accent-primary/20 bg-accent-primary/5">
                 <div class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Net Profit/Loss</div>
-                <div class="text-2xl font-bold text-white">${formatCurrency(netProfit)}</div>
+                <div class="text-2xl font-bold text-slate-900">${formatCurrency(netProfit)}</div>
             </div>
         </div>
 
-        <div class="glass-panel p-8 border-white/5 animate-up" style="animation-delay: 100ms">
-            <h4 class="text-white font-bold text-sm uppercase tracking-widest mb-8 border-b border-white/5 pb-4">Detailed Breakdown</h4>
+        <div class="glass-panel p-8 border-slate-200 bg-white shadow-sm animate-up" style="animation-delay: 100ms">
+            <h4 class="text-slate-900 font-bold text-sm uppercase tracking-widest mb-8 border-b border-slate-100 pb-4">Detailed Breakdown</h4>
             <div class="space-y-6">
                 <div class="flex justify-between items-center text-sm">
-                    <span class="text-slate-400">Net Sales Income (Invoices - Credits)</span>
-                    <span class="text-white font-mono font-bold">${formatCurrency(netSales)}</span>
+                    <span class="text-slate-500">Net Sales Income (Invoices - Credits)</span>
+                    <span class="text-slate-900 font-mono font-bold">${formatCurrency(netSales)}</span>
                 </div>
                 <div class="flex justify-between items-center text-sm">
-                    <span class="text-slate-400">Net Cost of Goods (Bills - Credits)</span>
-                    <span class="text-white font-mono font-bold">(${formatCurrency(netPurchases)})</span>
+                    <span class="text-slate-500">Net Cost of Goods (Bills - Credits)</span>
+                    <span class="text-slate-900 font-mono font-bold">(${formatCurrency(netPurchases)})</span>
                 </div>
                  <div class="flex justify-between items-center text-sm">
-                    <span class="text-slate-400">Other Expenses</span>
+                    <span class="text-slate-500">Other Expenses</span>
                     <span class="text-white font-mono font-bold">(${formatCurrency(totalExpenses)})</span>
                 </div>
-                <div class="border-t border-white/10 pt-4 flex justify-between items-center">
-                    <span class="text-white font-bold uppercase text-[10px] tracking-widest">Gross Profit</span>
-                    <span class="text-white font-mono font-bold text-xl">${formatCurrency(netProfit)}</span>
+                <div class="border-t border-slate-100 pt-4 flex justify-between items-center">
+                    <span class="text-slate-900 font-bold uppercase text-[10px] tracking-widest">Gross Profit</span>
+                    <span class="text-slate-900 font-mono font-bold text-xl">${formatCurrency(netProfit)}</span>
                 </div>
             </div>
         </div>
@@ -697,21 +697,21 @@ function renderSalesByCustomer(container) {
             <p class="text-slate-500 text-sm mt-1">Breakdown of revenue generated by each customer</p>
         </div>
 
-        <div class="glass-panel overflow-hidden border-white/5 animate-up">
+        <div class="glass-panel overflow-hidden border-slate-200 shadow-sm animate-up">
             <table class="w-full">
-                <thead class="bg-white/[0.02] border-b border-white/5">
+                <thead class="bg-slate-50 border-b border-slate-200">
                     <tr class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">
                         <th class="px-6 py-4 text-left">Customer Name</th>
                         <th class="px-6 py-4 text-right">Total Revenue</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-white/5 text-sm">
+                <tbody class="divide-y divide-slate-100 text-sm">
                     ${sortedCustomers.length === 0 ? `
                         <tr><td colspan="2" class="px-6 py-12 text-center text-slate-500">No sales data available.</td></tr>
                     ` : sortedCustomers.map(([name, amount]) => `
-                        <tr class="hover:bg-white/[0.01] transition-colors">
-                            <td class="px-6 py-4 text-white font-medium">${name}</td>
-                            <td class="px-6 py-4 text-right text-white font-mono font-bold">${formatCurrency(amount)}</td>
+                        <tr class="hover:bg-slate-50 transition-colors">
+                            <td class="px-6 py-4 text-slate-900 font-medium">${name}</td>
+                            <td class="px-6 py-4 text-right text-slate-900 font-mono font-bold">${formatCurrency(amount)}</td>
                         </tr>
                     `).join('')}
                 </tbody>
@@ -730,13 +730,13 @@ function renderInventorySummary(container) {
             <button onclick="renderReports(document.getElementById('content-viewport'))" class="text-accent-primary text-xs font-bold uppercase tracking-widest hover:underline mb-4 flex items-center gap-1">
                 <i data-feather="arrow-left" class="w-3 h-3"></i> Back to Reports
             </button>
-            <h3 class="text-2xl font-bold text-white tracking-tight">Inventory Summary</h3>
+            <h3 class="text-2xl font-bold text-slate-900 tracking-tight">Inventory Summary</h3>
             <p class="text-slate-500 text-sm mt-1">Listing of products, services, and pricing details</p>
         </div>
 
-        <div class="glass-panel overflow-hidden border-white/5 animate-up">
+        <div class="glass-panel overflow-hidden border-slate-200 shadow-sm animate-up">
             <table class="w-full">
-                <thead class="bg-white/[0.02] border-b border-white/5">
+                <thead class="bg-slate-50 border-b border-slate-200">
                     <tr class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">
                         <th class="px-6 py-4 text-left">Item Name</th>
                         <th class="px-6 py-4 text-left">Type</th>
@@ -746,15 +746,15 @@ function renderInventorySummary(container) {
                         <th class="px-6 py-4 text-right">Actions</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-white/5 text-sm">
+                <tbody class="divide-y divide-slate-100 text-sm">
                     ${items.length === 0 ? `
                         <tr><td colspan="4" class="px-6 py-12 text-center text-slate-500">No items in inventory.</td></tr>
                     ` : items.map(item => `
-                        <tr class="hover:bg-white/[0.01] transition-colors">
-                            <td class="px-6 py-4 text-white font-medium">${item.name}</td>
-                            <td class="px-6 py-4 text-slate-400 capitalize">${item.type}</td>
+                        <tr class="hover:bg-slate-50 transition-colors">
+                            <td class="px-6 py-4 text-slate-900 font-medium">${item.name}</td>
+                            <td class="px-6 py-4 text-slate-500 capitalize">${item.type}</td>
                             <td class="px-6 py-4 text-right text-accent-primary font-bold">${item.stock || 0}</td>
-                            <td class="px-6 py-4 text-right text-white font-mono font-bold">${formatCurrency(item.rate)}</td>
+                            <td class="px-6 py-4 text-right text-slate-900 font-mono font-bold">${formatCurrency(item.rate)}</td>
                             <td class="px-6 py-4 text-right text-accent-secondary font-bold">${item.tax}%</td>
                             <td class="px-6 py-4 text-right actions-cell">
                                 <div class="flex justify-end gap-1">
@@ -793,7 +793,7 @@ function renderContactList(container, list, title, icon, modalFn, deleteFn, type
     let html = `
         <div class="flex justify-between items-center mb-8 animate-up">
             <div>
-                <h3 class="text-2xl font-bold text-white tracking-tight">${title}</h3>
+                <h3 class="text-2xl font-bold text-slate-900 tracking-tight">${title}</h3>
                 <p class="text-slate-500 text-sm mt-1">Manage your business relationships</p>
             </div>
             <button onclick="${modalFn}()" class="btn-primary">
@@ -801,10 +801,10 @@ function renderContactList(container, list, title, icon, modalFn, deleteFn, type
             </button>
         </div>
 
-        <div class="glass-panel overflow-hidden border-white/5 animate-up">
+        <div class="glass-panel overflow-hidden border-slate-200 shadow-sm animate-up">
             <div class="overflow-x-auto">
                 <table class="responsive-table w-full">
-                    <thead class="bg-white/[0.02] border-b border-white/5">
+                    <thead class="bg-slate-50 border-b border-slate-200">
                         <tr class="text-[9px] font-bold text-slate-500 uppercase tracking-widest">
                             <th class="px-4 py-3 text-left">Name</th>
                             <th class="px-4 py-3 text-left">Company</th>
@@ -813,11 +813,11 @@ function renderContactList(container, list, title, icon, modalFn, deleteFn, type
                             <th class="px-4 py-3 text-right">Actions</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-white/5">
+                    <tbody class="divide-y divide-slate-100">
                         ${list.length === 0 ? `
                             <tr>
                                 <td colspan="5" class="px-6 py-24 text-center">
-                                    <div class="w-20 h-20 bg-white/5 rounded-3xl flex items-center justify-center mx-auto mb-6 border border-white/5 shadow-inner">
+                                    <div class="w-20 h-20 bg-slate-50 rounded-3xl flex items-center justify-center mx-auto mb-6 border border-slate-100 shadow-inner">
                                         <i data-feather="${isVendor ? 'briefcase' : 'users'}" class="w-10 h-10 text-slate-700"></i>
                                     </div>
                                     <h4 class="text-slate-900 font-bold text-xl tracking-tight">Empty Directory</h4>
@@ -838,7 +838,7 @@ function renderContactList(container, list, title, icon, modalFn, deleteFn, type
                                         </div>
                                     </div>
                                 </td>
-                                <td class="px-6 py-4 text-slate-300" data-label="Company">${item.company || '-'}</td>
+                                <td class="px-6 py-4 text-slate-600 font-medium" data-label="Company">${item.company || '-'}</td>
                                 <td class="px-6 py-4" data-label="Contact">
                                     <div class="text-slate-800 text-sm">${item.email || '-'}</div>
                                     <div class="text-slate-500 text-xs">${item.mobile || item.phone || '-'}</div>
@@ -886,7 +886,7 @@ function renderDocumentList(container, type) {
     let html = `
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
             <div>
-                <h3 class="text-2xl font-bold text-white tracking-tight">${labels[type]}s</h3>
+                <h3 class="text-2xl font-bold text-slate-900 tracking-tight">${labels[type]}s</h3>
                 <p class="text-slate-500 text-xs font-medium uppercase tracking-widest mt-1">Total count: ${list.length}</p>
             </div>
             <button onclick="openCreateModal('${type}')" class="btn-primary w-full sm:w-auto">
@@ -897,8 +897,8 @@ function renderDocumentList(container, type) {
 
     if (list.length === 0) {
         html += `
-            <div class="glass-panel p-24 text-center flex flex-col items-center animate-up border-white/5 bg-white/[0.01]">
-                <div class="w-24 h-24 bg-gradient-to-br from-white/5 to-transparent rounded-full flex items-center justify-center text-slate-800 mb-8 border border-white/5 relative">
+            <div class="glass-panel p-24 text-center flex flex-col items-center animate-up border-slate-200 bg-white shadow-sm">
+                <div class="w-24 h-24 bg-slate-50 rounded-full flex items-center justify-center text-slate-500 mb-8 border border-slate-100 relative">
                     <div class="absolute inset-0 bg-accent-primary/5 blur-xl rounded-full"></div>
                     <i data-feather="inbox" class="w-12 h-12 relative z-10"></i>
                 </div>
@@ -911,10 +911,10 @@ function renderDocumentList(container, type) {
         `;
     } else {
         html += `
-            <div class="glass-panel overflow-hidden border-white/5 bg-navy-800/10 backdrop-blur-sm animate-up">
+            <div class="glass-panel overflow-hidden border-slate-200 bg-white shadow-sm animate-up">
                 <table class="responsive-table">
                     <thead>
-                        <tr class="bg-white/[0.02] text-slate-500 text-[9px] uppercase tracking-widest font-bold border-b border-white/5">
+                        <tr class="bg-slate-50 text-slate-500 text-[9px] uppercase tracking-widest font-bold border-b border-slate-200">
                             <th class="px-4 py-3">ID</th>
                             <th class="px-4 py-3">Client/Entity</th>
                             <th class="px-4 py-3">Date</th>
@@ -923,17 +923,17 @@ function renderDocumentList(container, type) {
                             <th class="px-4 py-3 text-right">Actions</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-white/[0.03]">
+                    <tbody class="divide-y divide-slate-100">
         `;
 
         list.forEach(doc => {
             html += `
-                <tr class="hover:bg-white/[0.02] transition-colors group">
+                <tr class="hover:bg-slate-50 transition-colors group">
                     <td class="px-6 py-4 font-mono text-sm text-accent-primary" data-label="ID">${doc.id}</td>
-                    <td class="px-6 py-4 text-slate-800 font-semibold" data-label="Client">${doc.client}</td>
-                    <td class="px-6 py-4 text-slate-400 text-sm" data-label="Date">${doc.date}</td>
-                    <td class="px-6 py-4 text-slate-500 text-sm" data-label="Total">${formatCurrency(doc.total)}</td>
-                    <td class="px-6 py-4 text-slate-900 font-bold" data-label="Balance">${formatCurrency(getDocBalance(doc, type))}</td>
+                    <td class="px-6 py-4 text-slate-900 font-bold" data-label="Client">${doc.client}</td>
+                    <td class="px-6 py-4 text-slate-500 text-sm" data-label="Date">${doc.date}</td>
+                    <td class="px-6 py-4 text-slate-600 text-sm font-medium" data-label="Total">${formatCurrency(doc.total)}</td>
+                    <td class="px-6 py-4 text-slate-900 font-extrabold" data-label="Balance">${formatCurrency(getDocBalance(doc, type))}</td>
                     <td class="px-6 py-4 text-right space-x-1 flex items-center justify-end actions-cell" data-label="Control">
                         ${renderConversionButtons(doc, type)}
                         <button onclick="printDocument('${type}', '${doc.id}')" class="p-2 text-slate-500 hover:text-accent-primary transition-colors" title="Print">
@@ -1099,23 +1099,23 @@ function openCreateModal(type, prefillData = null) {
             </div>
         </div>
 
-        <div class="flex flex-col md:flex-row gap-8 mt-12 pt-8 border-t border-white/5">
+        <div class="flex flex-col md:flex-row gap-8 mt-12 pt-8 border-t border-slate-100">
              <div class="flex-1">
                 <label class="block text-[10px] uppercase tracking-widest font-bold text-slate-500 mb-2">Internal Note / Warranty</label>
-                <textarea id="doc-note" class="form-input h-24 text-xs italic bg-white/[0.01] border-dashed" placeholder="Add any terms, conditions or notes...">${prefillData ? (prefillData.note || '') : ''}</textarea>
+                <textarea id="doc-note" class="form-input h-24 text-xs italic bg-slate-50 border-dashed" placeholder="Add any terms, conditions or notes...">${prefillData ? (prefillData.note || '') : ''}</textarea>
             </div>
-            <div class="w-full md:w-80 glass-panel p-6 bg-white/[0.02]">
+            <div class="w-full md:w-80 glass-panel p-6 bg-white border-slate-200 shadow-sm">
                 <div class="flex justify-between text-xs font-bold uppercase tracking-wider mb-4">
                     <span class="text-slate-500">Subtotal</span>
-                    <span class="text-white" id="summary-subtotal">₹0.00</span>
+                    <span class="text-slate-900" id="summary-subtotal">₹0.00</span>
                 </div>
                 <div class="flex justify-between text-xs font-bold uppercase tracking-wider mb-6">
                     <span class="text-slate-500">Tax Payable</span>
-                    <span class="text-white" id="summary-tax">₹0.00</span>
+                    <span class="text-slate-900" id="summary-tax">₹0.00</span>
                 </div>
-                <div class="flex justify-between items-end border-t border-white/10 pt-4">
+                <div class="flex justify-between items-end border-t border-slate-100 pt-4">
                     <span class="text-[10px] font-bold text-accent-primary uppercase tracking-[0.2em]">Grand Total</span>
-                    <span class="text-2xl font-bold text-white tracking-tighter" id="summary-total">₹0.00</span>
+                    <span class="text-2xl font-bold text-slate-900 tracking-tighter" id="summary-total">₹0.00</span>
                 </div>
             </div>
         </div>
@@ -1160,7 +1160,7 @@ window.prefillFromEntity = (id, isVendor) => {
 function addRow(data = { name: '', qty: 1, rate: 0, tax: 0 }) {
     const tbody = document.getElementById('line-items-body');
     const row = document.createElement('tr');
-    row.className = 'group transition-colors hover:bg-white/[0.01]';
+    row.className = 'group transition-colors hover:bg-slate-50';
     
     const itemOptions = documents[DOC_TYPES.ITEMS].map(item => 
         `<option value="${item.id}" ${item.name === data.name ? 'selected' : ''}>${item.name}</option>`
@@ -1188,7 +1188,7 @@ function addRow(data = { name: '', qty: 1, rate: 0, tax: 0 }) {
         <td class="py-4 px-4">
             <input type="number" class="form-input text-sm item-tax text-right" value="${data.tax}" step="0.1" oninput="updateCalculations()">
         </td>
-        <td class="py-4 pl-4 text-right text-sm font-mono font-bold text-white item-amount">₹0.00</td>
+        <td class="py-4 pl-4 text-right text-sm font-mono font-bold text-slate-900 item-amount">₹0.00</td>
         <td class="py-4 pl-4">
             <button onclick="this.closest('tr').remove(); updateCalculations();" class="text-slate-700 hover:text-red-400 transition-colors p-1">
                 <i data-feather="minus-circle" class="w-4 h-4"></i>
@@ -2049,16 +2049,18 @@ function showCloudWarning() {
     if (!viewport) return;
     
     const banner = document.createElement('div');
-    banner.className = 'bg-amber-400/10 border border-amber-400/20 p-4 rounded-xl mb-6 flex items-center justify-between animate-up';
+    banner.className = 'bg-amber-50 border border-amber-200 p-4 rounded-xl mb-6 flex items-center justify-between animate-up shadow-sm';
     banner.innerHTML = `
         <div class="flex items-center gap-3">
-            <i data-feather="alert-triangle" class="text-amber-400 w-5 h-5"></i>
+            <div class="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center text-amber-600">
+                <i data-feather="alert-triangle" class="w-5 h-5"></i>
+            </div>
             <div>
-                <div class="text-white text-xs font-bold uppercase tracking-widest">Cloud Configuration Required</div>
-                <div class="text-slate-500 text-[10px] font-medium leading-relaxed">Your application is currently running in <b>Local Mode</b>. To enable cloud sync and real-time database, please update <code>database.js</code> with your Firebase API keys.</div>
+                <div class="text-slate-900 text-xs font-bold uppercase tracking-widest">Cloud Configuration Required</div>
+                <div class="text-slate-600 text-[10px] font-medium leading-relaxed">Your application is currently running in <b>Local Mode</b>. To enable cloud sync, please update <code>database.js</code>.</div>
             </div>
         </div>
-        <button onclick="this.parentElement.remove()" class="text-slate-500 hover:text-white"><i data-feather="x" class="w-4 h-4"></i></button>
+        <button onclick="this.parentElement.remove()" class="text-slate-400 hover:text-slate-900"><i data-feather="x" class="w-4 h-4"></i></button>
     `;
     viewport.prepend(banner);
     feather.replace();
