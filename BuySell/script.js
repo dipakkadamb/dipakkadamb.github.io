@@ -92,6 +92,7 @@ const globalBridge = {
     openVendorModal: (d) => openVendorModal(d),
     saveVendor: (id) => saveVendor(id),
     deleteVendor: (id) => deleteVendor(id),
+    seedDummyData: () => seedDummyData(),
     openItemModal: (d) => openItemModal(d),
     saveItem: (id) => saveItem(id),
     deleteItem: (id) => deleteItem(id),
@@ -2082,6 +2083,67 @@ function switchViewWrapped(viewId) {
         toggleSidebar();
     }
     _switchView(viewId);
+}
+
+// --- Dummy Data Seeder ---
+async function seedDummyData() {
+    showToast('Starting dummy data generation...', 'info');
+    
+    // 1. Seed Items
+    const dummyItems = [
+        { id: 'ITM-' + Date.now() + '1', name: 'Dell Latitude 5420', type: 'product', rate: 75000, tax: 18, stock: 10 },
+        { id: 'ITM-' + Date.now() + '2', name: 'Logitech MX Master 3', type: 'product', rate: 9500, tax: 18, stock: 25 },
+        { id: 'ITM-' + Date.now() + '3', name: 'Zoho CRM Setup Service', type: 'service', rate: 15000, tax: 18, stock: 0 },
+        { id: 'ITM-' + Date.now() + '4', name: 'Cloud Server Hosting (Monthly)', type: 'service', rate: 5000, tax: 18, stock: 0 },
+        { id: 'ITM-' + Date.now() + '5', name: 'Mechanical Keyboard K4', type: 'product', rate: 12000, tax: 18, stock: 15 }
+    ];
+    documents[DOC_TYPES.ITEMS] = [...(documents[DOC_TYPES.ITEMS] || []), ...dummyItems];
+    localStorage.setItem(STORAGE_KEYS[DOC_TYPES.ITEMS], JSON.stringify(documents[DOC_TYPES.ITEMS]));
+    await saveToCloud(DOC_TYPES.ITEMS, documents[DOC_TYPES.ITEMS]);
+
+    // 2. Seed Customers
+    const dummyCustomers = [
+        { id: 'CUST-101', displayName: 'Amit Sharma', company: 'Sharma Infotech', email: 'amit@sharma.com', mobile: '9876543210', gstin: '27AAAAA0000A1Z5', billingAddress: 'Pune, MH', shippingAddress: 'Pune, MH' },
+        { id: 'CUST-102', displayName: 'Priya Verma', company: 'Verma Solutions', email: 'priya@verma.com', mobile: '8888888888', gstin: '27BBBBB0000B1Z5', billingAddress: 'Mumbai, MH', shippingAddress: 'Mumbai, MH' }
+    ];
+    documents[DOC_TYPES.CUSTOMERS] = [...(documents[DOC_TYPES.CUSTOMERS] || []), ...dummyCustomers];
+    localStorage.setItem(STORAGE_KEYS[DOC_TYPES.CUSTOMERS], JSON.stringify(documents[DOC_TYPES.CUSTOMERS]));
+    await saveToCloud(DOC_TYPES.CUSTOMERS, documents[DOC_TYPES.CUSTOMERS]);
+
+    // 3. Seed Vendors
+    const dummyVendors = [
+        { id: 'VEND-201', displayName: 'Rajesh Gupta', company: 'Gupta Hardware', email: 'rajesh@gupta.com', mobile: '7777777777', gstin: '27CCCCC0000C1Z5', billingAddress: 'Delhi, India' }
+    ];
+    documents[DOC_TYPES.VENDORS] = [...(documents[DOC_TYPES.VENDORS] || []), ...dummyVendors];
+    localStorage.setItem(STORAGE_KEYS[DOC_TYPES.VENDORS], JSON.stringify(documents[DOC_TYPES.VENDORS]));
+    await saveToCloud(DOC_TYPES.VENDORS, documents[DOC_TYPES.VENDORS]);
+
+    // 4. Seed Invoices
+    const dummyInvoices = [
+        {
+            id: 'INV-001', client: 'Sharma Infotech', date: new Date().toISOString().split('T')[0],
+            items: [{ name: 'Dell Latitude 5420', qty: 1, rate: 75000, tax: 18, amount: 75000 }],
+            subtotal: 75000, taxTotal: 13500, total: 88500, status: 'Draft'
+        }
+    ];
+    documents[DOC_TYPES.INVOICES] = [...(documents[DOC_TYPES.INVOICES] || []), ...dummyInvoices];
+    localStorage.setItem(STORAGE_KEYS[DOC_TYPES.INVOICES], JSON.stringify(documents[DOC_TYPES.INVOICES]));
+    await saveToCloud(DOC_TYPES.INVOICES, documents[DOC_TYPES.INVOICES]);
+
+    // 5. Seed Bills
+    const dummyBills = [
+        {
+            id: 'BILL-001', client: 'Gupta Hardware', date: new Date().toISOString().split('T')[0],
+            items: [{ name: 'Logitech MX Master 3', qty: 5, rate: 8000, tax: 18, amount: 40000 }],
+            subtotal: 40000, taxTotal: 7200, total: 47200, status: 'Paid'
+        }
+    ];
+    documents[DOC_TYPES.BILLS] = [...(documents[DOC_TYPES.BILLS] || []), ...dummyBills];
+    localStorage.setItem(STORAGE_KEYS[DOC_TYPES.BILLS], JSON.stringify(documents[DOC_TYPES.BILLS]));
+    await saveToCloud(DOC_TYPES.BILLS, documents[DOC_TYPES.BILLS]);
+
+    showToast('Dummy data seeded and synced to cloud!', 'success');
+    _switchView('dashboard');
 }
 
 // Final check: start the app
