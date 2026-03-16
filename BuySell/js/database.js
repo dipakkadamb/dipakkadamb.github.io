@@ -93,7 +93,8 @@ export async function deleteFromCloud(type, id) {
 export async function loadFromCloud(type) {
     if (!dbInitialized) return [];
     try {
-        const response = await fetch(`${GOOGLE_SHEETS_URL}?type=${type}`);
+        const url = `${GOOGLE_SHEETS_URL}?type=${type}&_=${Date.now()}`;
+        const response = await fetch(url);
         const data = await response.json();
         return Array.isArray(data) ? data : [];
     } catch (error) {

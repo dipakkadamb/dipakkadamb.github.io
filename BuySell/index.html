@@ -82,7 +82,13 @@
             try {
                 // 1. Try Cloud Authentication
                 const users = await loadFromCloud('users');
-                const user = users.find(usr => usr.username === uInput && usr.password === pInput);
+                const user = users.find(usr => {
+                    const dbUser = String(usr.username || '').trim().toLowerCase();
+                    const dbPass = String(usr.password || '').trim();
+                    const inputUser = String(uInput || '').trim().toLowerCase();
+                    const inputPass = String(pInput || '').trim();
+                    return dbUser === inputUser && dbPass === inputPass;
+                });
                 
                 if (user) {
                     if (user.status !== 'Active') {
@@ -95,17 +101,15 @@
                     return;
                 }
 
-                // 2. Fallback to key.txt (Emergency/Initial Access)
-                const response = await fetch('key.txt');
-                const adminPass = (await response.text()).trim();
-                
-                if (uInput === 'admin' && pInput === adminPass) {
-                    localStorage.setItem('hub_auth', 'true');
-                    localStorage.setItem('hub_user_role', 'Admin');
-                    window.location.href = 'dashboard.html';
+                // Precise error check
+                const userExists = users.some(usr => String(usr.username || '').trim().toLowerCase() === String(uInput || '').trim().toLowerCase());
+                const errorDiv = document.getElementById('login-error');
+                if (userExists) {
+                    errorDiv.textContent = "Invalid Access Key. Please check your password.";
                 } else {
-                    document.getElementById('login-error').classList.remove('hidden');
+                    errorDiv.textContent = "Identity not found. System access denied.";
                 }
+                errorDiv.classList.remove('hidden');
             } catch (err) {
                 console.warn('Authentication fallback engaged:', err);
                 const response = await fetch('key.txt');
