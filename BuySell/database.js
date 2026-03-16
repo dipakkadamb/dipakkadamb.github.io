@@ -23,18 +23,13 @@ export async function initDatabase() {
 export async function saveToCloud(type, data) {
     if (!dbInitialized) return false;
     try {
+        console.log(`ASYNCRIX DB: Sending ${type} data to cloud...`, body);
         const response = await fetch(GOOGLE_SHEETS_URL, {
             method: 'POST',
-            mode: 'no-cors', // Simple request
-            body: JSON.stringify({
-                action: 'save',
-                type: type,
-                id: data.id,
-                data: data
-            })
+            mode: 'no-cors',
+            body: body
         });
-        // Note: With no-cors, we can't read the response body, 
-        // but we can assume success if no exception is thrown.
+        console.log(`ASYNCRIX DB: ${type} request sent to Google Apps Script.`);
         return true;
     } catch (error) {
         console.error(`Error saving ${type} to Google Sheets:`, error);

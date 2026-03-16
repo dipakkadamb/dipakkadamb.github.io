@@ -99,21 +99,13 @@ const globalBridge = {
     saveBank: (id) => saveBank(id),
     deleteBank: (id) => deleteBank(id),
     openPaymentModal: (t, p) => openPaymentModal(t, p),
-    saveCustomer: (id) => saveCustomer(id),
-    deleteCustomer: (id) => deleteCustomer(id),
-    deleteVendor: (id) => deleteVendor(id),
     savePayment: (t) => savePayment(t),
     updateRefDocs: (n, p) => updateRefDocs(n, p),
     pickItem: (s) => pickItem(s),
-    deleteItem: (id) => deleteItem(id),
-    deleteDoc: (t, i) => deleteDoc(t, i),
-    printDocument: (t, i) => printDocument(t, i),
-    convertDocument: (f, i, t) => convertDocument(f, i, t),
-    openCreateModal: (t, p) => openCreateModal(t, p),
-    openItemModal: (d) => openItemModal(d),
     addRow: (d) => addRow(d),
     updateCalculations: () => updateCalculations(),
     toggleSidebar: () => toggleSidebar(),
+    systemReset: () => systemReset(),
     DOC_TYPES: DOC_TYPES
 };
 Object.assign(window, globalBridge);
