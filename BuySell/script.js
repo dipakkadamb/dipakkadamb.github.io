@@ -4,7 +4,8 @@ import {
     renderDashboard, renderUsers, renderItems, renderBanking, 
     renderCustomers, renderVendors, renderDocumentList, renderReports,
     openCreateModal, openUserModal, openItemModal, openBankModal,
-    openCustomerModal, openVendorModal, closeModal, toggleSidebar,
+    openCustomerModal, openVendorModal, openPaymentModal, updateRefDocs, 
+    closeModal, toggleSidebar,
     addRow, pickItem, updateCalculations, prefillFromEntity, printDocument,
     copyEntityAddress, showToast
 } from './js/ui.js';
@@ -58,6 +59,9 @@ window.globalBridge = {
     openBankModal: (data) => openBankModal(data),
     openCustomerModal: (data) => openCustomerModal(data),
     openVendorModal: (data) => openVendorModal(data),
+    openPaymentModal: (type, data) => openPaymentModal(type, data, documents),
+    updateRefDocs: (name, isPurchase) => updateRefDocs(name, isPurchase, documents),
+    renderReports: (sub) => renderReports(sub, documents),
     
     addRow: () => addRow(null, documents),
     pickItem: (input) => pickItem(input, documents),

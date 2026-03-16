@@ -540,7 +540,7 @@ export function renderReports(subReport = null, documents) {
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-up">
-            <div onclick="globalBridge.renderReports(document.getElementById('content-viewport'), 'profit-loss')" class="glass-panel p-6 border-slate-200 bg-white hover:border-accent-primary/50 transition-all cursor-pointer group shadow-sm">
+            <div onclick="globalBridge.renderReports('profit-loss')" class="glass-panel p-6 border-slate-200 bg-white hover:border-accent-primary/50 transition-all cursor-pointer group shadow-sm">
                 <div class="w-10 h-10 bg-emerald-400/10 rounded-lg flex items-center justify-center text-emerald-400 mb-4 group-hover:scale-110 transition-transform">
                     <i data-feather="trending-up" class="w-5 h-5"></i>
                 </div>
@@ -548,7 +548,7 @@ export function renderReports(subReport = null, documents) {
                 <p class="text-slate-500 text-xs font-medium">A summary of your revenue, costs, and expenses.</p>
             </div>
             
-            <div onclick="globalBridge.renderReports(document.getElementById('content-viewport'), 'sales-by-customer')" class="glass-panel p-6 border-slate-200 bg-white hover:border-accent-primary/50 transition-all cursor-pointer group shadow-sm">
+            <div onclick="globalBridge.renderReports('sales-by-customer')" class="glass-panel p-6 border-slate-200 bg-white hover:border-accent-primary/50 transition-all cursor-pointer group shadow-sm">
                 <div class="w-10 h-10 bg-accent-primary/10 rounded-lg flex items-center justify-center text-accent-primary mb-4 group-hover:scale-110 transition-transform">
                     <i data-feather="pie-chart" class="w-5 h-5"></i>
                 </div>
@@ -556,7 +556,7 @@ export function renderReports(subReport = null, documents) {
                 <p class="text-slate-500 text-xs font-medium">Breakdown of sales for each customer over time.</p>
             </div>
             
-            <div onclick="globalBridge.renderReports(document.getElementById('content-viewport'), 'inventory-summary')" class="glass-panel p-6 border-slate-200 bg-white hover:border-accent-primary/50 transition-all cursor-pointer group shadow-sm">
+            <div onclick="globalBridge.renderReports('inventory-summary')" class="glass-panel p-6 border-slate-200 bg-white hover:border-accent-primary/50 transition-all cursor-pointer group shadow-sm">
                 <div class="w-10 h-10 bg-amber-400/10 rounded-lg flex items-center justify-center text-amber-400 mb-4 group-hover:scale-110 transition-transform">
                     <i data-feather="archive" class="w-5 h-5"></i>
                 </div>
@@ -587,7 +587,7 @@ function renderProfitLoss(documents) {
 
     container.innerHTML = `
         <div class="mb-8 animate-up">
-            <button onclick="globalBridge.renderReports(document.getElementById('content-viewport'))" class="text-accent-primary text-xs font-bold uppercase tracking-widest hover:underline mb-4 flex items-center gap-1">
+            <button onclick="globalBridge.renderReports()" class="text-accent-primary text-xs font-bold uppercase tracking-widest hover:underline mb-4 flex items-center gap-1">
                 <i data-feather="arrow-left" class="w-3 h-3"></i> Back to Reports
             </button>
             <h3 class="text-2xl font-bold text-slate-900 tracking-tight">Profit and Loss</h3>
@@ -649,7 +649,7 @@ function renderSalesByCustomer(documents) {
 
     container.innerHTML = `
         <div class="mb-8 animate-up">
-            <button onclick="globalBridge.renderReports(document.getElementById('content-viewport'))" class="text-accent-primary text-xs font-bold uppercase tracking-widest hover:underline mb-4 flex items-center gap-1">
+            <button onclick="globalBridge.renderReports()" class="text-accent-primary text-xs font-bold uppercase tracking-widest hover:underline mb-4 flex items-center gap-1">
                 <i data-feather="arrow-left" class="w-3 h-3"></i> Back to Reports
             </button>
             <h3 class="text-2xl font-bold text-slate-900 tracking-tight">Sales by Customer</h3>
@@ -687,7 +687,7 @@ function renderInventorySummary(documents) {
 
     container.innerHTML = `
         <div class="mb-8 animate-up">
-            <button onclick="globalBridge.renderReports(document.getElementById('content-viewport'))" class="text-accent-primary text-xs font-bold uppercase tracking-widest hover:underline mb-4 flex items-center gap-1">
+            <button onclick="globalBridge.renderReports()" class="text-accent-primary text-xs font-bold uppercase tracking-widest hover:underline mb-4 flex items-center gap-1">
                 <i data-feather="arrow-left" class="w-3 h-3"></i> Back to Reports
             </button>
             <h3 class="text-2xl font-bold text-slate-900 tracking-tight">Inventory Summary</h3>
@@ -820,7 +820,7 @@ export function renderContactModal(label, editData, saveFn) {
     if (window.feather) feather.replace();
 }
 
-export function renderPaymentModal(type, prefillData, documents) {
+export function openPaymentModal(type, prefillData, documents) {
     const modal = document.getElementById('form-modal');
     const labels = {
         [DOC_TYPES.PAYMENTS_REC]: 'Payment Received',
@@ -883,6 +883,17 @@ export function renderPaymentModal(type, prefillData, documents) {
     modal.classList.remove('hidden');
     setTimeout(() => modal.classList.remove('opacity-0'), 10);
     if (window.feather) feather.replace();
+}
+
+export function updateRefDocs(entityName, isPurchase, documents) {
+    const select = document.getElementById('payment-ref-doc');
+    if (!select) return;
+    
+    const type = isPurchase ? DOC_TYPES.BILLS : DOC_TYPES.INVOICES;
+    const docs = documents[type].filter(d => d.client === entityName);
+    
+    select.innerHTML = '<option value="">-- Select Document --</option>' + 
+        docs.map(d => `<option value="${d.id}">${d.id} (₹${d.total})</option>`).join('');
 }
 
 export function showCloudWarning() {

@@ -11,7 +11,7 @@ export function getDocBalance(doc, type, documents, DOC_TYPES) {
     const paymentType = isPurchase ? DOC_TYPES.PAYMENTS_MADE : DOC_TYPES.PAYMENTS_REC;
     const allPayments = documents[paymentType] || [];
     const docPayments = allPayments.filter(p => p.refDoc === doc.id);
-    const paidAmount = docPayments.reduce((sum, p) => sum + (parseFloat(p.amount) || 0), 0);
+    const paidAmount = docPayments.reduce((sum, p) => sum + (parseFloat(p.total) || 0), 0);
     return doc.total - paidAmount;
 }
 

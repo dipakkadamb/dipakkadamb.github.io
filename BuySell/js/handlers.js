@@ -258,6 +258,20 @@ export async function deleteDoc(type, id, documents, renderFn) {
         }
     }
 
+    // --- Dynamic Flow: Reverse Bank Balance for Payments ---
+    if (docToDelete && (type === DOC_TYPES.PAYMENTS_REC || type === DOC_TYPES.PAYMENTS_MADE)) {
+        if (documents[DOC_TYPES.BANKING].length > 0) {
+            const amount = parseFloat(docToDelete.total || 0);
+            if (type === DOC_TYPES.PAYMENTS_REC) {
+                documents[DOC_TYPES.BANKING][0].balance -= amount;
+            } else {
+                documents[DOC_TYPES.BANKING][0].balance += amount;
+            }
+            localStorage.setItem(STORAGE_KEYS[DOC_TYPES.BANKING], JSON.stringify(documents[DOC_TYPES.BANKING]));
+            await saveToCloud(DOC_TYPES.BANKING, documents[DOC_TYPES.BANKING][0]);
+        }
+    }
+
     documents[type] = documents[type].filter(d => d.id !== id);
     localStorage.setItem(STORAGE_KEYS[type], JSON.stringify(documents[type]));
     const success = await deleteFromCloud(type, id);
