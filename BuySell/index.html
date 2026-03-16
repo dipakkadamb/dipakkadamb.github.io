@@ -101,17 +101,6 @@
                     return;
                 }
 
-                // 2. Fallback to key.txt (Emergency/Initial Access)
-                const fallbackResponse = await fetch('key.txt');
-                const adminPass = (await fallbackResponse.text()).trim();
-                
-                if (uInput.toLowerCase() === 'admin' && pInput === adminPass) {
-                    localStorage.setItem('hub_auth', 'true');
-                    localStorage.setItem('hub_user_role', 'Admin');
-                    window.location.href = 'dashboard.html';
-                    return;
-                }
-
                 // Precise error check
                 const userExists = users.some(usr => String(usr.username || '').trim().toLowerCase() === String(uInput || '').trim().toLowerCase());
                 const errorDiv = document.getElementById('login-error');
@@ -122,16 +111,9 @@
                 }
                 errorDiv.classList.remove('hidden');
             } catch (err) {
-                console.warn('Authentication fallback engaged:', err);
-                const response = await fetch('key.txt');
-                const adminPass = (await response.text()).trim();
-                if (uInput === 'admin' && pInput === adminPass) {
-                    localStorage.setItem('hub_auth', 'true');
-                    localStorage.setItem('hub_user_role', 'Admin'); // Ensure role is set for fallback admin
-                    window.location.href = 'dashboard.html';
-                } else {
-                    document.getElementById('login-error').classList.remove('hidden');
-                }
+                console.error('Authentication error:', err);
+                document.getElementById('login-error').textContent = "System connection failure. Please try again later.";
+                document.getElementById('login-error').classList.remove('hidden');
             }
         });
     </script>
