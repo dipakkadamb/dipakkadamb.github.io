@@ -82,28 +82,52 @@
                 <i data-feather="credit-card" class="w-4 h-4"></i> Treasury
             </button>
             
-            <!-- Revenue Section -->
-            <div class="px-5 py-4 text-[9px] uppercase tracking-[0.2em] text-slate-500 font-bold mb-2">Revenue</div>
+            <!-- Sales Section -->
+            <div class="px-5 py-2 text-[9px] uppercase tracking-[0.2em] text-slate-500 font-bold mb-2">Sales Department</div>
             <button onclick="switchView('customers')" class="sidebar-link" id="tab-customers">
-                <i data-feather="users" class="w-4 h-4"></i> Clients
+                <i data-feather="users" class="w-4 h-4"></i> Customers
+            </button>
+            <button onclick="switchView('quotes')" class="sidebar-link" id="tab-quotes">
+                <i data-feather="file" class="w-4 h-4"></i> Estimates / Quotes
+            </button>
+            <button onclick="switchView('sales-orders')" class="sidebar-link" id="tab-sales-orders">
+                <i data-feather="shopping-cart" class="w-4 h-4"></i> Sales Orders
+            </button>
+            <button onclick="switchView('delivery-chalans')" class="sidebar-link" id="tab-delivery-chalans">
+                <i data-feather="truck" class="w-4 h-4"></i> Delivery Challans
             </button>
             <button onclick="switchView('invoices')" class="sidebar-link" id="tab-invoices">
                 <i data-feather="file-text" class="w-4 h-4"></i> Invoices
             </button>
+            <button onclick="switchView('proforma-invoices')" class="sidebar-link" id="tab-proforma-invoices">
+                <i data-feather="file-plus" class="w-4 h-4"></i> Proforma Invoices
+            </button>
             <button onclick="switchView('payments-received')" class="sidebar-link" id="tab-payments-received">
-                <i data-feather="arrow-down-circle" class="w-4 h-4"></i> Collections
+                <i data-feather="arrow-down-circle" class="w-4 h-4"></i> Payments Received
+            </button>
+            <button onclick="switchView('credit-notes')" class="sidebar-link" id="tab-credit-notes">
+                <i data-feather="refresh-ccw" class="w-4 h-4"></i> Credit Notes
             </button>
             
-            <!-- Outgoing Section -->
-            <div class="px-5 py-4 text-[9px] uppercase tracking-[0.2em] text-slate-500 font-bold mb-2">Purchases</div>
-            <button onclick="switchView('vendors')" class="sidebar-link" id="tab-vendors">
-                <i data-feather="briefcase" class="w-4 h-4"></i> Partners
+            <!-- Purchase Section -->
+            <div class="px-5 py-4 text-[9px] uppercase tracking-[0.2em] text-slate-500 font-bold mb-2">Purchases Department</div>
+            <button onclick="switchView('vendors')" class="sidebar-link" id="id="tab-vendors">
+                <i data-feather="briefcase" class="w-4 h-4"></i> Vendors
+            </button>
+            <button onclick="switchView('expenses')" class="sidebar-link" id="tab-expenses">
+                <i data-feather="pie-chart" class="w-4 h-4"></i> Expenses
+            </button>
+            <button onclick="switchView('purchase-orders')" class="sidebar-link" id="tab-purchase-orders">
+                <i data-feather="shopping-bag" class="w-4 h-4"></i> Purchase Orders
             </button>
             <button onclick="switchView('bills')" class="sidebar-link" id="tab-bills">
                 <i data-feather="file-minus" class="w-4 h-4"></i> Bills
             </button>
-            <button onclick="switchView('expenses')" class="sidebar-link" id="tab-expenses">
-                <i data-feather="pie-chart" class="w-4 h-4"></i> Expenses
+            <button onclick="switchView('payments-made')" class="sidebar-link" id="tab-payments-made">
+                <i data-feather="arrow-up-circle" class="w-4 h-4"></i> Payments Made
+            </button>
+            <button onclick="switchView('vendor-credits')" class="sidebar-link" id="tab-vendor-credits">
+                <i data-feather="refresh-cw" class="w-4 h-4"></i> Vendor Credits
             </button>
         </nav>
 

@@ -18,6 +18,7 @@ const DOC_TYPES = {
     PO: 'purchase-orders',
     BILLS: 'bills',
     PAYMENTS_MADE: 'payments-made',
+    PROFORMA: 'proforma-invoices',
     VENDOR_CREDITS: 'vendor-credits',
     REPORTS: 'reports'
 };
@@ -37,6 +38,7 @@ const STORAGE_KEYS = {
     [DOC_TYPES.PO]: 'hub_po',
     [DOC_TYPES.BILLS]: 'hub_bills',
     [DOC_TYPES.PAYMENTS_MADE]: 'hub_payments_made',
+    [DOC_TYPES.PROFORMA]: 'hub_proforma',
     [DOC_TYPES.VENDOR_CREDITS]: 'hub_vendor_credits'
 };
 
