@@ -1,4 +1,4 @@
-import { initDatabase, saveToCloud, deleteFromCloud, loadFromCloud, migrateLocalToCloud } from './database.js';
+import { initDatabase, saveToCloud, deleteFromCloud, loadFromCloud, migrateLocalToCloud, clearAllCloudData } from './database.js';
 
 console.log("ASYNCRIX: Script execution starting...");
 
@@ -118,10 +118,10 @@ async function initializeApp() {
     try {
         cloudConnected = await initDatabase();
         
-        // Parallel Loading for performance
-        const loadPromises = Object.entries(DOC_TYPES).map(async ([key, type]) => {
-            if (!STORAGE_KEYS[type]) return;
-            
+        // PRIORITY LOADING: Only load essential data for the Dashboard initially
+        const essentialTypes = [DOC_TYPES.INVOICES, DOC_TYPES.BILLS, DOC_TYPES.BANKING, DOC_TYPES.PAYMENTS_REC, DOC_TYPES.PAYMENTS_MADE];
+        
+        const loadPromises = essentialTypes.map(async (type) => {
             const localData = JSON.parse(localStorage.getItem(STORAGE_KEYS[type]) || '[]');
             
             if (cloudConnected) {
@@ -129,9 +129,9 @@ async function initializeApp() {
                 if (cloudData.length > 0) {
                     documents[type] = cloudData;
                     localStorage.setItem(STORAGE_KEYS[type], JSON.stringify(cloudData));
-                } else if (localData.length > 0) {
+                } else {
                     documents[type] = localData;
-                    await migrateLocalToCloud({ [type]: localData });
+                    if (localData.length > 0) await migrateLocalToCloud({ [type]: localData });
                 }
             } else {
                 documents[type] = localData;
@@ -212,9 +212,16 @@ function switchView(viewId) {
     renderContent();
 }
 
-function renderContent() {
+async function renderContent() {
     const viewport = document.getElementById('content-viewport');
     if (!viewport) return; // Exit if not on dashboard page
+    
+    // Show Loading Skeleton or Spinner
+    viewport.innerHTML = `<div class="flex items-center justify-center p-20"><div class="animate-spin rounded-full h-8 w-8 border-t-2 border-accent-primary"></div></div>`;
+    
+    // Ensure data is loaded for the current view (Lazy Loading)
+    await fetchCollectionIfNeeded(currentView);
+    
     viewport.innerHTML = '';
     
     switch(currentView) {
@@ -224,14 +231,74 @@ function renderContent() {
         case DOC_TYPES.ITEMS: renderItems(viewport); break;
         case DOC_TYPES.BANKING: renderBanking(viewport); break;
         case DOC_TYPES.REPORTS: renderReports(viewport); break;
-        case DOC_TYPES.INVOICES:
-        case DOC_TYPES.BILLS:
-        case DOC_TYPES.EXPENSES:
-        case DOC_TYPES.PAYMENTS_REC:
-        case DOC_TYPES.PAYMENTS_MADE:
         default: renderDocumentList(viewport, currentView); break;
     }
     feather.replace();
+}
+
+/**
+ * Lazy Loading Utility
+ */
+async function fetchCollectionIfNeeded(type) {
+    if (!DOC_TYPES[Object.keys(DOC_TYPES).find(key => DOC_TYPES[key] === type)]) return;
+    if (!STORAGE_KEYS[type]) return;
+    
+    // Skip if already in memory (except dashboard/reports which need fresh calcs)
+    if (documents[type].length > 0 && type !== DOC_TYPES.DASHBOARD && type !== DOC_TYPES.REPORTS) return;
+
+    const localData = JSON.parse(localStorage.getItem(STORAGE_KEYS[type]) || '[]');
+    
+    try {
+        const cloudData = await loadFromCloud(type);
+        if (cloudData.length > 0) {
+            documents[type] = cloudData;
+            localStorage.setItem(STORAGE_KEYS[type], JSON.stringify(cloudData));
+        } else {
+            documents[type] = localData;
+        }
+    } catch (error) {
+        console.warn(`ASYNCRIX: Lazy load failed for ${type}, using local state.`);
+        documents[type] = localData;
+    }
+}
+
+/**
+ * System Reset: Wipes both Local Storage and Google Sheets data
+ */
+async function systemReset() {
+    const confirmation1 = confirm("CRITICAL SECURITY PROTOCOL: You are about to initiate a FULL SYSTEM RESET. All locally stored records will be destroyed. Proceed?");
+    if (!confirmation1) return;
+
+    const confirmation2 = confirm("FINAL WARNING: This will also attempt to clear all data in your linked Google Sheet. This action is IRREVERSIBLE. Are you absolutely sure?");
+    if (!confirmation2) return;
+
+    showToast("Initiating Full System Wipe...", "warning");
+
+    try {
+        // 1. Clear Cloud Data
+        const cloudSuccess = await clearAllCloudData();
+        
+        // 2. Clear Local Storage
+        Object.values(STORAGE_KEYS).forEach(key => {
+            localStorage.removeItem(key);
+        });
+
+        // 3. Reset internal memory
+        Object.keys(documents).forEach(type => {
+            documents[type] = [];
+        });
+
+        if (cloudSuccess) {
+            showToast("System Reset Complete. All data wiped.", "success");
+        } else {
+            showToast("Local data wiped, but Cloud Reset failed. Please check your Google Sheet manually.", "error");
+        }
+
+        renderContent();
+    } catch (error) {
+        console.error("ASYNCRIX: Reset Error:", error);
+        showToast("An error occurred during reset.", "error");
+    }
 }
 
 function renderDashboard(container) {
@@ -255,17 +322,23 @@ function renderDashboard(container) {
     ];
 
     let html = `
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
             ${mainStats.map(stat => `
-                <div class="glass-panel p-6 border-white/5 bg-navy-800/20 animate-up">
-                    <div class="flex justify-between items-start mb-4">
-                        <div class="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center border border-white/10 ${stat.color}">
-                            <i data-feather="${stat.icon}" class="w-5 h-5"></i>
+                <div class="glass-panel p-6 bg-white/[0.02] border-white/5 relative overflow-hidden group">
+                    <div class="absolute -top-12 -right-12 w-24 h-24 bg-white/5 blur-2xl rounded-full group-hover:bg-accent-primary/5 transition-all"></div>
+                    <div class="flex justify-between items-start mb-6 relative z-10">
+                        <div class="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center border border-white/10 ${stat.color} shadow-inner">
+                            <i data-feather="${stat.icon}" class="w-6 h-6"></i>
                         </div>
+                        <div class="text-[9px] font-extrabold text-slate-600 uppercase tracking-[0.2em] pt-1">Live Feed</div>
                     </div>
-                    <div class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">${stat.label}</div>
-                    <div class="text-2xl font-bold text-white tracking-tight">${formatCurrency(stat.amount)}</div>
-                    <div class="text-[9px] text-slate-600 mt-2 font-medium uppercase tracking-tighter">${stat.sub}</div>
+                    <div class="relative z-10">
+                        <div class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">${stat.label}</div>
+                        <div class="text-3xl font-bold text-white tracking-tighter">${formatCurrency(stat.amount)}</div>
+                        <p class="text-[10px] text-slate-500 mt-3 font-medium flex items-center gap-1.5 uppercase tracking-tighter">
+                             <span class="w-1 h-1 rounded-full bg-accent-primary animate-pulse"></span> ${stat.sub}
+                        </p>
+                    </div>
                 </div>
             `).join('')}
         </div>
@@ -704,12 +777,13 @@ function renderContactList(container, list, title, icon, modalFn, deleteFn, type
                     <tbody class="divide-y divide-white/5">
                         ${list.length === 0 ? `
                             <tr>
-                                <td colspan="5" class="px-6 py-20 text-center text-slate-500">
-                                    <div class="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-4">
-                                        <i data-feather="${isVendor ? 'user-check' : 'users'}" class="w-8 h-8 opacity-20"></i>
+                                <td colspan="5" class="px-6 py-24 text-center">
+                                    <div class="w-20 h-20 bg-white/5 rounded-3xl flex items-center justify-center mx-auto mb-6 border border-white/5 shadow-inner">
+                                        <i data-feather="${isVendor ? 'briefcase' : 'users'}" class="w-10 h-10 text-slate-700"></i>
                                     </div>
-                                    <p class="font-bold text-lg">No ${title.toLowerCase()} found</p>
-                                    <p class="text-xs mt-1">Click "Add ${title.slice(0, -1)}" to populate your directory.</p>
+                                    <h4 class="text-white font-bold text-xl tracking-tight">Empty Directory</h4>
+                                    <p class="text-slate-500 text-sm mt-2 max-w-xs mx-auto">Your ${title.toLowerCase()} list is currently empty. Record your first contact to begin.</p>
+                                    <button onclick="${modalFn}()" class="mt-6 text-accent-primary text-[10px] font-bold uppercase tracking-[0.2em] hover:text-white transition-colors border-b border-accent-primary/20 pb-1">Create Entry Now</button>
                                 </td>
                             </tr>
                         ` : list.map(item => `
@@ -784,12 +858,16 @@ function renderDocumentList(container, type) {
 
     if (list.length === 0) {
         html += `
-            <div class="glass-panel p-20 text-center border-dashed border-2 border-white/5 flex flex-col items-center animate-up">
-                <div class="w-20 h-20 bg-white/5 rounded-full flex items-center justify-center text-slate-700 mb-6">
-                    <i data-feather="inbox" class="w-10 h-10"></i>
+            <div class="glass-panel p-24 text-center flex flex-col items-center animate-up border-white/5 bg-white/[0.01]">
+                <div class="w-24 h-24 bg-gradient-to-br from-white/5 to-transparent rounded-full flex items-center justify-center text-slate-800 mb-8 border border-white/5 relative">
+                    <div class="absolute inset-0 bg-accent-primary/5 blur-xl rounded-full"></div>
+                    <i data-feather="inbox" class="w-12 h-12 relative z-10"></i>
                 </div>
-                <p class="text-slate-400 font-bold text-lg">No ${labels[type]}s yet</p>
-                <p class="text-slate-500 text-sm mt-2 max-w-xs mx-auto">Start by clicking the "New" button to record your first transaction.</p>
+                <h4 class="text-white font-bold text-2xl tracking-tight">No ${labels[type]}s detected</h4>
+                <p class="text-slate-500 text-sm mt-3 max-w-xs mx-auto font-medium">Capture your business transactions to populate this view. Your system is ready for entry.</p>
+                <button onclick="openCreateModal('${type}')" class="mt-10 btn-primary">
+                    <i data-feather="plus" class="w-4 h-4"></i> Initialize ${labels[type]}
+                </button>
             </div>
         `;
     } else {
