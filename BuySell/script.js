@@ -13,7 +13,7 @@ import {
     saveEntity, deleteEntity, saveItem, saveBank, saveUser, deleteUser,
     saveDoc, deleteDoc, savePayment, convertDocument
 } from './js/handlers.js';
-import { migrateLocalToCloud, testConnection } from './js/database.js';
+import { migrateLocalToCloud, testConnection, initDatabase, loadFromCloud } from './js/database.js';
 
 // --- State Management ---
 const documents = {};
@@ -144,12 +144,47 @@ function logout() {
     window.location.href = 'index.html';
 }
 
-function initializeApp() {
+async function syncWithCloud() {
+    showToast('Syncing with Cloud...', 'info');
+    let syncCount = 0;
+    
+    for (const type of Object.values(DOC_TYPES)) {
+        if (type !== DOC_TYPES.DASHBOARD && type !== DOC_TYPES.REPORTS) {
+            try {
+                const cloudData = await loadFromCloud(type);
+                if (cloudData && cloudData.length > 0) {
+                    // Update local state
+                    documents[type] = cloudData;
+                    // Keep localStorage in sync
+                    localStorage.setItem(STORAGE_KEYS[type], JSON.stringify(cloudData));
+                    syncCount++;
+                }
+            } catch (err) {
+                console.error(`Cloud Sync: Failed to pull ${type}:`, err);
+            }
+        }
+    }
+    
+    if (syncCount > 0) {
+        showToast('Synchronized with Cloud Database.', 'success');
+    }
+}
+
+async function initializeApp() {
     console.log('ASYNCRIX Engine [v1.2]: Initializing...');
-    // Initial render
+    
+    // 1. Initialize Supabase Connection
+    const dbActive = await initDatabase();
+    
+    // 2. Synchronize Data if Online
+    if (dbActive) {
+        await syncWithCloud();
+    }
+
+    // 3. Initial View Render
     switchView('dashboard');
     
-    // Global Feather Init
+    // 4. Global Icon Refresh
     if (window.feather) feather.replace();
     
     console.log('ASYNCRIX Engine Initialized.');
