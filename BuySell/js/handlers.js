@@ -354,7 +354,7 @@ export async function systemSetupAndMap(documents) {
         id: 'USER-001',
         name: 'Super Admin',
         username: 'admin',
-        password: 'password', 
+        password: 'admin', 
         role: 'Admin',
         status: 'Active',
         created: new Date().toISOString()

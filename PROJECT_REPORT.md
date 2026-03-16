@@ -42,6 +42,7 @@ The project evolved from a monolithic single-page dashboard into a professional,
 ## 4. Deployment Status
 The application is currently **Production Ready**.
 - **Live URL**: https://dipakkadamb.github.io/BuySell/
+- **Standard Access**: `admin` / `admin`
 - **CI/CD**: Active via `.github/workflows/deploy.yml`.
 
 ---
