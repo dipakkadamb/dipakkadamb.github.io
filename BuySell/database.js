@@ -43,8 +43,12 @@ export async function saveToCloud(type, data) {
 }
 
 export async function deleteFromCloud(type, id) {
-    if (!dbInitialized) return false;
+    if (!dbInitialized) {
+        console.warn("ASYNCRIX DB: Delete failed - Database not initialized.");
+        return false;
+    }
     try {
+        console.log(`ASYNCRIX DB: Attempting cloud delete for ${type} (${id})...`);
         await fetch(GOOGLE_SHEETS_URL, {
             method: 'POST',
             mode: 'no-cors',
@@ -54,9 +58,10 @@ export async function deleteFromCloud(type, id) {
                 id: id
             })
         });
+        console.log(`ASYNCRIX DB: Cloud delete request sent for ${type} (${id}).`);
         return true;
     } catch (error) {
-        console.error(`Error deleting ${type} from Google Sheets:`, error);
+        console.error(`ASYNCRIX DB: Error deleting ${type} from Google Sheets:`, error);
         return false;
     }
 }
