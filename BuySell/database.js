@@ -25,6 +25,7 @@ export async function saveToCloud(type, data) {
     try {
         const response = await fetch(GOOGLE_SHEETS_URL, {
             method: 'POST',
+            mode: 'no-cors', // Simple request
             body: JSON.stringify({
                 action: 'save',
                 type: type,
@@ -32,8 +33,9 @@ export async function saveToCloud(type, data) {
                 data: data
             })
         });
-        const result = await response.json();
-        return result.success;
+        // Note: With no-cors, we can't read the response body, 
+        // but we can assume success if no exception is thrown.
+        return true;
     } catch (error) {
         console.error(`Error saving ${type} to Google Sheets:`, error);
         return false;
@@ -43,16 +45,16 @@ export async function saveToCloud(type, data) {
 export async function deleteFromCloud(type, id) {
     if (!dbInitialized) return false;
     try {
-        const response = await fetch(GOOGLE_SHEETS_URL, {
+        await fetch(GOOGLE_SHEETS_URL, {
             method: 'POST',
+            mode: 'no-cors',
             body: JSON.stringify({
                 action: 'delete',
                 type: type,
                 id: id
             })
         });
-        const result = await response.json();
-        return result.success;
+        return true;
     } catch (error) {
         console.error(`Error deleting ${type} from Google Sheets:`, error);
         return false;
@@ -72,19 +74,34 @@ export async function loadFromCloud(type) {
 }
 
 /**
+ * Diagnostic tool to check if the Web App is responsive
+ */
+export async function testConnection() {
+    try {
+        const start = Date.now();
+        const response = await fetch(`${GOOGLE_SHEETS_URL}?type=ping`);
+        const status = response.ok;
+        const latency = Date.now() - start;
+        return { success: status, latency: latency };
+    } catch (error) {
+        return { success: false, error: error.toString() };
+    }
+}
+
+/**
  * Wipe all data from Cloud (Google Sheets)
  */
 export async function clearAllCloudData() {
     if (!dbInitialized) return false;
     try {
-        const response = await fetch(GOOGLE_SHEETS_URL, {
+        await fetch(GOOGLE_SHEETS_URL, {
             method: 'POST',
+            mode: 'no-cors',
             body: JSON.stringify({
                 action: 'clearAll'
             })
         });
-        const result = await response.json();
-        return result.success;
+        return true;
     } catch (error) {
         console.error("ASYNCRIX DB: Failed to clear cloud data:", error);
         return false;

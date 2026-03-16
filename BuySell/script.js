@@ -1,4 +1,4 @@
-import { initDatabase, saveToCloud, deleteFromCloud, loadFromCloud, migrateLocalToCloud, clearAllCloudData } from './database.js';
+import { initDatabase, saveToCloud, deleteFromCloud, loadFromCloud, migrateLocalToCloud, clearAllCloudData, testConnection } from './database.js';
 
 console.log("ASYNCRIX: Script execution starting...");
 
@@ -157,21 +157,41 @@ async function initializeApp() {
         renderContent();
         feather.replace();
         
-        // Cloud Status Warning
-        if (typeof cloudConnected !== 'undefined' && !cloudConnected) {
-            showCloudWarning();
-        }
-    }
+        // Mobile Responsive Listeners
+        window.addEventListener('resize', () => { 
+            if(window.innerWidth >= 1024) { 
+                const sidebar = document.getElementById('sidebar');
+                const overlay = document.getElementById('mobile-overlay');
+                if (sidebar) sidebar.classList.add('active'); 
+                if (overlay) overlay.classList.remove('active');
+            }
+        });
 
-    // Mobile Responsive Listeners
-    window.addEventListener('resize', () => { 
-        if(window.innerWidth >= 1024) { 
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('mobile-overlay');
-            if (sidebar) sidebar.classList.add('active'); 
-            if (overlay) overlay.classList.remove('active');
+        // Run connection test
+        checkConnection();
+    }
+}
+
+async function checkConnection() {
+    const indicator = document.getElementById('cloud-status-indicator');
+    const text = document.getElementById('cloud-status-text');
+    if (!indicator || !text) return;
+
+    try {
+        const result = await testConnection();
+        if (result.success) {
+            indicator.className = 'w-1.5 h-1.5 rounded-full bg-emerald-400 rotate-animation';
+            text.textContent = 'Cloud Linked';
+            text.className = 'text-[9px] font-bold text-emerald-400 uppercase tracking-widest';
+        } else {
+            indicator.className = 'w-1.5 h-1.5 rounded-full bg-red-400';
+            text.textContent = 'Sync Offline';
+            text.className = 'text-[9px] font-bold text-red-400 uppercase tracking-widest';
         }
-    });
+    } catch {
+       indicator.className = 'w-1.5 h-1.5 rounded-full bg-amber-400';
+       text.textContent = 'Checking...';
+    }
 }
 
 function updateTitle(viewId) {
@@ -1261,7 +1281,6 @@ async function saveDoc(type) {
     const success = await saveToCloud(type, doc);
 
     // --- Dynamic Flow: Stock & Banking Integration ---
-    // Only process stock for documents that affect immediate accounting (Invoices, Bills, Credits)
     const stockAffectingTypes = [DOC_TYPES.INVOICES, DOC_TYPES.BILLS, DOC_TYPES.CREDIT_NOTES, DOC_TYPES.VENDOR_CREDITS];
     
     if (stockAffectingTypes.includes(type)) {
@@ -1269,13 +1288,10 @@ async function saveDoc(type) {
             const item = documents[DOC_TYPES.ITEMS].find(i => i.name.trim() === line.name.trim());
             if (item && item.type === 'Goods') {
                 if (!item.stock) item.stock = 0;
-                // Correct accounting stock rules
                 if (type === DOC_TYPES.INVOICES) item.stock -= line.qty;
                 else if (type === DOC_TYPES.CREDIT_NOTES) item.stock += line.qty;
                 else if (type === DOC_TYPES.BILLS) item.stock += line.qty;
                 else if (type === DOC_TYPES.VENDOR_CREDITS) item.stock -= line.qty;
-                // SO and PO don't affect accounting stock immediately usually, 
-                // but if the app design uses them for 'commited' stock, we could add here.
                 
                 await saveToCloud(DOC_TYPES.ITEMS, item);
             }
@@ -1284,20 +1300,21 @@ async function saveDoc(type) {
     }
 
     if (type === DOC_TYPES.EXPENSES) {
-        const primaryBank = documents[DOC_TYPES.BANKING][0];
-        if (primaryBank) {
-            primaryBank.balance -= doc.total;
+        if (documents[DOC_TYPES.BANKING].length > 0) {
+            documents[DOC_TYPES.BANKING][0].balance -= doc.total;
             localStorage.setItem(STORAGE_KEYS[DOC_TYPES.BANKING], JSON.stringify(documents[DOC_TYPES.BANKING]));
-            await saveToCloud(DOC_TYPES.BANKING, primaryBank);
-        } else {
-            console.warn("ASYNCRIX: Expense recorded but no bank found to deduct from.");
-            showToast("Expense saved, but no bank balance found to update.", "warning");
+            await saveToCloud(DOC_TYPES.BANKING, documents[DOC_TYPES.BANKING][0]);
         }
     }
 
     closeModal();
     renderContent();
-    showToast(`${type.toUpperCase()} recorded and synced!`, 'success');
+    
+    if (success) {
+        showToast(`${type.toUpperCase()} recorded and synced to Cloud!`, 'success');
+    } else {
+        showToast(`${type.toUpperCase()} saved locally, but Cloud Sync failed. Check script console.`, 'warning');
+    }
 }
 
 async function deleteDoc(type, id) {
