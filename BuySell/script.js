@@ -20,6 +20,7 @@ const DOC_TYPES = {
     PAYMENTS_MADE: 'payments-made',
     PROFORMA: 'proforma-invoices',
     VENDOR_CREDITS: 'vendor-credits',
+    USERS: 'users',
     REPORTS: 'reports'
 };
 
@@ -39,7 +40,8 @@ const STORAGE_KEYS = {
     [DOC_TYPES.BILLS]: 'hub_bills',
     [DOC_TYPES.PAYMENTS_MADE]: 'hub_payments_made',
     [DOC_TYPES.PROFORMA]: 'hub_proforma',
-    [DOC_TYPES.VENDOR_CREDITS]: 'hub_vendor_credits'
+    [DOC_TYPES.VENDOR_CREDITS]: 'hub_vendor_credits',
+    [DOC_TYPES.USERS]: 'hub_users'
 };
 
 let currentView = 'dashboard';
@@ -93,6 +95,10 @@ const globalBridge = {
     saveVendor: (id) => saveVendor(id),
     deleteVendor: (id) => deleteVendor(id),
     seedDummyData: () => seedDummyData(),
+    systemSetupAndMap: () => systemSetupAndMap(),
+    openUserModal: (id) => openUserModal(id),
+    saveUser: () => saveUser(),
+    deleteUser: (id) => deleteUser(id),
     openItemModal: (d) => openItemModal(d),
     saveItem: (id) => saveItem(id),
     deleteItem: (id) => deleteItem(id),
@@ -221,6 +227,7 @@ function updateTitle(viewId) {
         [DOC_TYPES.BILLS]: 'Bills',
         [DOC_TYPES.PAYMENTS_MADE]: 'Payments Made',
         [DOC_TYPES.VENDOR_CREDITS]: 'Vendor Credits',
+        [DOC_TYPES.USERS]: 'User Management',
         [DOC_TYPES.REPORTS]: 'Financial Reports'
     };
     const titleEl = document.getElementById('view-title');
@@ -259,6 +266,7 @@ async function renderContent() {
         case DOC_TYPES.VENDORS: renderVendors(viewport); break;
         case DOC_TYPES.ITEMS: renderItems(viewport); break;
         case DOC_TYPES.BANKING: renderBanking(viewport); break;
+        case DOC_TYPES.USERS: renderUsers(viewport); break;
         case DOC_TYPES.REPORTS: renderReports(viewport); break;
         default: renderDocumentList(viewport, currentView); break;
     }
@@ -289,6 +297,177 @@ async function fetchCollectionIfNeeded(type) {
         console.warn(`ASYNCRIX: Lazy load failed for ${type}, using local state.`);
         documents[type] = localData;
     }
+}
+
+// --- User Management ---
+function renderUsers(container) {
+    const list = documents[DOC_TYPES.USERS] || [];
+    container.innerHTML = `
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+            <div>
+                <h3 class="text-xl font-bold text-slate-900">User Management</h3>
+                <p class="text-xs text-slate-500 mt-1">Manage system administrators and staff access.</p>
+            </div>
+            <button onclick="globalBridge.openUserModal()" class="btn-primary">
+                <i data-feather="user-plus" class="w-4 h-4"></i> New User
+            </button>
+        </div>
+
+        <div class="glass-panel overflow-hidden border-slate-200">
+            <table class="w-full text-left">
+                <thead class="bg-slate-50 border-b border-slate-200">
+                    <tr>
+                        <th class="px-6 py-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest">Name & Username</th>
+                        <th class="px-6 py-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest">Role</th>
+                        <th class="px-6 py-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest">Status</th>
+                        <th class="px-6 py-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest text-right">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                    ${list.map(u => `
+                        <tr class="hover:bg-slate-50 transition-colors">
+                            <td class="px-6 py-4">
+                                <div class="font-bold text-slate-900">${u.name}</div>
+                                <div class="text-[10px] text-slate-500">@${u.username}</div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <span class="px-2 py-1 rounded-full text-[9px] font-bold ${u.role === 'Admin' ? 'bg-indigo-400/10 text-indigo-500' : 'bg-slate-400/10 text-slate-500'} uppercase">
+                                    ${u.role}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4">
+                                <span class="flex items-center gap-1.5 text-[10px] font-bold ${u.status === 'Active' ? 'text-emerald-500' : 'text-slate-400'}">
+                                    <span class="w-1.5 h-1.5 rounded-full ${u.status === 'Active' ? 'bg-emerald-500' : 'bg-slate-400'}"></span>
+                                    ${u.status}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 text-right">
+                                <div class="flex justify-end gap-2">
+                                    <button onclick="globalBridge.openUserModal('${u.id}')" class="p-2 text-slate-400 hover:text-accent-primary transition-colors">
+                                        <i data-feather="edit-2" class="w-4 h-4"></i>
+                                    </button>
+                                    <button onclick="globalBridge.deleteUser('${u.id}')" class="p-2 text-slate-400 hover:text-red-400 transition-colors">
+                                        <i data-feather="trash-2" class="w-4 h-4"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    `).join('')}
+                    ${list.length === 0 ? `<tr><td colspan="4" class="px-6 py-12 text-center text-slate-400 italic">No users found.</td></tr>` : ''}
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="mt-12 p-6 border-t border-slate-200">
+            <h4 class="text-sm font-bold text-slate-900 mb-2 uppercase tracking-widest">System Maintenance</h4>
+            <p class="text-xs text-slate-500 mb-6">Reset and initialize the entire application mapping to Google Sheets.</p>
+            <button onclick="globalBridge.systemSetupAndMap()" class="px-6 py-3 bg-red-500/10 text-red-500 border border-red-500/20 rounded-xl font-bold hover:bg-red-500 hover:text-white transition-all text-xs uppercase tracking-widest flex items-center gap-3">
+                <i data-feather="refresh-ccw" class="w-4 h-4"></i> Reset & Initialize Google Sheets Map
+            </button>
+        </div>
+    `;
+}
+
+function openUserModal(id = null) {
+    const user = id ? (documents[DOC_TYPES.USERS].find(u => u.id === id) || {}) : {};
+    const modalContainer = document.getElementById('modal-form-container');
+    const modalTitle = document.getElementById('modal-title');
+    const saveBtn = document.getElementById('save-btn');
+    
+    modalTitle.textContent = id ? 'Edit User Access' : 'Create New User Account';
+    modalContainer.innerHTML = `
+        <form id="user-form" class="space-y-6">
+            <input type="hidden" id="user-id" value="${id || ''}">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-[10px] uppercase tracking-widest font-bold text-slate-500 mb-2">Display Name</label>
+                    <input type="text" id="user-name" class="form-input" value="${user.name || ''}" placeholder="John Doe" required>
+                </div>
+                <div>
+                    <label class="block text-[10px] uppercase tracking-widest font-bold text-slate-500 mb-2">Username</label>
+                    <input type="text" id="user-username" class="form-input" value="${user.username || ''}" placeholder="johndoe" required>
+                </div>
+                <div>
+                    <label class="block text-[10px] uppercase tracking-widest font-bold text-slate-500 mb-2">Password</label>
+                    <input type="password" id="user-password" class="form-input" value="${user.password || ''}" placeholder="••••••••" required>
+                </div>
+                <div>
+                    <label class="block text-[10px] uppercase tracking-widest font-bold text-slate-500 mb-2">Access Role</label>
+                    <select id="user-role" class="form-input">
+                        <option value="Admin" ${user.role === 'Admin' ? 'selected' : ''}>Administrator (Full Access)</option>
+                        <option value="Staff" ${user.role === 'Staff' ? 'selected' : ''}>Staff (Sales/Purchases Only)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-[10px] uppercase tracking-widest font-bold text-slate-500 mb-2">Account Status</label>
+                    <select id="user-status" class="form-input">
+                        <option value="Active" ${user.status === 'Active' ? 'selected' : ''}>Active</option>
+                        <option value="Inactive" ${user.status === 'Inactive' ? 'selected' : ''}>Inactive</option>
+                    </select>
+                </div>
+            </div>
+        </form>
+    `;
+    
+    saveBtn.onclick = () => globalBridge.saveUser();
+    document.getElementById('form-modal').classList.remove('hidden');
+    setTimeout(() => document.getElementById('form-modal').classList.add('opacity-100'), 10);
+}
+
+async function saveUser() {
+    const id = document.getElementById('user-id').value;
+    const name = document.getElementById('user-name').value;
+    const username = document.getElementById('user-username').value;
+    const password = document.getElementById('user-password').value;
+    const role = document.getElementById('user-role').value;
+    const status = document.getElementById('user-status').value;
+
+    if (!name || !username || !password) {
+        showToast('Please fill all required fields', 'error');
+        return;
+    }
+
+    const userData = {
+        id: id || 'USER-' + Date.now(),
+        name,
+        username,
+        password,
+        role,
+        status,
+        created: id ? (documents[DOC_TYPES.USERS].find(u => u.id === id).created) : new Date().toISOString()
+    };
+
+    if (id) {
+        const idx = documents[DOC_TYPES.USERS].findIndex(u => u.id === id);
+        documents[DOC_TYPES.USERS][idx] = userData;
+    } else {
+        documents[DOC_TYPES.USERS].push(userData);
+    }
+
+    localStorage.setItem(STORAGE_KEYS[DOC_TYPES.USERS], JSON.stringify(documents[DOC_TYPES.USERS]));
+    showToast('User preferences updated locally', 'info');
+    
+    closeModal();
+    renderContent();
+    
+    const success = await saveToCloud(DOC_TYPES.USERS, userData);
+    if (success) showToast('User account synced to cloud', 'success');
+}
+
+async function deleteUser(id) {
+    if (documents[DOC_TYPES.USERS].length <= 1) {
+        showToast('Error: Cannot delete the last administrator', 'error');
+        return;
+    }
+    if (!confirm('Are you sure you want to terminate this user access?')) return;
+    
+    const idx = documents[DOC_TYPES.USERS].findIndex(u => u.id === id);
+    documents[DOC_TYPES.USERS].splice(idx, 1);
+    localStorage.setItem(STORAGE_KEYS[DOC_TYPES.USERS], JSON.stringify(documents[DOC_TYPES.USERS]));
+    
+    renderContent();
+    const success = await deleteFromCloud(DOC_TYPES.USERS, id);
+    if (success) showToast('User access terminated in cloud', 'success');
 }
 
 /**
@@ -2144,6 +2323,48 @@ async function seedDummyData() {
 
     showToast('Dummy data seeded and synced to cloud!', 'success');
     _switchView('dashboard');
+}
+
+// --- System Setup & Mapping ---
+async function systemSetupAndMap() {
+    if (!confirm('WARNING: This will PERMANENTLY delete all local and cloud data to provide a clean slate. Continue?')) return;
+
+    showToast('Clearing all local data...', 'info');
+    
+    // 1. Clear Local Storage
+    Object.values(STORAGE_KEYS).forEach(key => localStorage.removeItem(key));
+    localStorage.removeItem('hub_auth'); // Force logout after reset
+    
+    // 2. Clear Cloud Data
+    showToast('Wiping Google Sheets...', 'info');
+    await clearAllCloudData();
+    
+    // 3. Initialize Mapping
+    showToast('Mapping module structure to sheets...', 'info');
+    const modulesToMap = Object.values(DOC_TYPES).filter(type => 
+        type !== DOC_TYPES.DASHBOARD && 
+        type !== DOC_TYPES.REPORTS
+    );
+    
+    await initializeCloudMapping(modulesToMap);
+
+    // 4. Seed Default Admin
+    showToast('Creating default administrator...', 'info');
+    const defaultAdmin = {
+        id: 'USER-001',
+        name: 'Super Admin',
+        username: 'admin',
+        password: 'password', // User should change this
+        role: 'Admin',
+        status: 'Active',
+        created: new Date().toISOString()
+    };
+    documents[DOC_TYPES.USERS] = [defaultAdmin];
+    localStorage.setItem(STORAGE_KEYS[DOC_TYPES.USERS], JSON.stringify(documents[DOC_TYPES.USERS]));
+    await saveToCloud(DOC_TYPES.USERS, defaultAdmin);
+    
+    showToast('System reset and mapping complete!', 'success');
+    window.location.reload(); // Refresh to clean state
 }
 
 // Final check: start the app

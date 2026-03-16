@@ -69,30 +69,54 @@
 
     <script type="module" src="script.js"></script>
     <script type="module">
-        import { initDatabase } from './database.js';
+        import { loadFromCloud, initDatabase } from './database.js';
         
-        // Initialize DB handled by script.js
-
+        await initDatabase();
         feather.replace();
         
         document.getElementById('login-form').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const u = document.getElementById('username').value;
-            const p = document.getElementById('password').value;
+            const uInput = document.getElementById('username').value;
+            const pInput = document.getElementById('password').value;
             
             try {
+                // 1. Try Cloud Authentication
+                const users = await loadFromCloud('users');
+                const user = users.find(usr => usr.username === uInput && usr.password === pInput);
+                
+                if (user) {
+                    if (user.status !== 'Active') {
+                        alert('Account restricted. Contact administrator.');
+                        return;
+                    }
+                    localStorage.setItem('hub_auth', 'true');
+                    localStorage.setItem('hub_user_role', user.role);
+                    window.location.href = 'dashboard.html';
+                    return;
+                }
+
+                // 2. Fallback to key.txt (Emergency/Initial Access)
                 const response = await fetch('key.txt');
                 const adminPass = (await response.text()).trim();
                 
-                if (u === 'admin' && p === adminPass) {
+                if (uInput === 'admin' && pInput === adminPass) {
                     localStorage.setItem('hub_auth', 'true');
+                    localStorage.setItem('hub_user_role', 'Admin');
                     window.location.href = 'dashboard.html';
                 } else {
                     document.getElementById('login-error').classList.remove('hidden');
                 }
             } catch (err) {
-                console.error('Failed to load key:', err);
-                alert('Authentication system error. Please check server.');
+                console.warn('Authentication fallback engaged:', err);
+                const response = await fetch('key.txt');
+                const adminPass = (await response.text()).trim();
+                if (uInput === 'admin' && pInput === adminPass) {
+                    localStorage.setItem('hub_auth', 'true');
+                    localStorage.setItem('hub_user_role', 'Admin'); // Ensure role is set for fallback admin
+                    window.location.href = 'dashboard.html';
+                } else {
+                    document.getElementById('login-error').classList.remove('hidden');
+                }
             }
         });
     </script>
