@@ -1,15 +1,16 @@
 /* ASYNCRIX PREMIUM DESIGN SYSTEM */
 :root {
-    --bg-navy: #050810;
-    --bg-sidebar: rgba(10, 15, 28, 0.8);
-    --bg-card: rgba(16, 24, 45, 0.4);
-    --accent-primary: #06b6d4; /* Cyan */
+    --bg-main: #fcfcfc;
+    --bg-white: #ffffff;
+    --bg-sidebar: #f8fafc;
+    --bg-card: #ffffff;
+    --accent-primary: #0ea5e9; /* Light Blue */
     --accent-secondary: #6366f1; /* Indigo */
-    --accent-glow: rgba(99, 102, 241, 0.15);
-    --text-main: #f1f5f9;
-    --text-muted: #94a3b8;
-    --border-subtle: rgba(255, 255, 255, 0.05);
-    --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    --accent-glow: rgba(14, 165, 233, 0.05);
+    --text-main: #1e293b; /* Slate 800 */
+    --text-muted: #64748b; /* Slate 500 */
+    --border-subtle: #e2e8f0; /* Slate 200 */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 * {
@@ -18,10 +19,10 @@
 }
 
 body {
-    background-color: var(--bg-navy);
+    background-color: var(--bg-main);
     background-image: 
-        radial-gradient(at 0% 0%, rgba(6, 182, 212, 0.05) 0px, transparent 50%),
-        radial-gradient(at 100% 0%, rgba(99, 102, 241, 0.05) 0px, transparent 50%);
+        radial-gradient(at 0% 0%, rgba(14, 165, 233, 0.03) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(99, 102, 241, 0.03) 0px, transparent 50%);
     color: var(--text-main);
     font-family: 'Plus Jakarta Sans', sans-serif;
     margin: 0;
@@ -36,11 +37,11 @@ button, input, select {
 /* Glassmorphism Refined */
 .glass-panel {
     background: var(--bg-card);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 1.25rem;
-    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--border-subtle);
+    border-radius: 1rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
     transition: var(--transition-smooth);
 }
 
@@ -58,7 +59,6 @@ button, input, select {
     height: 100vh;
     width: 270px;
     background: var(--bg-sidebar);
-    backdrop-filter: blur(30px);
     border-right: 1px solid var(--border-subtle);
     transform: translateX(-100%);
     transition: var(--transition-smooth);
@@ -130,21 +130,21 @@ button, input, select {
     box-shadow: 0 0 0 4px rgba(6, 182, 212, 0.15);
 }
 
-/* Modal Dark Glass Integration */
+/* Modal Light Integration */
 #form-modal .glass-panel {
-    background: rgba(15, 23, 42, 0.95);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: var(--bg-white);
+    border: 1px solid var(--border-subtle);
 }
 
 #form-modal .form-input {
-    background: rgba(255, 255, 255, 0.05) !important;
-    color: white !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    background: #f8fafc !important;
+    color: var(--text-main) !important;
+    border: 1px solid var(--border-subtle) !important;
 }
 
 #form-modal .form-input:focus {
     border-color: var(--accent-primary) !important;
-    background: rgba(255, 255, 255, 0.08) !important;
+    background: var(--bg-white) !important;
 }
 
 /* Table Design Overhaul */
@@ -159,8 +159,8 @@ button, input, select {
 }
 
 .responsive-table tbody tr:hover {
-    background: rgba(255, 255, 255, 0.02);
-    transform: scale(1.002);
+    background: #f8fafc;
+    transform: scale(1.001);
 }
 
 /* Animations */
@@ -184,7 +184,7 @@ button, input, select {
 }
 
 ::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.05);
+    background: #e2e8f0;
     border-radius: 10px;
 }
 
@@ -213,13 +213,12 @@ button, input, select {
 
 /* Toast Notifications - Floating & Modern */
 .toast {
-    background: rgba(15, 23, 42, 0.8);
-    backdrop-filter: blur(15px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: white;
+    background: var(--bg-white);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-main);
     padding: 1rem 1.5rem;
     border-radius: 1rem;
-    box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.6);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
 /* Login Page Background Particle Glow (via CSS only) */
@@ -248,6 +247,6 @@ button, input, select {
 /* Logout Button Special */
 .logout-btn-wrapper {
     margin-top: auto;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    border-top: 1px solid var(--border-subtle);
     padding-top: 1.5rem;
 }

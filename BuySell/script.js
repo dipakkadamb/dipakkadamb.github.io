@@ -801,9 +801,9 @@ function renderContactList(container, list, title, icon, modalFn, deleteFn, type
                                     <div class="w-20 h-20 bg-white/5 rounded-3xl flex items-center justify-center mx-auto mb-6 border border-white/5 shadow-inner">
                                         <i data-feather="${isVendor ? 'briefcase' : 'users'}" class="w-10 h-10 text-slate-700"></i>
                                     </div>
-                                    <h4 class="text-white font-bold text-xl tracking-tight">Empty Directory</h4>
+                                    <h4 class="text-slate-900 font-bold text-xl tracking-tight">Empty Directory</h4>
                                     <p class="text-slate-500 text-sm mt-2 max-w-xs mx-auto">Your ${title.toLowerCase()} list is currently empty. Record your first contact to begin.</p>
-                                    <button onclick="${modalFn}()" class="mt-6 text-accent-primary text-[10px] font-bold uppercase tracking-[0.2em] hover:text-white transition-colors border-b border-accent-primary/20 pb-1">Create Entry Now</button>
+                                    <button onclick="${modalFn}()" class="mt-6 text-accent-primary text-[10px] font-bold uppercase tracking-[0.2em] hover:text-slate-900 transition-colors border-b border-accent-primary/20 pb-1">Create Entry Now</button>
                                 </td>
                             </tr>
                         ` : list.map(item => `
@@ -814,19 +814,19 @@ function renderContactList(container, list, title, icon, modalFn, deleteFn, type
                                             ${item.displayName.charAt(0)}
                                         </div>
                                         <div>
-                                            <div class="text-white font-semibold">${item.displayName}</div>
+                                            <div class="text-slate-800 font-semibold">${item.displayName}</div>
                                             <div class="text-[9px] text-slate-500 uppercase tracking-widest font-bold">${item.type}</div>
                                         </div>
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 text-slate-300" data-label="Company">${item.company || '-'}</td>
                                 <td class="px-6 py-4" data-label="Contact">
-                                    <div class="text-white text-sm">${item.email || '-'}</div>
+                                    <div class="text-slate-800 text-sm">${item.email || '-'}</div>
                                     <div class="text-slate-500 text-xs">${item.mobile || item.phone || '-'}</div>
                                 </td>
                                 <td class="px-6 py-4 text-right" data-label="GST">
                                     <div class="text-${accentColor} text-[10px] font-bold uppercase tracking-wider">${item.gstTreatment}</div>
-                                    <div class="text-white font-mono text-xs">${item.gstin || '-'}</div>
+                                    <div class="text-slate-800 font-mono text-xs">${item.gstin || '-'}</div>
                                 </td>
                                 <td class="px-6 py-4 text-right actions-cell">
                                     <div class="flex justify-end gap-1">
@@ -883,7 +883,7 @@ function renderDocumentList(container, type) {
                     <div class="absolute inset-0 bg-accent-primary/5 blur-xl rounded-full"></div>
                     <i data-feather="inbox" class="w-12 h-12 relative z-10"></i>
                 </div>
-                <h4 class="text-white font-bold text-2xl tracking-tight">No ${labels[type]}s detected</h4>
+                <h4 class="text-slate-900 font-bold text-2xl tracking-tight">No ${labels[type]}s detected</h4>
                 <p class="text-slate-500 text-sm mt-3 max-w-xs mx-auto font-medium">Capture your business transactions to populate this view. Your system is ready for entry.</p>
                 <button onclick="openCreateModal('${type}')" class="mt-10 btn-primary">
                     <i data-feather="plus" class="w-4 h-4"></i> Initialize ${labels[type]}
@@ -911,10 +911,10 @@ function renderDocumentList(container, type) {
             html += `
                 <tr class="hover:bg-white/[0.02] transition-colors group">
                     <td class="px-6 py-4 font-mono text-sm text-accent-primary" data-label="ID">${doc.id}</td>
-                    <td class="px-6 py-4 text-white font-semibold" data-label="Client">${doc.client}</td>
+                    <td class="px-6 py-4 text-slate-800 font-semibold" data-label="Client">${doc.client}</td>
                     <td class="px-6 py-4 text-slate-400 text-sm" data-label="Date">${doc.date}</td>
                     <td class="px-6 py-4 text-slate-500 text-sm" data-label="Total">${formatCurrency(doc.total)}</td>
-                    <td class="px-6 py-4 text-white font-bold" data-label="Balance">${formatCurrency(getDocBalance(doc, type))}</td>
+                    <td class="px-6 py-4 text-slate-900 font-bold" data-label="Balance">${formatCurrency(getDocBalance(doc, type))}</td>
                     <td class="px-6 py-4 text-right space-x-1 flex items-center justify-end actions-cell" data-label="Control">
                         ${renderConversionButtons(doc, type)}
                         <button onclick="printDocument('${type}', '${doc.id}')" class="p-2 text-slate-500 hover:text-accent-primary transition-colors" title="Print">
@@ -1353,6 +1353,9 @@ async function deleteDoc(type, id) {
         }
     }
 
+    documents[type] = documents[type].filter(d => d.id !== id);
+    localStorage.setItem(STORAGE_KEYS[type], JSON.stringify(documents[type]));
+    
     const success = await deleteFromCloud(type, id);
     renderContent();
     if (success) showToast('Record deleted permanentely.', 'success');
@@ -1613,11 +1616,11 @@ function renderContactModal(label, editData, saveFn) {
                     <div class="flex gap-4">
                         <label class="flex items-center gap-2 cursor-pointer">
                             <input type="radio" name="entity-type" value="Business" ${!editData || editData.type === 'Business' ? 'checked' : ''} class="accent-accent-primary">
-                            <span class="text-sm text-white">Business</span>
+                            <span class="text-sm text-slate-800">Business</span>
                         </label>
                         <label class="flex items-center gap-2 cursor-pointer">
                             <input type="radio" name="entity-type" value="Individual" ${editData && editData.type === 'Individual' ? 'checked' : ''} class="accent-accent-primary">
-                            <span class="text-sm text-white">Individual</span>
+                            <span class="text-sm text-slate-800">Individual</span>
                         </label>
                     </div>
                 </div>
@@ -1652,12 +1655,12 @@ function renderContactModal(label, editData, saveFn) {
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-8 border-t border-white/5">
             <div>
-                <h4 class="text-white font-bold text-xs uppercase tracking-widest mb-4">Billing Address</h4>
+                <h4 class="text-slate-800 font-bold text-xs uppercase tracking-widest mb-4">Billing Address</h4>
                 <textarea id="entity-bill-address" class="form-input h-24" placeholder="Street, City, Zip, State">${editData ? editData.billingAddress : ''}</textarea>
             </div>
             <div>
                 <div class="flex justify-between items-center mb-4">
-                    <h4 class="text-white font-bold text-xs uppercase tracking-widest">Shipping Address</h4>
+                    <h4 class="text-slate-800 font-bold text-xs uppercase tracking-widest">Shipping Address</h4>
                     <button onclick="copyEntityAddress()" class="text-[9px] font-bold text-accent-primary uppercase tracking-widest">Copy from Billing</button>
                 </div>
                 <textarea id="entity-ship-address" class="form-input h-24" placeholder="Street, City, Zip, State">${editData ? editData.shippingAddress : ''}</textarea>
@@ -1675,6 +1678,7 @@ function renderContactModal(label, editData, saveFn) {
     feather.replace();
 }
 
+async function saveCustomer(id) { await saveEntity(id, DOC_TYPES.CUSTOMERS, 'CUST'); }
 async function saveVendor(id) { await saveEntity(id, DOC_TYPES.VENDORS, 'VEND'); }
 
 async function saveEntity(id, type, prefix) {
@@ -1711,6 +1715,26 @@ async function saveEntity(id, type, prefix) {
     else showToast('Sync failed. Please check internet/Firebase.', 'error');
 }
 
+async function deleteCustomer(id) {
+    if (!confirm('Are you sure you want to delete this customer?')) return;
+    documents[DOC_TYPES.CUSTOMERS] = documents[DOC_TYPES.CUSTOMERS].filter(c => c.id !== id);
+    localStorage.setItem(STORAGE_KEYS[DOC_TYPES.CUSTOMERS], JSON.stringify(documents[DOC_TYPES.CUSTOMERS]));
+    const success = await deleteFromCloud(DOC_TYPES.CUSTOMERS, id);
+    renderContent();
+    if (success) showToast('Customer deleted.', 'success');
+    else showToast('Removed locally, but Cloud sync failed.', 'error');
+}
+
+async function deleteVendor(id) {
+    if (!confirm('Are you sure you want to delete this vendor?')) return;
+    documents[DOC_TYPES.VENDORS] = documents[DOC_TYPES.VENDORS].filter(v => v.id !== id);
+    localStorage.setItem(STORAGE_KEYS[DOC_TYPES.VENDORS], JSON.stringify(documents[DOC_TYPES.VENDORS]));
+    const success = await deleteFromCloud(DOC_TYPES.VENDORS, id);
+    renderContent();
+    if (success) showToast('Vendor deleted.', 'success');
+    else showToast('Removed locally, but Cloud sync failed.', 'error');
+}
+
 function openItemModal(editData = null) {
     const modal = document.getElementById('form-modal');
     document.getElementById('modal-title').textContent = editData ? 'Edit Item' : 'New Item';
@@ -1724,11 +1748,11 @@ function openItemModal(editData = null) {
                     <div class="flex gap-4">
                         <label class="flex items-center gap-2 cursor-pointer">
                             <input type="radio" name="item-type" value="Goods" ${!editData || editData.type === 'Goods' ? 'checked' : ''} class="accent-accent-primary">
-                            <span class="text-sm text-white">Goods</span>
+                            <span class="text-sm text-slate-800">Goods</span>
                         </label>
                         <label class="flex items-center gap-2 cursor-pointer">
                             <input type="radio" name="item-type" value="Services" ${editData && editData.type === 'Services' ? 'checked' : ''} class="accent-accent-primary">
-                            <span class="text-sm text-white">Services</span>
+                            <span class="text-sm text-slate-800">Services</span>
                         </label>
                     </div>
                 </div>
