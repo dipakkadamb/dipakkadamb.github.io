@@ -30,7 +30,7 @@ export async function saveToCloud(type, data) {
             data: data
         });
         console.log(`ASYNCRIX DB: Sending ${type} data to cloud...`, body);
-        const response = await fetch(GOOGLE_SHEETS_URL, {
+        await fetch(GOOGLE_SHEETS_URL, {
             method: 'POST',
             mode: 'no-cors',
             body: body
@@ -39,6 +39,29 @@ export async function saveToCloud(type, data) {
         return true;
     } catch (error) {
         console.error(`Error saving ${type} to Google Sheets:`, error);
+        return false;
+    }
+}
+
+/**
+ * Batch Save Optimization
+ */
+export async function batchSaveToCloud(type, dataArray) {
+    if (!dbInitialized || !dataArray || dataArray.length === 0) return false;
+    try {
+        console.log(`ASYNCRIX DB: Sending batch update for ${type} (${dataArray.length} items)...`);
+        await fetch(GOOGLE_SHEETS_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            body: JSON.stringify({
+                action: 'batchSave',
+                type: type,
+                data: dataArray
+            })
+        });
+        return true;
+    } catch (error) {
+        console.error(`ASYNCRIX DB: Batch save failed for ${type}:`, error);
         return false;
     }
 }
@@ -158,14 +181,12 @@ export async function initializeCloudMapping(types) {
  */
 export async function migrateLocalToCloud(localDocuments) {
     if (!dbInitialized) return;
-    console.log("ASYNCRIX DB: Starting migration to Google Sheets...");
+    console.log("ASYNCRIX DB: Starting batch migration to Google Sheets...");
     
     for (const [type, list] of Object.entries(localDocuments)) {
-        if (Array.isArray(list)) {
-            for (const item of list) {
-                await saveToCloud(type, item);
-            }
+        if (Array.isArray(list) && list.length > 0) {
+            await batchSaveToCloud(type, list);
         }
     }
-    console.log("ASYNCRIX DB: Migration complete.");
+    console.log("ASYNCRIX DB: Batch migration complete.");
 }
