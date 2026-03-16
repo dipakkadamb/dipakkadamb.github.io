@@ -27,10 +27,12 @@ We recently overhauled the visual experience to include:
 
 ## 🏢 Featured Project: ASYNCRIX Global
 This repository now hosts the **ASYNCRIX Global ERP Platform**, a sophisticated business management suite featuring:
-- **Firebase Firestore** real-time data sync.
+- **Google Sheets** cloud-native data sync.
+- **Admin Panel** for user & role management.
+- **Role-Based Access Control (RBAC)** for Staff/Admin security.
 - **Zoho-style** modules for Sales, Purchases, and Banking.
 - **Automated Stock & Financial Tracking**.
-- **Modern Glassmorphic UI**.
+- **Modern Light Theme & Glassmorphic UI**.
 Check out the [Detailed Architecture & Procedures](file:///BuySell/README.md) for more info.
 
 ## 🚀 Getting Started

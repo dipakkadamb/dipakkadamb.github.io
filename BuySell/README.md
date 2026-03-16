@@ -1,39 +1,41 @@
 # ASYNCRIX Global - Cloud ERP Platform
 
-Welcome to **ASYNCRIX Global**, a high-performance, real-time Cloud ERP platform designed to streamline business operations including Sales, Purchases, Banking, and Inventory Management.
+Welcome to **ASYNCRIX Global**, a high-performance, real-time Cloud ERP platform designed to streamline business operations including Sales, Purchases, Banking, and Inventory Management. Optimized for **Google Sheets** as a robust, scalable backend.
 
 ## 🌟 Key Features
-- **Real-Time Synchronization**: Full integration with Firebase Firestore for seamless data persistence across devices.
+- **Google Sheets Synchronization**: Full integration with Google Sheets API for seamless, transparent data persistence.
+- **Admin Panel & User Management**: Dedicated interface for managing system users, roles, and administrative access.
+- **Role-Based Access Control (RBAC)**: Zoho-inspired permission system with **Admin** and **Staff** roles.
+- **System Reset & Mapping**: Automated initialization of the entire ERP structure in Google Sheets with one click.
 - **Comprehensive Business Modules**:
-  - **Sales**: Quotes, Sales Orders, Invoices, Payments Received, and Credit Notes.
+  - **Sales**: Quotes, Sales Orders, Invoices, Payments Received, and Proforma Invoices.
   - **Purchases**: Vendors, Bills, Payments Made, and Vendor Credits.
   - **Banking**: Bank account management with automated balance tracking.
-  - **Inventory**: Real-time stock tracking (In/Out) for Goods and Services.
-- **Professional Reporting**: Profit & Loss summaries and Inventory status reports.
-- **Smart Toast Notifications**: Immediate visual feedback for all data operations (Success/Error).
+  - **Inventory**: Real-time stock tracking for Goods and Services.
+- **Professional Reporting**: Financial summaries and Inventory status reports.
+- **Smart Toast Notifications**: Immediate visual feedback for all data operations (Success/Sync Status).
 
 ## 🛠 Technical Architecture
-### 1. Data Access Layer (`database.js`)
-- Standardized `async/await` CRUD operations.
-- Dynamic Firebase SDK loading for enhanced performance.
-- Automated migration path from LocalStorage to Cloud Firestore.
+### 1. Data Access Layer (`database.js` & Google Apps Script)
+- **Sheet Mapping**: Intelligent module-to-tab mapping system.
+- **CRUD Operations**: Standardized `async/await` operations via custom Google Apps Script web app.
+- **Diagnostic Tools**: Built-in connection tester and sync logs.
 
 ### 2. Core Logic (`script.js`)
-- **Stock Guard Logic**: Intelligent processing that updates inventory only for transactional documents (Invoices/Bills).
-- **Consolidated Boot Cycle**: Optimized initialization which prevents duplicate execution and stabilizes data loading.
+- **Permission Guard**: UI and logic-level enforcement of user roles.
+- **Stock Guard Logic**: Intelligent processing that updates inventory only for transactional documents.
 - **Net Balance Calculation**: Automated aging and balance tracking for all financial documents.
 
-### 3. Progressive UI/UX (`style.css`)
-- **Glassmorphism Design**: Using blurred panels and subtle borders for a modern, Zoho-inspired aesthetic.
+### 3. Premium UI/UX (`style.css`)
+- **Zoho-Inspired Aesthetic**: Modern glassmorphism, high-contrast light theme, and professional typography (Inter/Outfit).
 - **Responsive Layouts**: Fully mobile-optimized sidebar and data tables.
-- **Premium Animations**: Smooth transitions and sleek toast notifications.
+- **Interactive Feedback**: Smooth transitions and sleek toast notifications.
 
-## 🚀 Implementation Progress (Audit & Fixes)
-During the latest development cycle, we performed a **Deep Code Audit** that achieved:
-- **Initialization Cleanup**: Consolidated `initializeApp` to ensure a lean, single-pass boot.
-- **Sync Reliability**: Hardened all Save/Delete operations with explicit Cloud verification.
-- **Performance Optimization**: Reduced background processing for non-transactional documents like Quotes and SOs.
-- **Professional Printing**: Refined the document templates for consistent, high-fidelity PDF output.
+## 🚀 Recent Milestones
+- **Transitioned to Google Sheets**: Removed Firebase dependency for better transparency and spreadsheet-native data management.
+- **Implemented Admin Suite**: Added user directory and secure cloud-based authentication.
+- **Enforced RBAC**: Protected sensitive modules (Reports/Banking) from unauthorized staff access.
+- **Automated Infrastructure**: Built the `initializeMapping` protocol to set up the entire backend in seconds.
 
 ## 📬 Contact & Support
 Developed by **Dipak Kadamb | ASYNCRIX Global Team**
