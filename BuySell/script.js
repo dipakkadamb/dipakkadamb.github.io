@@ -97,9 +97,18 @@ const globalBridge = {
     saveBank: (id) => saveBank(id),
     deleteBank: (id) => deleteBank(id),
     openPaymentModal: (t, p) => openPaymentModal(t, p),
+    saveCustomer: (id) => saveCustomer(id),
+    deleteCustomer: (id) => deleteCustomer(id),
+    deleteVendor: (id) => deleteVendor(id),
     savePayment: (t) => savePayment(t),
     updateRefDocs: (n, p) => updateRefDocs(n, p),
     pickItem: (s) => pickItem(s),
+    deleteItem: (id) => deleteItem(id),
+    deleteDoc: (t, i) => deleteDoc(t, i),
+    printDocument: (t, i) => printDocument(t, i),
+    convertDocument: (f, i, t) => convertDocument(f, i, t),
+    openCreateModal: (t, p) => openCreateModal(t, p),
+    openItemModal: (d) => openItemModal(d),
     addRow: (d) => addRow(d),
     updateCalculations: () => updateCalculations(),
     toggleSidebar: () => toggleSidebar(),
@@ -735,6 +744,7 @@ function renderInventorySummary(container) {
                         <th class="px-6 py-4 text-right">Stock</th>
                         <th class="px-6 py-4 text-right">Standard Rate</th>
                         <th class="px-6 py-4 text-right">Default Tax %</th>
+                        <th class="px-6 py-4 text-right">Actions</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-white/5 text-sm">
@@ -747,6 +757,16 @@ function renderInventorySummary(container) {
                             <td class="px-6 py-4 text-right text-accent-primary font-bold">${item.stock || 0}</td>
                             <td class="px-6 py-4 text-right text-white font-mono font-bold">${formatCurrency(item.rate)}</td>
                             <td class="px-6 py-4 text-right text-accent-secondary font-bold">${item.tax}%</td>
+                            <td class="px-6 py-4 text-right actions-cell">
+                                <div class="flex justify-end gap-1">
+                                    <button onclick="openItemModal(${JSON.stringify(item).replace(/"/g, '&quot;')})" class="p-2 text-slate-500 hover:text-accent-primary transition-colors">
+                                        <i data-feather="edit-2" class="w-4 h-4"></i>
+                                    </button>
+                                    <button onclick="deleteItem('${item.id}')" class="p-2 text-slate-500 hover:text-red-400 transition-colors">
+                                        <i data-feather="trash-2" class="w-4 h-4"></i>
+                                    </button>
+                                </div>
+                            </td>
                         </tr>
                     `).join('')}
                 </tbody>
