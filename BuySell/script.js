@@ -1330,9 +1330,9 @@ async function saveDoc(type) {
     renderContent();
     
     if (success) {
-        showToast(`${type.toUpperCase()} recorded and synced to Cloud!`, 'success');
+        showToast(`${labels[type]} recorded and synced to Cloud!`, 'success');
     } else {
-        showToast(`${type.toUpperCase()} saved locally, but Cloud Sync failed. Check script console.`, 'warning');
+        showToast(`${labels[type]} saved locally, but Cloud Sync failed.`, 'warning');
     }
 }
 
@@ -1377,8 +1377,8 @@ async function deleteDoc(type, id) {
     
     const success = await deleteFromCloud(type, id);
     renderContent();
-    if (success) showToast('Record deleted permanentely.', 'success');
-    else showToast('Deleted locally, but Cloud sync failed.', 'error');
+    if (success) showToast('Record removed from Sheet.', 'success');
+    else showToast('Removed locally, but Cloud sync failed.', 'error');
 }
 
 function convertDocument(fromType, fromId, toType) {
@@ -1731,7 +1731,7 @@ async function saveEntity(id, type, prefix) {
     closeModal();
     renderContent();
     if (success) showToast(`${displayName} saved successfully!`, 'success');
-    else showToast('Sync failed. Please check internet/Firebase.', 'error');
+    else showToast('Local save success, but Cloud Sync failed.', 'error');
 }
 
 async function deleteCustomer(id) {
@@ -1885,7 +1885,7 @@ async function saveBank(id) {
     closeModal();
     renderContent();
     if (success) showToast(`Bank "${bankName}" updated!`, 'success');
-    else showToast('Cloud sync failed for banking.', 'error');
+    else showToast('Cloud sync failed for treasury.', 'error');
 }
 
 async function deleteBank(id) {
