@@ -78,7 +78,10 @@ window.globalBridge = {
         if (result.success) {
             showToast(`Cloud Online! Latency: ${result.latency}ms`, 'success');
         } else {
-            showToast(`Cloud Sync Failed: ${result.error || 'Server unreachable'}`, 'error');
+            const errorMsg = `Cloud Sync Failed!\n\nError: ${result.error}\n\nTechnical Detail: ${result.detail || 'None available'}\n\nProject: zugryfvicbjcausjzxhf`;
+            alert(errorMsg);
+            showToast(`Cloud Sync Failed: ${result.error}`, 'error');
+            if (result.detail) console.error('Cloud Sync Detail:', result.detail);
         }
     }
 };
@@ -142,6 +145,7 @@ function logout() {
 }
 
 function initializeApp() {
+    console.log('ASYNCRIX Engine [v1.2]: Initializing...');
     // Initial render
     switchView('dashboard');
     

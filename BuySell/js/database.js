@@ -3,14 +3,20 @@
  * Handles data synchronization between local storage and Supabase PostgreSQL.
  */
 
-const SUPABASE_URL = "YOUR_SUPABASE_URL"; 
-const SUPABASE_KEY = "YOUR_SUPABASE_ANON_KEY";
+// --- SUPABASE CONFIGURATION ---
+// 1. Create a project at https://supabase.com
+// 2. Go to Project Settings > API
+// 3. Copy "Project URL" and "anon public" Key
+// 4. Paste them here:
+const SUPABASE_URL = "https://zugryfvicbjcausjzxhf.supabase.co"; 
+const SUPABASE_KEY = "sb_publishable_hp4rR6h8jwJTzLtXFBeWyg_zJmdEb0B";
+// ------------------------------
 
 let dbInitialized = false;
 let cloudOnline = true;
 
 export async function initDatabase() {
-    if (SUPABASE_URL.includes("YOUR_SUPABASE") || SUPABASE_KEY.includes("YOUR_SUPABASE")) {
+    if (SUPABASE_URL.includes("your-project-id") || SUPABASE_KEY.includes("your-anon")) {
         console.warn("ASYNCRIX DB: Supabase credentials missing. Cloud Sync disabled.");
         return false;
     }
@@ -151,9 +157,15 @@ export async function testConnection() {
             }
         });
         const latency = Date.now() - start;
-        return { success: response.ok, latency: latency };
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error(`Supabase Connection Error (${response.status}):`, errorText);
+            return { success: false, error: `HTTP ${response.status}: ${response.statusText}`, detail: errorText };
+        }
+        return { success: true, latency: latency };
     } catch (error) {
-        return { success: false, error: error.toString() };
+        console.error('Supabase Fetch Panic:', error);
+        return { success: false, error: error.message || error.toString() };
     }
 }
 
