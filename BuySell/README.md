@@ -16,15 +16,18 @@ Welcome to **ASYNCRIX Global**, a high-performance, real-time Cloud ERP platform
 - **Smart Toast Notifications**: Immediate visual feedback for all data operations (Success/Sync Status).
 
 ## 🛠 Technical Architecture
-### 1. Data Access Layer (`database.js` & Google Apps Script)
+### 1. Data Access Layer (`js/database.js` & Google Apps Script)
 - **Sheet Mapping**: Intelligent module-to-tab mapping system.
+- **Batch Operations**: Optimized batch saving and migration logic for high performance.
 - **CRUD Operations**: Standardized `async/await` operations via custom Google Apps Script web app.
-- **Diagnostic Tools**: Built-in connection tester and sync logs.
 
-### 2. Core Logic (`script.js`)
-- **Permission Guard**: UI and logic-level enforcement of user roles.
-- **Stock Guard Logic**: Intelligent processing that updates inventory only for transactional documents.
-- **Net Balance Calculation**: Automated aging and balance tracking for all financial documents.
+### 2. Modular Architecture (`js/` directory)
+- **Lean Entry Point**: `script.js` (~150 lines) serves as a clean orchestrator.
+- **Separation of Concerns**:
+  - `js/ui.js`: Centralized view rendering and modal management.
+  - `js/handlers.js`: Complex document processes and entity logic.
+  - `js/utils.js`: Core formatting and calculation utilities.
+- **RBAC**: Protected sensitive modules (Reports/Banking) from unauthorized staff access.
 
 ### 3. Premium UI/UX (`style.css`)
 - **Zoho-Inspired Aesthetic**: Modern glassmorphism, high-contrast light theme, and professional typography (Inter/Outfit).
