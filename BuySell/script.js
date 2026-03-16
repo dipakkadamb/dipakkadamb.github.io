@@ -13,7 +13,7 @@ import {
     saveEntity, deleteEntity, saveItem, saveBank, saveUser, deleteUser,
     saveDoc, deleteDoc, savePayment, systemSetupAndMap, convertDocument
 } from './js/handlers.js';
-import { migrateLocalToCloud } from './js/database.js';
+import { migrateLocalToCloud, testConnection } from './js/database.js';
 
 // --- State Management ---
 const documents = {};
@@ -72,7 +72,16 @@ window.globalBridge = {
     
     // System
     systemReset: () => systemSetupAndMap(documents),
-    migrateData: () => migrateLocalToCloud()
+    migrateData: () => migrateLocalToCloud(),
+    testConnection: async () => {
+        showToast('Running cloud diagnostic...', 'info');
+        const result = await testConnection();
+        if (result.success) {
+            showToast(`Cloud Online! Latency: ${result.latency}ms`, 'success');
+        } else {
+            showToast(`Cloud Sync Failed: ${result.error || 'Server unreachable'}`, 'error');
+        }
+    }
 };
 
 // --- App Orchestration ---
@@ -142,6 +151,28 @@ function initializeApp() {
     
     console.log('ASYNCRIX Engine Initialized.');
 }
+
+// --- Cloud Status Listener ---
+window.addEventListener('cloudStatusChanged', (e) => {
+    const online = e.detail.online;
+    const indicator = document.getElementById('cloud-status-indicator');
+    const text = document.getElementById('cloud-status-text');
+    const badge = document.getElementById('cloud-status-badge');
+
+    if (indicator && text && badge) {
+        if (online) {
+            indicator.className = 'w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse';
+            text.textContent = 'Cloud Sync Live';
+            text.className = 'text-[9px] font-bold text-emerald-400 uppercase tracking-widest';
+            badge.className = 'hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-400/10 border border-emerald-400/20 cursor-pointer hover:bg-emerald-400/20 transition-all';
+        } else {
+            indicator.className = 'w-1.5 h-1.5 rounded-full bg-red-500';
+            text.textContent = 'Cloud Offline';
+            text.className = 'text-[9px] font-bold text-red-500 uppercase tracking-widest';
+            badge.className = 'hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-red-500/10 border border-red-500/20 cursor-pointer hover:bg-red-500/20 transition-all';
+        }
+    }
+});
 
 // Start the app
 document.addEventListener('DOMContentLoaded', initializeApp);

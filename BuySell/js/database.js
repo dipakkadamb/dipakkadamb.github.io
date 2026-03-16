@@ -6,6 +6,7 @@
 const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbwwdQKD0YF4l7BLy9xHUeq-gvaqJGfenWHQbv2o_yTPvdbblphduCSY1vMi8yn5TFnm/exec";
 
 let dbInitialized = false;
+let cloudOnline = true; // Optimistic default
 
 export async function initDatabase() {
     if (GOOGLE_SHEETS_URL.includes("YOUR_APPS_SCRIPT")) {
@@ -14,7 +15,28 @@ export async function initDatabase() {
     }
     dbInitialized = true;
     console.log("ASYNCRIX DB: Google Sheets sync ready.");
+    
+    // Initial health check
+    checkConnection();
+    // Periodic health check every 30 seconds
+    setInterval(checkConnection, 30000);
+    
     return true;
+}
+
+export function isCloudOnline() {
+    return cloudOnline;
+}
+
+async function checkConnection() {
+    try {
+        const response = await fetch(`${GOOGLE_SHEETS_URL}?type=ping`, { cache: 'no-store' });
+        cloudOnline = response.ok;
+    } catch (err) {
+        cloudOnline = false;
+    }
+    // Dispatch event for UI listeners
+    window.dispatchEvent(new CustomEvent('cloudStatusChanged', { detail: { online: cloudOnline } }));
 }
 
 /**
@@ -29,16 +51,24 @@ export async function saveToCloud(type, data) {
             id: data.id,
             data: data
         });
-        console.log(`ASYNCRIX DB: Sending ${type} data to cloud...`, body);
-        await fetch(GOOGLE_SHEETS_URL, {
+        
+        console.log(`ASYNCRIX DB: Sending ${type} data to cloud...`);
+        
+        const response = await fetch(GOOGLE_SHEETS_URL, {
             method: 'POST',
             mode: 'no-cors',
+            headers: { 'Content-Type': 'text/plain' },
             body: body
         });
-        console.log(`ASYNCRIX DB: ${type} request sent to Google Apps Script.`);
+        
+        // With no-cors, we can't check response.ok, but we can detect network errors in catch
+        cloudOnline = true;
+        window.dispatchEvent(new CustomEvent('cloudStatusChanged', { detail: { online: true } }));
         return true;
     } catch (error) {
-        console.error(`Error saving ${type} to Google Sheets:`, error);
+        cloudOnline = false;
+        window.dispatchEvent(new CustomEvent('cloudStatusChanged', { detail: { online: false } }));
+        console.error(`ASYNCRIX DB: Save failed for ${type}. Possible causes: No internet, Ad-blocker, or invalid Script URL. Details:`, error);
         return false;
     }
 }

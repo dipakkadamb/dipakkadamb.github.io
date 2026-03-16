@@ -166,9 +166,9 @@
 
             <div class="flex items-center gap-4 md:gap-8">
                 <!-- Status Badge -->
-                <div class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-400/10 border border-emerald-400/20">
+                <div id="cloud-status-badge" class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-400/10 border border-emerald-400/20 cursor-pointer hover:bg-emerald-400/20 transition-all" onclick="globalBridge.testConnection()" title="Click to test sync">
                     <span id="cloud-status-indicator" class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                    <span id="cloud-status-text" class="text-[9px] font-bold text-emerald-400 uppercase tracking-widest">Network Live</span>
+                    <span id="cloud-status-text" class="text-[9px] font-bold text-emerald-400 uppercase tracking-widest">Cloud Sync Live</span>
                 </div>
 
                 <div class="flex items-center gap-4 pl-4 md:pl-8 border-l border-slate-200">
