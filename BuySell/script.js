@@ -1263,7 +1263,7 @@ async function saveDoc(type) {
     const taxTotal = Math.round(lineItems.reduce((acc, i) => acc + (i.qty * i.rate * (i.tax / 100)), 0) * 100) / 100;
 
     const doc = {
-        id: (type.substring(0, 2).toUpperCase() + '-' + Math.floor(Math.random() * 90000 + 10000)),
+        id: (type.substring(0, 2).toUpperCase() + '-' + Date.now().toString().slice(-6)),
         client: billing.company,
         billing: billing,
         shipping: shipping,
@@ -1682,7 +1682,7 @@ async function saveEntity(id, type, prefix) {
     if (!displayName) { alert('Display Name is required.'); return; }
 
     const entity = {
-        id: id || (prefix + '-' + Math.floor(Math.random() * 9000 + 1000)),
+        id: id || (prefix + '-' + Date.now().toString().slice(-6)),
         type: document.querySelector('input[name="entity-type"]:checked').value,
         displayName: displayName,
         company: document.getElementById('entity-company').value.trim(),
@@ -1743,7 +1743,10 @@ function openItemModal(editData = null) {
                         <input type="number" id="item-tax" class="form-input" placeholder="Tax (%)" value="${editData ? editData.tax : 0}">
                     </div>
                 </div>
-            </div>
+                <div class="pt-2">
+                    <label class="block text-[10px] uppercase tracking-widest font-bold text-slate-500 mb-2">Inventory Stock</label>
+                    <input type="number" id="item-stock" class="form-input" placeholder="Opening Stock" value="${editData ? (editData.stock || 0) : 0}">
+                </div>
         </div>
     `;
 
@@ -1758,12 +1761,13 @@ async function saveItem(id) {
     if (!name) { alert('Item Name is required.'); return; }
 
     const item = {
-        id: id || ('ITEM-' + Math.floor(Math.random() * 9000 + 1000)),
+        id: id || ('ITEM-' + Date.now().toString().slice(-6)),
         name: name,
         type: document.querySelector('input[name="item-type"]:checked').value,
         description: document.getElementById('item-desc').value.trim(),
         rate: parseFloat(document.getElementById('item-rate').value || 0),
-        tax: parseFloat(document.getElementById('item-tax').value || 0)
+        tax: parseFloat(document.getElementById('item-tax').value || 0),
+        stock: parseFloat(document.getElementById('item-stock').value || 0)
     };
 
     if (id) {
@@ -1819,7 +1823,7 @@ async function saveBank(id) {
     if (!bankName) { alert('Bank Name is required.'); return; }
 
     const bank = {
-        id: id || ('BANK-' + Math.floor(Math.random() * 9000 + 1000)),
+        id: id || ('BANK-' + Date.now().toString().slice(-6)),
         bankName: bankName,
         accountName: document.getElementById('bank-acc-name').value.trim(),
         accountNumber: document.getElementById('bank-acc-num').value.trim(),
@@ -1935,7 +1939,7 @@ async function savePayment(type) {
     }
 
     const payment = {
-        id: (type === DOC_TYPES.PAYMENTS_REC ? 'PAY-IN-' : 'PAY-OUT-') + Math.floor(Math.random() * 90000 + 10000),
+        id: (type === DOC_TYPES.PAYMENTS_REC ? 'PAY-IN-' : 'PAY-OUT-') + Date.now().toString().slice(-6),
         client: client,
         date: document.getElementById('payment-date').value,
         total: amount,
