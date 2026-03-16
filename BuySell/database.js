@@ -82,11 +82,11 @@ export async function loadFromCloud(type) {
  * Diagnostic tool to check if the Web App is responsive
  */
 export async function testConnection() {
+    console.log("ASYNCRIX DB: Running connection test to:", GOOGLE_SHEETS_URL);
     try {
         const start = Date.now();
-        // Use a controller to timeout long-hanging requests
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 8000);
+        const timeoutId = setTimeout(() => controller.abort(), 10000);
 
         const response = await fetch(`${GOOGLE_SHEETS_URL}?type=ping`, { 
             signal: controller.signal,
@@ -97,16 +97,14 @@ export async function testConnection() {
         const status = response.ok;
         const latency = Date.now() - start;
         
-        if (!status) {
-            console.warn(`ASYNCRIX DB: Connection test returned status ${response.status}`);
-        }
+        console.log(`ASYNCRIX DB: Ping response status: ${response.status} (${response.statusText})`);
         
         return { success: status, latency: latency };
     } catch (error) {
         if (error.name === 'AbortError') {
-            console.error("ASYNCRIX DB: Connection test timed out.");
+            console.error("ASYNCRIX DB: Connection test timed out (10s).");
         } else {
-            console.error("ASYNCRIX DB: Connection test failed:", error);
+            console.error("ASYNCRIX DB: Connection test failed. This usually means the URL is wrong or CORS is blocking it. Error:", error);
         }
         return { success: false, error: error.toString() };
     }
