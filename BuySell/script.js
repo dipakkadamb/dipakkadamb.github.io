@@ -238,6 +238,15 @@ function updateTitle(viewId) {
 // Note: initializeApp() is and must be called at the end of the script to ensure all functions are defined.
 
 function switchView(viewId) {
+    // Navigation Guard for Staff
+    const role = localStorage.getItem('hub_user_role') || 'Staff';
+    const adminOnlyViews = [DOC_TYPES.USERS, DOC_TYPES.REPORTS, DOC_TYPES.BANKING];
+    
+    if (role !== 'Admin' && adminOnlyViews.includes(viewId)) {
+        showToast('Access Denied: Administrative privileges required.', 'error');
+        return;
+    }
+
     currentView = viewId;
     document.querySelectorAll('.sidebar-link').forEach(btn => btn.classList.remove('active-tab'));
     const activeTab = document.getElementById(`tab-${viewId}`);
@@ -271,6 +280,32 @@ async function renderContent() {
         default: renderDocumentList(viewport, currentView); break;
     }
     feather.replace();
+    applyRBAC();
+}
+
+/**
+ * RBAC Enforcement: Hides UI elements based on user role
+ */
+function applyRBAC() {
+    const role = localStorage.getItem('hub_user_role') || 'Staff';
+    if (role === 'Admin') return; // Full access
+
+    // 1. Hide Admin-only Sidebar Tabs
+    const restrictedTabs = ['tab-users', 'tab-reports', 'tab-banking'];
+    restrictedTabs.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.add('hidden');
+    });
+
+    // 2. Hide specific action buttons (e.g., delete, system maintenance)
+    // Deletion is handled in logic but we hide the buttons for cleaner UI
+    document.querySelectorAll('button[onclick*="delete"]').forEach(btn => btn.classList.add('hidden'));
+    
+    // Hide System Maintenance section in User Management if somehow accessed
+    const maintenanceSec = Array.from(document.querySelectorAll('h4')).find(h => h.textContent.includes('System Maintenance'));
+    if (maintenanceSec && maintenanceSec.parentElement) {
+        maintenanceSec.parentElement.classList.add('hidden');
+    }
 }
 
 /**
@@ -1517,6 +1552,10 @@ async function saveDoc(type) {
 }
 
 async function deleteDoc(type, id) {
+    if (localStorage.getItem('hub_user_role') !== 'Admin') {
+        showToast('Insufficient permissions to delete records.', 'error');
+        return;
+    }
     if(!confirm('Security Protocol: Are you sure you want to permanently delete this record?')) return;
     
     const docToDelete = documents[type].find(d => d.id === id);
@@ -1915,6 +1954,10 @@ async function saveEntity(id, type, prefix) {
 }
 
 async function deleteCustomer(id) {
+    if (localStorage.getItem('hub_user_role') !== 'Admin') {
+        showToast('Insufficient permissions to delete customers.', 'error');
+        return;
+    }
     if (!confirm('Are you sure you want to delete this customer?')) return;
     documents[DOC_TYPES.CUSTOMERS] = documents[DOC_TYPES.CUSTOMERS].filter(c => c.id !== id);
     localStorage.setItem(STORAGE_KEYS[DOC_TYPES.CUSTOMERS], JSON.stringify(documents[DOC_TYPES.CUSTOMERS]));
@@ -1925,6 +1968,10 @@ async function deleteCustomer(id) {
 }
 
 async function deleteVendor(id) {
+    if (localStorage.getItem('hub_user_role') !== 'Admin') {
+        showToast('Insufficient permissions to delete vendors.', 'error');
+        return;
+    }
     if (!confirm('Are you sure you want to delete this vendor?')) return;
     documents[DOC_TYPES.VENDORS] = documents[DOC_TYPES.VENDORS].filter(v => v.id !== id);
     localStorage.setItem(STORAGE_KEYS[DOC_TYPES.VENDORS], JSON.stringify(documents[DOC_TYPES.VENDORS]));
@@ -2009,6 +2056,10 @@ async function saveItem(id) {
 }
 
 async function deleteItem(id) {
+    if (localStorage.getItem('hub_user_role') !== 'Admin') {
+        showToast('Insufficient permissions to delete items.', 'error');
+        return;
+    }
     if (!confirm('Are you sure you want to delete this item?')) return;
     documents[DOC_TYPES.ITEMS] = documents[DOC_TYPES.ITEMS].filter(i => i.id !== id);
     localStorage.setItem(STORAGE_KEYS[DOC_TYPES.ITEMS], JSON.stringify(documents[DOC_TYPES.ITEMS]));
@@ -2069,6 +2120,10 @@ async function saveBank(id) {
 }
 
 async function deleteBank(id) {
+    if (localStorage.getItem('hub_user_role') !== 'Admin') {
+        showToast('Insufficient permissions to manage banking.', 'error');
+        return;
+    }
     if (!confirm('Are you sure you want to delete this bank account?')) return;
     documents[DOC_TYPES.BANKING] = documents[DOC_TYPES.BANKING].filter(b => b.id !== id);
     localStorage.setItem(STORAGE_KEYS[DOC_TYPES.BANKING], JSON.stringify(documents[DOC_TYPES.BANKING]));
