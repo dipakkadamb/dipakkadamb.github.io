@@ -955,7 +955,7 @@ export function openCreateModal(type, prefillData = null, documents) {
             </div>
             <div class="space-y-4">
                 <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest">Document ID</label>
-                <input type="text" id="doc-id" class="form-input bg-slate-50" value="${prefillData ? prefillData.id : type.toUpperCase().slice(0,3) + '-' + Date.now().toString().slice(-6)}" readonly>
+                <input type="text" id="doc-id" class="form-input bg-slate-50" value="${(prefillData && prefillData.id) ? prefillData.id : type.toUpperCase().slice(0,3) + '-' + Date.now().toString().slice(-6)}" readonly>
             </div>
             <div class="space-y-4">
                 <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest">Date</label>
