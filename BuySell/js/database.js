@@ -165,47 +165,6 @@ export async function testConnection() {
     }
 }
 
-/**
- * Wipe all data from Cloud (Google Sheets)
- */
-export async function clearAllCloudData() {
-    if (!dbInitialized) return false;
-    try {
-        await fetch(GOOGLE_SHEETS_URL, {
-            method: 'POST',
-            mode: 'no-cors',
-            body: JSON.stringify({
-                action: 'clearAll'
-            })
-        });
-        return true;
-    } catch (error) {
-        console.error("ASYNCRIX DB: Failed to clear cloud data:", error);
-        return false;
-    }
-}
-
-/**
- * Initialize all module sheets in Google Sheets
- */
-export async function initializeCloudMapping(types) {
-    if (!dbInitialized) return false;
-    try {
-        console.log("ASYNCRIX DB: Initializing cloud mapping for modules:", types);
-        await fetch(GOOGLE_SHEETS_URL, {
-            method: 'POST',
-            mode: 'no-cors',
-            body: JSON.stringify({
-                action: 'initializeMapping',
-                types: types
-            })
-        });
-        return true;
-    } catch (error) {
-        console.error("ASYNCRIX DB: Failed to initialize cloud mapping:", error);
-        return false;
-    }
-}
 
 /**
  * Migration Utility: LocalStorage -> Google Sheets

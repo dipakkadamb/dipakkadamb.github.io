@@ -1,5 +1,5 @@
 import { DOC_TYPES, STORAGE_KEYS } from './constants.js';
-import { saveToCloud, deleteFromCloud, clearAllCloudData, initializeCloudMapping } from './database.js';
+import { saveToCloud, deleteFromCloud } from './database.js';
 import { showToast } from './ui.js';
 
 export async function saveEntity(id, type, prefix, documents, renderFn, closeModal) {
@@ -326,46 +326,6 @@ export async function savePayment(type, documents, renderFn, closeModal) {
     }
 }
 
-export async function systemSetupAndMap(documents) {
-    if (!confirm('WARNING: This will PERMANENTLY delete all local and cloud data to provide a clean slate. Continue?')) return;
-
-    showToast('Clearing all local data...', 'info');
-    
-    // 1. Clear Local Storage
-    Object.values(STORAGE_KEYS).forEach(key => localStorage.removeItem(key));
-    localStorage.removeItem('hub_auth'); 
-    
-    // 2. Clear Cloud Data
-    showToast('Wiping Google Sheets...', 'info');
-    await clearAllCloudData();
-    
-    // 3. Initialize Mapping
-    showToast('Mapping module structure to sheets...', 'info');
-    const modulesToMap = Object.values(DOC_TYPES).filter(type => 
-        type !== DOC_TYPES.DASHBOARD && 
-        type !== DOC_TYPES.REPORTS
-    );
-    
-    await initializeCloudMapping(modulesToMap);
-
-    // 4. Seed Default Admin
-    showToast('Creating default administrator...', 'info');
-    const defaultAdmin = {
-        id: 'USER-001',
-        name: 'Super Admin',
-        username: 'admin',
-        password: 'admin', 
-        role: 'Admin',
-        status: 'Active',
-        created: new Date().toISOString()
-    };
-    documents[DOC_TYPES.USERS] = [defaultAdmin];
-    localStorage.setItem(STORAGE_KEYS[DOC_TYPES.USERS], JSON.stringify(documents[DOC_TYPES.USERS]));
-    await saveToCloud(DOC_TYPES.USERS, defaultAdmin);
-    
-    showToast('System reset and mapping complete!', 'success');
-    window.location.reload(); 
-}
 
 export async function convertDocument(fromType, fromId, toType, documents, openCreateModal) {
     const sourceDoc = documents[fromType].find(d => d.id === fromId);
