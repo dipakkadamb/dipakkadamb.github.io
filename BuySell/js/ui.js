@@ -23,7 +23,9 @@ export function showToast(message, type = 'success') {
     }, 3000);
 }
 
-export function renderDashboard(container, documents) {
+export function renderDashboard(documents) {
+    const container = document.getElementById('content-viewport');
+    if (!container) return;
     const totalReceivables = documents[DOC_TYPES.INVOICES].reduce((sum, inv) => sum + getDocBalance(inv, DOC_TYPES.INVOICES, documents, DOC_TYPES), 0);
     const totalPayables = documents[DOC_TYPES.BILLS].reduce((sum, bill) => sum + getDocBalance(bill, DOC_TYPES.BILLS, documents, DOC_TYPES), 0);
     const totalCash = documents[DOC_TYPES.BANKING].reduce((sum, bank) => sum + bank.balance, 0);
@@ -127,7 +129,9 @@ export function renderDashboard(container, documents) {
     if (window.feather) feather.replace();
 }
 
-export function renderUsers(container, documents) {
+export function renderUsers(documents) {
+    const container = document.getElementById('content-viewport');
+    if (!container) return;
     const list = documents[DOC_TYPES.USERS] || [];
     container.innerHTML = `
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
@@ -196,7 +200,9 @@ export function renderUsers(container, documents) {
     if (window.feather) feather.replace();
 }
 
-export function renderItems(container, documents) {
+export function renderItems(documents) {
+    const container = document.getElementById('content-viewport');
+    if (!container) return;
     const list = documents[DOC_TYPES.ITEMS];
     container.innerHTML = `
         <div class="flex justify-between items-center mb-8 animate-up">
@@ -267,7 +273,9 @@ export function renderItems(container, documents) {
     if (window.feather) feather.replace();
 }
 
-export function renderBanking(container, documents) {
+export function renderBanking(documents) {
+    const container = document.getElementById('content-viewport');
+    if (!container) return;
     const list = documents[DOC_TYPES.BANKING];
     container.innerHTML = `
         <div class="flex justify-between items-center mb-8 animate-up">
@@ -399,7 +407,9 @@ export function renderContactList(container, list, title, icon, modalFn, deleteF
     if (window.feather) feather.replace();
 }
 
-export function renderDocumentList(container, type, documents) {
+export function renderDocumentList(type, documents) {
+    const container = document.getElementById('content-viewport');
+    if (!container) return;
     const list = documents[type];
     const labels = {
         [DOC_TYPES.QUOTES]: 'Quote',
@@ -511,12 +521,14 @@ function renderConversionButtons(doc, type, documents) {
     return '';
 }
 
-export function renderReports(container, subReport = null, documents) {
+export function renderReports(subReport = null, documents) {
+    const container = document.getElementById('content-viewport');
+    if (!container) return;
     if (subReport) {
         switch(subReport) {
-            case 'profit-loss': renderProfitLoss(container, documents); break;
-            case 'sales-by-customer': renderSalesByCustomer(container, documents); break;
-            case 'inventory-summary': renderInventorySummary(container, documents); break;
+            case 'profit-loss': renderProfitLoss(documents); break;
+            case 'sales-by-customer': renderSalesByCustomer(documents); break;
+            case 'inventory-summary': renderInventorySummary(documents); break;
         }
         return;
     }
@@ -556,7 +568,9 @@ export function renderReports(container, subReport = null, documents) {
     if (window.feather) feather.replace();
 }
 
-function renderProfitLoss(container, documents) {
+function renderProfitLoss(documents) {
+    const container = document.getElementById('content-viewport');
+    if (!container) return;
     const totalInvoices = documents[DOC_TYPES.INVOICES].reduce((sum, inv) => sum + inv.total, 0);
     const totalCreditNotes = documents[DOC_TYPES.CREDIT_NOTES].reduce((sum, cn) => sum + cn.total, 0);
     const netSales = totalInvoices - totalCreditNotes;
@@ -620,7 +634,9 @@ function renderProfitLoss(container, documents) {
     if (window.feather) feather.replace();
 }
 
-function renderSalesByCustomer(container, documents) {
+function renderSalesByCustomer(documents) {
+    const container = document.getElementById('content-viewport');
+    if (!container) return;
     const customerSales = {};
     documents[DOC_TYPES.INVOICES].forEach(inv => {
         customerSales[inv.client] = (customerSales[inv.client] || 0) + inv.total;
@@ -664,7 +680,9 @@ function renderSalesByCustomer(container, documents) {
     if (window.feather) feather.replace();
 }
 
-function renderInventorySummary(container, documents) {
+function renderInventorySummary(documents) {
+    const container = document.getElementById('content-viewport');
+    if (!container) return;
     const items = documents[DOC_TYPES.ITEMS];
 
     container.innerHTML = `
@@ -717,12 +735,16 @@ function renderInventorySummary(container, documents) {
     if (window.feather) feather.replace();
 }
 
-export function renderCustomers(container, documents) {
+export function renderCustomers(documents) {
+    const container = document.getElementById('content-viewport');
+    if (!container) return;
     const list = documents[DOC_TYPES.CUSTOMERS];
     renderContactList(container, list, 'Customers', 'user-plus', 'openCustomerModal', 'deleteCustomer', DOC_TYPES.CUSTOMERS);
 }
 
-export function renderVendors(container, documents) {
+export function renderVendors(documents) {
+    const container = document.getElementById('content-viewport');
+    if (!container) return;
     const list = documents[DOC_TYPES.VENDORS];
     renderContactList(container, list, 'Vendors', 'user-check', 'openVendorModal', 'deleteVendor', DOC_TYPES.VENDORS);
 }

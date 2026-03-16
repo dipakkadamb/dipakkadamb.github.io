@@ -6,9 +6,12 @@ export function formatCurrency(value) {
     }).format(value);
 }
 
-export function getDocBalance(doc, payments) {
-    const docPayments = payments.filter(p => p.refDoc === doc.id);
-    const paidAmount = docPayments.reduce((sum, p) => sum + p.total, 0);
+export function getDocBalance(doc, type, documents, DOC_TYPES) {
+    const isPurchase = [DOC_TYPES.BILLS, DOC_TYPES.VENDOR_CREDITS, DOC_TYPES.EXPENSES, DOC_TYPES.PAYMENTS_MADE].includes(type);
+    const paymentType = isPurchase ? DOC_TYPES.PAYMENTS_MADE : DOC_TYPES.PAYMENTS_REC;
+    const allPayments = documents[paymentType] || [];
+    const docPayments = allPayments.filter(p => p.refDoc === doc.id);
+    const paidAmount = docPayments.reduce((sum, p) => sum + (parseFloat(p.amount) || 0), 0);
     return doc.total - paidAmount;
 }
 

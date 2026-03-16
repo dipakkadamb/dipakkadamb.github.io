@@ -198,25 +198,25 @@ export async function saveDoc(type, documents, renderFn, closeModal) {
 
     // --- Dynamic Flow: Stock and Banking Integration ---
     if (type === DOC_TYPES.INVOICES || type === DOC_TYPES.DC) {
-        items.forEach(async line => {
+        for (const line of items) {
             const inventItem = documents[DOC_TYPES.ITEMS].find(i => i.name === line.name);
             if (inventItem) {
                 inventItem.stock -= line.qty;
                 localStorage.setItem(STORAGE_KEYS[DOC_TYPES.ITEMS], JSON.stringify(documents[DOC_TYPES.ITEMS]));
                 await saveToCloud(DOC_TYPES.ITEMS, inventItem);
             }
-        });
+        }
     }
 
     if (type === DOC_TYPES.BILLS) {
-        items.forEach(async line => {
+        for (const line of items) {
             const inventItem = documents[DOC_TYPES.ITEMS].find(i => i.name === line.name);
             if (inventItem) {
                 inventItem.stock += line.qty;
                 localStorage.setItem(STORAGE_KEYS[DOC_TYPES.ITEMS], JSON.stringify(documents[DOC_TYPES.ITEMS]));
                 await saveToCloud(DOC_TYPES.ITEMS, inventItem);
             }
-        });
+        }
     }
 
     closeModal();
@@ -237,24 +237,24 @@ export async function deleteDoc(type, id, documents, renderFn) {
     // --- Dynamic Flow: Reverse Stock Adjustments ---
     if (docToDelete && docToDelete.items) {
         if (type === DOC_TYPES.INVOICES || type === DOC_TYPES.DC) {
-            docToDelete.items.forEach(async line => {
+            for (const line of docToDelete.items) {
                 const inventItem = documents[DOC_TYPES.ITEMS].find(i => i.name === line.name);
                 if (inventItem) {
                     inventItem.stock += line.qty;
                     localStorage.setItem(STORAGE_KEYS[DOC_TYPES.ITEMS], JSON.stringify(documents[DOC_TYPES.ITEMS]));
                     await saveToCloud(DOC_TYPES.ITEMS, inventItem);
                 }
-            });
+            }
         }
         if (type === DOC_TYPES.BILLS) {
-            docToDelete.items.forEach(async line => {
+            for (const line of docToDelete.items) {
                 const inventItem = documents[DOC_TYPES.ITEMS].find(i => i.name === line.name);
                 if (inventItem) {
                     inventItem.stock -= line.qty;
                     localStorage.setItem(STORAGE_KEYS[DOC_TYPES.ITEMS], JSON.stringify(documents[DOC_TYPES.ITEMS]));
                     await saveToCloud(DOC_TYPES.ITEMS, inventItem);
                 }
-            });
+            }
         }
     }
 

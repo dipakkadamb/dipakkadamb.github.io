@@ -93,8 +93,13 @@ function switchView(view) {
         [DOC_TYPES.INVOICES]: 'Sales Invoices',
         [DOC_TYPES.PO]: 'Purchase Orders',
         [DOC_TYPES.BILLS]: 'Vendor Bills',
+        [DOC_TYPES.EXPENSES]: 'Business Expenses',
+        [DOC_TYPES.PROFORMA]: 'Proforma Invoices',
+        [DOC_TYPES.CREDIT_NOTES]: 'Credit Notes',
+        [DOC_TYPES.VENDOR_CREDITS]: 'Vendor Credits',
         [DOC_TYPES.PAYMENTS_REC]: 'Payments Received',
         [DOC_TYPES.PAYMENTS_MADE]: 'Payments Made',
+        [DOC_TYPES.REPORTS]: 'Analytics & Reports',
         'users': 'User Governance'
     };
     document.getElementById('view-title').textContent = titles[view] || 'ASYNCRIX';
@@ -106,7 +111,12 @@ function switchView(view) {
     else if (view === DOC_TYPES.BANKING) renderBanking(documents);
     else if (view === DOC_TYPES.CUSTOMERS) renderCustomers(documents);
     else if (view === DOC_TYPES.VENDORS) renderVendors(documents);
-    else if ([DOC_TYPES.QUOTES, DOC_TYPES.SO, DOC_TYPES.DC, DOC_TYPES.INVOICES, DOC_TYPES.PO, DOC_TYPES.BILLS, DOC_TYPES.PAYMENTS_REC, DOC_TYPES.PAYMENTS_MADE].includes(view)) {
+    else if (view === DOC_TYPES.REPORTS) renderReports(null, documents);
+    else if ([
+        DOC_TYPES.QUOTES, DOC_TYPES.SO, DOC_TYPES.DC, DOC_TYPES.INVOICES, 
+        DOC_TYPES.PO, DOC_TYPES.BILLS, DOC_TYPES.PAYMENTS_REC, DOC_TYPES.PAYMENTS_MADE,
+        DOC_TYPES.EXPENSES, DOC_TYPES.PROFORMA, DOC_TYPES.CREDIT_NOTES, DOC_TYPES.VENDOR_CREDITS
+    ].includes(view)) {
         renderDocumentList(view, documents);
     }
 
