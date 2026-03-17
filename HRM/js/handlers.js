@@ -1,6 +1,7 @@
 import { initDatabase, getData, saveData } from './database.js';
 import { UI } from './ui.js';
 import { PayrollEngine } from './payroll.js';
+import { DocumentEngine } from './documents.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     // 1. Initialize DB
@@ -116,10 +117,76 @@ document.addEventListener('DOMContentLoaded', () => {
         if (target.id === 'add-expense-btn') {
             UI.renderExpenseForm();
         }
+
+        // Document Actions
+        if (target.closest('.generate-doc-btn')) {
+            const template = target.closest('.generate-doc-btn').dataset.template;
+            // Pre-fill form if template selected from list
+            UI.loadView('documents');
+            document.querySelector('select[name="template"]').value = template;
+        }
+
+        if (target.id === 'print-doc-btn') {
+            const content = document.querySelector('#print-area div').innerHTML;
+            DocumentEngine.print(content);
+        }
+
+        if (target.closest('.preview-payslip-btn')) {
+            const empId = target.closest('.preview-payslip-btn').dataset.id;
+            const employees = getData('employees');
+            const emp = employees.find(e => e.id === empId);
+            const payrollRecords = getData('processed_payroll') || [];
+            const record = payrollRecords.find(p => p.employeeId === empId);
+
+            if (record) {
+                const docData = {
+                    month: 'March',
+                    year: '2026',
+                    emp_id: emp.id,
+                    name: emp.name,
+                    designation: emp.designation,
+                    department: emp.department,
+                    pan: 'ABCDE1234F',
+                    basic: Math.round(record.grossSalary * 0.5).toLocaleString(),
+                    hra: Math.round(record.grossSalary * 0.3).toLocaleString(),
+                    allowance: Math.round(record.grossSalary * 0.2).toLocaleString(),
+                    pf: Math.round(record.deductions.pf).toLocaleString(),
+                    pt: '200',
+                    lwp: '0',
+                    gross: Math.round(record.grossSalary).toLocaleString(),
+                    total_deductions: Math.round(record.deductions.pf + 200).toLocaleString(),
+                    net_pay: Math.round(record.netSalary).toLocaleString()
+                };
+                const content = DocumentEngine.generate('PAYSLIP', docData);
+                UI.openModal('Salary Slip Preview', '');
+                UI.showDocumentPreview('Salary Slip', content);
+            }
+        }
     });
 
     // 7. Form Submissions
     document.addEventListener('submit', (e) => {
+        if (e.target.id === 'doc-builder-form') {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData.entries());
+            
+            const docData = {
+                date: new Date().toLocaleDateString(),
+                name: data.name,
+                address: 'Not Specified',
+                designation: data.designation,
+                department: 'Operations',
+                salary_annual: '12,00,000',
+                salary_monthly: '1,00,000',
+                joining_date: 'April 01, 2026'
+            };
+
+            const content = DocumentEngine.generate(data.template, docData);
+            UI.openModal('Document Preview', '');
+            UI.showDocumentPreview('Document', content);
+        }
+
         if (e.target.id === 'employee-form') {
             e.preventDefault();
             // ... (existing employee form logic)

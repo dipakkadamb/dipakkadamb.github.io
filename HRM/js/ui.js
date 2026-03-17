@@ -16,6 +16,7 @@ export const UI = {
             'payroll': 'Payroll Processing',
             'recruitment': 'Recruitment Hub',
             'performance': 'Performance Analytics',
+            'documents': 'Document Hub',
             'training': 'Learning & Development',
             'expenses': 'Expense & Reimbursement',
             'compliance': 'Statutory & Compliance',
@@ -51,6 +52,9 @@ export const UI = {
         const modal = document.getElementById('modal-container');
         modal.classList.remove('active');
         document.body.style.overflow = '';
+        // Reset modal widths changed by specific views (like documents)
+        const modalContent = modal.querySelector('.glass-card');
+        if (modalContent) modalContent.style.maxWidth = '800px';
     },
 
     showToast: (message, type = 'success') => {
@@ -537,7 +541,10 @@ export const UI = {
                                     <td>0</td>
                                     <td style="font-weight: 700;">₹${Math.round(netSalary).toLocaleString()}</td>
                                     <td><span style="color: ${statusColor}; font-size: 0.75rem; font-weight: 700;">${status}</span></td>
-                                    <td><button class="btn" style="padding: 5px 10px; font-size: 0.7rem; background: rgba(37, 99, 235, 0.1); color: var(--accent-secondary);"><i class="fas fa-eye"></i> View</button></td>
+                                    <td>
+                                        ${record ? `<button class="btn preview-payslip-btn" data-id="${emp.id}" style="padding: 5px 10px; font-size: 0.7rem; background: rgba(16, 185, 129, 0.1); color: var(--accent-success);"><i class="fas fa-file-invoice"></i> Slip</button>` : ''}
+                                        <button class="btn" style="padding: 5px 10px; font-size: 0.7rem; background: rgba(255, 255, 255, 0.05); color: var(--text-dim);"><i class="fas fa-eye"></i></button>
+                                    </td>
                                 </tr>
                             `;
                         }).join('')}
@@ -952,6 +959,110 @@ export const UI = {
                 </div>
             </div>
         `;
+    },
+
+    renderDocuments: () => {
+        const container = document.getElementById('content-area');
+        
+        container.innerHTML = `
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                <!-- Template Selection -->
+                <div class="glass-card animate-in">
+                    <h3 style="margin-bottom: 20px;">Ready Templates</h3>
+                    <div style="display: grid; gap: 15px;">
+                        <div class="template-card" style="padding: 20px; border-radius: 12px; background: rgba(255,255,255,0.02); border: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <h4 style="margin-bottom: 5px;">Offer Letter</h4>
+                                <p style="font-size: 0.75rem; color: var(--text-dim);">Candidate onboarding offer details</p>
+                            </div>
+                            <button class="btn btn-primary generate-doc-btn" data-template="OFFER_LETTER">Use Template</button>
+                        </div>
+                        <div class="template-card" style="padding: 20px; border-radius: 12px; background: rgba(255,255,255,0.02); border: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <h4 style="margin-bottom: 5px;">Appointment Letter</h4>
+                                <p style="font-size: 0.75rem; color: var(--text-dim);">Official employment appointment document</p>
+                            </div>
+                            <button class="btn btn-primary generate-doc-btn" data-template="APPOINTMENT_LETTER">Use Template</button>
+                        </div>
+                        <div class="template-card" style="padding: 20px; border-radius: 12px; background: rgba(255,255,255,0.02); border: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <h4 style="margin-bottom: 5px;">Experience Certificate</h4>
+                                <p style="font-size: 0.75rem; color: var(--text-dim);">Relieving and experience confirmation</p>
+                            </div>
+                            <button class="btn btn-primary">Use Template</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Custom Document -->
+                <div class="glass-card animate-in" style="animation-delay: 0.2s;">
+                    <h3 style="margin-bottom: 20px;">Quick Document Builder</h3>
+                    <form id="doc-builder-form" style="display: flex; flex-direction: column; gap: 15px;">
+                        <div class="form-group">
+                            <label style="display: block; font-size: 0.8rem; color: var(--text-dim); margin-bottom: 5px;">Recipients Details</label>
+                            <input type="text" name="name" placeholder="Full Name" required style="width: 100%; background: var(--bg-sidebar); border: 1px solid var(--border-subtle); color: var(--text-main); padding: 10px; border-radius: 8px;">
+                        </div>
+                        <div class="form-group">
+                            <label style="display: block; font-size: 0.8rem; color: var(--text-dim); margin-bottom: 5px;">Designation</label>
+                            <input type="text" name="designation" placeholder="e.g. Project Manager" required style="width: 100%; background: var(--bg-sidebar); border: 1px solid var(--border-subtle); color: var(--text-main); padding: 10px; border-radius: 8px;">
+                        </div>
+                        <div class="form-group">
+                            <label style="display: block; font-size: 0.8rem; color: var(--text-dim); margin-bottom: 5px;">Base Template</label>
+                            <select name="template" style="width: 100%; background: var(--bg-sidebar); border: 1px solid var(--border-subtle); color: var(--text-main); padding: 10px; border-radius: 8px;">
+                                <option value="OFFER_LETTER">Offer Letter</option>
+                                <option value="APPOINTMENT_LETTER">Appointment Letter</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;"><i class="fas fa-magic"></i> Generate Document</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="glass-card animate-in" style="margin-top: 30px; animation-delay: 0.4s;">
+                <h3 style="margin-bottom: 20px;">Recent Generated Documents</h3>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Document Name</th>
+                            <th>Issued To</th>
+                            <th>Date Generated</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Offer Letter - 2026/042</td>
+                            <td>John Doe</td>
+                            <td>Mar 17, 2026</td>
+                            <td><button class="btn" style="padding: 5px 10px; font-size: 0.7rem; background: rgba(37, 99, 235, 0.1); color: var(--accent-secondary);"><i class="fas fa-download"></i></button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        `;
+    },
+
+    showDocumentPreview: (title, content) => {
+        const modalContent = `
+            <div style="background: white; border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; height: 80vh;">
+                <div style="padding: 15px 25px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center;">
+                    <h3 style="color: #1e293b; margin: 0;">${title} Preview</h3>
+                    <div style="display: flex; gap: 10px;">
+                        <button class="btn" id="print-doc-btn" style="background: var(--accent-primary); color: white; padding: 6px 15px; font-size: 0.8rem;"><i class="fas fa-print"></i> Print / Save PDF</button>
+                        <button class="btn" onclick="UI.closeModal()" style="background: #e2e8f0; color: #475569; padding: 6px 15px; font-size: 0.8rem;">Close</button>
+                    </div>
+                </div>
+                <div id="print-area" style="flex: 1; overflow-y: auto; background: #94a3b8; padding: 40px; display: flex; justify-content: center;">
+                    <div style="width: 210mm; background: white; box-shadow: 0 0 20px rgba(0,0,0,0.2); min-height: 297mm;">
+                        ${content}
+                    </div>
+                </div>
+            </div>
+        `;
+        // We override the default modal content for documents to look more professional/white
+        document.getElementById('modal-body').innerHTML = modalContent;
+        // Adjust modal max-width for document preview
+        document.querySelector('#modal-container .glass-card').style.maxWidth = '1000px';
     },
 
     renderReports: () => {
