@@ -71,7 +71,7 @@ window.globalBridge = {
     copyEntityAddress: () => copyEntityAddress(),
     
     // System
-    migrateData: () => migrateLocalToCloud(),
+    migrateData: () => migrateLocalToCloud(documents),
     testConnection: async () => {
         showToast('Running cloud diagnostic...', 'info');
         const result = await testConnection();
