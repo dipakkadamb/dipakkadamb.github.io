@@ -986,10 +986,10 @@ export const UI = {
                         </div>
                         <div class="template-card" style="padding: 20px; border-radius: 12px; background: rgba(255,255,255,0.02); border: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center;">
                             <div>
-                                <h4 style="margin-bottom: 5px;">Experience Certificate</h4>
-                                <p style="font-size: 0.75rem; color: var(--text-dim);">Relieving and experience confirmation</p>
+                                <h4 style="margin-bottom: 5px;">Relieving Letter</h4>
+                                <p style="font-size: 0.75rem; color: var(--text-dim);">Employee relieving and experience confirmation</p>
                             </div>
-                            <button class="btn btn-primary">Use Template</button>
+                            <button class="btn btn-primary generate-doc-btn" data-template="RELIEVING_LETTER">Use Template</button>
                         </div>
                     </div>
                 </div>
@@ -998,22 +998,41 @@ export const UI = {
                 <div class="glass-card animate-in" style="animation-delay: 0.2s;">
                     <h3 style="margin-bottom: 20px;">Quick Document Builder</h3>
                     <form id="doc-builder-form" style="display: flex; flex-direction: column; gap: 15px;">
-                        <div class="form-group">
-                            <label style="display: block; font-size: 0.8rem; color: var(--text-dim); margin-bottom: 5px;">Recipients Details</label>
-                            <input type="text" name="name" placeholder="Full Name" required style="width: 100%; background: var(--bg-sidebar); border: 1px solid var(--border-subtle); color: var(--text-main); padding: 10px; border-radius: 8px;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                            <div class="form-group">
+                                <label style="display: block; font-size: 0.8rem; color: var(--text-dim); margin-bottom: 5px;">Recipient Name</label>
+                                <input type="text" name="name" placeholder="Full Name" required style="width: 100%; background: var(--bg-sidebar); border: 1px solid var(--border-subtle); color: var(--text-main); padding: 10px; border-radius: 8px;">
+                            </div>
+                            <div class="form-group">
+                                <label style="display: block; font-size: 0.8rem; color: var(--text-dim); margin-bottom: 5px;">Designation</label>
+                                <input type="text" name="designation" placeholder="e.g. Software Engineer" required style="width: 100%; background: var(--bg-sidebar); border: 1px solid var(--border-subtle); color: var(--text-main); padding: 10px; border-radius: 8px;">
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label style="display: block; font-size: 0.8rem; color: var(--text-dim); margin-bottom: 5px;">Designation</label>
-                            <input type="text" name="designation" placeholder="e.g. Project Manager" required style="width: 100%; background: var(--bg-sidebar); border: 1px solid var(--border-subtle); color: var(--text-main); padding: 10px; border-radius: 8px;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                            <div class="form-group">
+                                <label style="display: block; font-size: 0.8rem; color: var(--text-dim); margin-bottom: 5px;">Joining Date</label>
+                                <input type="date" name="joining_date" required style="width: 100%; background: var(--bg-sidebar); border: 1px solid var(--border-subtle); color: var(--text-main); padding: 10px; border-radius: 8px;">
+                            </div>
+                            <div class="form-group">
+                                <label style="display: block; font-size: 0.8rem; color: var(--text-dim); margin-bottom: 5px;">Relieving Date (Optional)</label>
+                                <input type="date" name="relieving_date" style="width: 100%; background: var(--bg-sidebar); border: 1px solid var(--border-subtle); color: var(--text-main); padding: 10px; border-radius: 8px;">
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label style="display: block; font-size: 0.8rem; color: var(--text-dim); margin-bottom: 5px;">Base Template</label>
-                            <select name="template" style="width: 100%; background: var(--bg-sidebar); border: 1px solid var(--border-subtle); color: var(--text-main); padding: 10px; border-radius: 8px;">
-                                <option value="OFFER_LETTER">Offer Letter</option>
-                                <option value="APPOINTMENT_LETTER">Appointment Letter</option>
-                            </select>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                            <div class="form-group">
+                                <label style="display: block; font-size: 0.8rem; color: var(--text-dim); margin-bottom: 5px;">Salary (Annual)</label>
+                                <input type="number" name="salary" placeholder="1200000" style="width: 100%; background: var(--bg-sidebar); border: 1px solid var(--border-subtle); color: var(--text-main); padding: 10px; border-radius: 8px;">
+                            </div>
+                            <div class="form-group">
+                                <label style="display: block; font-size: 0.8rem; color: var(--text-dim); margin-bottom: 5px;">Base Template</label>
+                                <select name="template" style="width: 100%; background: var(--bg-sidebar); border: 1px solid var(--border-subtle); color: var(--text-main); padding: 10px; border-radius: 8px;">
+                                    <option value="OFFER_LETTER">Offer Letter</option>
+                                    <option value="APPOINTMENT_LETTER">Appointment Letter</option>
+                                    <option value="RELIEVING_LETTER">Relieving Letter</option>
+                                </select>
+                            </div>
                         </div>
-                        <button type="submit" class="btn btn-primary" style="width: 100%;"><i class="fas fa-magic"></i> Generate Document</button>
+                        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;"><i class="fas fa-magic"></i> Generate & Preview</button>
                     </form>
                 </div>
             </div>

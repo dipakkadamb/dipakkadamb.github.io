@@ -177,9 +177,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 address: 'Not Specified',
                 designation: data.designation,
                 department: 'Operations',
-                salary_annual: '12,00,000',
-                salary_monthly: '1,00,000',
-                joining_date: 'April 01, 2026'
+                emp_id: 'EMP' + Math.floor(1000 + Math.random() * 9000),
+                salary_annual: parseFloat(data.salary || 0).toLocaleString(),
+                salary_monthly: parseFloat((data.salary || 0) / 12).toLocaleString(),
+                joining_date: data.joining_date,
+                relieving_date: data.relieving_date || 'N/A'
             };
 
             const content = DocumentEngine.generate(data.template, docData);
