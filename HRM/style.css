@@ -1,26 +1,26 @@
 /* ASYNCRIX HRM PREMIUM DARK DESIGN SYSTEM */
 :root {
-    --bg-main: #0a0f1c; /* Navy 900 */
-    --bg-sidebar: #111827; /* Navy 800 */
-    --bg-card: rgba(30, 41, 59, 0.4); /* Slate 800 with transparency */
+    --bg-main: #f8fafc; /* Slate 50 */
+    --bg-sidebar: #ffffff;
+    --bg-card: #ffffff;
     --bg-white: #ffffff;
     
-    --accent-primary: #06b6d4; /* Cyan 500 */
+    --accent-primary: #0891b2; /* Cyan 600 */
     --accent-secondary: #2563eb; /* Blue 600 */
-    --accent-success: #10b981; /* Emerald 500 */
-    --accent-warning: #f59e0b; /* Amber 500 */
-    --accent-danger: #ef4444; /* Red 500 */
-    --accent-glow: rgba(6, 182, 212, 0.15);
+    --accent-success: #059669; /* Emerald 600 */
+    --accent-warning: #d97706; /* Amber 600 */
+    --accent-danger: #dc2626; /* Red 600 */
+    --accent-glow: rgba(8, 145, 178, 0.05);
     
-    --text-main: #f1f5f9; /* Slate 100 */
-    --text-muted: #94a3b8; /* Slate 400 */
+    --text-main: #1e293b; /* Slate 800 */
+    --text-muted: #475569; /* Slate 600 */
     --text-dim: #64748b; /* Slate 500 */
     
-    --border-subtle: rgba(255, 255, 255, 0.05);
-    --border-active: rgba(6, 182, 212, 0.3);
+    --border-subtle: #e2e8f0; /* Slate 200 */
+    --border-active: rgba(8, 145, 178, 0.2);
     
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    --glass-blur: blur(12px);
+    --glass-blur: blur(8px);
 }
 
 * {
@@ -102,8 +102,7 @@ header {
     align-items: center;
     justify-content: space-between;
     padding: 0 40px;
-    backdrop-filter: var(--glass-blur);
-    background: rgba(10, 15, 28, 0.8);
+    background: var(--bg-sidebar);
     position: sticky;
     top: 0;
     z-index: 40;
@@ -112,18 +111,17 @@ header {
 /* Glass Panels */
 .glass-card {
     background: var(--bg-card);
-    backdrop-filter: var(--glass-blur);
     border: 1px solid var(--border-subtle);
-    border-radius: 1.25rem;
+    border-radius: 1rem;
     padding: 1.5rem;
     transition: var(--transition-smooth);
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
 }
 
 .glass-card:hover {
     border-color: var(--border-active);
     transform: translateY(-2px);
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 0 15px var(--accent-glow);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
 }
 
 /* Navigation */
@@ -223,7 +221,7 @@ header {
 }
 
 .data-table tr:hover {
-    background: rgba(255, 255, 255, 0.02);
+    background: #f1f5f9;
 }
 
 /* Utilities */

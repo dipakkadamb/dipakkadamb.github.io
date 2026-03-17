@@ -65,13 +65,12 @@ export const UI = {
             position: fixed;
             bottom: 30px;
             right: 30px;
-            background: var(--bg-card);
-            border: 1px solid var(--accent-primary);
+            background: #ffffff;
+            border: 1px solid var(--border-subtle);
             color: var(--text-main);
             padding: 12px 24px;
             border-radius: 12px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
             z-index: 10000;
             display: flex;
             align-items: center;
@@ -136,7 +135,7 @@ export const UI = {
                 </div>
 
                 <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 20px;">
-                    <button type="button" class="btn" onclick="UI.closeModal()" style="background: rgba(255,255,255,0.05); color: var(--text-main); border: 1px solid var(--border-subtle);">Cancel</button>
+                    <button type="button" class="btn" onclick="UI.closeModal()" style="background: #f1f5f9; color: var(--text-main); border: 1px solid var(--border-subtle);">Cancel</button>
                     <button type="submit" class="btn btn-primary">${isEdit ? 'Update Employee' : 'Create Employee'}</button>
                 </div>
             </form>
@@ -174,7 +173,7 @@ export const UI = {
                     <textarea name="description" rows="4" style="width: 100%; background: var(--bg-sidebar); border: 1px solid var(--border-subtle); color: var(--text-main); padding: 10px; border-radius: 8px; outline: none;"></textarea>
                 </div>
                 <div style="display: flex; gap: 12px; justify-content: flex-end;">
-                    <button type="button" class="btn" onclick="UI.closeModal()" style="background: rgba(255,255,255,0.05); color: var(--text-main); border: 1px solid var(--border-subtle);">Cancel</button>
+                    <button type="button" class="btn" onclick="UI.closeModal()" style="background: #f1f5f9; color: var(--text-main); border: 1px solid var(--border-subtle);">Cancel</button>
                     <button type="submit" class="btn btn-primary">Post Job</button>
                 </div>
             </form>
@@ -210,7 +209,7 @@ export const UI = {
                     <input type="text" name="purpose" placeholder="e.g. Travel to client site" required style="width: 100%; background: var(--bg-sidebar); border: 1px solid var(--border-subtle); color: var(--text-main); padding: 10px; border-radius: 8px; outline: none;">
                 </div>
                 <div style="display: flex; gap: 12px; justify-content: flex-end;">
-                    <button type="button" class="btn" onclick="UI.closeModal()" style="background: rgba(255,255,255,0.05); color: var(--text-main); border: 1px solid var(--border-subtle);">Cancel</button>
+                    <button type="button" class="btn" onclick="UI.closeModal()" style="background: #f1f5f9; color: var(--text-main); border: 1px solid var(--border-subtle);">Cancel</button>
                     <button type="submit" class="btn btn-primary">Submit Claim</button>
                 </div>
             </form>
@@ -285,8 +284,8 @@ export const UI = {
                     datasets: [{
                         label: 'Present %',
                         data: [95, 98, 92, 94, 96, 40, 30],
-                        borderColor: '#06b6d4',
-                        backgroundColor: 'rgba(6, 182, 212, 0.1)',
+                        borderColor: '#0891b2',
+                        backgroundColor: 'rgba(8, 145, 178, 0.1)',
                         fill: true,
                         tension: 0.4
                     }]
@@ -310,13 +309,13 @@ export const UI = {
                     labels: ['IT', 'Finance', 'HR', 'Admin'],
                     datasets: [{
                         data: [45, 25, 15, 15],
-                        backgroundColor: ['#06b6d4', '#2563eb', '#10b981', '#f59e0b'],
+                        backgroundColor: ['#0891b2', '#2563eb', '#059669', '#d97706'],
                         borderWidth: 0
                     }]
                 },
                 options: {
                     responsive: true,
-                    plugins: { legend: { position: 'bottom', labels: { color: '#94a3b8' } } }
+                    plugins: { legend: { position: 'bottom', labels: { color: '#475569' } } }
                 }
             });
         }
@@ -542,8 +541,8 @@ export const UI = {
                                     <td style="font-weight: 700;">₹${Math.round(netSalary).toLocaleString()}</td>
                                     <td><span style="color: ${statusColor}; font-size: 0.75rem; font-weight: 700;">${status}</span></td>
                                     <td>
-                                        ${record ? `<button class="btn preview-payslip-btn" data-id="${emp.id}" style="padding: 5px 10px; font-size: 0.7rem; background: rgba(16, 185, 129, 0.1); color: var(--accent-success);"><i class="fas fa-file-invoice"></i> Slip</button>` : ''}
-                                        <button class="btn" style="padding: 5px 10px; font-size: 0.7rem; background: rgba(255, 255, 255, 0.05); color: var(--text-dim);"><i class="fas fa-eye"></i></button>
+                                        ${record ? `<button class="btn preview-payslip-btn" data-id="${emp.id}" style="padding: 5px 10px; font-size: 0.7rem; background: rgba(5, 150, 105, 0.1); color: var(--accent-success);"><i class="fas fa-file-invoice"></i> Slip</button>` : ''}
+                                        <button class="btn" style="padding: 5px 10px; font-size: 0.7rem; background: #f1f5f9; color: var(--text-dim);"><i class="fas fa-eye"></i></button>
                                     </td>
                                 </tr>
                             `;
