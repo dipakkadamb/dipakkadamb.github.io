@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // --- OFFICE SYNC ---
         if (target.id === 'syncOfficeBtn') {
             console.log('Sync button clicked');
-            const apiBaseUrl = "https://asyncrix-api-bridge.dipakkadamb.dipakkadamb.workers.dev";
+            const apiBaseUrl = "https://asyncrix-api-bridge.dipakkadamb.workers.dev";
             if (confirm('This will move your existing local data to your Office PostgreSQL server. Continue?')) {
                 console.log('Sync confirmed. Targeting:', apiBaseUrl);
                 target.disabled = true;

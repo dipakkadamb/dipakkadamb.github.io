@@ -3,7 +3,7 @@
  * Redirects data from Supabase/Local to a private PostgreSQL server via Cloudflare.
  */
 
-const API_URL = "https://asyncrix-api-bridge.dipakkadamb.dipakkadamb.workers.dev"; // Corrected URL pattern
+const API_URL = "https://asyncrix-api-bridge.dipakkadamb.workers.dev"; // Reverted to standard pattern
 let dbInitialized = false;
 let cloudOnline = true;
 

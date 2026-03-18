@@ -74,7 +74,7 @@ window.globalBridge = {
     // System
     migrateData: () => migrateLocalToCloud(documents),
     syncToOffice: async () => {
-        const apiBaseUrl = "https://asyncrix-api-bridge.dipakkadamb.dipakkadamb.workers.dev";
+        const apiBaseUrl = "https://asyncrix-api-bridge.dipakkadamb.workers.dev";
         if (confirm('This will move your Inventory and Sales data to your Office PostgreSQL server. Continue?')) {
             const btn = document.getElementById('syncOfficeBtn');
             const originalHTML = btn.innerHTML;

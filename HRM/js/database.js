@@ -3,7 +3,7 @@
  * Redirects data to a private PostgreSQL server via Cloudflare.
  */
 
-const API_URL = "https://asyncrix-api-bridge.dipakkadamb.dipakkadamb.workers.dev"; // Corrected URL pattern
+const API_URL = "https://asyncrix-api-bridge.dipakkadamb.workers.dev"; // Reverted to standard pattern
 export const STORAGE_KEY = 'asyncrix_hrm_data';
 
 // --- CORE API OPERATIONS ---
