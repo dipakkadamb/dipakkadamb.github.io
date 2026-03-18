@@ -2,6 +2,7 @@ import { initDatabase, getData, saveData } from './database.js';
 import { UI } from './ui.js';
 import { PayrollEngine } from './payroll.js';
 import { DocumentEngine } from './documents.js';
+import { migrateToOffice } from './sync.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     // 1. Initialize DB
@@ -50,6 +51,33 @@ document.addEventListener('DOMContentLoaded', () => {
         // Add Employee Modal
         if (target.id === 'add-employee-btn' || target.id === 'add-global-btn') {
             UI.renderEmployeeForm();
+        }
+
+        // --- OFFICE SYNC ---
+        if (target.id === 'syncOfficeBtn') {
+            console.log('Sync button clicked');
+            const apiBaseUrl = "https://asyncrix-api-bridge.dipakkadamb.dipakkadamb.workers.dev";
+            if (confirm('This will move your existing local data to your Office PostgreSQL server. Continue?')) {
+                console.log('Sync confirmed. Targeting:', apiBaseUrl);
+                target.disabled = true;
+                target.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Syncing...';
+                
+                migrateToOffice(apiBaseUrl).then(result => {
+                    console.log('Migration result:', result);
+                    target.disabled = false;
+                    target.innerHTML = '<i class="fas fa-sync"></i> Sync to Office';
+                    if (result.success) {
+                        UI.showToast('✅ Data migrated to Office Server successfully!');
+                    } else {
+                        UI.showToast('❌ Sync failed: ' + result.error, 'danger');
+                    }
+                }).catch(err => {
+                    console.error('Migration catch block:', err);
+                    target.disabled = false;
+                    target.innerHTML = '<i class="fas fa-sync"></i> Sync to Office';
+                    UI.showToast('❌ Critical Error: ' + err.message, 'danger');
+                });
+            }
         }
 
         // Edit Employee

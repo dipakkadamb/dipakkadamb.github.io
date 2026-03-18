@@ -14,6 +14,7 @@ import {
     saveDoc, deleteDoc, savePayment, convertDocument
 } from './js/handlers.js';
 import { migrateLocalToCloud, testConnection, initDatabase, loadFromCloud } from './js/database.js';
+import { migrateToOffice } from './js/sync.js';
 
 // --- State Management ---
 const documents = {};
@@ -72,6 +73,28 @@ window.globalBridge = {
     
     // System
     migrateData: () => migrateLocalToCloud(documents),
+    syncToOffice: async () => {
+        const apiBaseUrl = "https://asyncrix-api-bridge.dipakkadamb.dipakkadamb.workers.dev";
+        if (confirm('This will move your Inventory and Sales data to your Office PostgreSQL server. Continue?')) {
+            const btn = document.getElementById('syncOfficeBtn');
+            const originalHTML = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = '<i data-feather="loader" class="w-3 h-3 animate-spin"></i> Syncing...';
+            if (window.feather) feather.replace();
+
+            const result = await migrateToOffice(apiBaseUrl, documents);
+            
+            btn.disabled = false;
+            btn.innerHTML = originalHTML;
+            if (window.feather) feather.replace();
+
+            if (result.success) {
+                showToast('✅ Migration to Office Server complete!', 'success');
+            } else {
+                showToast('❌ Sync failed: ' + result.error, 'error');
+            }
+        }
+    },
     testConnection: async () => {
         showToast('Running cloud diagnostic...', 'info');
         const result = await testConnection();
