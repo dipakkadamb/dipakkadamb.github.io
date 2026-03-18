@@ -171,13 +171,7 @@
                     <button id="syncOfficeBtn" onclick="globalBridge.syncToOffice()" class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-indigo-500 text-white hover:bg-indigo-600 transition-all text-[9px] font-bold uppercase tracking-widest" title="Migrate existing data to Office Server">
                         <i data-feather="refresh-cw" class="w-3 h-3"></i> Sync to Office
                     </button>
-                    <!-- Manual Push Trigger -->
-                    <button onclick="if(confirm('This will push all your LOCAL data to the Cloud. Existing cloud data with same IDs will be overwritten. Proceed?')) globalBridge.migrateData()" 
-                            class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-accent-primary/10 border border-accent-primary/20 text-accent-primary hover:bg-accent-primary/20 transition-all" 
-                            title="Force Push Local to Cloud">
-                        <i data-feather="upload-cloud" class="w-3 h-3"></i>
-                        <span class="text-[9px] font-bold uppercase tracking-widest">Push to Cloud</span>
-                    </button>
+
                 </div>
 
                 <div class="flex items-center gap-4 pl-4 md:pl-8 border-l border-slate-200">
