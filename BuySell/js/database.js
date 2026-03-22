@@ -28,7 +28,7 @@ async function apiRequest(endpoint, method, body = null) {
 
 export async function initDatabase() {
     dbInitialized = true;
-    console.log("ASYNCRIX DB: Office Server engine active.");
+    // console.log("ASYNCRIX DB: Office Server engine active.");
     
     // Initial health check
     checkConnection();
@@ -141,11 +141,11 @@ export async function testConnection() {
  */
 export async function migrateLocalToOffice(localDocuments) {
     if (!dbInitialized) return;
-    console.log("ASYNCRIX DB: Starting migration to Office Server...");
+    // console.log("ASYNCRIX DB: Starting migration to Office Server...");
     for (const [type, list] of Object.entries(localDocuments)) {
         if (Array.isArray(list) && list.length > 0) {
             await batchSaveToCloud(type, list);
         }
     }
-    console.log("ASYNCRIX DB: Migration complete.");
+    // console.log("ASYNCRIX DB: Migration complete.");
 }

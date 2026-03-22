@@ -4,7 +4,7 @@
  */
 
 export async function migrateToOffice(apiBaseUrl, currentData) {
-    console.log('🔗 BuySell Sync: Starting migration to Office Server...');
+    // console.log('🔗 BuySell Sync: Starting migration to Office Server...');
     
     if (!currentData || Object.keys(currentData).length === 0) {
         console.warn('⚠️ BuySell Sync: No data found to migrate.');
@@ -24,7 +24,7 @@ export async function migrateToOffice(apiBaseUrl, currentData) {
     try {
         for (const col of collections) {
             const items = currentData[col.name] || [];
-            console.log(`📦 BuySell Sync: Migrating ${items.length} records from ${col.name}...`);
+            // console.log(`📦 BuySell Sync: Migrating ${items.length} records from ${col.name}...`);
             
             for (const item of items) {
                 const response = await fetch(`${apiBaseUrl}/save`, {
@@ -42,7 +42,7 @@ export async function migrateToOffice(apiBaseUrl, currentData) {
             results.push({ collection: col.name, count: items.length });
         }
 
-        console.log('✅ BuySell Sync: Migration successful!');
+        // console.log('✅ BuySell Sync: Migration successful!');
         return { success: true, results };
     } catch (err) {
         console.error('❌ BuySell Sync: Migration failed:', err);

@@ -55,15 +55,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // --- OFFICE SYNC ---
         if (target.id === 'syncOfficeBtn') {
-            console.log('Sync button clicked');
+            // console.log('Sync button clicked');
             const apiBaseUrl = "https://asyncrix-api-bridge.dipakkadamb.workers.dev";
             if (confirm('This will move your existing local data to your Office PostgreSQL server. Continue?')) {
-                console.log('Sync confirmed. Targeting:', apiBaseUrl);
+                // console.log('Sync confirmed. Targeting:', apiBaseUrl);
                 target.disabled = true;
                 target.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Syncing...';
                 
                 migrateToOffice(apiBaseUrl).then(result => {
-                    console.log('Migration result:', result);
+                    // console.log('Migration result:', result);
                     target.disabled = false;
                     target.innerHTML = '<i class="fas fa-sync"></i> Sync to Office';
                     if (result.success) {
@@ -113,7 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Save to DB (simulated persistence)
             saveData('attendance_logs', attendanceData);
             UI.showToast('Attendance records saved successfully!');
-            console.log('Attendance saved:', attendanceData);
+            // console.log('Attendance saved:', attendanceData);
         }
 
         // Leave Actions
@@ -254,6 +254,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    console.log('HRM: System systems online.');
+    // console.log('HRM: System systems online.');
 });
 

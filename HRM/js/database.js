@@ -28,7 +28,7 @@ async function apiRequest(endpoint, method, body = null) {
 export async function initDatabase() {
     // We check if we have local data and suggest migration later
     if (!localStorage.getItem(STORAGE_KEY)) {
-        console.log('HRM: Initializing with local-first pattern.');
+        // console.log('HRM: Initializing with local-first pattern.');
     }
 }
 

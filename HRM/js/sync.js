@@ -4,7 +4,7 @@
  */
 
 export async function migrateToOffice(apiBaseUrl) {
-    console.log('🔗 HR Sync: Starting migration to Office Server...');
+    // console.log('🔗 HR Sync: Starting migration to Office Server...');
     
     // 1. Get all local data
     const localData = JSON.parse(localStorage.getItem('asyncrix_hrm_data'));
@@ -26,7 +26,7 @@ export async function migrateToOffice(apiBaseUrl) {
     try {
         for (const col of collections) {
             const items = localData[col.name] || [];
-            console.log(`📦 HR Sync: Migrating ${items.length} records from ${col.name}...`);
+            // console.log(`📦 HR Sync: Migrating ${items.length} records from ${col.name}...`);
             
             for (const item of items) {
                 const response = await fetch(`${apiBaseUrl}/save`, {
@@ -44,7 +44,7 @@ export async function migrateToOffice(apiBaseUrl) {
             results.push({ collection: col.name, count: items.length });
         }
 
-        console.log('✅ HR Sync: Migration successful!');
+        // console.log('✅ HR Sync: Migration successful!');
         return { success: true, results };
     } catch (err) {
         console.error('❌ HR Sync: Migration failed:', err);

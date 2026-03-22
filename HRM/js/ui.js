@@ -608,7 +608,7 @@ export const UI = {
                     <h3>Recent Applications</h3>
                     <div style="margin-top: 20px; display: flex; flex-direction: column; gap: 12px;">
                         ${candidates.map(can => `
-                            <div style="padding: 12px; border-radius: 12px; background: rgba(255, 255, 255, 0.02); display: flex; align-items: center; gap: 12px;">
+                            <div style="padding: 12px; border-radius: 12px; background: rgba(0, 0, 0, 0.02); display: flex; align-items: center; gap: 12px;">
                                 <div style="width: 32px; height: 32px; border-radius: 50%; background: var(--bg-sidebar); display: flex; align-items: center; justify-content: center; color: var(--accent-primary); font-size: 0.7rem; font-weight: 800;">${can.name.charAt(0)}</div>
                                 <div style="flex: 1;">
                                     <p style="font-size: 0.85rem; font-weight: 600;">${can.name}</p>
@@ -796,7 +796,7 @@ export const UI = {
                                     <td>${exp.date}</td>
                                     <td><span style="color: ${exp.status === 'Pending' ? 'var(--accent-warning)' : 'var(--accent-success)'}; font-weight: 700;">${exp.status}</span></td>
                                     <td>
-                                        <button class="btn" style="padding: 5px 10px; font-size: 0.7rem; background: rgba(255, 255, 255, 0.05); color: var(--text-main);"><i class="fas fa-eye"></i></button>
+                                        <button class="btn" style="padding: 5px 10px; font-size: 0.7rem; background: rgba(0, 0, 0, 0.05); color: var(--text-main);"><i class="fas fa-eye"></i></button>
                                         <button class="btn" style="padding: 5px 10px; font-size: 0.7rem; background: rgba(37, 99, 235, 0.1); color: var(--accent-secondary); margin-left: 5px;"><i class="fas fa-check"></i></button>
                                     </td>
                                 </tr>

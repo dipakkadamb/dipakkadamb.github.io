@@ -95,26 +95,26 @@ export function renderDashboard(documents) {
                 </div>
             </div>
 
-            <div class="glass-panel p-6 border-white/5 bg-navy-800/10 flex flex-col">
-                 <h3 class="text-sm font-bold text-white uppercase tracking-widest mb-8 flex items-center gap-2">
+            <div class="glass-panel p-6 border-slate-200 bg-slate-50 flex flex-col">
+                 <h3 class="text-sm font-bold text-slate-800 uppercase tracking-widest mb-8 flex items-center gap-2">
                     <i data-feather="zap" class="w-4 h-4 text-amber-400"></i> Quick Actions
                 </h3>
                 <div class="grid grid-cols-2 gap-4">
                     <button onclick="globalBridge.openCreateModal('${DOC_TYPES.QUOTES}')" class="flex flex-col items-center justify-center p-6 rounded-2xl bg-accent-primary/5 border border-accent-primary/10 hover:bg-accent-primary/10 transition-all group">
                         <i data-feather="file-text" class="w-6 h-6 text-accent-primary mb-3"></i>
-                        <span class="text-[10px] font-bold text-white uppercase tracking-widest">New Quote</span>
+                        <span class="text-[10px] font-bold text-slate-800 uppercase tracking-widest">New Quote</span>
                     </button>
                     <button onclick="globalBridge.openCreateModal('${DOC_TYPES.INVOICES}')" class="flex flex-col items-center justify-center p-6 rounded-2xl bg-emerald-400/5 border border-emerald-400/10 hover:bg-emerald-400/10 transition-all group">
                         <i data-feather="file" class="w-6 h-6 text-emerald-400 mb-3"></i>
-                        <span class="text-[10px] font-bold text-white uppercase tracking-widest">New Invoice</span>
+                        <span class="text-[10px] font-bold text-slate-800 uppercase tracking-widest">New Invoice</span>
                     </button>
                     <button onclick="globalBridge.openCreateModal('${DOC_TYPES.BILLS}')" class="flex flex-col items-center justify-center p-6 rounded-2xl bg-amber-400/5 border border-amber-400/10 hover:bg-amber-400/10 transition-all group">
                         <i data-feather="file-minus" class="w-6 h-6 text-amber-400 mb-3"></i>
-                        <span class="text-[10px] font-bold text-white uppercase tracking-widest">New Bill</span>
+                        <span class="text-[10px] font-bold text-slate-800 uppercase tracking-widest">New Bill</span>
                     </button>
                     <button onclick="globalBridge.openCustomerModal()" class="flex flex-col items-center justify-center p-6 rounded-2xl bg-purple-400/5 border border-purple-400/10 hover:bg-purple-400/10 transition-all group">
                         <i data-feather="user-plus" class="w-6 h-6 text-purple-400 mb-3"></i>
-                        <span class="text-[10px] font-bold text-white uppercase tracking-widest">New Customer</span>
+                        <span class="text-[10px] font-bold text-slate-800 uppercase tracking-widest">New Customer</span>
                     </button>
                 </div>
                 <div class="mt-auto pt-8">

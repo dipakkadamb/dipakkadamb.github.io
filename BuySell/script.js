@@ -194,7 +194,7 @@ async function syncWithCloud() {
 }
 
 async function initializeApp() {
-    console.log('ASYNCRIX Engine [v1.2]: Initializing...');
+    // console.log('ASYNCRIX Engine [v1.2]: Initializing...');
     
     // 1. Initialize Supabase Connection
     const dbActive = await initDatabase();
@@ -210,7 +210,7 @@ async function initializeApp() {
     // 4. Global Icon Refresh
     if (window.feather) feather.replace();
     
-    console.log('ASYNCRIX Engine Initialized.');
+    // console.log('ASYNCRIX Engine Initialized.');
 }
 
 // --- Cloud Status Listener ---
