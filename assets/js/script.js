@@ -260,4 +260,58 @@ document.addEventListener('DOMContentLoaded', () => {
     // Run festival wishes
     showFestivalWishes();
 
+    // WhatsApp Form Modal Logic
+    const waModal = document.getElementById('whatsapp-form-modal');
+    const waModalContent = document.getElementById('whatsapp-form-modal-content');
+    const closeWaBtn = document.getElementById('close-whatsapp-form-btn');
+    const waForm = document.getElementById('whatsapp-lead-form');
+
+    if (waModal && closeWaBtn && waForm) {
+        window.openWhatsAppForm = () => {
+            waModal.classList.remove('opacity-0', 'pointer-events-none');
+            waModalContent.classList.remove('scale-95');
+            waModalContent.classList.add('scale-100');
+            if(typeof feather !== 'undefined') feather.replace();
+        };
+
+        const closeWhatsAppForm = () => {
+            waModal.classList.add('opacity-0', 'pointer-events-none');
+            waModalContent.classList.remove('scale-100');
+            waModalContent.classList.add('scale-95');
+        };
+
+        closeWaBtn.addEventListener('click', closeWhatsAppForm);
+
+        waModal.addEventListener('click', (e) => {
+            if (e.target === waModal) closeWhatsAppForm();
+        });
+
+        waForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const name = document.getElementById('wa-name').value.trim();
+            const mobile = document.getElementById('wa-mobile').value.trim();
+            const designation = document.getElementById('wa-designation').value.trim() || 'N/A';
+            const company = document.getElementById('wa-company').value.trim() || 'N/A';
+            const email = document.getElementById('wa-email').value.trim() || 'N/A';
+            const req = document.getElementById('wa-requirement').value.trim();
+
+            const message = `*New Inquiry via Website*\n\n` +
+                            `*Name:* ${name}\n` +
+                            `*Mobile:* ${mobile}\n` +
+                            `*Email:* ${email}\n` +
+                            `*Designation:* ${designation}\n` +
+                            `*Company:* ${company}\n\n` +
+                            `*Requirement:*\n${req}`;
+
+            const encodedMessage = encodeURIComponent(message);
+            const whatsappUrl = `https://wa.me/917796852335?text=${encodedMessage}`;
+            
+            closeWhatsAppForm();
+            waForm.reset();
+            
+            window.open(whatsappUrl, '_blank');
+        });
+    }
+
 });
