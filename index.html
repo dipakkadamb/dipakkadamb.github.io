@@ -7,8 +7,22 @@
     <title>Dipak Kadamb | AI Web Developer & Zoho Specialist</title>
 
     <!-- Google Tag Gateway for SEO -->
-    <script async
-        src="https://api.cloudflare.com/client/v4/zones/7d378fbc058122f01ed4b160ea47b262/settings/google-tag-gateway/config"></script>
+    <script async src="https://api.cloudflare.com/client/v4/zones/7d378fbc058122f01ed4b160ea47b262/settings/google-tag-gateway/config"></script>
+    
+    <!-- OneSignal Web Push Notifications -->
+    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+    <script>
+      window.OneSignalDeferred = window.OneSignalDeferred || [];
+      OneSignalDeferred.push(async function(OneSignal) {
+        await OneSignal.init({
+          appId: "os_v2_org_6bdz2u23yzhrxg7qrqgcjpcsfr7mg2zl7xaecx5lgrjv7oyp5tayia22hakxe75r7j7vklhnoz7eurj3tpvgmstcwfnlnuq4433haza",
+          notifyButton: {
+            enable: true,
+          },
+          allowLocalhostAsSecureOrigin: true
+        });
+      });
+    </script>
     <!-- SEO & Open Graph -->
     <meta name="description"
         content="Portfolio of Dipak Kadamb, AI Web Developer & Zoho Integration Specialist based in Pune, India. Building Intelligent Web Solutions & Automating Business Workflows.">
