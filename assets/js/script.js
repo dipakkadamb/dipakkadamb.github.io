@@ -314,4 +314,55 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Custom Push Notification Pre-Prompt Logic
+    const pushModal = document.getElementById('push-pre-prompt-modal');
+    const pushContent = document.getElementById('push-pre-prompt-content');
+    const allowPushBtn = document.getElementById('allow-push-btn');
+    const dismissPushBtn = document.getElementById('dismiss-push-btn');
+    const closePushBtn = document.getElementById('close-push-prompt-btn');
+
+    if (pushModal && allowPushBtn) {
+        window.OneSignalDeferred = window.OneSignalDeferred || [];
+        window.OneSignalDeferred.push(async function(OneSignal) {
+            
+            // Check if native push is supported
+            const isSupported = OneSignal.Notifications.isPushSupported();
+            
+            if (isSupported) {
+                // OneSignal v16: Get permission directly
+                const permission = OneSignal.Notifications.permission;
+                
+                // Show if they haven't explicitly subscribed or denied natively AND haven't manually dismissed this modal
+                if (permission !== 'granted' && permission !== 'denied' && !localStorage.getItem('pushPromptDismissed')) {
+                    // Show our custom prompt after 4 seconds of page load
+                    setTimeout(() => {
+                        pushModal.classList.remove('opacity-0', 'pointer-events-none');
+                        pushContent.classList.remove('translate-y-10');
+                    }, 4000);
+                }
+            }
+
+            allowPushBtn.addEventListener('click', async () => {
+                // Hide custom prompt visually right away
+                pushModal.classList.add('opacity-0', 'pointer-events-none');
+                pushContent.classList.add('translate-y-10');
+                
+                // Trigger the secure system-level browser prompt natively through OneSignal
+                await OneSignal.Notifications.requestPermission();
+            });
+
+            const handleDismiss = () => {
+                pushModal.classList.add('opacity-0', 'pointer-events-none');
+                pushContent.classList.add('translate-y-10');
+                localStorage.setItem('pushPromptDismissed', 'true'); 
+            };
+
+            dismissPushBtn.addEventListener('click', handleDismiss);
+            closePushBtn.addEventListener('click', handleDismiss);
+            pushModal.addEventListener('click', (e) => {
+                if (e.target === pushModal) handleDismiss();
+            });
+        });
+    }
+
 });

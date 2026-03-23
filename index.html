@@ -1184,6 +1184,41 @@
         </div>
     </div>
 
+    <!-- Custom Push Notification Pre-prompt Modal -->
+    <div id="push-pre-prompt-modal"
+        class="fixed inset-0 z-[250] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="glass-card w-[90%] max-w-sm p-6 rounded-3xl relative transform translate-y-10 transition-all duration-500 shadow-2xl border border-accent-blue/10 bg-white"
+            id="push-pre-prompt-content">
+            
+            <button id="close-push-prompt-btn"
+                class="absolute top-4 right-4 text-slate-400 hover:text-slate-900 transition-colors focus:outline-none bg-slate-100 rounded-full flex items-center justify-center p-1 cursor-pointer">
+                <i data-feather="x" class="w-4 h-4"></i>
+            </button>
+
+            <div class="flex flex-col items-center text-center mt-2">
+                <div class="w-16 h-16 rounded-full bg-accent-blue/10 border-2 border-accent-blue/20 flex items-center justify-center text-accent-blue mb-4 relative shadow-[0_0_20px_rgba(37,99,235,0.2)]">
+                    <i data-feather="bell" class="w-7 h-7"></i>
+                    <span class="absolute top-0 right-0 w-4 h-4 bg-red-500 border-2 border-white rounded-full animate-pulse"></span>
+                </div>
+                <h3 class="text-xl font-bold text-slate-900 mb-2">Stay in the Loop!</h3>
+                <p class="text-sm text-slate-600 mb-6 leading-relaxed px-2">
+                    Get instant updates on my latest tech projects, AI web development tricks, and exclusive offers. No spam, promise!
+                </p>
+
+                <div class="flex flex-col w-full gap-3">
+                    <button id="allow-push-btn"
+                        class="w-full py-3.5 rounded-xl bg-slate-900 text-white font-bold hover:shadow-[0_10px_20px_rgba(10,15,28,0.2)] hover:-translate-y-0.5 transition-all duration-300">
+                        Enable Notifications
+                    </button>
+                    <button id="dismiss-push-btn"
+                        class="w-full py-3 rounded-xl bg-slate-100 text-slate-600 font-medium hover:bg-slate-200 transition-colors duration-300 text-sm">
+                        Maybe Later
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div id="motivational-toast"
         class="fixed bottom-6 right-6 z-[150] bg-slate-50/95 backdrop-blur-xl border border-slate-900/10 shadow-2xl shadow-accent-blue/10 rounded-2xl p-4 flex items-start gap-4 transform translate-x-[150%] transition-all duration-500 ease-out max-w-[calc(100vw-3rem)] sm:max-w-sm pointer-events-none opacity-0">
         <div
