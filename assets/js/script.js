@@ -214,8 +214,7 @@ document.addEventListener('DOMContentLoaded', () => {
             '2026-10-11': 'Happy Navratri!',
             '2026-10-20': 'Happy Dussehra!',
             '2026-11-08': 'Happy Diwali!',
-            '2026-11-11': 'Happy Bhai Dooj!',
-            '2026-03-23': 'Happy Developer Day!' // Demo for today's testing
+            '2026-11-11': 'Happy Bhai Dooj!'
         };
 
         const message = fixedFestivals[dateStr] || dynamicFestivals[fullDateStr];
