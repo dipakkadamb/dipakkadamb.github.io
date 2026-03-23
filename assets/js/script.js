@@ -322,46 +322,48 @@ document.addEventListener('DOMContentLoaded', () => {
     const closePushBtn = document.getElementById('close-push-prompt-btn');
 
     if (pushModal && allowPushBtn) {
-        window.OneSignalDeferred = window.OneSignalDeferred || [];
-        window.OneSignalDeferred.push(async function(OneSignal) {
-            
-            // Check if native push is supported
-            const isSupported = OneSignal.Notifications.isPushSupported();
-            
-            if (isSupported) {
-                // OneSignal v16: Get permission directly
-                const permission = OneSignal.Notifications.permission;
-                
-                // Show if they haven't explicitly subscribed or denied natively AND haven't manually dismissed this modal
-                if (permission !== 'granted' && permission !== 'denied' && !localStorage.getItem('pushPromptDismissed')) {
-                    // Show our custom prompt after 4 seconds of page load
-                    setTimeout(() => {
-                        pushModal.classList.remove('opacity-0', 'pointer-events-none');
-                        pushContent.classList.remove('translate-y-10');
-                    }, 4000);
+        // Show our custom prompt after 4 seconds of page load
+        setTimeout(() => {
+            // Only show if user hasn't explicitly dismissed it manually before
+            if (!localStorage.getItem('pushPromptDismissed')) {
+                // If OneSignal is initialized, don't show if they already accepted/denied
+                if (window.OneSignal && window.OneSignal.Notifications) {
+                    const permission = window.OneSignal.Notifications.permission;
+                    if (permission === 'granted' || permission === 'denied') return;
                 }
-            }
-
-            allowPushBtn.addEventListener('click', async () => {
-                // Hide custom prompt visually right away
-                pushModal.classList.add('opacity-0', 'pointer-events-none');
-                pushContent.classList.add('translate-y-10');
                 
-                // Trigger the secure system-level browser prompt natively through OneSignal
-                await OneSignal.Notifications.requestPermission();
-            });
+                pushModal.classList.remove('opacity-0', 'pointer-events-none');
+                pushContent.classList.remove('translate-y-10');
+            }
+        }, 4000);
 
-            const handleDismiss = () => {
-                pushModal.classList.add('opacity-0', 'pointer-events-none');
-                pushContent.classList.add('translate-y-10');
-                localStorage.setItem('pushPromptDismissed', 'true'); 
-            };
+        allowPushBtn.addEventListener('click', () => {
+            // Hide custom prompt visually right away
+            pushModal.classList.add('opacity-0', 'pointer-events-none');
+            pushContent.classList.add('translate-y-10');
+            localStorage.setItem('pushPromptDismissed', 'true'); // don't show custom prompt again
+            
+            // Trigger the secure system-level browser prompt natively
+            if (window.OneSignal && window.OneSignal.Notifications) {
+                window.OneSignal.Notifications.requestPermission();
+            } else {
+                window.OneSignalDeferred = window.OneSignalDeferred || [];
+                window.OneSignalDeferred.push(function(OneSignal) {
+                    OneSignal.Notifications.requestPermission();
+                });
+            }
+        });
 
-            dismissPushBtn.addEventListener('click', handleDismiss);
-            closePushBtn.addEventListener('click', handleDismiss);
-            pushModal.addEventListener('click', (e) => {
-                if (e.target === pushModal) handleDismiss();
-            });
+        const handleDismiss = () => {
+            pushModal.classList.add('opacity-0', 'pointer-events-none');
+            pushContent.classList.add('translate-y-10');
+            localStorage.setItem('pushPromptDismissed', 'true'); 
+        };
+
+        dismissPushBtn.addEventListener('click', handleDismiss);
+        closePushBtn.addEventListener('click', handleDismiss);
+        pushModal.addEventListener('click', (e) => {
+            if (e.target === pushModal) handleDismiss();
         });
     }
 
