@@ -180,5 +180,78 @@ document.addEventListener('DOMContentLoaded', () => {
     // Also repeatedly show a new quote every 10 minutes (600,000 ms)
     setInterval(showMotivationalQuote, 600000);
 
+    // Festival Wishes Pop-up Logic
+    const showFestivalWishes = () => {
+        const today = new Date();
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const day = String(today.getDate()).padStart(2, '0');
+        const dateStr = `${month}-${day}`;
+        const fullDateStr = `${today.getFullYear()}-${month}-${day}`;
+
+        // Fixed date festivals
+        const fixedFestivals = {
+            '01-01': 'Happy New Year!',
+            '01-14': 'Happy Makar Sankranti!',
+            '01-26': 'Happy Republic Day!',
+            '02-14': "Happy Valentine's Day!",
+            '03-08': "Happy International Women's Day!",
+            '08-15': "Happy Independence Day!",
+            '10-02': "Happy Gandhi Jayanti!",
+            '10-31': "Happy Halloween!",
+            '12-25': "Merry Christmas!",
+            '12-31': "Happy New Year's Eve!"
+        };
+
+        // Dynamic festivals (approximations for 2026/2027)
+        const dynamicFestivals = {
+            '2026-03-04': 'Happy Holi!',
+            '2026-11-08': 'Happy Diwali!',
+            '2027-03-22': 'Happy Holi!',
+            '2027-10-29': 'Happy Diwali!',
+            '2026-03-23': 'Happy Festival Day!' // Demo for current testing day
+        };
+
+        const message = fixedFestivals[dateStr] || dynamicFestivals[fullDateStr];
+
+        if (!message) return; // Do nothing if not a festival day
+
+        // Create the popup element
+        const popup = document.createElement('div');
+        popup.className = 'fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[200] bg-slate-50/95 backdrop-blur-xl border border-accent-amber/20 shadow-2xl shadow-accent-amber/20 rounded-3xl p-8 flex flex-col items-center justify-center text-center opacity-0 scale-95 transition-all duration-500 max-w-[90%] sm:max-w-md pointer-events-none';
+        
+        popup.innerHTML = `
+            <div class="w-16 h-16 rounded-full bg-gradient-to-tr from-accent-amber to-orange-400 flex items-center justify-center mb-6 shadow-lg shadow-accent-amber/30 text-white animate-bounce">
+                <i data-feather="star" class="w-8 h-8 flex-shrink-0"></i>
+            </div>
+            <h2 class="text-2xl sm:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-accent-amber to-orange-500 mb-3 shimmer-text">
+                Best Wishes!
+            </h2>
+            <p class="text-slate-700 text-lg sm:text-xl font-medium leading-relaxed">
+                ${message}
+            </p>
+        `;
+
+        document.body.appendChild(popup);
+        
+        if (typeof feather !== 'undefined') {
+            feather.replace();
+        }
+
+        // Animate in after a short delay so it doesn't clash with immediate load rendering
+        setTimeout(() => {
+            popup.classList.remove('opacity-0', 'scale-95');
+            popup.classList.add('opacity-100', 'scale-100');
+            
+            // Auto dismiss after 5 seconds
+            setTimeout(() => {
+                popup.classList.remove('opacity-100', 'scale-100');
+                popup.classList.add('opacity-0', 'scale-95');
+                setTimeout(() => popup.remove(), 500); // DOM removal
+            }, 5000);
+        }, 2000);
+    };
+
+    // Run festival wishes
+    showFestivalWishes();
 
 });
