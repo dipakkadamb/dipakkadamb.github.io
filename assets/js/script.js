@@ -202,13 +202,20 @@ document.addEventListener('DOMContentLoaded', () => {
             '12-31': "Happy New Year's Eve!"
         };
 
-        // Dynamic festivals (approximations for 2026/2027)
+        // Dynamic festivals (2026 Major Indian Festivals)
         const dynamicFestivals = {
+            '2026-02-15': 'Happy Maha Shivaratri!',
             '2026-03-04': 'Happy Holi!',
+            '2026-03-20': 'Eid Mubarak!',
+            '2026-03-27': 'Happy Rama Navami!',
+            '2026-08-28': 'Happy Raksha Bandhan!',
+            '2026-09-04': 'Happy Krishna Janmashtami!',
+            '2026-09-14': 'Happy Ganesh Chaturthi!',
+            '2026-10-11': 'Happy Navratri!',
+            '2026-10-20': 'Happy Dussehra!',
             '2026-11-08': 'Happy Diwali!',
-            '2027-03-22': 'Happy Holi!',
-            '2027-10-29': 'Happy Diwali!',
-            '2026-03-23': 'Happy Festival Day!' // Demo for current testing day
+            '2026-11-11': 'Happy Bhai Dooj!',
+            '2026-03-23': 'Happy Developer Day!' // Demo for today's testing
         };
 
         const message = fixedFestivals[dateStr] || dynamicFestivals[fullDateStr];
