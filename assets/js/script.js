@@ -31,11 +31,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // Navbar Blur
                 if (scrollTop > 50) {
-                    navbar.classList.add('bg-navy-900/80', 'backdrop-blur-xl', 'shadow-lg');
-                    navbar.classList.remove('bg-navy-900/60');
+                    navbar.classList.add('bg-white/95', 'backdrop-blur-xl', 'shadow-md');
+                    navbar.classList.remove('bg-white/80', 'border-slate-900/5');
                 } else {
-                    navbar.classList.remove('bg-navy-900/80', 'backdrop-blur-xl', 'shadow-lg');
-                    navbar.classList.add('bg-navy-900/60');
+                    navbar.classList.remove('bg-white/95', 'backdrop-blur-xl', 'shadow-md');
+                    navbar.classList.add('bg-white/80', 'border-slate-900/5');
                 }
                 ticking = false;
             });
