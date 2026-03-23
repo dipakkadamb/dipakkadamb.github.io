@@ -75,31 +75,35 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Intersection Observer for Scroll Animations
-    // Optimization: Unobserve after first reveal to save memory and CPU
-    const observerOptions = {
-        root: null,
-        rootMargin: '0px 0px -50px 0px', // slightly trigger before it comes into view
-        threshold: 0.1
-    };
+    // Enhanced AOS Animations Setup
+    // Automatically supercharge all existing .reveal tags
+    document.querySelectorAll('.reveal-up').forEach(el => {
+        el.setAttribute('data-aos', 'fade-up');
+        if (el.style.animationDelay) {
+            el.setAttribute('data-aos-delay', parseInt(el.style.animationDelay));
+            el.style.animationDelay = '';
+            el.classList.remove('reveal-up'); // Let AOS handle opacity
+        }
+    });
 
-    if ('IntersectionObserver' in window) {
-        const observer = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    // Add a small delay for staggered effect inside the same viewport
-                    entry.target.classList.add('active');
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, observerOptions);
+    document.querySelectorAll('.reveal-left').forEach(el => {
+        el.setAttribute('data-aos', 'fade-right');
+        el.classList.remove('reveal-left');
+    });
 
-        const animatedElements = document.querySelectorAll('.reveal-up, .reveal-left, .reveal-right');
-        animatedElements.forEach(el => observer.observe(el));
-    } else {
-        // Fallback for older browsers
-        document.querySelectorAll('.reveal-up, .reveal-left, .reveal-right').forEach(el => el.classList.add('active'));
-    }
+    document.querySelectorAll('.reveal-right').forEach(el => {
+        el.setAttribute('data-aos', 'fade-left');
+        el.classList.remove('reveal-right');
+    });
+
+    // Initialize Premium AOS Animation Engine
+    AOS.init({
+        duration: 800,
+        easing: 'ease-out-cubic',
+        once: true,
+        offset: 50,
+        mirror: false // Don't animate out when scrolling past
+    });
 
     // Welcome Modal Logic
     const welcomeModal = document.getElementById('welcome-modal');
