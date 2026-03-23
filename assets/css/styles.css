@@ -1,5 +1,12 @@
 /* Base Styles and Custom Properties */
 
+/* CRITICAL: Fix AOS Mobile Viewport Breaking */
+html, body {
+  overflow-x: hidden !important;
+  width: 100%;
+  position: relative;
+}
+
 :root {
   --bg-grid: rgba(0, 0, 0, 0.04);
   --glass-bg: rgba(255, 255, 255, 0.7);
