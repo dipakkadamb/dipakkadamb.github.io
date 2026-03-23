@@ -82,8 +82,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (el.style.animationDelay) {
             el.setAttribute('data-aos-delay', parseInt(el.style.animationDelay));
             el.style.animationDelay = '';
-            el.classList.remove('reveal-up'); // Let AOS handle opacity
         }
+        el.classList.remove('reveal-up'); // Let AOS handle opacity
     });
 
     document.querySelectorAll('.reveal-left').forEach(el => {
