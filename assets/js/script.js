@@ -234,7 +234,7 @@ document.addEventListener('DOMContentLoaded', () => {
         popup.className = 'fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[200] w-full max-w-[95%] sm:max-w-lg rounded-3xl p-1 pointer-events-none opacity-0 scale-90 transition-all duration-700 ease-out flex flex-col items-center text-center';
         
         // Inner content with animated gradient border and glassmorphism
-        popup.innerHTML = \
+        popup.innerHTML = `
             <div class="absolute inset-0 bg-gradient-to-r from-orange-500 via-yellow-400 to-orange-500 animate-pulse-slow rounded-3xl opacity-80 backdrop-blur-xl"></div>
             <div class="relative w-full h-full bg-white/95 backdrop-blur-2xl rounded-[23px] p-8 sm:p-10 flex flex-col items-center justify-center shadow-2xl overflow-hidden glass-card">
                 <!-- Decorative animated glowing orbs -->
@@ -256,14 +256,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="w-16 h-1 bg-gradient-to-r from-orange-400 to-yellow-400 rounded-full mb-6 z-10"></div>
 
                 <p class="text-slate-800 text-xl sm:text-2xl font-semibold leading-relaxed tracking-wide z-10">
-                    $message
+                    ${message}
                 </p>
                 
                 <p class="text-slate-500 text-sm mt-6 font-medium italic opacity-90 z-10">
                     Wishing you joy and prosperity.
                 </p>
             </div>
-        \;
+        `;
 
         document.body.appendChild(backdrop);
         document.body.appendChild(popup);
