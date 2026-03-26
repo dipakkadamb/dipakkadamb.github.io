@@ -199,6 +199,7 @@ document.addEventListener('DOMContentLoaded', () => {
             '01-26': 'Happy Republic Day!',
             '02-14': "Happy Valentine's Day!",
             '03-08': "Happy International Women's Day!",
+            '04-20': 'Happy Birthday Dipak!',
             '08-15': "Happy Independence Day!",
             '10-02': "Happy Gandhi Jayanti!",
             '10-31': "Happy Halloween!",
