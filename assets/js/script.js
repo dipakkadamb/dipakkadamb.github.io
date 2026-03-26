@@ -225,40 +225,75 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (!message) return; // Do nothing if not a festival day
 
-        // Create the popup element
-        const popup = document.createElement('div');
-        popup.className = 'fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[200] bg-slate-50/95 backdrop-blur-xl border border-accent-amber/20 shadow-2xl shadow-accent-amber/20 rounded-3xl p-8 flex flex-col items-center justify-center text-center opacity-0 scale-95 transition-all duration-500 max-w-[90%] sm:max-w-md pointer-events-none';
-        
-        popup.innerHTML = `
-            <div class="w-16 h-16 rounded-full bg-gradient-to-tr from-accent-amber to-orange-400 flex items-center justify-center mb-6 shadow-lg shadow-accent-amber/30 text-white animate-bounce">
-                <i data-feather="star" class="w-8 h-8 flex-shrink-0"></i>
-            </div>
-            <h2 class="text-2xl sm:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-accent-amber to-orange-500 mb-3 shimmer-text">
-                Best Wishes!
-            </h2>
-            <p class="text-slate-700 text-lg sm:text-xl font-medium leading-relaxed">
-                ${message}
-            </p>
-        `;
+        // Create backdrop overlay
+        const backdrop = document.createElement('div');
+        backdrop.className = 'fixed inset-0 z-[190] bg-slate-900/60 backdrop-blur-md opacity-0 transition-opacity duration-700 pointer-events-none';
 
+        // Create the premium popup element container
+        const popup = document.createElement('div');
+        popup.className = 'fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[200] w-full max-w-[95%] sm:max-w-lg rounded-3xl p-1 pointer-events-none opacity-0 scale-90 transition-all duration-700 ease-out flex flex-col items-center text-center';
+        
+        // Inner content with animated gradient border and glassmorphism
+        popup.innerHTML = \
+            <div class="absolute inset-0 bg-gradient-to-r from-orange-500 via-yellow-400 to-orange-500 animate-pulse-slow rounded-3xl opacity-80 backdrop-blur-xl"></div>
+            <div class="relative w-full h-full bg-white/95 backdrop-blur-2xl rounded-[23px] p-8 sm:p-10 flex flex-col items-center justify-center shadow-2xl overflow-hidden glass-card">
+                <!-- Decorative animated glowing orbs -->
+                <div class="absolute top-0 right-0 w-32 h-32 bg-orange-300/40 rounded-full blur-3xl -mr-10 -mt-10 animate-float"></div>
+                <div class="absolute bottom-0 left-0 w-32 h-32 bg-yellow-300/40 rounded-full blur-3xl -ml-10 -mb-10 animate-float" style="animation-delay: 2s;"></div>
+
+                <!-- Premium Icon Container -->
+                <div class="relative mb-6">
+                    <div class="absolute inset-0 bg-orange-400 rounded-full blur-xl opacity-60 animate-glow-pulse"></div>
+                    <div class="relative w-20 h-20 rounded-full bg-gradient-to-tr from-orange-500 to-yellow-400 flex items-center justify-center shadow-xl shadow-orange-500/40 text-white animate-bounce-glow border-4 border-white/80 backdrop-blur-sm">
+                        <i data-feather="gift" class="w-10 h-10 drop-shadow-md"></i>
+                    </div>
+                </div>
+
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-yellow-500 mb-4 tracking-tight shimmer-text drop-shadow-sm z-10">
+                    Festive Greetings!
+                </h2>
+                
+                <div class="w-16 h-1 bg-gradient-to-r from-orange-400 to-yellow-400 rounded-full mb-6 z-10"></div>
+
+                <p class="text-slate-800 text-xl sm:text-2xl font-semibold leading-relaxed tracking-wide z-10">
+                    $message
+                </p>
+                
+                <p class="text-slate-500 text-sm mt-6 font-medium italic opacity-90 z-10">
+                    Wishing you joy and prosperity.
+                </p>
+            </div>
+        \;
+
+        document.body.appendChild(backdrop);
         document.body.appendChild(popup);
         
         if (typeof feather !== 'undefined') {
             feather.replace();
         }
 
-        // Animate in after a short delay so it doesn't clash with immediate load rendering
+        // Animate in after a short delay for cinematic entrance
         setTimeout(() => {
-            popup.classList.remove('opacity-0', 'scale-95');
+            backdrop.classList.remove('opacity-0');
+            backdrop.classList.add('opacity-100');
+            
+            popup.classList.remove('opacity-0', 'scale-90');
             popup.classList.add('opacity-100', 'scale-100');
             
-            // Auto dismiss after 5 seconds
+            // Auto dismiss after 8 seconds (extended from 5s)
             setTimeout(() => {
+                backdrop.classList.remove('opacity-100');
+                backdrop.classList.add('opacity-0');
+                
                 popup.classList.remove('opacity-100', 'scale-100');
-                popup.classList.add('opacity-0', 'scale-95');
-                setTimeout(() => popup.remove(), 500); // DOM removal
-            }, 5000);
-        }, 2000);
+                popup.classList.add('opacity-0', 'scale-90', 'translate-y-4');
+                
+                setTimeout(() => {
+                    popup.remove();
+                    backdrop.remove();
+                }, 700); // Wait for transition to finish
+            }, 8000);
+        }, 1500);
     };
 
     // Run festival wishes

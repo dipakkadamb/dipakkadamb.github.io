@@ -197,7 +197,7 @@ html, body {
 }
 
 /* mix-blend-mode: multiply — white bg from logo disappears on dark navy */
-img[src="company-logo.png"] {
+img[src="assets/img/profile.png"] {
   mix-blend-mode: normal;
 }
 
