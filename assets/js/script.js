@@ -211,7 +211,7 @@ document.addEventListener('DOMContentLoaded', () => {
             '2026-02-15': 'Happy Maha Shivaratri!',
             '2026-03-04': 'Happy Holi!',
             '2026-03-20': 'Eid Mubarak!',
-            '2026-03-27': 'Happy Rama Navami!',
+            '2026-03-26': 'Happy Rama Navami!',
             '2026-08-28': 'Happy Raksha Bandhan!',
             '2026-09-04': 'Happy Krishna Janmashtami!',
             '2026-09-14': 'Happy Ganesh Chaturthi!',
