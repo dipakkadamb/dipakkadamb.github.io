@@ -142,28 +142,37 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Motivational Quotes Logic
-    const motivationalQuotes = [
+    // Motivational Quotes Logic — Fetches from Quotable API with fallback
+    const fallbackQuotes = [
         "The only way to do great work is to love what you do.",
         "Talk is cheap. Show me the code.",
         "First, solve the problem. Then, write the code.",
         "Make it work, make it right, make it fast.",
-        "Simplicity is the soul of efficiency.",
-        "Success is not final, failure is not fatal: it is the courage to continue that counts.",
-        "Optimism is an occupational hazard of programming.",
-        "Don't comment bad code - rewrite it.",
-        "It's not a bug. It's an undocumented feature!",
-        "Any fool can write code that a computer can understand. Good programmers write code that humans can understand."
+        "Simplicity is the soul of efficiency."
     ];
 
     const motivationalToast = document.getElementById('motivational-toast');
     const motivationalQuoteEl = document.getElementById('motivational-quote');
 
-    const showMotivationalQuote = () => {
+    const showMotivationalQuote = async () => {
         if (!motivationalToast || !motivationalQuoteEl) return;
 
-        const randomQuote = motivationalQuotes[Math.floor(Math.random() * motivationalQuotes.length)];
-        motivationalQuoteEl.textContent = `"${randomQuote}"`;
+        let quoteText;
+        try {
+            const res = await fetch('https://api.quotable.io/quotes/random');
+            if (res.ok) {
+                const data = await res.json();
+                quoteText = data[0]?.content || null;
+            }
+        } catch (e) {
+            // API failed, use fallback
+        }
+
+        if (!quoteText) {
+            quoteText = fallbackQuotes[Math.floor(Math.random() * fallbackQuotes.length)];
+        }
+
+        motivationalQuoteEl.textContent = `"${quoteText}"`;
 
         // Slide in
         motivationalToast.classList.remove('translate-x-[150%]', 'opacity-0');
