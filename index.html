@@ -9,19 +9,7 @@
     <!-- Google Tag Gateway for SEO -->
     <script async src="https://api.cloudflare.com/client/v4/zones/7d378fbc058122f01ed4b160ea47b262/settings/google-tag-gateway/config"></script>
     
-    <!-- OneSignal Web Push Notifications -->
-    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-    <script>
-      window.OneSignalDeferred = window.OneSignalDeferred || [];
-      OneSignalDeferred.push(async function(OneSignal) {
-        await OneSignal.init({
-          appId: "34f679de-326c-4cb0-8834-7c3e96550784",
-        });
-        
-        // Trigger the single native browser prompt directly
-        OneSignal.Notifications.requestPermission();
-      });
-    </script>
+
     <!-- SEO & Open Graph -->
     <meta name="description"
         content="Dipak Kadamb is an AI Web Developer &amp; Zoho Specialist based in Pune, India. Building intelligent web solutions, Zoho automations, and IT infrastructure.">
