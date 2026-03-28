@@ -81,7 +81,11 @@
       "url": "https://dipakkadamb.github.io"
     }
     </script>
+    <!-- Calendly -->
+    <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+    <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
 </head>
+
 
 <body class="text-slate-700 font-sans overflow-x-hidden relative">
     <!-- Optimized Background Elements -->
@@ -816,140 +820,86 @@
         <section id="services" class="py-20 lg:py-28 px-4 sm:px-6 lg:px-12 relative border-t border-slate-900/5">
             <div class="max-w-7xl mx-auto">
                 <div class="mb-12 lg:mb-16 text-center reveal-up max-w-3xl mx-auto">
-                    <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-4 tracking-tight">Services &
-                        Solutions<span class="text-accent-cyan">.</span></h2>
-                    <p class="text-slate-600 text-base lg:text-lg">Professional offerings designed to streamline
-                        operations, enhance your digital presence, and build robust systems.</p>
+                    <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-4 tracking-tight">Outcome-Driven Packages<span class="text-accent-cyan">.</span></h2>
+                    <p class="text-slate-600 text-base lg:text-lg">Stop paying for hours and start paying for results. Here are my primary engagement packages designed to scale your business.</p>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 mb-16 lg:mb-20">
-                    <!-- Service 1 -->
-                    <div
-                        class="glass-card p-6 lg:p-10 rounded-2xl group hover:-translate-y-2 transition-transform duration-300 reveal-up">
-                        <div
-                            class="w-14 h-14 rounded-xl bg-accent-blue/10 border border-accent-blue/20 flex items-center justify-center mb-6 text-accent-blue group-hover:bg-accent-blue group-hover:text-slate-900 transition-all duration-300 shadow-lg shadow-accent-blue/10">
-                            <i data-feather="layout" class="w-6 h-6"></i>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 mb-16 lg:mb-20 items-stretch">
+                    <!-- Package 1: AI Web App Blueprint -->
+                    <div class="glass-card p-6 lg:p-10 rounded-2xl group hover:-translate-y-2 transition-transform duration-300 reveal-up flex flex-col h-full border border-slate-900/10 hover:border-accent-blue/40 shadow-xl relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-accent-blue/10 blur-2xl rounded-bl-full pointer-events-none transition-opacity group-hover:opacity-100 opacity-0"></div>
+                        <div class="w-14 h-14 rounded-xl bg-accent-blue/10 border border-accent-blue/20 flex items-center justify-center mb-6 text-accent-blue group-hover:bg-accent-blue group-hover:text-white transition-all duration-300 shadow-lg shadow-accent-blue/10">
+                            <i data-feather="monitor" class="w-6 h-6"></i>
                         </div>
-                        <h3 class="text-xl lg:text-2xl font-bold text-slate-900 mb-3">AI Web Development</h3>
-                        <p class="text-slate-600 mb-6 text-sm lg:text-base leading-relaxed">Custom, high-performance web
-                            applications built with modern frameworks and supercharged by AI integrations.</p>
-                        <ul class="space-y-3 text-sm lg:text-base text-slate-700 font-medium">
-                            <li class="flex items-center gap-3"><i data-feather="check"
-                                    class="w-4 h-4 text-accent-blue"></i> Responsive Front-ends</li>
-                            <li class="flex items-center gap-3"><i data-feather="check"
-                                    class="w-4 h-4 text-accent-blue"></i> AI Chatbots & APIs</li>
-                            <li class="flex items-center gap-3"><i data-feather="check"
-                                    class="w-4 h-4 text-accent-blue"></i> Custom Dashboards</li>
-                        </ul>
-                        <div class="mt-6 pt-5 border-t border-slate-900/5">
-                            <div class="text-xs uppercase tracking-widest text-slate-400 font-mono mb-3">Starting at ₹15,000</div>
-                            <a href="#contact" class="inline-flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-accent-blue/10 border border-accent-blue/20 text-accent-blue text-sm font-semibold hover:bg-accent-blue hover:text-white transition-all duration-300">
-                                <i data-feather="phone" class="w-4 h-4"></i> Book a Free Call
-                            </a>
+                        <h3 class="text-xl lg:text-2xl font-bold text-slate-900 mb-2">The AI Web App Blueprint</h3>
+                        <p class="text-slate-600 mb-6 text-sm lg:text-base leading-relaxed flex-grow">Perfect for startups and businesses needing custom digital products. We build a fully scalable, AI-integrated web or mobile application ready for launch.</p>
+                        <div class="space-y-3 text-sm text-slate-700 font-medium mb-8">
+                            <div class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">The Outcome:</div>
+                            <li class="flex items-start gap-3"><i data-feather="check-circle" class="w-4 h-4 text-accent-blue flex-shrink-0 mt-0.5"></i> <span>Custom, high-performance web architecture</span></li>
+                            <li class="flex items-start gap-3"><i data-feather="check-circle" class="w-4 h-4 text-accent-blue flex-shrink-0 mt-0.5"></i> <span>AI integrations (chatbots, internal tools)</span></li>
+                            <li class="flex items-start gap-3"><i data-feather="check-circle" class="w-4 h-4 text-accent-blue flex-shrink-0 mt-0.5"></i> <span>Scalable cloud-ready deployment</span></li>
+                        </div>
+                        <div class="mt-auto pt-5 border-t border-slate-900/5">
+                            <div class="flex justify-between items-center mb-4">
+                                <span class="text-xs font-mono text-slate-500 uppercase">Est. Timeline</span>
+                                <span class="text-sm font-bold text-slate-900">4-6 Weeks</span>
+                            </div>
+                            <button onclick="openCalendly(event)" class="inline-flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-slate-900 text-white text-sm font-bold hover:bg-slate-800 transition-all duration-300 shadow-md hover:shadow-lg">
+                                Book a Discovery Call <i data-feather="arrow-right" class="w-4 h-4"></i>
+                            </button>
                         </div>
                     </div>
 
-                    <!-- Service 2 -->
-                    <div class="glass-card p-6 lg:p-10 rounded-2xl group hover:-translate-y-2 transition-transform duration-300 reveal-up"
-                        style="animation-delay: 100ms;">
-                        <div
-                            class="w-14 h-14 rounded-xl bg-accent-teal/10 border border-accent-teal/20 flex items-center justify-center mb-6 text-accent-teal group-hover:bg-accent-teal group-hover:text-slate-900 transition-all duration-300 shadow-lg shadow-accent-teal/10">
+                    <!-- Package 2: Workflow Overhaul -->
+                    <div class="glass-card p-6 lg:p-10 rounded-2xl group hover:-translate-y-2 transition-transform duration-300 reveal-up flex flex-col h-full border border-slate-900/10 hover:border-accent-teal/40 shadow-xl relative overflow-hidden" style="animation-delay: 150ms;">
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-accent-teal/10 blur-2xl rounded-bl-full pointer-events-none transition-opacity group-hover:opacity-100 opacity-0"></div>
+                        <!-- Popular Badge -->
+                        <div class="absolute top-4 right-4 bg-gradient-to-r from-accent-teal to-accent-cyan text-white text-[10px] font-bold uppercase tracking-wider py-1 px-3 rounded-full shadow-sm">Most Popular</div>
+                        
+                        <div class="w-14 h-14 rounded-xl bg-accent-teal/10 border border-accent-teal/20 flex items-center justify-center mb-6 text-accent-teal group-hover:bg-accent-teal group-hover:text-white transition-all duration-300 shadow-lg shadow-accent-teal/10 mt-2">
                             <i data-feather="repeat" class="w-6 h-6"></i>
                         </div>
-                        <h3 class="text-xl lg:text-2xl font-bold text-slate-900 mb-3">Zoho Automation</h3>
-                        <p class="text-slate-600 mb-6 text-sm lg:text-base leading-relaxed">End-to-end business
-                            automation using the Zoho Suite and custom Deluge scripting to eliminate manual work.</p>
-                        <ul class="space-y-3 text-sm lg:text-base text-slate-700 font-medium">
-                            <li class="flex items-center gap-3"><i data-feather="check"
-                                    class="w-4 h-4 text-accent-teal"></i> CRM Customization</li>
-                            <li class="flex items-center gap-3"><i data-feather="check"
-                                    class="w-4 h-4 text-accent-teal"></i> Multi-App Workflows</li>
-                            <li class="flex items-center gap-3"><i data-feather="check"
-                                    class="w-4 h-4 text-accent-teal"></i> Custom Creator Apps</li>
-                        </ul>
-                        <div class="mt-6 pt-5 border-t border-slate-900/5">
-                            <div class="text-xs uppercase tracking-widest text-slate-400 font-mono mb-3">Starting at ₹10,000</div>
-                            <a href="#contact" class="inline-flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-accent-teal/10 border border-accent-teal/20 text-accent-teal text-sm font-semibold hover:bg-accent-teal hover:text-white transition-all duration-300">
-                                <i data-feather="phone" class="w-4 h-4"></i> Book a Free Call
-                            </a>
+                        <h3 class="text-xl lg:text-2xl font-bold text-slate-900 mb-2">The Workflow Overhaul</h3>
+                        <p class="text-slate-600 mb-6 text-sm lg:text-base leading-relaxed flex-grow">Designed for growing teams losing time to manual data entry. We'll map your processes and connect Zoho CRM & custom APIs.</p>
+                        <div class="space-y-3 text-sm text-slate-700 font-medium mb-8">
+                            <div class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">The Outcome:</div>
+                            <li class="flex items-start gap-3"><i data-feather="check-circle" class="w-4 h-4 text-accent-teal flex-shrink-0 mt-0.5"></i> <span>Save your team 20+ hours a week</span></li>
+                            <li class="flex items-start gap-3"><i data-feather="check-circle" class="w-4 h-4 text-accent-teal flex-shrink-0 mt-0.5"></i> <span>Eliminate human error with automation</span></li>
+                            <li class="flex items-start gap-3"><i data-feather="check-circle" class="w-4 h-4 text-accent-teal flex-shrink-0 mt-0.5"></i> <span>End-to-end Zoho Suite customization</span></li>
+                        </div>
+                        <div class="mt-auto pt-5 border-t border-slate-900/5">
+                            <div class="flex justify-between items-center mb-4">
+                                <span class="text-xs font-mono text-slate-500 uppercase">Est. Timeline</span>
+                                <span class="text-sm font-bold text-slate-900">2-4 Weeks</span>
+                            </div>
+                            <button onclick="openCalendly(event)" class="inline-flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-slate-900 text-white text-sm font-bold hover:bg-slate-800 transition-all duration-300 shadow-md hover:shadow-lg">
+                                Book a Discovery Call <i data-feather="arrow-right" class="w-4 h-4"></i>
+                            </button>
                         </div>
                     </div>
 
-                    <!-- Service 3 -->
-                    <div class="glass-card p-6 lg:p-10 rounded-2xl group hover:-translate-y-2 transition-transform duration-300 reveal-up"
-                        style="animation-delay: 200ms;">
-                        <div
-                            class="w-14 h-14 rounded-xl bg-accent-amber/10 border border-accent-amber/20 flex items-center justify-center mb-6 text-accent-amber group-hover:bg-accent-amber group-hover:text-slate-900 transition-all duration-300 shadow-lg shadow-accent-amber/10">
+                    <!-- Package 3: Enterprise IT Foundation -->
+                    <div class="glass-card p-6 lg:p-10 rounded-2xl group hover:-translate-y-2 transition-transform duration-300 reveal-up flex flex-col h-full border border-slate-900/10 hover:border-accent-amber/40 shadow-xl relative overflow-hidden" style="animation-delay: 300ms;">
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-accent-amber/10 blur-2xl rounded-bl-full pointer-events-none transition-opacity group-hover:opacity-100 opacity-0"></div>
+                        <div class="w-14 h-14 rounded-xl bg-accent-amber/10 border border-accent-amber/20 flex items-center justify-center mb-6 text-accent-amber group-hover:bg-accent-amber group-hover:text-white transition-all duration-300 shadow-lg shadow-accent-amber/10">
                             <i data-feather="hard-drive" class="w-6 h-6"></i>
                         </div>
-                        <h3 class="text-xl lg:text-2xl font-bold text-slate-900 mb-3">IT Infrastructure</h3>
-                        <p class="text-slate-600 mb-6 text-sm lg:text-base leading-relaxed">Consultancy and
-                            implementation for robust, secure, and scalable server environments and network systems.</p>
-                        <ul class="space-y-3 text-sm lg:text-base text-slate-700 font-medium">
-                            <li class="flex items-center gap-3"><i data-feather="check"
-                                    class="w-4 h-4 text-accent-amber"></i> Server Administration</li>
-                            <li class="flex items-center gap-3"><i data-feather="check"
-                                    class="w-4 h-4 text-accent-amber"></i> Monitoring Setup</li>
-                            <li class="flex items-center gap-3"><i data-feather="check"
-                                    class="w-4 h-4 text-accent-amber"></i> IT Security Audits</li>
-                        </ul>
-                        <div class="mt-6 pt-5 border-t border-slate-900/5">
-                            <div class="text-xs uppercase tracking-widest text-slate-400 font-mono mb-3">Starting at ₹8,000</div>
-                            <a href="#contact" class="inline-flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-accent-amber/10 border border-accent-amber/20 text-accent-amber text-sm font-semibold hover:bg-accent-amber hover:text-white transition-all duration-300">
-                                <i data-feather="phone" class="w-4 h-4"></i> Book a Free Call
-                            </a>
+                        <h3 class="text-xl lg:text-2xl font-bold text-slate-900 mb-2">Enterprise IT Foundation</h3>
+                        <p class="text-slate-600 mb-6 text-sm lg:text-base leading-relaxed flex-grow">For companies needing rock-solid server performance. We build and monitor environments so you never worry about downtime.</p>
+                        <div class="space-y-3 text-sm text-slate-700 font-medium mb-8">
+                            <div class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">The Outcome:</div>
+                            <li class="flex items-start gap-3"><i data-feather="check-circle" class="w-4 h-4 text-accent-amber flex-shrink-0 mt-0.5"></i> <span>Secure & monitored infrastructure</span></li>
+                            <li class="flex items-start gap-3"><i data-feather="check-circle" class="w-4 h-4 text-accent-amber flex-shrink-0 mt-0.5"></i> <span>Scalable architecture for high traffic</span></li>
+                            <li class="flex items-start gap-3"><i data-feather="check-circle" class="w-4 h-4 text-accent-amber flex-shrink-0 mt-0.5"></i> <span>Comprehensive IT security audit</span></li>
                         </div>
-                    </div>
-
-                    <!-- Service 4 -->
-                    <div class="glass-card p-6 lg:p-10 rounded-2xl group hover:-translate-y-2 transition-transform duration-300 reveal-up"
-                        style="animation-delay: 300ms;">
-                        <div
-                            class="w-14 h-14 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center mb-6 text-purple-500 group-hover:bg-purple-500 group-hover:text-white transition-all duration-300 shadow-lg shadow-purple-500/10">
-                            <i data-feather="smartphone" class="w-6 h-6"></i>
-                        </div>
-                        <h3 class="text-xl lg:text-2xl font-bold text-slate-900 mb-3">Application Development</h3>
-                        <p class="text-slate-600 mb-6 text-sm lg:text-base leading-relaxed">Full-cycle application
-                            development — from concept to deployment — with scalable architecture and intuitive user experiences.</p>
-                        <ul class="space-y-3 text-sm lg:text-base text-slate-700 font-medium">
-                            <li class="flex items-center gap-3"><i data-feather="check"
-                                    class="w-4 h-4 text-purple-500"></i> Web & Mobile Apps</li>
-                            <li class="flex items-center gap-3"><i data-feather="check"
-                                    class="w-4 h-4 text-purple-500"></i> SaaS Platforms</li>
-                            <li class="flex items-center gap-3"><i data-feather="check"
-                                    class="w-4 h-4 text-purple-500"></i> API & Backend Systems</li>
-                        </ul>
-                        <div class="mt-6 pt-5 border-t border-slate-900/5">
-                            <div class="text-xs uppercase tracking-widest text-slate-400 font-mono mb-3">Starting at ₹20,000</div>
-                            <a href="#contact" class="inline-flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-purple-500/10 border border-purple-500/20 text-purple-500 text-sm font-semibold hover:bg-purple-500 hover:text-white transition-all duration-300">
-                                <i data-feather="phone" class="w-4 h-4"></i> Book a Free Call
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- Service 5 -->
-                    <div class="glass-card p-6 lg:p-10 rounded-2xl group hover:-translate-y-2 transition-transform duration-300 reveal-up"
-                        style="animation-delay: 400ms;">
-                        <div
-                            class="w-14 h-14 rounded-xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center mb-6 text-rose-500 group-hover:bg-rose-500 group-hover:text-white transition-all duration-300 shadow-lg shadow-rose-500/10">
-                            <i data-feather="zap" class="w-6 h-6"></i>
-                        </div>
-                        <h3 class="text-xl lg:text-2xl font-bold text-slate-900 mb-3">Application Automation</h3>
-                        <p class="text-slate-600 mb-6 text-sm lg:text-base leading-relaxed">Automate repetitive tasks,
-                            streamline inter-app workflows, and boost productivity with intelligent process automation.</p>
-                        <ul class="space-y-3 text-sm lg:text-base text-slate-700 font-medium">
-                            <li class="flex items-center gap-3"><i data-feather="check"
-                                    class="w-4 h-4 text-rose-500"></i> Workflow Automation</li>
-                            <li class="flex items-center gap-3"><i data-feather="check"
-                                    class="w-4 h-4 text-rose-500"></i> Data Sync & Pipelines</li>
-                            <li class="flex items-center gap-3"><i data-feather="check"
-                                    class="w-4 h-4 text-rose-500"></i> Scheduled Task Bots</li>
-                        </ul>
-                        <div class="mt-6 pt-5 border-t border-slate-900/5">
-                            <div class="text-xs uppercase tracking-widest text-slate-400 font-mono mb-3">Starting at ₹12,000</div>
-                            <a href="#contact" class="inline-flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-500 text-sm font-semibold hover:bg-rose-500 hover:text-white transition-all duration-300">
-                                <i data-feather="phone" class="w-4 h-4"></i> Book a Free Call
-                            </a>
+                        <div class="mt-auto pt-5 border-t border-slate-900/5">
+                            <div class="flex justify-between items-center mb-4">
+                                <span class="text-xs font-mono text-slate-500 uppercase">Est. Timeline</span>
+                                <span class="text-sm font-bold text-slate-900">Custom Scope</span>
+                            </div>
+                            <button onclick="openCalendly(event)" class="inline-flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-slate-900 text-white text-sm font-bold hover:bg-slate-800 transition-all duration-300 shadow-md hover:shadow-lg">
+                                Book a Discovery Call <i data-feather="arrow-right" class="w-4 h-4"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -977,10 +927,10 @@
                         class="text-slate-600 text-base lg:text-lg mb-10 max-w-2xl mx-auto leading-relaxed relative z-10">
                         Whether you need a full-scale web application, a complex Zoho automation, or server
                         infrastructure guidance, I'm here to turn ideas into functional realities.</p>
-                    <a href="#contact"
-                        class="inline-flex items-center justify-center gap-3 px-10 py-4 rounded-full bg-slate-900 text-white hover:bg-slate-800 font-bold hover:bg-slate-100 hover:shadow-[0_0_25px_rgba(255,255,255,0.3)] transition-all duration-300 hover:-translate-y-1 relative z-10">
-                        Let's Talk <i data-feather="arrow-right" class="w-5 h-5"></i>
-                    </a>
+                    <button onclick="openCalendly(event)"
+                        class="inline-flex items-center justify-center gap-3 px-10 py-4 rounded-full bg-slate-900 text-white hover:bg-slate-800 font-bold hover:shadow-[0_0_25px_rgba(255,255,255,0.3)] transition-all duration-300 hover:-translate-y-1 relative z-10">
+                        Book a Discovery Call <i data-feather="calendar" class="w-5 h-5"></i>
+                    </button>
                 </div>
             </div>
         </section>

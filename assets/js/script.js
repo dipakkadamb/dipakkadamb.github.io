@@ -515,3 +515,21 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 });
+
+// =====================================
+// Calendly Booking Integration
+// =====================================
+window.openCalendly = function (e) {
+    if (e) {
+        e.preventDefault();
+    }
+    if (typeof Calendly !== 'undefined') {
+        // Init Calendly popup with placeholder link. 
+        // User should replace 'dipakkadamb' with their actual calendly username
+        Calendly.initPopupWidget({ url: 'https://calendly.com/dipakkadamb' });
+    } else {
+        console.warn('Calendly script not initialized. Opening in new tab.');
+        window.open('https://calendly.com/dipakkadamb', '_blank');
+    }
+    return false;
+}
