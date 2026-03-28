@@ -157,33 +157,21 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // Scroll-aware: hide on scroll down, re-show at top for 3s
-        let isModalVisibleByScroll = true;
-        let lastScrollForModal = 0;
+        // Scroll-aware: hide automatically on scroll down so it doesn't disturb the visitor.
+        // Once hidden by scroll, it will NOT re-appear automatically.
+        let hasHiddenDueToScroll = false;
 
         window.addEventListener('scroll', () => {
+            // If already hidden by scroll or manual close, do nothing
+            if (hasHiddenDueToScroll || modalManualClosed) return;
+
             const scrollY = window.scrollY;
 
-            // User scrolled down past 100px — hide modal
-            if (scrollY > 100 && isModalVisibleByScroll) {
-                isModalVisibleByScroll = false;
+            // User scrolled down past 100px — hide modal permanently
+            if (scrollY > 100) {
+                hasHiddenDueToScroll = true;
                 closeModal();
             }
-
-            // User scrolled back to top — re-show for 3 seconds
-            if (scrollY < 100 && !isModalVisibleByScroll && !modalManualClosed) {
-                isModalVisibleByScroll = true;
-                openModal();
-
-                // Auto-close after 3 seconds
-                if (modalAutoHideTimer) clearTimeout(modalAutoHideTimer);
-                modalAutoHideTimer = setTimeout(() => {
-                    closeModal();
-                    isModalVisibleByScroll = false;
-                }, 3000);
-            }
-
-            lastScrollForModal = scrollY;
         }, { passive: true });
     }
 
