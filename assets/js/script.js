@@ -105,21 +105,17 @@ document.addEventListener('DOMContentLoaded', () => {
         mirror: false // Don't animate out when scrolling past
     });
 
-    // Welcome Modal Logic
+    // Welcome Modal Logic — Scroll-Aware
     const welcomeModal = document.getElementById('welcome-modal');
     const welcomeModalContent = document.getElementById('welcome-modal-content');
     const closeModalBtn = document.getElementById('close-modal-btn');
 
     if (welcomeModal && closeModalBtn) {
-        // Show modal after a short delay on load
-        setTimeout(() => {
-            welcomeModal.classList.remove('opacity-0', 'pointer-events-none');
-            welcomeModalContent.classList.remove('scale-95');
-            welcomeModalContent.classList.add('scale-100');
-        }, 1000); // 1s delay
+        let modalAutoHideTimer = null;
+        let modalManualClosed = false; // Track if user manually closed via X
 
-        // Expose open modal function globally
-        window.openWelcomeModal = () => {
+        // Open modal function
+        const openModal = () => {
             welcomeModal.classList.remove('opacity-0', 'pointer-events-none');
             welcomeModalContent.classList.remove('scale-95');
             welcomeModalContent.classList.add('scale-100');
@@ -130,16 +126,65 @@ document.addEventListener('DOMContentLoaded', () => {
             welcomeModal.classList.add('opacity-0', 'pointer-events-none');
             welcomeModalContent.classList.remove('scale-100');
             welcomeModalContent.classList.add('scale-95');
+            if (modalAutoHideTimer) {
+                clearTimeout(modalAutoHideTimer);
+                modalAutoHideTimer = null;
+            }
         };
 
-        closeModalBtn.addEventListener('click', closeModal);
+        // Show modal on initial page load (1s delay)
+        setTimeout(() => {
+            openModal();
+        }, 1000);
+
+        // Expose open modal function globally (for Contact Me button)
+        window.openWelcomeModal = () => {
+            modalManualClosed = false;
+            openModal();
+        };
+
+        // Close button click
+        closeModalBtn.addEventListener('click', () => {
+            modalManualClosed = true;
+            closeModal();
+        });
 
         // Close on outside click
         welcomeModal.addEventListener('click', (e) => {
             if (e.target === welcomeModal) {
+                modalManualClosed = true;
                 closeModal();
             }
         });
+
+        // Scroll-aware: hide on scroll down, re-show at top for 3s
+        let isModalVisibleByScroll = true;
+        let lastScrollForModal = 0;
+
+        window.addEventListener('scroll', () => {
+            const scrollY = window.scrollY;
+
+            // User scrolled down past 100px — hide modal
+            if (scrollY > 100 && isModalVisibleByScroll) {
+                isModalVisibleByScroll = false;
+                closeModal();
+            }
+
+            // User scrolled back to top — re-show for 3 seconds
+            if (scrollY < 100 && !isModalVisibleByScroll && !modalManualClosed) {
+                isModalVisibleByScroll = true;
+                openModal();
+
+                // Auto-close after 3 seconds
+                if (modalAutoHideTimer) clearTimeout(modalAutoHideTimer);
+                modalAutoHideTimer = setTimeout(() => {
+                    closeModal();
+                    isModalVisibleByScroll = false;
+                }, 3000);
+            }
+
+            lastScrollForModal = scrollY;
+        }, { passive: true });
     }
 
     // Motivational Quotes Logic — Fetches from Quotable API with fallback
