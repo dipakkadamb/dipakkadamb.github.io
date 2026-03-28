@@ -364,74 +364,120 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ============================
-    // Cinematic Map Zoom from Space
+    // Satellite Map Flythrough (Leaflet + ESRI Imagery)
     // ============================
-    const mapCinematic = document.getElementById('map-cinematic');
-    if (mapCinematic) {
-        let mapAnimationPlayed = false;
+    const mapContainer = document.getElementById('map-flyto');
+    if (mapContainer && typeof L !== 'undefined') {
+        // Initialize Leaflet map — start at world view (zoom 2)
+        const map = L.map('map-flyto', {
+            center: [20, 40],
+            zoom: 2,
+            zoomControl: false,
+            scrollWheelZoom: false,
+            doubleClickZoom: false,
+            dragging: false,
+            keyboard: false,
+            touchZoom: false,
+            boxZoom: false
+        });
 
+        // ESRI World Imagery — real satellite photos, free, no API key
+        L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+            maxZoom: 18,
+            attribution: '&copy; Esri &mdash; Source: Esri, Maxar, Earthstar Geographics'
+        }).addTo(map);
+
+        let flyAnimationStarted = false;
+
+        // Intersection Observer — trigger flyTo when section scrolls into view
         const mapObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting && !mapAnimationPlayed) {
-                    mapAnimationPlayed = true;
-                    startMapZoomAnimation();
-                    mapObserver.disconnect();
-                }
-            });
-        }, { threshold: 0.3 });
+            if (entries[0].isIntersecting && !flyAnimationStarted) {
+                flyAnimationStarted = true;
+                startFlyToAnimation();
+                mapObserver.disconnect();
+            }
+        }, { threshold: 0.25 });
 
-        mapObserver.observe(mapCinematic);
+        mapObserver.observe(mapContainer);
 
-        function startMapZoomAnimation() {
-            const container = mapCinematic;
+        function startFlyToAnimation() {
             const zoomStatus = document.getElementById('map-zoom-status');
             const zoomText = document.getElementById('map-zoom-text');
+            const infoCard = document.getElementById('map-info-card');
             const mapTags = document.getElementById('map-tags');
 
-            // Show zoom status indicator
-            if (zoomStatus) {
-                zoomStatus.style.opacity = '1';
-            }
+            // Show zoom HUD
+            if (zoomStatus) zoomStatus.style.opacity = '1';
+            if (zoomText) zoomText.textContent = 'ZOOMING FROM SPACE...';
 
-            // Phase 1: Earth Appears (0ms - 1500ms)
+            // Begin flyTo after a brief pause
             setTimeout(() => {
-                container.classList.add('map-phase-1');
-                if (zoomText) zoomText.textContent = 'LOCATING EARTH...';
-            }, 300);
+                // Fly from world view to Pune — smooth continuous zoom
+                map.flyTo([18.5204, 73.8567], 13, {
+                    duration: 5,
+                    easeLinearity: 0.2
+                });
 
-            // Phase 2: Earth Zooms + Atmosphere (1500ms - 3000ms)
-            setTimeout(() => {
-                container.classList.remove('map-phase-1');
-                container.classList.add('map-phase-2');
-                if (zoomText) zoomText.textContent = 'ENTERING ATMOSPHERE...';
-            }, 1800);
+                // Update HUD text during the flight
+                setTimeout(() => {
+                    if (zoomText) zoomText.textContent = 'ENTERING ATMOSPHERE...';
+                }, 1200);
 
-            // Phase 3: Atmosphere Clears → Map Reveals (3000ms - 4500ms)
-            setTimeout(() => {
-                container.classList.remove('map-phase-2');
-                container.classList.add('map-phase-3');
-                if (zoomText) zoomText.textContent = 'APPROACHING PUNE...';
-            }, 3300);
+                setTimeout(() => {
+                    if (zoomText) zoomText.textContent = 'APPROACHING INDIA...';
+                }, 2400);
 
-            // Phase 4: Map Fully Visible + Pin Drop + UI (4500ms+)
-            setTimeout(() => {
-                container.classList.remove('map-phase-3');
-                container.classList.add('map-phase-4');
-                if (zoomText) zoomText.textContent = 'LOCATION LOCKED';
+                setTimeout(() => {
+                    if (zoomText) zoomText.textContent = 'LOCATING PUNE...';
+                }, 3600);
 
-                // Fade in tags below the map
-                if (mapTags) {
+                // When flyTo animation completes
+                map.once('moveend', () => {
+                    if (zoomText) zoomText.textContent = 'LOCATION LOCKED';
+
+                    // Add custom SVG pin marker with bounce animation
+                    const pinIcon = L.divIcon({
+                        className: 'map-custom-pin',
+                        html: '<div class="pin-drop"><svg width="40" height="52" viewBox="0 0 40 52" fill="none"><path d="M20 0C8.95 0 0 8.95 0 20c0 14.25 20 32 20 32s20-17.75 20-32C40 8.95 31.05 0 20 0z" fill="#2563eb"/><circle cx="20" cy="20" r="10" fill="white"/><circle cx="20" cy="20" r="6" fill="#2563eb"/></svg><div class="pin-shadow"></div></div>',
+                        iconSize: [40, 52],
+                        iconAnchor: [20, 52]
+                    });
+                    L.marker([18.5204, 73.8567], { icon: pinIcon }).addTo(map);
+
+                    // Show info card with slide-up
                     setTimeout(() => {
-                        mapTags.style.opacity = '1';
-                        mapTags.style.transform = 'translateY(0)';
-                    }, 600);
-                }
+                        if (infoCard) {
+                            infoCard.style.opacity = '1';
+                            infoCard.style.transform = 'translateY(0)';
+                            infoCard.style.pointerEvents = 'auto';
+                        }
+                    }, 400);
 
-                // Re-initialize feather icons for the info card
-                if (typeof feather !== 'undefined') {
-                    feather.replace();
-                }
-            }, 4800);
+                    // Hide zoom HUD
+                    setTimeout(() => {
+                        if (zoomStatus) zoomStatus.style.opacity = '0';
+                    }, 1000);
+
+                    // Show location tags
+                    setTimeout(() => {
+                        if (mapTags) {
+                            mapTags.style.opacity = '1';
+                            mapTags.style.transform = 'translateY(0)';
+                        }
+                    }, 700);
+
+                    // Enable map interactions after landing
+                    setTimeout(() => {
+                        map.scrollWheelZoom.enable();
+                        map.dragging.enable();
+                        map.doubleClickZoom.enable();
+                        map.touchZoom.enable();
+                    }, 1200);
+
+                    // Re-init feather icons for the info card
+                    if (typeof feather !== 'undefined') feather.replace();
+                });
+            }, 600);
         }
     }
 
