@@ -23,17 +23,6 @@ We recently overhauled the visual experience to include:
 - `styles.css`: Custom styles, glassmorphism utilities, and animations.
 - `script.js`: Interactive elements and the core confetti engine.
 - `blogs.json`: Dynamic blog content data.
-- `BuySell/`: [ASYNCRIX Global ERP Platform](file:///BuySell/README.md) - A full-featured Zoho-inspired cloud integration project.
-
-## 🏢 Featured Project: ASYNCRIX Global
-This repository now hosts the **ASYNCRIX Global ERP Platform**, a sophisticated business management suite featuring:
-- **Google Sheets** cloud-native data sync.
-- **Admin Panel** for user & role management.
-- **Role-Based Access Control (RBAC)** for Staff/Admin security.
-- **Zoho-style** modules for Sales, Purchases, and Banking.
-- **Automated Stock & Financial Tracking**.
-- **Modern Light Theme & Glassmorphic UI**.
-Check out the [Detailed Architecture & Procedures](file:///BuySell/README.md) for more info.
 
 ## 🚀 Getting Started
 1. Clone the repository:
