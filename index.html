@@ -1127,53 +1127,55 @@
     </main>
 
     <!-- Location Map Section — Satellite Flythrough -->
-    <section id="location" class="py-20 lg:py-28 px-4 sm:px-6 lg:px-12 relative border-t border-slate-900/5">
-        <div class="max-w-7xl mx-auto">
-            <div class="mb-12 lg:mb-16 text-center reveal-up max-w-3xl mx-auto">
+    <section id="location" class="py-20 lg:py-28 relative border-t border-slate-900/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
+            <div class="mb-10 lg:mb-12 text-center reveal-up max-w-3xl mx-auto">
                 <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-4 tracking-tight">Find Me
                     Here<span class="text-accent-cyan">.</span></h2>
                 <p class="text-slate-600 text-base lg:text-lg">Based in Pune, India — watch the satellite zoom from
                     Earth's atmosphere to my exact location.</p>
             </div>
+        </div>
 
-            <!-- Satellite Map Container -->
-            <div class="rounded-2xl overflow-hidden shadow-2xl shadow-slate-900/10 relative">
-                <div id="map-flyto"></div>
+        <!-- Satellite Map Container (Full Width edge-to-edge) -->
+        <div class="w-full relative shadow-xl shadow-slate-900/10">
+            <div id="map-flyto" class="w-full"></div>
 
-                <!-- Location Info Card (fades in after flyTo completes) -->
-                <div id="map-info-card" class="absolute top-4 left-4 sm:top-6 sm:left-6 z-[1000] opacity-0 pointer-events-none" style="transition: all 0.7s ease; transform: translateY(10px);">
-                    <div class="glass-card rounded-xl p-4 sm:p-5 border border-slate-900/10 bg-white/90 backdrop-blur-xl shadow-xl max-w-[280px] sm:max-w-xs" style="transform: none;">
-                        <div class="flex items-center gap-3 mb-3">
-                            <div class="w-10 h-10 rounded-lg bg-accent-blue/10 border border-accent-blue/20 flex items-center justify-center text-accent-blue flex-shrink-0">
-                                <i data-feather="map-pin" class="w-5 h-5"></i>
-                            </div>
-                            <div>
-                                <div class="text-xs uppercase tracking-widest text-slate-500 font-mono font-medium">Location</div>
-                                <div class="font-bold text-slate-900 text-sm sm:text-base">Pune, Maharashtra</div>
-                            </div>
+            <!-- Location Info Card (fades in after flyTo completes) -->
+            <div id="map-info-card" class="absolute top-4 left-4 sm:top-8 sm:left-8 z-[1000] opacity-0 pointer-events-none" style="transition: all 0.7s ease; transform: translateY(10px);">
+                <div class="glass-card rounded-xl p-4 sm:p-5 border border-slate-900/10 bg-white/95 backdrop-blur-xl shadow-xl max-w-[280px] sm:max-w-xs" style="transform: none;">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-10 h-10 rounded-lg bg-accent-blue/10 border border-accent-blue/20 flex items-center justify-center text-accent-blue flex-shrink-0">
+                            <i data-feather="map-pin" class="w-5 h-5"></i>
                         </div>
-                        <div class="h-px w-full bg-slate-900/5 mb-3"></div>
-                        <div class="flex items-center gap-2 text-xs text-slate-500">
-                            <span class="relative flex h-2.5 w-2.5">
-                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                                <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
-                            </span>
-                            Available for collaboration
+                        <div>
+                            <div class="text-xs uppercase tracking-widest text-slate-500 font-mono font-medium">Location</div>
+                            <div class="font-bold text-slate-900 text-sm sm:text-base">Pune, Maharashtra</div>
                         </div>
                     </div>
-                </div>
-
-                <!-- Zoom Status HUD -->
-                <div id="map-zoom-status" class="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 z-[1000] opacity-0" style="transition: all 0.5s ease;">
-                    <div class="flex items-center gap-2.5 bg-slate-900/80 backdrop-blur-xl text-white px-4 py-2.5 rounded-full text-xs font-mono tracking-wider shadow-lg">
-                        <div class="map-zoom-spinner"></div>
-                        <span id="map-zoom-text">INITIALIZING...</span>
+                    <div class="h-px w-full bg-slate-900/5 mb-3"></div>
+                    <div class="flex items-center gap-2 text-xs text-slate-500 font-medium">
+                        <span class="relative flex h-2.5 w-2.5">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
+                        </span>
+                        Available for collaboration
                     </div>
                 </div>
             </div>
 
+            <!-- Zoom Status HUD -->
+            <div id="map-zoom-status" class="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 z-[1000] opacity-0" style="transition: all 0.5s ease;">
+                <div class="flex items-center gap-2.5 bg-slate-900/80 backdrop-blur-xl text-white px-4 py-2.5 rounded-full text-xs font-mono tracking-wider shadow-lg">
+                    <div class="map-zoom-spinner"></div>
+                    <span id="map-zoom-text">INITIALIZING...</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
             <!-- Quick Location Tags -->
-            <div id="map-tags" class="mt-6 flex flex-wrap items-center justify-center gap-3 opacity-0" style="transition: all 0.7s ease; transform: translateY(10px);">
+            <div id="map-tags" class="mt-8 flex flex-wrap items-center justify-center gap-3 opacity-0" style="transition: all 0.7s ease; transform: translateY(10px);">
                 <span class="px-4 py-2 bg-white border border-slate-900/10 rounded-full text-sm font-medium text-slate-600 flex items-center gap-2 shadow-sm">
                     <i data-feather="globe" class="w-4 h-4 text-accent-blue"></i> Remote Friendly
                 </span>
