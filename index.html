@@ -1134,6 +1134,119 @@
         </section>
     </main>
 
+    <!-- Location Map Section — Cinematic Zoom from Space -->
+    <section id="location" class="py-20 lg:py-28 px-4 sm:px-6 lg:px-12 relative border-t border-slate-900/5">
+        <div class="max-w-7xl mx-auto">
+            <div class="mb-12 lg:mb-16 text-center reveal-up max-w-3xl mx-auto">
+                <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-4 tracking-tight">Find Me
+                    Here<span class="text-accent-cyan">.</span></h2>
+                <p class="text-slate-600 text-base lg:text-lg">Based in Pune, India — watch as we zoom in from space
+                    to my exact location.</p>
+            </div>
+
+            <!-- Cinematic Map Container -->
+            <div id="map-cinematic" class="rounded-2xl overflow-hidden relative shadow-2xl shadow-slate-900/10" style="height: 500px;">
+
+                <!-- Layer 0: Google Maps Iframe (always at the bottom) -->
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d242117.68092606804!2d73.72288389019498!3d18.524598710489482!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2bf2e67461101%3A0x828d43bf9d9ee343!2sPune%2C%20Maharashtra%2C%20India!5e0!3m2!1sen!2sin!4v1711670400000!5m2!1sen!2sin"
+                    class="absolute inset-0 w-full h-full border-0 z-[1]"
+                    allowfullscreen=""
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade"
+                    title="Dipak Kadamb Location - Pune, India"
+                    style="filter: saturate(0.9) contrast(1.05);">
+                </iframe>
+
+                <!-- Layer 1: Space Background (Stars + Deep Space) -->
+                <div id="map-layer-space" class="absolute inset-0 z-[5] map-layer-space">
+                    <!-- CSS-generated stars (3 layers for depth) -->
+                    <div class="map-stars-layer map-stars-small"></div>
+                    <div class="map-stars-layer map-stars-medium"></div>
+                    <div class="map-stars-layer map-stars-large"></div>
+                </div>
+
+                <!-- Layer 2: Earth Globe -->
+                <div id="map-layer-earth" class="absolute inset-0 z-[4] flex items-center justify-center pointer-events-none opacity-0">
+                    <div class="map-earth-globe">
+                        <div class="map-earth-atmosphere"></div>
+                        <div class="map-earth-surface"></div>
+                        <div class="map-earth-highlight"></div>
+                    </div>
+                </div>
+
+                <!-- Layer 3: Atmosphere Gradient (blue haze during zoom) -->
+                <div id="map-layer-atmosphere" class="absolute inset-0 z-[3] pointer-events-none opacity-0">
+                    <div class="absolute inset-0 bg-gradient-to-b from-[#1a3a5c]/95 via-[#2d6fa0]/60 to-[#87ceeb]/30"></div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-white/40 via-transparent to-transparent"></div>
+                </div>
+
+                <!-- Layer 4: Map Circle Reveal Mask (clip-path animated) -->
+                <div id="map-layer-reveal" class="absolute inset-0 z-[2] pointer-events-none opacity-0">
+                    <div class="map-reveal-ring"></div>
+                </div>
+
+                <!-- Location Pin Drop (appears at end) -->
+                <div id="map-pin-drop" class="absolute z-[6] opacity-0 pointer-events-none" style="top: 50%; left: 50%; transform: translate(-50%, -100%);">
+                    <div class="map-pin-container">
+                        <div class="map-pin-pulse"></div>
+                        <div class="map-pin-icon">
+                            <svg width="40" height="52" viewBox="0 0 40 52" fill="none">
+                                <path d="M20 0C8.95 0 0 8.95 0 20c0 14.25 20 32 20 32s20-17.75 20-32C40 8.95 31.05 0 20 0z" fill="#2563eb"/>
+                                <circle cx="20" cy="20" r="10" fill="white"/>
+                                <circle cx="20" cy="20" r="6" fill="#2563eb"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Location Info Overlay (fades in after animation) -->
+                <div id="map-info-card" class="absolute top-4 left-4 sm:top-6 sm:left-6 z-[7] opacity-0 transition-all duration-700 pointer-events-none">
+                    <div class="glass-card rounded-xl p-4 sm:p-5 border border-slate-900/10 bg-white/90 backdrop-blur-xl shadow-xl max-w-[280px] sm:max-w-xs" style="transform: none;">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="w-10 h-10 rounded-lg bg-accent-blue/10 border border-accent-blue/20 flex items-center justify-center text-accent-blue flex-shrink-0">
+                                <i data-feather="map-pin" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <div class="text-xs uppercase tracking-widest text-slate-500 font-mono font-medium">Location</div>
+                                <div class="font-bold text-slate-900 text-sm sm:text-base">Pune, Maharashtra</div>
+                            </div>
+                        </div>
+                        <div class="h-px w-full bg-slate-900/5 mb-3"></div>
+                        <div class="flex items-center gap-2 text-xs text-slate-500">
+                            <span class="relative flex h-2.5 w-2.5">
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
+                            </span>
+                            Available for collaboration
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Zoom Progress Indicator -->
+                <div id="map-zoom-status" class="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 z-[7] opacity-0 transition-all duration-500">
+                    <div class="flex items-center gap-2.5 bg-slate-900/80 backdrop-blur-xl text-white px-4 py-2.5 rounded-full text-xs font-mono tracking-wider shadow-lg">
+                        <div class="map-zoom-spinner"></div>
+                        <span id="map-zoom-text">INITIALIZING...</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Location Tags (fade in after animation) -->
+            <div id="map-tags" class="mt-6 flex flex-wrap items-center justify-center gap-3 opacity-0 transition-all duration-700" style="transform: translateY(10px);">
+                <span class="px-4 py-2 bg-white border border-slate-900/10 rounded-full text-sm font-medium text-slate-600 flex items-center gap-2 shadow-sm">
+                    <i data-feather="globe" class="w-4 h-4 text-accent-blue"></i> Remote Friendly
+                </span>
+                <span class="px-4 py-2 bg-white border border-slate-900/10 rounded-full text-sm font-medium text-slate-600 flex items-center gap-2 shadow-sm">
+                    <i data-feather="clock" class="w-4 h-4 text-accent-teal"></i> IST (UTC+5:30)
+                </span>
+                <span class="px-4 py-2 bg-white border border-slate-900/10 rounded-full text-sm font-medium text-slate-600 flex items-center gap-2 shadow-sm">
+                    <i data-feather="coffee" class="w-4 h-4 text-accent-amber"></i> Open to On-site
+                </span>
+            </div>
+        </div>
+    </section>
+
     <!-- Footer -->
     <footer class="border-t border-slate-900/10 bg-slate-50 py-10 px-4 sm:px-6 lg:px-12 relative z-10">
         <div class="max-w-7xl mx-auto flex flex-col lg:flex-row justify-between items-center gap-6 lg:gap-4">

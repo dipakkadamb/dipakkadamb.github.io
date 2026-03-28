@@ -363,4 +363,76 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // ============================
+    // Cinematic Map Zoom from Space
+    // ============================
+    const mapCinematic = document.getElementById('map-cinematic');
+    if (mapCinematic) {
+        let mapAnimationPlayed = false;
+
+        const mapObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !mapAnimationPlayed) {
+                    mapAnimationPlayed = true;
+                    startMapZoomAnimation();
+                    mapObserver.disconnect();
+                }
+            });
+        }, { threshold: 0.3 });
+
+        mapObserver.observe(mapCinematic);
+
+        function startMapZoomAnimation() {
+            const container = mapCinematic;
+            const zoomStatus = document.getElementById('map-zoom-status');
+            const zoomText = document.getElementById('map-zoom-text');
+            const mapTags = document.getElementById('map-tags');
+
+            // Show zoom status indicator
+            if (zoomStatus) {
+                zoomStatus.style.opacity = '1';
+            }
+
+            // Phase 1: Earth Appears (0ms - 1500ms)
+            setTimeout(() => {
+                container.classList.add('map-phase-1');
+                if (zoomText) zoomText.textContent = 'LOCATING EARTH...';
+            }, 300);
+
+            // Phase 2: Earth Zooms + Atmosphere (1500ms - 3000ms)
+            setTimeout(() => {
+                container.classList.remove('map-phase-1');
+                container.classList.add('map-phase-2');
+                if (zoomText) zoomText.textContent = 'ENTERING ATMOSPHERE...';
+            }, 1800);
+
+            // Phase 3: Atmosphere Clears → Map Reveals (3000ms - 4500ms)
+            setTimeout(() => {
+                container.classList.remove('map-phase-2');
+                container.classList.add('map-phase-3');
+                if (zoomText) zoomText.textContent = 'APPROACHING PUNE...';
+            }, 3300);
+
+            // Phase 4: Map Fully Visible + Pin Drop + UI (4500ms+)
+            setTimeout(() => {
+                container.classList.remove('map-phase-3');
+                container.classList.add('map-phase-4');
+                if (zoomText) zoomText.textContent = 'LOCATION LOCKED';
+
+                // Fade in tags below the map
+                if (mapTags) {
+                    setTimeout(() => {
+                        mapTags.style.opacity = '1';
+                        mapTags.style.transform = 'translateY(0)';
+                    }, 600);
+                }
+
+                // Re-initialize feather icons for the info card
+                if (typeof feather !== 'undefined') {
+                    feather.replace();
+                }
+            }, 4800);
+        }
+    }
+
 });
