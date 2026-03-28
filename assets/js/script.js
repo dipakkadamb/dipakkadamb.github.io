@@ -517,19 +517,32 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // =====================================
-// Calendly Booking Integration
+// Google Calendar Booking Integration
 // =====================================
-window.openCalendly = function (e) {
-    if (e) {
-        e.preventDefault();
-    }
-    if (typeof Calendly !== 'undefined') {
-        // Init Calendly popup with placeholder link. 
-        // User should replace 'dipakkadamb' with their actual calendly username
-        Calendly.initPopupWidget({ url: 'https://calendly.com/dipakkadamb' });
-    } else {
-        console.warn('Calendly script not initialized. Opening in new tab.');
-        window.open('https://calendly.com/dipakkadamb', '_blank');
+window.openGoogleCalendar = function (e) {
+    if (e) e.preventDefault();
+    const modal = document.getElementById('google-calendar-modal');
+    if (modal) {
+        modal.classList.remove('opacity-0', 'pointer-events-none');
+        const content = document.getElementById('google-calendar-modal-content');
+        if (content) {
+            content.classList.remove('scale-95');
+            content.classList.add('scale-100');
+        }
+        document.body.style.overflow = 'hidden'; // Prevent background scrolling
     }
     return false;
+}
+
+window.closeGoogleCalendarModal = function () {
+    const modal = document.getElementById('google-calendar-modal');
+    if (modal) {
+        modal.classList.add('opacity-0', 'pointer-events-none');
+        const content = document.getElementById('google-calendar-modal-content');
+        if (content) {
+            content.classList.remove('scale-100');
+            content.classList.add('scale-95');
+        }
+        document.body.style.overflow = ''; // Restore background scrolling
+    }
 }
