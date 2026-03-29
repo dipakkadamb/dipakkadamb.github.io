@@ -54,9 +54,7 @@
     <!-- Feather Icons -->
     <script src="https://unpkg.com/feather-icons"></script>
 
-    <!-- Leaflet Map Library -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="assets/css/styles.css?v=4">
@@ -1084,40 +1082,16 @@
             </div>
         </div>
 
-        <!-- Satellite Map Container (Full Width edge-to-edge) -->
-        <div class="w-full relative shadow-xl shadow-slate-900/10">
-            <div id="map-flyto" class="w-full"></div>
-
-            <!-- Location Info Card (fades in after flyTo completes) -->
-            <div id="map-info-card" class="absolute top-4 left-4 sm:top-8 sm:left-8 z-[1000] opacity-0 pointer-events-none" style="transition: all 0.7s ease; transform: translateY(10px);">
-                <div class="glass-card rounded-xl p-4 sm:p-5 border border-slate-900/10 bg-white/95 backdrop-blur-xl shadow-xl max-w-[280px] sm:max-w-xs" style="transform: none;">
-                    <div class="flex items-center gap-3 mb-3">
-                        <div class="w-10 h-10 rounded-lg bg-accent-blue/10 border border-accent-blue/20 flex items-center justify-center text-accent-blue flex-shrink-0">
-                            <i data-feather="map-pin" class="w-5 h-5"></i>
-                        </div>
-                        <div>
-                            <div class="text-xs uppercase tracking-widest text-slate-500 font-mono font-medium">Location</div>
-                            <div class="font-bold text-slate-900 text-sm sm:text-base">Pune, Maharashtra</div>
-                        </div>
-                    </div>
-                    <div class="h-px w-full bg-slate-900/5 mb-3"></div>
-                    <div class="flex items-center gap-2 text-xs text-slate-500 font-medium">
-                        <span class="relative flex h-2.5 w-2.5">
-                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                            <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
-                        </span>
-                        Available for collaboration
-                    </div>
-                </div>
-            </div>
-
-            <!-- Zoom Status HUD -->
-            <div id="map-zoom-status" class="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 z-[1000] opacity-0" style="transition: all 0.5s ease;">
-                <div class="flex items-center gap-2.5 bg-slate-900/80 backdrop-blur-xl text-white px-4 py-2.5 rounded-full text-xs font-mono tracking-wider shadow-lg">
-                    <div class="map-zoom-spinner"></div>
-                    <span id="map-zoom-text">INITIALIZING...</span>
-                </div>
-            </div>
+        <!-- Google Map Container (Full Width edge-to-edge) -->
+        <div class="w-full relative shadow-xl shadow-slate-900/10 grayscale-[30%] hover:grayscale-0 transition-all duration-700">
+            <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d121058.94827017015!2d73.78054593856411!3d18.524766324905953!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2bf2e67461101%3A0x828d43bf9d9ee343!2sPune%2C%20Maharashtra!5e0!3m2!1sen!2sin!4v1711202863860!5m2!1sen!2sin" 
+                class="w-full h-[350px] md:h-[450px] lg:h-[500px]" 
+                style="border:0;" 
+                allowfullscreen="" 
+                loading="lazy" 
+                referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
         </div>
 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
