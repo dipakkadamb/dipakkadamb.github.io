@@ -175,56 +175,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }, { passive: true });
     }
 
-    // Motivational Quotes Logic — Fetches from Quotable API with fallback
-    const fallbackQuotes = [
-        "The only way to do great work is to love what you do.",
-        "Talk is cheap. Show me the code.",
-        "First, solve the problem. Then, write the code.",
-        "Make it work, make it right, make it fast.",
-        "Simplicity is the soul of efficiency."
-    ];
 
-    const motivationalToast = document.getElementById('motivational-toast');
-    const motivationalQuoteEl = document.getElementById('motivational-quote');
 
-    const showMotivationalQuote = async () => {
-        if (!motivationalToast || !motivationalQuoteEl) return;
 
-        let quoteText;
-        try {
-            const res = await fetch('https://api.quotable.io/quotes/random');
-            if (res.ok) {
-                const data = await res.json();
-                quoteText = data[0]?.content || null;
-            }
-        } catch (e) {
-            // API failed, use fallback
-        }
-
-        if (!quoteText) {
-            quoteText = fallbackQuotes[Math.floor(Math.random() * fallbackQuotes.length)];
-        }
-
-        motivationalQuoteEl.textContent = `"${quoteText}"`;
-
-        // Slide in
-        motivationalToast.classList.remove('translate-x-[150%]', 'opacity-0');
-
-        // Hide after 5 seconds
-        setTimeout(() => {
-            motivationalToast.classList.add('translate-x-[150%]', 'opacity-0');
-        }, 5000);
-    };
-
-    // Show quote shortly after modal opens on initial load
-    if (welcomeModal) {
-        setTimeout(() => {
-            setTimeout(showMotivationalQuote, 800);
-        }, 1000);
-    }
-
-    // Also repeatedly show a new quote every 10 minutes (600,000 ms)
-    setInterval(showMotivationalQuote, 600000);
 
     // Festival Wishes Pop-up Logic
     const showFestivalWishes = () => {

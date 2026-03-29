@@ -322,9 +322,7 @@ img[src="assets/img/profile.png"] {
     padding-bottom: env(safe-area-inset-bottom);
   }
 }
-/* Star Dust Particles */
-.star { position: absolute; background: white; border-radius: 50%; opacity: 0.3; animation: drift linear infinite; }
-@keyframes drift { from { transform: translateY(0); } to { transform: translateY(-100vh); } }
+
 /* Modal Typography Polish */
 .glass-card h3 { letter-spacing: -0.01em; line-height: 1.2; }
 /* ============================
