@@ -1,17 +1,16 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth antialiased">
-
+<html lang="en" class="scroll-smooth antialiased bg-slate-50">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <title>Timeline | Dipak Kadamb</title>
-    <meta name="description" content="Project updates and work timeline by Dipak Kadamb — AI Web Developer & Zoho Specialist.">
+    <meta name="description" content="Project updates by Dipak Kadamb.">
     <link rel="icon" href="assets/img/profile.png" type="image/png">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 
     <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -19,756 +18,226 @@
         tailwind.config = {
             theme: {
                 extend: {
-                    colors: {
-                        accent: { blue: '#2563eb', cyan: '#06b6d4', teal: '#0d9488', amber: '#f59e0b', purple: '#7c3aed' }
-                    },
-                    fontFamily: {
-                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
-                        mono: ['"JetBrains Mono"', 'monospace'],
-                    }
+                    colors: { accent: { blue: '#2563eb', cyan: '#06b6d4', teal: '#0d9488', pink: '#db2777' } },
+                    fontFamily: { sans: ['"Plus Jakarta Sans"', 'sans-serif'] }
                 }
             }
         }
     </script>
-
     <!-- Feather Icons -->
     <script src="https://unpkg.com/feather-icons"></script>
-
-    <!-- AOS -->
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-
+    
     <style>
-        * { box-sizing: border-box; }
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background: #f0f4f8;
-            min-height: 100vh;
-        }
-
-        /* ── Scrollbar ── */
-        ::-webkit-scrollbar { width: 5px; }
-        ::-webkit-scrollbar-track { background: #f0f4f8; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-
-        /* ── Glass card ── */
-        .g-card {
-            background: rgba(255,255,255,0.85);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(15,23,42,0.07);
-            border-radius: 20px;
-            box-shadow: 0 2px 20px rgba(0,0,0,0.05);
-        }
-
-        /* ── Cover gradient ── */
-        .cover-gradient {
-            background: linear-gradient(135deg, #1e3a5f 0%, #1e40af 30%, #0d9488 70%, #06b6d4 100%);
-        }
-
-        /* ── Stat card ── */
-        .stat-card {
-            background: linear-gradient(135deg, rgba(37,99,235,0.08), rgba(6,182,212,0.04));
-            border: 1px solid rgba(37,99,235,0.12);
-            border-radius: 14px;
-            transition: all 0.2s;
-        }
-        .stat-card:hover { transform: translateY(-2px); border-color: rgba(37,99,235,0.3); }
-
-        /* ── Post card ── */
-        .post-card {
-            background: rgba(255,255,255,0.92);
-            border: 1px solid rgba(15,23,42,0.06);
-            border-radius: 20px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
-            transition: all 0.25s ease;
-            overflow: hidden;
-        }
-        .post-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 36px rgba(0,0,0,0.09);
-            border-color: rgba(37,99,235,0.15);
-        }
-
-        /* ── Post cover banner ── */
-        .post-cover {
-            height: 200px;
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .post-cover-inner {
-            position: absolute; inset: 0;
-            display: flex; flex-direction: column;
-            align-items: center; justify-content: center;
-            gap: 10px;
-        }
-        .post-cover::after {
-            content: '';
-            position: absolute; bottom: 0; left: 0; right: 0;
-            height: 60px;
-            background: linear-gradient(to top, rgba(255,255,255,0.95), transparent);
-        }
-
-        /* ── Color schemes ── */
-        .cover-blue   { background: linear-gradient(135deg, #1e3a8a, #2563eb, #06b6d4); }
-        .cover-teal   { background: linear-gradient(135deg, #064e3b, #0d9488, #06b6d4); }
-        .cover-amber  { background: linear-gradient(135deg, #78350f, #f59e0b, #fbbf24); }
-        .cover-purple { background: linear-gradient(135deg, #3b0764, #7c3aed, #a78bfa); }
-        .cover-slate  { background: linear-gradient(135deg, #0f172a, #334155, #64748b); }
-
-        /* ── Like button ── */
-        .like-btn { transition: all 0.2s; }
-        .like-btn.liked { color: #2563eb !important; }
-        .like-btn.liked .like-icon { fill: #2563eb; stroke: #2563eb;}
-
-        /* ── Badge ── */
-        .badge-active {
-            background: linear-gradient(90deg,rgba(6,182,212,0.15),rgba(13,148,136,0.1));
-            border: 1px solid rgba(6,182,212,0.35);
-            color: #0d9488;
-            animation: glowPulse 2.5s ease-in-out infinite;
-        }
-        @keyframes glowPulse {
-            0%,100%{box-shadow:0 0 0 0 rgba(6,182,212,0.3)}
-            50%{box-shadow:0 0 0 5px rgba(6,182,212,0)}
-        }
-
-        /* ── Pill tag ── */
-        .tag {
-            display: inline-flex; align-items: center;
-            padding: 3px 10px; border-radius: 20px;
-            font-size: 11px; font-family: 'JetBrains Mono', monospace;
-            font-weight: 500; white-space: nowrap;
-        }
-
-        /* ── Reaction bar ── */
-        .react-btn {
-            display: flex; align-items: center; gap: 5px;
-            font-size: 12px; font-weight: 600;
-            padding: 6px 14px; border-radius: 10px;
-            transition: all 0.18s; cursor: pointer; border: none;
-            background: transparent; color: #64748b;
-        }
-        .react-btn:hover { background: rgba(15,23,42,0.05); color: #1e293b; }
-
-        /* ── Filter pills ── */
-        .filter-pill {
-            padding: 6px 16px; border-radius: 20px;
-            font-size: 12px; font-weight: 600; cursor: pointer;
-            transition: all 0.2s; border: 1.5px solid #e2e8f0;
-            background: white; color: #64748b;
-        }
-        .filter-pill.active, .filter-pill:hover {
-            background: #0f172a; color: white; border-color: #0f172a;
-        }
-
-        /* ── Floating add btn ── */
-        .fab {
-            position: fixed; bottom: 28px; right: 28px;
-            width: 54px; height: 54px; border-radius: 50%;
-            background: linear-gradient(135deg, #2563eb, #06b6d4);
-            box-shadow: 0 6px 24px rgba(37,99,235,0.4);
-            display: flex; align-items: center; justify-content: center;
-            color: white; border: none; cursor: pointer;
-            transition: all 0.25s; z-index: 50;
-        }
-        .fab:hover { transform: scale(1.1) rotate(90deg); box-shadow: 0 10px 32px rgba(37,99,235,0.5); }
-
-        /* ── Skill pill in sidebar ── */
-        .skill-pill {
-            padding: 4px 12px; border-radius: 16px; font-size: 11px;
-            font-weight: 600; font-family: 'JetBrains Mono', monospace;
-        }
-
-        /* ── Progress bar ── */
-        .progress-bar { height: 5px; border-radius: 3px; overflow: hidden; background: #e2e8f0; }
-        .progress-fill { height: 100%; border-radius: 3px; transition: width 1.2s ease; }
-
-        /* ── Sticky sidebar ── */
-        @media (min-width: 1024px) {
-            .sidebar-sticky { position: sticky; top: 76px; }
-        }
-
-        /* ── Nav ── */
-        .tl-nav {
-            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-            background: rgba(255,255,255,0.9);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(15,23,42,0.07);
-            box-shadow: 0 2px 16px rgba(0,0,0,0.04);
-        }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #fafafa; }
+        .post-card { background: white; border: 1px solid #dbdbdb; border-radius: 8px; margin-bottom: 24px; }
+        .post-img-bg { box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05); }
+        .like-icon.liked { fill: #ef4444; color: #ef4444; }
+        .ig-gradient { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); }
     </style>
 </head>
+<body class="text-slate-900 pb-20">
 
-<body>
-
-<!-- ████ NAVBAR ████ -->
-<nav class="tl-nav">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between">
-        <a href="index.html" class="flex items-center gap-2 text-slate-600 hover:text-slate-900 transition-colors group">
-            <div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center group-hover:bg-blue-50 group-hover:text-blue-600 transition-all">
-                <i data-feather="arrow-left" class="w-4 h-4"></i>
-            </div>
-            <span class="text-sm font-semibold hidden sm:block">Portfolio</span>
-        </a>
-
-        <div class="flex items-center gap-2">
-            <div class="w-7 h-7 rounded-full bg-gradient-to-br from-blue-600 to-cyan-500 flex items-center justify-center">
-                <i data-feather="activity" class="w-3.5 h-3.5 text-white"></i>
-            </div>
-            <span class="font-bold text-slate-900 text-sm">Project Timeline</span>
-        </div>
-
-        <div class="flex items-center gap-2.5">
-            <img src="assets/img/profile.png" alt="Dipak" class="w-8 h-8 rounded-full object-cover ring-2 ring-cyan-400/40">
-            <div class="hidden sm:block">
-                <div class="text-xs font-bold text-slate-900 leading-tight">Dipak Kadamb</div>
-                <div class="text-[10px] text-slate-400 font-mono">AI Web Developer</div>
-            </div>
-        </div>
+<!-- Nav -->
+<nav class="fixed top-0 w-full bg-white border-b border-gray-200 z-50 h-14 flex items-center px-4 md:px-0">
+    <div class="max-w-[470px] w-full mx-auto flex items-center justify-between">
+        <a href="index.html" class="text-gray-900 hover:text-gray-500"><i data-feather="chevron-left" class="w-7 h-7"></i></a>
+        <span class="font-semibold text-lg">Timeline</span>
+        <div class="w-7"></div>
     </div>
 </nav>
 
-<!-- ████ MAIN LAYOUT ████ -->
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-20">
-    <div class="flex flex-col lg:flex-row gap-6 mt-4">
+<!-- Main Feed -->
+<main class="pt-20 px-0 sm:px-4 max-w-[470px] mx-auto">
+    
+    <!-- Profile Header (Optional little section) -->
+    <div class="flex items-center gap-4 mb-8 px-4 sm:px-0">
+        <div class="w-16 h-16 rounded-full p-0.5 ig-gradient">
+            <img src="assets/img/profile.png" alt="Dipak" class="w-full h-full rounded-full border-2 border-white object-cover">
+        </div>
+        <div>
+            <h1 class="font-bold text-lg leading-tight">dipakkadamb</h1>
+            <p class="text-sm text-slate-500">AI Web Developer & Zoho Specialist</p>
+        </div>
+    </div>
 
-        <!-- ████ LEFT SIDEBAR ████ -->
-        <aside class="w-full lg:w-72 flex-shrink-0">
-            <div class="sidebar-sticky space-y-4">
-
-                <!-- Profile Card -->
-                <div class="g-card overflow-hidden" data-aos="fade-right">
-                    <!-- Cover -->
-                    <div class="cover-gradient h-24 relative">
-                        <div class="absolute inset-0 opacity-20" style="background-image: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22><circle cx=%2210%22 cy=%2210%22 r=%221.5%22 fill=%22white%22/></svg>');"></div>
-                    </div>
-                    <!-- Avatar -->
-                    <div class="px-5 pb-5">
-                        <div class="-mt-9 mb-3">
-                            <img src="assets/img/profile.png" alt="Dipak Kadamb"
-                                class="w-16 h-16 rounded-2xl object-cover border-4 border-white shadow-lg">
-                        </div>
-                        <div class="font-bold text-slate-900 text-base">Dipak Kadamb</div>
-                        <div class="text-xs text-cyan-600 font-mono font-semibold mb-2">AI Web Developer · Zoho Specialist</div>
-                        <p class="text-xs text-slate-500 leading-relaxed mb-4">
-                            Building intelligent web solutions & Zoho automations from Pune, India 🇮🇳
-                        </p>
-
-                        <!-- Stats row -->
-                        <div class="grid grid-cols-3 gap-2 mb-4">
-                            <div class="text-center p-2 bg-slate-50 rounded-xl">
-                                <div class="font-bold text-slate-900 text-base">9+</div>
-                                <div class="text-[10px] text-slate-400 font-mono">Years</div>
-                            </div>
-                            <div class="text-center p-2 bg-slate-50 rounded-xl">
-                                <div class="font-bold text-slate-900 text-base">15+</div>
-                                <div class="text-[10px] text-slate-400 font-mono">Projects</div>
-                            </div>
-                            <div class="text-center p-2 bg-slate-50 rounded-xl">
-                                <div class="font-bold text-slate-900 text-base">3</div>
-                                <div class="text-[10px] text-slate-400 font-mono">Companies</div>
-                            </div>
-                        </div>
-
-                        <a href="index.html#contact" class="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 text-white text-xs font-bold hover:opacity-90 hover:shadow-lg hover:shadow-blue-500/25 transition-all">
-                            <i data-feather="send" class="w-3.5 h-3.5"></i> Hire Me
-                        </a>
-                    </div>
+    <!-- POST 1 -->
+    <article class="post-card">
+        <!-- Header -->
+        <div class="flex items-center justify-between px-3 py-3">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-full p-[1.5px] ig-gradient">
+                    <img src="assets/img/profile.png" class="w-full h-full rounded-full border border-white object-cover">
                 </div>
-
-                <!-- Current Role -->
-                <div class="g-card p-4" data-aos="fade-right" data-aos-delay="50">
-                    <div class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-3 font-mono">Current Role</div>
-                    <div class="flex items-center gap-3">
-                        <img src="assets/img/zm-logo.png" alt="ZM Technologies" class="w-10 h-10 object-contain rounded-lg bg-slate-50 border border-slate-100 p-1">
-                        <div>
-                            <div class="text-sm font-bold text-slate-900">ZM Technologies</div>
-                            <div class="text-xs text-slate-500">AI Web Developer</div>
-                            <div class="text-[10px] text-cyan-500 font-mono font-semibold">Sep 2025 – Present</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Skills -->
-                <div class="g-card p-4" data-aos="fade-right" data-aos-delay="100">
-                    <div class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-3 font-mono">Top Skills</div>
-                    <div class="space-y-2.5">
-                        <div>
-                            <div class="flex justify-between text-xs mb-1">
-                                <span class="font-semibold text-slate-700">Zoho CRM</span>
-                                <span class="text-slate-400 font-mono">90%</span>
-                            </div>
-                            <div class="progress-bar"><div class="progress-fill bg-gradient-to-r from-blue-500 to-cyan-400" data-width="90%"></div></div>
-                        </div>
-                        <div>
-                            <div class="flex justify-between text-xs mb-1">
-                                <span class="font-semibold text-slate-700">Web Development</span>
-                                <span class="text-slate-400 font-mono">85%</span>
-                            </div>
-                            <div class="progress-bar"><div class="progress-fill bg-gradient-to-r from-teal-500 to-cyan-400" data-width="85%"></div></div>
-                        </div>
-                        <div>
-                            <div class="flex justify-between text-xs mb-1">
-                                <span class="font-semibold text-slate-700">IT Infrastructure</span>
-                                <span class="text-slate-400 font-mono">80%</span>
-                            </div>
-                            <div class="progress-bar"><div class="progress-fill bg-gradient-to-r from-amber-400 to-orange-400" data-width="80%"></div></div>
-                        </div>
-                        <div>
-                            <div class="flex justify-between text-xs mb-1">
-                                <span class="font-semibold text-slate-700">AI Integration</span>
-                                <span class="text-slate-400 font-mono">75%</span>
-                            </div>
-                            <div class="progress-bar"><div class="progress-fill bg-gradient-to-r from-purple-500 to-pink-400" data-width="75%"></div></div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Quick Links -->
-                <div class="g-card p-4" data-aos="fade-right" data-aos-delay="150">
-                    <div class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-3 font-mono">Quick Links</div>
-                    <nav class="space-y-1">
-                        <a href="index.html#about" class="flex items-center gap-3 p-2 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all">
-                            <i data-feather="user" class="w-4 h-4 text-blue-500"></i> About
-                        </a>
-                        <a href="index.html#experience" class="flex items-center gap-3 p-2 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all">
-                            <i data-feather="briefcase" class="w-4 h-4 text-teal-500"></i> Experience
-                        </a>
-                        <a href="index.html#services" class="flex items-center gap-3 p-2 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all">
-                            <i data-feather="star" class="w-4 h-4 text-amber-500"></i> Services
-                        </a>
-                        <a href="index.html#contact" class="flex items-center gap-3 p-2 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all">
-                            <i data-feather="mail" class="w-4 h-4 text-purple-500"></i> Contact
-                        </a>
-                    </nav>
-                </div>
-
-            </div>
-        </aside>
-
-        <!-- ████ MAIN FEED ████ -->
-        <main class="flex-1 min-w-0">
-
-            <!-- Page Header -->
-            <div class="g-card p-5 mb-5 flex items-center justify-between flex-wrap gap-3" data-aos="fade-up">
                 <div>
-                    <h1 class="text-xl font-bold text-slate-900">My Project Timeline</h1>
-                    <p class="text-xs text-slate-400 font-mono mt-0.5">Real updates · Projects · Milestones · Behind the scenes</p>
-                </div>
-                <div class="flex items-center gap-2">
-                    <span class="flex items-center gap-1.5 text-xs text-teal-600 bg-teal-50 border border-teal-200 px-3 py-1.5 rounded-full font-semibold">
-                        <span class="w-1.5 h-1.5 rounded-full bg-teal-400 animate-pulse"></span>
-                        4 Posts Live
-                    </span>
+                    <div class="text-sm font-semibold leading-none flex items-center gap-1">
+                        dipakkadamb <i data-feather="check-circle" class="w-3 h-3 text-blue-500 fill-blue-500/20"></i>
+                    </div>
+                    <div class="text-xs text-gray-500 mt-0.5">Pune, India</div>
                 </div>
             </div>
-
-            <!-- Filter Bar -->
-            <div class="flex items-center gap-2 flex-wrap mb-5" data-aos="fade-up" data-aos-delay="50">
-                <button class="filter-pill active" onclick="filterPosts(this,'all')">All Posts</button>
-                <button class="filter-pill" onclick="filterPosts(this,'active')">🟢 Active</button>
-                <button class="filter-pill" onclick="filterPosts(this,'completed')">✅ Completed</button>
-                <button class="filter-pill" onclick="filterPosts(this,'zoho')">Zoho</button>
-                <button class="filter-pill" onclick="filterPosts(this,'webdev')">Web Dev</button>
-                <button class="filter-pill" onclick="filterPosts(this,'infra')">IT Infra</button>
-            </div>
-
-            <!-- ────── POST CARDS ────── -->
-            <div id="post-feed" class="space-y-5">
-
-                <!-- ── POST 1: AI Portfolio ── -->
-                <article class="post-card" data-tags="active webdev" data-aos="fade-up" data-aos-delay="100">
-                    <!-- Gradient Banner -->
-                    <div class="post-cover cover-blue">
-                        <div class="post-cover-inner">
-                            <div class="w-16 h-16 rounded-2xl bg-white/20 border border-white/30 backdrop-blur-sm flex items-center justify-center">
-                                <i data-feather="globe" class="w-8 h-8 text-white"></i>
-                            </div>
-                            <span class="text-white/90 text-sm font-bold tracking-wide">AI Web Development</span>
-                        </div>
-                        <!-- Status badge -->
-                        <div class="absolute top-3 right-3 badge-active text-xs px-2.5 py-1 rounded-full font-semibold font-mono">🟢 Active</div>
-                        <!-- Date -->
-                        <div class="absolute top-3 left-3 bg-black/30 backdrop-blur-sm text-white text-[10px] px-2 py-1 rounded-lg font-mono">April 2025</div>
-                    </div>
-
-                    <div class="p-5">
-                        <!-- Author row -->
-                        <div class="flex items-center gap-3 mb-4">
-                            <img src="assets/img/profile.png" alt="Dipak" class="w-10 h-10 rounded-full object-cover ring-2 ring-cyan-400/30">
-                            <div>
-                                <div class="text-sm font-bold text-slate-900">Dipak Kadamb</div>
-                                <div class="text-[11px] text-slate-400 font-mono flex items-center gap-1">
-                                    <i data-feather="briefcase" class="w-3 h-3"></i> ZM Technologies
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Title -->
-                        <h2 class="text-lg font-bold text-slate-900 mb-2">🚀 AI-Powered Portfolio Website</h2>
-
-                        <!-- Content -->
-                        <p class="text-sm text-slate-600 leading-relaxed mb-4">
-                            Built a full responsive portfolio with animated hero section, AOS scroll effects, Zoho-connected contact form, Google Calendar booking integration, and a WhatsApp lead capture modal. Deployed live on GitHub Pages.
-                        </p>
-
-                        <!-- Image placeholder -->
-                        <div class="bg-gradient-to-br from-blue-50 to-cyan-50 border border-blue-100 rounded-2xl h-48 flex flex-col items-center justify-center gap-2 mb-4">
-                            <div class="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center text-blue-400">
-                                <i data-feather="image" class="w-5 h-5"></i>
-                            </div>
-                            <span class="text-xs text-slate-400 font-mono">Drop project screenshot here</span>
-                        </div>
-
-                        <!-- Tags -->
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            <span class="tag bg-blue-50 border border-blue-200 text-blue-600">#HTML5</span>
-                            <span class="tag bg-blue-50 border border-blue-200 text-blue-600">#TailwindCSS</span>
-                            <span class="tag bg-cyan-50 border border-cyan-200 text-cyan-600">#JavaScript</span>
-                            <span class="tag bg-teal-50 border border-teal-200 text-teal-600">#ZohoCRM</span>
-                            <span class="tag bg-blue-50 border border-blue-200 text-blue-600">#GitHub Pages</span>
-                        </div>
-
-                        <!-- Divider -->
-                        <div class="h-px bg-slate-100 mb-3"></div>
-
-                        <!-- Reactions -->
-                        <div class="flex items-center gap-1">
-                            <button class="react-btn like-btn" onclick="toggleLike(this)">
-                                <i data-feather="thumbs-up" class="w-4 h-4 like-icon"></i>
-                                <span class="like-text">Like</span>
-                            </button>
-                            <button class="react-btn" onclick="toggleComment(this)">
-                                <i data-feather="message-square" class="w-4 h-4"></i> Comment
-                            </button>
-                            <div class="ml-auto flex gap-1">
-                                <a href="https://dipakkadamb.github.io" target="_blank" class="react-btn text-blue-600 bg-blue-50 hover:bg-blue-100">
-                                    <i data-feather="external-link" class="w-4 h-4"></i> Live
-                                </a>
-                                <button class="react-btn" onclick="sharePost('AI-Powered Portfolio Website')">
-                                    <i data-feather="share-2" class="w-4 h-4"></i>
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Comment box (hidden by default) -->
-                        <div class="comment-box hidden mt-3 pt-3 border-t border-slate-100">
-                            <div class="flex gap-2 items-start">
-                                <img src="assets/img/profile.png" class="w-7 h-7 rounded-full object-cover flex-shrink-0 mt-0.5">
-                                <input type="text" placeholder="Write a comment..." class="flex-1 text-xs px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 focus:outline-none focus:border-blue-400 focus:bg-white transition-all">
-                            </div>
-                        </div>
-                    </div>
-                </article>
-
-                <!-- ── POST 2: Infra Dashboard ── -->
-                <article class="post-card" data-tags="completed infra" data-aos="fade-up" data-aos-delay="150">
-                    <div class="post-cover cover-teal">
-                        <div class="post-cover-inner">
-                            <div class="w-16 h-16 rounded-2xl bg-white/20 border border-white/30 backdrop-blur-sm flex items-center justify-center">
-                                <i data-feather="monitor" class="w-8 h-8 text-white"></i>
-                            </div>
-                            <span class="text-white/90 text-sm font-bold tracking-wide">IT Infrastructure</span>
-                        </div>
-                        <div class="absolute top-3 right-3 bg-teal-800/60 backdrop-blur-sm text-teal-200 text-xs px-2.5 py-1 rounded-full font-semibold font-mono border border-teal-600/40">✅ Completed</div>
-                        <div class="absolute top-3 left-3 bg-black/30 backdrop-blur-sm text-white text-[10px] px-2 py-1 rounded-lg font-mono">March 2025</div>
-                    </div>
-
-                    <div class="p-5">
-                        <div class="flex items-center gap-3 mb-4">
-                            <img src="assets/img/profile.png" alt="Dipak" class="w-10 h-10 rounded-full object-cover ring-2 ring-teal-400/30">
-                            <div>
-                                <div class="text-sm font-bold text-slate-900">Dipak Kadamb</div>
-                                <div class="text-[11px] text-slate-400 font-mono flex items-center gap-1">
-                                    <i data-feather="briefcase" class="w-3 h-3"></i> Royaltech
-                                </div>
-                            </div>
-                        </div>
-
-                        <h2 class="text-lg font-bold text-slate-900 mb-2">🖥️ Infrastructure Monitoring Dashboard</h2>
-                        <p class="text-sm text-slate-600 leading-relaxed mb-4">
-                            Designed and deployed a Grafana + Zabbix real-time monitoring stack for enterprise clients. Automated alerting pipelines via email & Telegram bots using Bash scripts and cron jobs. Achieved 99.9% uptime visibility.
-                        </p>
-
-                        <div class="bg-gradient-to-br from-teal-50 to-cyan-50 border border-teal-100 rounded-2xl h-48 flex flex-col items-center justify-center gap-2 mb-4">
-                            <div class="w-10 h-10 rounded-xl bg-teal-100 flex items-center justify-center text-teal-500">
-                                <i data-feather="image" class="w-5 h-5"></i>
-                            </div>
-                            <span class="text-xs text-slate-400 font-mono">Drop project screenshot here</span>
-                        </div>
-
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            <span class="tag bg-teal-50 border border-teal-200 text-teal-600">#Grafana</span>
-                            <span class="tag bg-teal-50 border border-teal-200 text-teal-600">#Zabbix</span>
-                            <span class="tag bg-teal-50 border border-teal-200 text-teal-600">#Linux</span>
-                            <span class="tag bg-teal-50 border border-teal-200 text-teal-600">#Bash</span>
-                            <span class="tag bg-cyan-50 border border-cyan-200 text-cyan-600">#Automation</span>
-                        </div>
-
-                        <div class="h-px bg-slate-100 mb-3"></div>
-                        <div class="flex items-center gap-1">
-                            <button class="react-btn like-btn" onclick="toggleLike(this)">
-                                <i data-feather="thumbs-up" class="w-4 h-4 like-icon"></i>
-                                <span class="like-text">Like</span>
-                            </button>
-                            <button class="react-btn" onclick="toggleComment(this)">
-                                <i data-feather="message-square" class="w-4 h-4"></i> Comment
-                            </button>
-                            <div class="ml-auto">
-                                <button class="react-btn" onclick="sharePost('Infrastructure Monitoring Dashboard')">
-                                    <i data-feather="share-2" class="w-4 h-4"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="comment-box hidden mt-3 pt-3 border-t border-slate-100">
-                            <div class="flex gap-2 items-start">
-                                <img src="assets/img/profile.png" class="w-7 h-7 rounded-full object-cover flex-shrink-0 mt-0.5">
-                                <input type="text" placeholder="Write a comment..." class="flex-1 text-xs px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 focus:outline-none focus:border-teal-400 focus:bg-white transition-all">
-                            </div>
-                        </div>
-                    </div>
-                </article>
-
-                <!-- ── POST 3: Zoho CRM ── -->
-                <article class="post-card" data-tags="completed zoho" data-aos="fade-up" data-aos-delay="200">
-                    <div class="post-cover cover-amber">
-                        <div class="post-cover-inner">
-                            <div class="w-16 h-16 rounded-2xl bg-white/20 border border-white/30 backdrop-blur-sm flex items-center justify-center">
-                                <i data-feather="layers" class="w-8 h-8 text-white"></i>
-                            </div>
-                            <span class="text-white/90 text-sm font-bold tracking-wide">Zoho Automation</span>
-                        </div>
-                        <div class="absolute top-3 right-3 bg-amber-900/50 backdrop-blur-sm text-amber-200 text-xs px-2.5 py-1 rounded-full font-semibold font-mono border border-amber-600/40">✅ Completed</div>
-                        <div class="absolute top-3 left-3 bg-black/30 backdrop-blur-sm text-white text-[10px] px-2 py-1 rounded-lg font-mono">July 2024</div>
-                    </div>
-
-                    <div class="p-5">
-                        <div class="flex items-center gap-3 mb-4">
-                            <img src="assets/img/profile.png" alt="Dipak" class="w-10 h-10 rounded-full object-cover ring-2 ring-amber-400/30">
-                            <div>
-                                <div class="text-sm font-bold text-slate-900">Dipak Kadamb</div>
-                                <div class="text-[11px] text-slate-400 font-mono flex items-center gap-1">
-                                    <i data-feather="briefcase" class="w-3 h-3"></i> SKS Engineering Solutions
-                                </div>
-                            </div>
-                        </div>
-
-                        <h2 class="text-lg font-bold text-slate-900 mb-2">⚙️ Zoho CRM Automation Suite</h2>
-                        <p class="text-sm text-slate-600 leading-relaxed mb-4">
-                            End-to-end Zoho CRM setup with multi-stage lead pipelines, Deluge scripting for custom business logic, REST API webhooks for real-time data sync across departments, and automated email & SMS follow-up sequences.
-                        </p>
-
-                        <div class="bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-100 rounded-2xl h-48 flex flex-col items-center justify-center gap-2 mb-4">
-                            <div class="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center text-amber-500">
-                                <i data-feather="image" class="w-5 h-5"></i>
-                            </div>
-                            <span class="text-xs text-slate-400 font-mono">Drop project screenshot here</span>
-                        </div>
-
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            <span class="tag bg-amber-50 border border-amber-200 text-amber-600">#ZohoCRM</span>
-                            <span class="tag bg-amber-50 border border-amber-200 text-amber-600">#Deluge</span>
-                            <span class="tag bg-amber-50 border border-amber-200 text-amber-600">#RESTAPIs</span>
-                            <span class="tag bg-amber-50 border border-amber-200 text-amber-600">#Webhooks</span>
-                            <span class="tag bg-orange-50 border border-orange-200 text-orange-600">#ZohoFlow</span>
-                        </div>
-
-                        <div class="h-px bg-slate-100 mb-3"></div>
-                        <div class="flex items-center gap-1">
-                            <button class="react-btn like-btn" onclick="toggleLike(this)">
-                                <i data-feather="thumbs-up" class="w-4 h-4 like-icon"></i>
-                                <span class="like-text">Like</span>
-                            </button>
-                            <button class="react-btn" onclick="toggleComment(this)">
-                                <i data-feather="message-square" class="w-4 h-4"></i> Comment
-                            </button>
-                            <div class="ml-auto">
-                                <button class="react-btn" onclick="sharePost('Zoho CRM Automation Suite')">
-                                    <i data-feather="share-2" class="w-4 h-4"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="comment-box hidden mt-3 pt-3 border-t border-slate-100">
-                            <div class="flex gap-2 items-start">
-                                <img src="assets/img/profile.png" class="w-7 h-7 rounded-full object-cover flex-shrink-0 mt-0.5">
-                                <input type="text" placeholder="Write a comment..." class="flex-1 text-xs px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 focus:outline-none focus:border-amber-400 focus:bg-white transition-all">
-                            </div>
-                        </div>
-                    </div>
-                </article>
-
-                <!-- ── POST 4: Early Career ── -->
-                <article class="post-card" data-tags="journey" data-aos="fade-up" data-aos-delay="250">
-                    <div class="post-cover cover-slate">
-                        <div class="post-cover-inner">
-                            <div class="w-16 h-16 rounded-2xl bg-white/20 border border-white/30 backdrop-blur-sm flex items-center justify-center">
-                                <i data-feather="code" class="w-8 h-8 text-white"></i>
-                            </div>
-                            <span class="text-white/90 text-sm font-bold tracking-wide">Early Career · 2017–2023</span>
-                        </div>
-                        <div class="absolute top-3 right-3 bg-slate-700/70 backdrop-blur-sm text-slate-300 text-xs px-2.5 py-1 rounded-full font-semibold font-mono border border-slate-500/40">📘 Journey</div>
-                        <div class="absolute top-3 left-3 bg-black/30 backdrop-blur-sm text-white text-[10px] px-2 py-1 rounded-lg font-mono">2017 – 2023</div>
-                    </div>
-
-                    <div class="p-5">
-                        <div class="flex items-center gap-3 mb-4">
-                            <img src="assets/img/profile.png" alt="Dipak" class="w-10 h-10 rounded-full object-cover ring-2 ring-slate-400/30">
-                            <div>
-                                <div class="text-sm font-bold text-slate-900">Dipak Kadamb</div>
-                                <div class="text-[11px] text-slate-400 font-mono flex items-center gap-1">
-                                    <i data-feather="briefcase" class="w-3 h-3"></i> TCS iON · Naresh i Technologies · PHN Technology
-                                </div>
-                            </div>
-                        </div>
-
-                        <h2 class="text-lg font-bold text-slate-900 mb-2">🎓 Early Career — Internships & Learning</h2>
-                        <p class="text-sm text-slate-600 leading-relaxed mb-4">
-                            Started the tech journey with Java development & software testing internships. These years built the discipline, problem-solving mindset, and technical foundation for everything that followed — from IT infrastructure to AI web development.
-                        </p>
-
-                        <div class="bg-gradient-to-br from-slate-50 to-slate-100 border border-slate-200 rounded-2xl h-48 flex flex-col items-center justify-center gap-2 mb-4">
-                            <div class="w-10 h-10 rounded-xl bg-slate-200 flex items-center justify-center text-slate-400">
-                                <i data-feather="image" class="w-5 h-5"></i>
-                            </div>
-                            <span class="text-xs text-slate-400 font-mono">Add a memory photo here</span>
-                        </div>
-
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            <span class="tag bg-slate-100 border border-slate-200 text-slate-500">#Java</span>
-                            <span class="tag bg-slate-100 border border-slate-200 text-slate-500">#Testing</span>
-                            <span class="tag bg-slate-100 border border-slate-200 text-slate-500">#TCSiON</span>
-                            <span class="tag bg-slate-100 border border-slate-200 text-slate-500">#LearningPhase</span>
-                        </div>
-
-                        <div class="h-px bg-slate-100 mb-3"></div>
-                        <div class="flex items-center gap-1">
-                            <button class="react-btn like-btn" onclick="toggleLike(this)">
-                                <i data-feather="thumbs-up" class="w-4 h-4 like-icon"></i>
-                                <span class="like-text">Like</span>
-                            </button>
-                            <button class="react-btn" onclick="toggleComment(this)">
-                                <i data-feather="message-square" class="w-4 h-4"></i> Comment
-                            </button>
-                            <div class="ml-auto">
-                                <button class="react-btn" onclick="sharePost('Early Career Journey')">
-                                    <i data-feather="share-2" class="w-4 h-4"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="comment-box hidden mt-3 pt-3 border-t border-slate-100">
-                            <div class="flex gap-2 items-start">
-                                <img src="assets/img/profile.png" class="w-7 h-7 rounded-full object-cover flex-shrink-0 mt-0.5">
-                                <input type="text" placeholder="Write a comment..." class="flex-1 text-xs px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 focus:outline-none focus:border-slate-400 focus:bg-white transition-all">
-                            </div>
-                        </div>
-                    </div>
-                </article>
-
-                <!-- End of Feed -->
-                <div class="text-center py-4 text-slate-400 text-xs font-mono" data-aos="fade-up">
-                    ── You're all caught up · More coming soon ──
-                </div>
-
-            </div>
-        </main>
-
-    </div>
-</div>
-
-<!-- ████ FAB ████ -->
-<a href="index.html#contact" title="Contact Me">
-    <button class="fab">
-        <i data-feather="plus" class="w-6 h-6"></i>
-    </button>
-</a>
-
-<!-- Footer -->
-<footer class="border-t border-slate-200 bg-white/60 backdrop-blur-md py-5 px-4 mt-8">
-    <div class="max-w-7xl mx-auto flex items-center justify-between flex-wrap gap-3">
-        <div class="flex items-center gap-2">
-            <img src="assets/img/profile.png" alt="DK" class="w-7 h-7 rounded-full object-cover border border-cyan-400/30">
-            <span class="text-xs text-slate-500 font-mono">&copy; <span id="year"></span> Dipak Kadamb</span>
+            <button><i data-feather="more-horizontal" class="w-5 h-5"></i></button>
         </div>
-        <div class="flex items-center gap-4">
-            <a href="index.html" class="text-xs text-slate-500 hover:text-slate-900 font-semibold transition-colors">Portfolio</a>
-            <a href="https://github.com/dipakkadamb" target="_blank" class="text-xs text-slate-500 hover:text-slate-900 font-semibold transition-colors">GitHub</a>
-            <a href="https://linkedin.com/in/dipakkadamb" target="_blank" class="text-xs text-slate-500 hover:text-slate-900 font-semibold transition-colors">LinkedIn</a>
+        
+        <!-- Media -->
+        <div class="w-full bg-gradient-to-br from-blue-50 to-cyan-50 aspect-square flex flex-col items-center justify-center relative post-img-bg overflow-hidden p-6 text-center shadow-inner">
+             <div class="w-20 h-20 rounded-2xl bg-white shadow-lg flex items-center justify-center text-blue-500 mb-6 transform -rotate-6">
+                <i data-feather="globe" class="w-10 h-10"></i>
+             </div>
+             <h2 class="text-2xl font-bold text-slate-800 mb-2">AI-Powered Portfolio</h2>
+             <p class="text-sm text-slate-600">Built a fully responsive portfolio with intelligent features.</p>
         </div>
+        
+        <!-- Actions -->
+        <div class="px-4 pt-3 pb-2 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <button onclick="toggleLike(this)"><i data-feather="heart" class="w-6 h-6 hover:text-gray-500 transform transition active:scale-75 like-icon"></i></button>
+                <button><i data-feather="message-circle" class="w-6 h-6 hover:text-gray-500"></i></button>
+                <button onclick="shareLink()"><i data-feather="send" class="w-6 h-6 hover:text-gray-500"></i></button>
+            </div>
+            <button><i data-feather="bookmark" class="w-6 h-6 hover:text-gray-500"></i></button>
+        </div>
+        
+        <!-- Description -->
+        <div class="px-4 pb-3">
+            <div class="text-sm font-semibold mb-1">1,245 likes</div>
+            <div class="text-sm text-slate-900 leading-snug">
+                <span class="font-semibold mr-1">dipakkadamb</span>
+                🚀 AI-Powered Portfolio Website! Built a fully responsive portfolio with animated sections, Zoho-connected contact form, and smooth interactions.
+            </div>
+            <div class="text-sm text-blue-900 font-medium mt-1">#WebDev #AI #Portfolio #TailwindCSS</div>
+            <div class="text-sm text-gray-500 mt-1 cursor-pointer">View all 12 comments</div>
+            <div class="text-[10px] text-gray-400 uppercase tracking-wide mt-2">2 days ago</div>
+        </div>
+        <div class="px-4 py-3 border-t border-gray-100 flex items-center gap-3">
+            <i data-feather="smile" class="w-5 h-5 text-gray-400"></i>
+            <input type="text" placeholder="Add a comment..." class="flex-1 text-sm outline-none bg-transparent">
+            <button class="text-blue-500 text-sm font-semibold opacity-70 hover:opacity-100">Post</button>
+        </div>
+    </article>
+
+    <!-- POST 2 -->
+    <article class="post-card">
+        <!-- Header -->
+        <div class="flex items-center justify-between px-3 py-3">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-full p-[1.5px] border border-gray-200">
+                    <img src="assets/img/profile.png" class="w-full h-full rounded-full object-cover">
+                </div>
+                <div>
+                    <div class="text-sm font-semibold leading-none flex items-center gap-1">dipakkadamb</div>
+                    <div class="text-xs text-gray-500 mt-0.5">Royaltech</div>
+                </div>
+            </div>
+            <button><i data-feather="more-horizontal" class="w-5 h-5"></i></button>
+        </div>
+        
+        <!-- Media -->
+        <div class="w-full bg-slate-900 aspect-square flex flex-col items-center justify-center relative post-img-bg overflow-hidden p-6 text-center">
+             <div class="w-20 h-20 rounded-2xl bg-slate-800 border border-slate-700 shadow-xl flex items-center justify-center text-teal-400 mb-6">
+                <i data-feather="monitor" class="w-10 h-10"></i>
+             </div>
+             <h2 class="text-2xl font-bold text-white mb-2">IT Infrastructure Dashboard</h2>
+             <p class="text-sm text-slate-400">Deployed Grafana + Zabbix real-time monitoring.</p>
+        </div>
+        
+        <!-- Actions -->
+        <div class="px-4 pt-3 pb-2 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <button onclick="toggleLike(this)"><i data-feather="heart" class="w-6 h-6 hover:text-gray-500 transition like-icon"></i></button>
+                <button><i data-feather="message-circle" class="w-6 h-6 hover:text-gray-500"></i></button>
+                <button onclick="shareLink()"><i data-feather="send" class="w-6 h-6 hover:text-gray-500"></i></button>
+            </div>
+            <button><i data-feather="bookmark" class="w-6 h-6 hover:text-gray-500"></i></button>
+        </div>
+        
+        <!-- Description -->
+        <div class="px-4 pb-3">
+            <div class="text-sm font-semibold mb-1">892 likes</div>
+            <div class="text-sm text-slate-900 leading-snug">
+                <span class="font-semibold mr-1">dipakkadamb</span>
+                🖥️ Designed and deployed a Grafana + Zabbix real-time monitoring stack for enterprise clients. Achieved 99.9% uptime visibility with automated Telegram bots and Bash scripts! 🚀
+            </div>
+            <div class="text-sm text-blue-900 font-medium mt-1">#Grafana #Zabbix #Linux #Bash</div>
+            <div class="text-sm text-gray-500 mt-1 cursor-pointer">View all 8 comments</div>
+            <div class="text-[10px] text-gray-400 uppercase tracking-wide mt-2">1 week ago</div>
+        </div>
+    </article>
+
+    <!-- POST 3 -->
+    <article class="post-card">
+        <div class="flex items-center justify-between px-3 py-3">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-full p-[1.5px] border border-gray-200">
+                    <img src="assets/img/profile.png" class="w-full h-full rounded-full object-cover">
+                </div>
+                <div>
+                    <div class="text-sm font-semibold leading-none">dipakkadamb</div>
+                    <div class="text-xs text-gray-500 mt-0.5">SKS Engineering Solutions</div>
+                </div>
+            </div>
+            <button><i data-feather="more-horizontal" class="w-5 h-5"></i></button>
+        </div>
+        
+        <div class="w-full bg-gradient-to-br from-orange-50 to-amber-100 aspect-square flex flex-col items-center justify-center relative post-img-bg overflow-hidden p-6 text-center">
+             <div class="w-20 h-20 rounded-2xl bg-white shadow-xl flex items-center justify-center text-orange-500 mb-6">
+                <i data-feather="layers" class="w-10 h-10"></i>
+             </div>
+             <h2 class="text-2xl font-bold text-slate-800 mb-2">Zoho CRM Automation</h2>
+             <p class="text-sm text-slate-600">End-to-end Zoho setup & API webhooks.</p>
+        </div>
+        
+        <div class="px-4 pt-3 pb-2 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <button onclick="toggleLike(this)"><i data-feather="heart" class="w-6 h-6 hover:text-gray-500 transition like-icon"></i></button>
+                <button><i data-feather="message-circle" class="w-6 h-6 hover:text-gray-500"></i></button>
+                <button onclick="shareLink()"><i data-feather="send" class="w-6 h-6 hover:text-gray-500"></i></button>
+            </div>
+            <button><i data-feather="bookmark" class="w-6 h-6 hover:text-gray-500"></i></button>
+        </div>
+        
+        <div class="px-4 pb-3">
+            <div class="text-sm font-semibold mb-1">2,104 likes</div>
+            <div class="text-sm text-slate-900 leading-snug">
+                <span class="font-semibold mr-1">dipakkadamb</span>
+                ⚙️ Built an end-to-end Zoho CRM automation suite. Multi-stage pipelines, Deluge scripting, and real-time syncing across apps.
+            </div>
+            <div class="text-sm text-blue-900 font-medium mt-1">#ZohoCRM #Deluge #Webhooks</div>
+            <div class="text-[10px] text-gray-400 uppercase tracking-wide mt-2">July 2024</div>
+        </div>
+    </article>
+
+    <div class="text-center py-6">
+        <i data-feather="check-circle" class="w-8 h-8 mx-auto text-gray-300 mb-2"></i>
+        <p class="text-sm text-gray-500">You're all caught up</p>
+        <p class="text-xs text-gray-400">You've seen all new posts.</p>
     </div>
-</footer>
+
+</main>
 
 <script>
-document.addEventListener('DOMContentLoaded', () => {
     feather.replace();
 
-    AOS.init({ duration: 650, easing: 'ease-out-quad', once: true, offset: 30 });
-
-    document.getElementById('year').textContent = new Date().getFullYear();
-
-    // Animate progress bars
-    setTimeout(() => {
-        document.querySelectorAll('.progress-fill').forEach(bar => {
-            bar.style.width = bar.dataset.width;
-        });
-    }, 500);
-});
-
-// Like toggle
-function toggleLike(btn) {
-    const icon = btn.querySelector('.like-icon');
-    const text = btn.querySelector('.like-text');
-    if (btn.classList.contains('liked')) {
-        btn.classList.remove('liked');
-        icon.style.fill = '';
-        icon.style.stroke = 'currentColor';
-        text.textContent = 'Like';
-    } else {
-        btn.classList.add('liked');
-        icon.style.fill = '#2563eb';
-        icon.style.stroke = '#2563eb';
-        text.textContent = 'Liked ✓';
-    }
-}
-
-// Comment toggle
-function toggleComment(btn) {
-    const box = btn.closest('article').querySelector('.comment-box');
-    box.classList.toggle('hidden');
-    if (!box.classList.contains('hidden')) {
-        box.querySelector('input').focus();
-    }
-}
-
-// Share
-function sharePost(title) {
-    if (navigator.share) {
-        navigator.share({ title: `Dipak Kadamb — ${title}`, url: window.location.href });
-    } else {
-        navigator.clipboard.writeText(window.location.href).then(() => {
-            const t = document.createElement('div');
-            t.className = 'fixed bottom-20 right-6 bg-slate-900 text-white text-xs px-4 py-2 rounded-xl shadow-lg z-50 font-mono';
-            t.textContent = '✓ Link copied!';
-            document.body.appendChild(t);
-            setTimeout(() => t.remove(), 2500);
-        });
-    }
-}
-
-// Filter
-function filterPosts(btn, tag) {
-    document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
-    btn.classList.add('active');
-    document.querySelectorAll('#post-feed article').forEach(post => {
-        if (tag === 'all' || post.dataset.tags.includes(tag)) {
-            post.style.display = '';
+    function toggleLike(btn) {
+        const icon = btn.querySelector('.like-icon');
+        icon.classList.toggle('liked');
+        if(icon.classList.contains('liked')) {
+            icon.style.fill = '#ef4444';
+            icon.style.color = '#ef4444';
+            icon.style.transform = 'scale(1.2)';
+            setTimeout(() => icon.style.transform = 'scale(1)', 150);
         } else {
-            post.style.display = 'none';
+            icon.style.fill = 'none';
+            icon.style.color = 'currentColor';
         }
-    });
-}
+    }
+
+    function shareLink() {
+        if (navigator.share) {
+            navigator.share({ title: `Dipak Kadamb Portfolio`, url: window.location.href });
+        } else {
+            alert('Share functionality unavailable');
+        }
+    }
 </script>
 </body>
 </html>

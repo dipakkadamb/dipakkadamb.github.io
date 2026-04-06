@@ -102,6 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
         easing: 'ease-out-cubic',
         once: true,
         offset: 50,
+        disable: 'mobile', // Disable on mobile to improve performance
         mirror: false // Don't animate out when scrolling past
     });
 
