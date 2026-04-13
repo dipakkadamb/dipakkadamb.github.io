@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth antialiased bg-slate-50 selection:bg-amber-500 selection:text-white">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>Infrastructure Monitoring Dashboard Case Study | Dipak Kadamb</title>
+    <meta name="description" content="Case study on building a highly resilient server monitoring dashboard via Grafana.">
+    <meta name="keywords" content="Grafana, Linux Server Admin, Bash Scripting, IT Security">
+    
+    <link rel="icon" href="assets/img/profile.png" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    </style>
+</head>
+
+<body class="text-slate-700 bg-slate-50">
+    
+    <nav class="fixed top-0 w-full z-40 py-4 px-4 sm:px-6 lg:px-12 backdrop-blur-md border-b border-slate-200 bg-white/90 shadow-sm">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <a href="index.html#work" class="flex items-center gap-2 text-slate-800 font-bold hover:text-amber-600 transition-colors">
+                <i data-feather="arrow-left" class="w-5 h-5"></i> Back to Portfolio
+            </a>
+            <div class="font-bold text-slate-900 hidden sm:block">Dipak Kadamb | IT Specialist</div>
+            <a href="index.html#contact" class="px-5 py-2 rounded-lg bg-amber-500 text-white font-semibold text-sm hover:bg-amber-600 transition">Let's Talk</a>
+        </div>
+    </nav>
+
+    <main class="pt-32 pb-20 px-4 sm:px-6 lg:px-12 max-w-4xl mx-auto">
+        <div class="mb-12">
+            <div class="inline-flex items-center gap-2 px-3 py-1 bg-amber-100 text-amber-800 text-xs font-bold uppercase tracking-wider rounded-full mb-6">IT Infrastructure</div>
+            <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 mb-6 tracking-tight leading-tight">Infrastructure Monitoring Dashboard</h1>
+            <p class="text-lg text-slate-600 mb-8 leading-relaxed">
+                Real-time server monitoring dashboard with comprehensive Grafana integration, automated alerts, and visual performance analytics for critical systems.
+            </p>
+            <div class="h-1 w-20 bg-amber-500 rounded-full mb-10"></div>
+        </div>
+
+        <section class="space-y-8 mb-16">
+            <h2 class="text-2xl font-bold text-slate-900">The Problem</h2>
+            <p class="text-slate-600 leading-relaxed">
+                Operating a growing fleet of Linux production servers without a centralized health monitoring system resulted in 'blind spots'. Unpredictable CPU spikes and storage bottlenecks were crashing key services before the IT team was even aware, severely impacting operational continuity.
+            </p>
+            
+            <h2 class="text-2xl font-bold text-slate-900 mt-10">The Solution</h2>
+            <p class="text-slate-600 leading-relaxed">
+                I conceptualized and deployed a highly integrated telemetry stack. Utilizing <strong>Prometheus</strong> for aggressive data scraping and <strong>Grafana</strong> for visual compilation, we successfully achieved a master terminal view of global operations.
+            </p>
+            <p class="text-slate-600 leading-relaxed">
+                Custom <strong>Bash scripts</strong> were written to monitor deeply specific local application variables not covered natively, streaming directly into the pipeline. Finally, alerting rules were rigorously defined so that DevOps managers receive instant Telegram/WhatsApp pings the second a server's memory exceeds 90%.
+            </p>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-8">
+                <div class="glass-card border border-slate-200 p-6 rounded-2xl bg-white shadow-sm">
+                    <div class="text-amber-500 mb-3"><i data-feather="server" class="w-8 h-8"></i></div>
+                    <div class="font-bold text-slate-900 mb-1">Server Nodes</div>
+                    <div class="text-sm text-slate-600">Simultaneously monitored.</div>
+                </div>
+                <div class="glass-card border border-slate-200 p-6 rounded-2xl bg-white shadow-sm">
+                    <div class="text-amber-500 mb-3"><i data-feather="bell" class="w-8 h-8"></i></div>
+                    <div class="font-bold text-slate-900 mb-1">Instant Alerts</div>
+                    <div class="text-sm text-slate-600">Via Telegram API.</div>
+                </div>
+                <div class="glass-card border border-slate-200 p-6 rounded-2xl bg-white shadow-sm">
+                    <div class="text-amber-500 mb-3"><i data-feather="lock" class="w-8 h-8"></i></div>
+                    <div class="font-bold text-slate-900 mb-1">99.9% Uptime</div>
+                    <div class="text-sm text-slate-600">Achieved securely.</div>
+                </div>
+            </div>
+        </section>
+
+        <div class="text-center bg-slate-900 text-white rounded-2xl p-10 shadow-lg">
+            <h3 class="text-2xl font-bold mb-4">Secure your technical backbone.</h3>
+            <p class="text-slate-400 mb-8 max-w-lg mx-auto">Get proactive IT monitoring that detects server crashes before your customers do.</p>
+            <a href="index.html#contact" class="inline-flex items-center gap-2 bg-amber-500 text-white font-bold px-8 py-3.5 rounded-xl hover:bg-amber-600 transition shadow-lg shrink-0">
+                Setup Monitoring
+            </a>
+        </div>
+    </main>
+
+    <footer class="border-t border-slate-200 py-8 bg-white text-center">
+        <p class="text-sm text-slate-500 font-medium">&copy; 2026 Dipak Kadamb. All rights reserved.</p>
+    </footer>
+
+    <script>
+        feather.replace();
+    </script>
+</body>
+</html>
