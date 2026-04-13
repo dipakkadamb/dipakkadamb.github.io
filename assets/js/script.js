@@ -385,3 +385,86 @@ window.closeGoogleCalendarModal = function () {
         document.body.style.overflow = ''; // Restore background scrolling
     }
 }
+
+// =====================================
+// Zoho Cliq Mock Call Logic
+// =====================================
+window.startCliqCall = (e) => {
+    if(e) e.preventDefault();
+    
+    // Hide welcome modal if open
+    const welcomeModal = document.getElementById('welcome-modal');
+    if (welcomeModal) {
+        welcomeModal.classList.add('opacity-0', 'pointer-events-none');
+        const welcomeModalContent = document.getElementById('welcome-modal-content');
+        if (welcomeModalContent) {
+            welcomeModalContent.classList.remove('scale-100');
+            welcomeModalContent.classList.add('scale-95');
+        }
+    }
+    
+    const callModal = document.getElementById('cliq-call-modal');
+    const statusEl = document.getElementById('cliq-call-status');
+    
+    if (callModal) {
+        callModal.classList.remove('opacity-0', 'pointer-events-none');
+        // Request Mic Permission just to make it realistic
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            navigator.mediaDevices.getUserMedia({ audio: true })
+              .then(function(stream) {})
+              .catch(function(err) {});
+        }
+        
+        // Set initial state
+        statusEl.textContent = 'Ringing...';
+        statusEl.classList.add('animate-pulse');
+        
+        // Simulate answer after 5 seconds
+        window.cliqCallTimer = setTimeout(() => {
+            statusEl.textContent = '00:01';
+            statusEl.classList.remove('animate-pulse');
+            let seconds = 1;
+            window.cliqCallInterval = setInterval(() => {
+                seconds++;
+                const min = String(Math.floor(seconds / 60)).padStart(2, '0');
+                const sec = String(seconds % 60).padStart(2, '0');
+                statusEl.textContent = `${min}:${sec}`;
+            }, 1000);
+        }, 5000);
+        
+        document.body.style.overflow = 'hidden'; 
+    }
+};
+
+window.endCliqCall = () => {
+    const callModal = document.getElementById('cliq-call-modal');
+    const statusEl = document.getElementById('cliq-call-status');
+    if (callModal) {
+        statusEl.textContent = 'Call Ended';
+        statusEl.classList.remove('animate-pulse');
+        
+        clearTimeout(window.cliqCallTimer);
+        clearInterval(window.cliqCallInterval);
+        
+        // Re-open welcome modal after a delay, or just fade out
+        setTimeout(() => {
+            callModal.classList.add('opacity-0', 'pointer-events-none');
+            document.body.style.overflow = '';
+        }, 1500);
+    }
+};
+
+window.toggleMuteCall = (btn) => {
+    if (btn.classList.contains('muted')) {
+        btn.classList.remove('muted', 'bg-red-500/20', 'text-red-400');
+        btn.classList.add('bg-[#2c2d33]/80', 'text-slate-300');
+        // Change feather icon to mic
+        btn.innerHTML = '<i data-feather="mic" class="w-6 h-6"></i>';
+    } else {
+        btn.classList.add('muted', 'bg-red-500/20', 'text-red-400');
+        btn.classList.remove('bg-[#2c2d33]/80', 'text-slate-300');
+        btn.innerHTML = '<i data-feather="mic-off" class="w-6 h-6"></i>';
+    }
+    if(window.feather) feather.replace();
+};
+
