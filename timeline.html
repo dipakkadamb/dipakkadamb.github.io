@@ -65,7 +65,7 @@
             overflow: hidden;
             position: relative;
             box-shadow: 0 10px 40px -10px rgba(0,0,0,0.08);
-            border-radius: 4px; /* Subtle softness */
+            border-radius: 4px;
         }
         .img-container img {
             width: 100%;
@@ -147,7 +147,6 @@
         }
         .lightbox-close:hover { transform: scale(1.1); }
 
-        /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #e5e5e5; border-radius: 10px; }
@@ -162,8 +161,10 @@
         <a href="index.html" class="text-wedding-charcoal hover:text-wedding-gold transition duration-300 flex items-center gap-2 text-sm font-medium tracking-widest uppercase">
             <i data-feather="arrow-left" class="w-4 h-4"></i> Return
         </a>
-        <span class="font-script text-3xl text-wedding-gold">Memories</span>
-        <div class="w-16"></div>
+        <span class="font-script text-3xl text-wedding-gold hidden sm:block">Memories</span>
+        <button id="auth-btn" onclick="toggleAuth()" class="text-wedding-charcoal hover:text-wedding-gold transition duration-300 flex items-center gap-2 text-xs font-bold tracking-widest uppercase">
+            <i data-feather="lock" class="w-4 h-4"></i> <span id="auth-text">Admin</span>
+        </button>
     </div>
 </nav>
 
@@ -178,8 +179,8 @@
 <!-- Main Feed -->
 <main class="px-6 max-w-7xl mx-auto">
     
-    <!-- Upload Section (Designed as an elegant card) -->
-    <div class="bg-white border border-wedding-gold/20 rounded-sm p-8 md:p-10 max-w-2xl mx-auto mb-20 shadow-[0_15px_40px_-15px_rgba(197,168,128,0.15)]" data-aos="fade-up" data-aos-delay="200">
+    <!-- Upload Section (Hidden by default for public) -->
+    <div id="upload-section" class="hidden bg-white border border-wedding-gold/20 rounded-sm p-8 md:p-10 max-w-2xl mx-auto mb-20 shadow-[0_15px_40px_-15px_rgba(197,168,128,0.15)]" data-aos="fade-up" data-aos-delay="200">
         <div class="text-center mb-8">
             <h3 class="font-playfair text-xl uppercase tracking-widest text-wedding-charcoal mb-2">Add a Memory</h3>
             <p class="text-xs text-slate-400 tracking-widest uppercase">Share a special moment</p>
@@ -252,6 +253,7 @@
     });
 
     const OLD_POSTS_KEY = 'timeline_user_posts';
+    const ADMIN_PASS = '127564';
 
     // Default post
     const defaultPost = {
@@ -266,9 +268,48 @@
     let currentLightboxPostId = null;
 
     document.addEventListener("DOMContentLoaded", () => {
-        renderGallery();
+        checkAuth(); // Also calls renderGallery()
     });
 
+    // --- Authentication Logic ---
+    function checkAuth() {
+        const isAdmin = sessionStorage.getItem('wedding_admin') === 'true';
+        const authBtnText = document.getElementById('auth-text');
+        const uploadSection = document.getElementById('upload-section');
+        const authBtn = document.getElementById('auth-btn');
+        
+        if(isAdmin) {
+            authBtnText.textContent = 'Logout';
+            authBtn.innerHTML = '<i data-feather="unlock" class="w-4 h-4"></i> <span id="auth-text">Logout</span>';
+            if(uploadSection) uploadSection.classList.remove('hidden');
+        } else {
+            authBtnText.textContent = 'Admin';
+            authBtn.innerHTML = '<i data-feather="lock" class="w-4 h-4"></i> <span id="auth-text">Admin</span>';
+            if(uploadSection) uploadSection.classList.add('hidden');
+        }
+        if(window.feather) feather.replace();
+        renderGallery(); // Re-render to show/hide delete buttons
+        
+        setTimeout(() => { AOS.refresh(); }, 100);
+    }
+
+    function toggleAuth() {
+        const isAdmin = sessionStorage.getItem('wedding_admin') === 'true';
+        if(isAdmin) {
+            sessionStorage.removeItem('wedding_admin');
+            checkAuth();
+        } else {
+            const pass = prompt('Enter Admin Passcode:');
+            if(pass === ADMIN_PASS) {
+                sessionStorage.setItem('wedding_admin', 'true');
+                checkAuth();
+            } else if(pass !== null) {
+                alert('Incorrect passcode.');
+            }
+        }
+    }
+
+    // --- Image Upload Logic ---
     let selectedImageBase64 = null;
 
     function previewImage(event) {
@@ -327,12 +368,24 @@
         setTimeout(() => { AOS.refresh(); }, 100);
     }
 
+    function deletePost(postId, event) {
+        event.stopPropagation(); // Stop click from opening lightbox
+        if(confirm('Are you sure you want to permanently delete this memory?')) {
+            customPosts = customPosts.filter(p => p.id !== postId);
+            localStorage.setItem(OLD_POSTS_KEY, JSON.stringify(customPosts));
+            renderGallery();
+            setTimeout(() => { AOS.refresh(); }, 100);
+        }
+    }
+
+    // --- Rendering Logic ---
     function renderGallery() {
         const masonry = document.getElementById('gallery-masonry');
         if (!masonry) return;
         
         masonry.innerHTML = '';
         const allPosts = [...customPosts, defaultPost];
+        const isAdmin = sessionStorage.getItem('wedding_admin') === 'true';
         
         allPosts.forEach((post, index) => {
             const div = document.createElement('div');
@@ -345,9 +398,14 @@
             const titleDisplay = post.title || 'CHERISHED MOMENT';
             const textDisplay = post.text ? `<p class="text-xs text-slate-500 tracking-wide mt-3 leading-relaxed font-light">${post.text}</p>` : '';
             
+            // Delete button markup (only if Admin and not the default post)
+            const deleteBtnHtml = (isAdmin && post.id !== 'default-post') ? 
+                `<button onclick="deletePost('${post.id}', event)" class="absolute top-4 right-4 bg-white/90 text-red-400 hover:text-red-600 rounded-full p-2.5 z-20 shadow-lg transition-all hover:scale-110 opacity-0 group-hover:opacity-100" title="Delete Photo"><i data-feather="trash-2" class="w-4 h-4"></i></button>` : '';
+
             if (post.image) {
                 div.innerHTML = `
                     <div class="img-container bg-wedding-champagne">
+                        ${deleteBtnHtml}
                         <img src="${post.image}" alt="${titleDisplay}" loading="lazy">
                         <div class="img-overlay"></div>
                     </div>
@@ -359,6 +417,7 @@
             } else {
                 div.innerHTML = `
                     <div class="img-container aspect-[4/3] bg-wedding-champagne flex flex-col items-center justify-center p-8 text-center border border-wedding-gold/20">
+                        ${deleteBtnHtml}
                         <i data-feather="heart" class="w-8 h-8 text-wedding-gold/50 mb-4"></i>
                         <span class="font-script text-3xl text-wedding-gold">${titleDisplay}</span>
                     </div>
@@ -374,6 +433,7 @@
         if(window.feather) feather.replace();
     }
 
+    // --- Lightbox Logic ---
     function openLightbox(postId) {
         currentLightboxPostId = postId;
         const allPosts = [...customPosts, defaultPost];
@@ -395,7 +455,7 @@
         }
         
         document.getElementById('lb-title').textContent = post.title || 'Cherished Moment';
-        document.getElementById('lb-caption').innerHTML = post.text ? post.text.replace(/\\n/g, '<br>') : '';
+        document.getElementById('lb-caption').innerHTML = post.text ? post.text.replace(/\n/g, '<br>') : '';
         document.getElementById('lb-date').textContent = new Date(post.date).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
         
         document.getElementById('lightbox').classList.add('active');
