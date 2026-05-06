@@ -45,7 +45,6 @@
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; background: #fdfbf9; color: #2c3539; }
         
-        /* Masonry Layout */
         .masonry-layout {
             column-count: 1;
             column-gap: 3rem;
@@ -60,7 +59,6 @@
             position: relative;
         }
 
-        /* Elegant Hover Effects */
         .img-container {
             overflow: hidden;
             position: relative;
@@ -87,7 +85,6 @@
             opacity: 1;
         }
 
-        /* Lightbox */
         .lightbox {
             position: fixed;
             inset: 0;
@@ -151,6 +148,12 @@
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #e5e5e5; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: #c5a880; }
+        
+        .loader {
+            border: 3px solid #f3f3f3; border-top: 3px solid #c5a880; border-radius: 50%;
+            width: 20px; height: 20px; animation: spin 1s linear infinite; display: inline-block;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body class="pb-24 overflow-x-hidden">
@@ -179,11 +182,11 @@
 <!-- Main Feed -->
 <main class="px-6 max-w-7xl mx-auto">
     
-    <!-- Upload Section (Hidden by default for public) -->
+    <!-- Upload Section -->
     <div id="upload-section" class="hidden bg-white border border-wedding-gold/20 rounded-sm p-8 md:p-10 max-w-2xl mx-auto mb-20 shadow-[0_15px_40px_-15px_rgba(197,168,128,0.15)]" data-aos="fade-up" data-aos-delay="200">
         <div class="text-center mb-8">
             <h3 class="font-playfair text-xl uppercase tracking-widest text-wedding-charcoal mb-2">Add a Memory</h3>
-            <p class="text-xs text-slate-400 tracking-widest uppercase">Share a special moment</p>
+            <p class="text-xs text-slate-400 tracking-widest uppercase">Share a special moment globally</p>
         </div>
         
         <div class="space-y-5">
@@ -204,13 +207,19 @@
                     <i data-feather="image" class="w-4 h-4"></i> Choose Photo
                 </label>
                 <input type="file" id="new-post-image" accept="image/*" class="hidden" onchange="previewImage(event)">
-                <button onclick="createNewPost()" class="bg-wedding-charcoal text-white hover:bg-black transition-colors px-10 py-3 text-xs tracking-widest uppercase font-medium w-full sm:w-auto justify-center shadow-lg">Save Memory</button>
+                <button id="submit-btn" onclick="createNewPost()" class="bg-wedding-charcoal text-white hover:bg-black transition-colors px-10 py-3 text-xs tracking-widest uppercase font-medium w-full sm:w-auto justify-center shadow-lg flex items-center gap-2">Save Memory</button>
             </div>
         </div>
     </div>
 
     <!-- Gallery Masonry -->
-    <div id="gallery-masonry" class="masonry-layout"></div>
+    <div id="gallery-masonry" class="masonry-layout">
+        <!-- Loader while fetching -->
+        <div class="col-span-1 md:col-span-2 lg:col-span-3 text-center py-20 text-wedding-gold" id="gallery-loader">
+            <div class="loader mb-4"></div>
+            <p class="font-script text-2xl">Gathering memories...</p>
+        </div>
+    </div>
 
     <div class="text-center mt-20" data-aos="fade-in">
         <i data-feather="heart" class="w-6 h-6 text-wedding-gold mx-auto mb-4"></i>
@@ -243,19 +252,36 @@
 
 <!-- AOS JS -->
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-<script>
-    feather.replace();
-    AOS.init({
-        duration: 1200,
-        once: true,
-        offset: 50,
-        easing: 'ease-out-cubic'
-    });
 
-    const OLD_POSTS_KEY = 'timeline_user_posts';
+<!-- Firebase Module Script -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
+    import { getStorage, ref, uploadString, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-storage.js";
+
+    // Firebase configuration from user
+    const firebaseConfig = {
+        apiKey: "AIzaSyA-De1RC9dO5k0AUqzfhJFg9xGLRpldm9M",
+        authDomain: "wedding-galary.firebaseapp.com",
+        projectId: "wedding-galary",
+        storageBucket: "wedding-galary.firebasestorage.app",
+        messagingSenderId: "671325483219",
+        appId: "1:671325483219:web:13be561bb9de587bb96426",
+        measurementId: "G-4S286FR5JC"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const storage = getStorage(app);
+
+    // Global Variables
     const ADMIN_PASS = '127564';
+    let customPosts = [];
+    let currentLightboxPostId = null;
+    let selectedImageBase64 = null;
 
-    // Default post
+    // Default post (fallback)
     const defaultPost = {
         id: 'default-post',
         title: 'OUR ENGAGEMENT',
@@ -264,14 +290,30 @@
         date: new Date().toISOString()
     };
 
-    let customPosts = JSON.parse(localStorage.getItem(OLD_POSTS_KEY)) || [];
-    let currentLightboxPostId = null;
-
     document.addEventListener("DOMContentLoaded", () => {
-        checkAuth(); // Also calls renderGallery()
+        feather.replace();
+        AOS.init({ duration: 1200, once: true, offset: 50, easing: 'ease-out-cubic' });
+        checkAuth();
+        fetchAndRenderGallery();
     });
 
-    // --- Authentication Logic ---
+    // --- Authentication ---
+    window.toggleAuth = function() {
+        const isAdmin = sessionStorage.getItem('wedding_admin') === 'true';
+        if(isAdmin) {
+            sessionStorage.removeItem('wedding_admin');
+            checkAuth();
+        } else {
+            const pass = prompt('Enter Admin Passcode:');
+            if(pass === ADMIN_PASS) {
+                sessionStorage.setItem('wedding_admin', 'true');
+                checkAuth();
+            } else if(pass !== null) {
+                alert('Incorrect passcode.');
+            }
+        }
+    }
+
     function checkAuth() {
         const isAdmin = sessionStorage.getItem('wedding_admin') === 'true';
         const authBtnText = document.getElementById('auth-text');
@@ -288,33 +330,15 @@
             if(uploadSection) uploadSection.classList.add('hidden');
         }
         if(window.feather) feather.replace();
-        renderGallery(); // Re-render to show/hide delete buttons
-        
-        setTimeout(() => { AOS.refresh(); }, 100);
+        renderGallery(); 
     }
 
-    function toggleAuth() {
-        const isAdmin = sessionStorage.getItem('wedding_admin') === 'true';
-        if(isAdmin) {
-            sessionStorage.removeItem('wedding_admin');
-            checkAuth();
-        } else {
-            const pass = prompt('Enter Admin Passcode:');
-            if(pass === ADMIN_PASS) {
-                sessionStorage.setItem('wedding_admin', 'true');
-                checkAuth();
-            } else if(pass !== null) {
-                alert('Incorrect passcode.');
-            }
-        }
-    }
-
-    // --- Image Upload Logic ---
-    let selectedImageBase64 = null;
-
-    function previewImage(event) {
+    // --- Upload UI ---
+    window.previewImage = function(event) {
         const file = event.target.files[0];
         if(!file) return;
+
+        // Optional: compress/resize image here before upload to save Firebase bandwidth
 
         const reader = new FileReader();
         reader.onload = function(e) {
@@ -328,7 +352,7 @@
         reader.readAsDataURL(file);
     }
 
-    function removeImage() {
+    window.removeImage = function() {
         selectedImageBase64 = null;
         document.getElementById('new-post-image').value = '';
         const container = document.getElementById('image-preview-container');
@@ -337,9 +361,11 @@
         container.classList.add('hidden');
     }
 
-    function createNewPost() {
+    // --- Firebase Logic ---
+    window.createNewPost = async function() {
         const titleInput = document.getElementById('new-post-title');
         const contentInput = document.getElementById('new-post-content');
+        const submitBtn = document.getElementById('submit-btn');
         
         const title = titleInput.value.trim() || 'CHERISHED MOMENT';
         const text = contentInput.value.trim();
@@ -349,32 +375,85 @@
             return;
         }
 
-        const newPost = {
-            id: 'post-' + Date.now(),
-            title: title,
-            text: text,
-            image: selectedImageBase64,
-            date: new Date().toISOString()
-        };
+        submitBtn.innerHTML = '<div class="loader !w-4 !h-4 !border-2 !border-t-white mr-2"></div> Uploading...';
+        submitBtn.disabled = true;
 
-        customPosts.unshift(newPost);
-        localStorage.setItem(OLD_POSTS_KEY, JSON.stringify(customPosts));
-        
-        titleInput.value = '';
-        contentInput.value = '';
-        removeImage();
-        renderGallery();
-        
-        setTimeout(() => { AOS.refresh(); }, 100);
+        try {
+            const timestamp = Date.now();
+            const storagePath = `images/post_${timestamp}`;
+            const imageRef = ref(storage, storagePath);
+            
+            // Upload Base64 string to Firebase Storage
+            await uploadString(imageRef, selectedImageBase64, 'data_url');
+            
+            // Get the public URL
+            const imageUrl = await getDownloadURL(imageRef);
+            
+            // Save metadata to Firestore
+            await addDoc(collection(db, "posts"), {
+                title: title,
+                text: text,
+                image: imageUrl,
+                storagePath: storagePath,
+                date: new Date().toISOString(),
+                timestamp: timestamp
+            });
+
+            titleInput.value = '';
+            contentInput.value = '';
+            removeImage();
+            await fetchAndRenderGallery();
+            
+        } catch(error) {
+            console.error("Error creating post:", error);
+            alert("Failed to save memory. Check your Firebase Storage/Firestore security rules.");
+        } finally {
+            submitBtn.innerHTML = 'Save Memory';
+            submitBtn.disabled = false;
+        }
     }
 
-    function deletePost(postId, event) {
-        event.stopPropagation(); // Stop click from opening lightbox
-        if(confirm('Are you sure you want to permanently delete this memory?')) {
-            customPosts = customPosts.filter(p => p.id !== postId);
-            localStorage.setItem(OLD_POSTS_KEY, JSON.stringify(customPosts));
+    async function fetchAndRenderGallery() {
+        const masonry = document.getElementById('gallery-masonry');
+        try {
+            const q = query(collection(db, "posts"), orderBy("timestamp", "desc"));
+            const querySnapshot = await getDocs(q);
+            
+            customPosts = [];
+            querySnapshot.forEach((doc) => {
+                customPosts.push({ id: doc.id, ...doc.data() });
+            });
+            
             renderGallery();
             setTimeout(() => { AOS.refresh(); }, 100);
+            
+        } catch(error) {
+            console.error("Error fetching posts:", error);
+            // Check if permission denied due to rules
+            if(error.code === 'permission-denied') {
+                masonry.innerHTML = '<div class="col-span-1 md:col-span-3 text-center text-red-500 py-10">Database access denied. Please set Firestore rules to allow read.</div>';
+            }
+        }
+    }
+
+    window.deletePost = async function(postId, storagePath, event) {
+        event.stopPropagation(); 
+        if(confirm('Are you sure you want to permanently delete this memory globally?')) {
+            try {
+                // Delete from Firestore
+                await deleteDoc(doc(db, "posts", postId));
+                
+                // Delete from Storage if it exists
+                if(storagePath) {
+                    const imageRef = ref(storage, storagePath);
+                    await deleteObject(imageRef);
+                }
+                
+                await fetchAndRenderGallery();
+            } catch(error) {
+                console.error("Error deleting post:", error);
+                alert("Failed to delete memory.");
+            }
         }
     }
 
@@ -384,7 +463,9 @@
         if (!masonry) return;
         
         masonry.innerHTML = '';
-        const allPosts = [...customPosts, defaultPost];
+        
+        // Show default post if DB is empty to keep it looking nice
+        const allPosts = customPosts.length > 0 ? customPosts : [defaultPost];
         const isAdmin = sessionStorage.getItem('wedding_admin') === 'true';
         
         allPosts.forEach((post, index) => {
@@ -398,9 +479,9 @@
             const titleDisplay = post.title || 'CHERISHED MOMENT';
             const textDisplay = post.text ? `<p class="text-xs text-slate-500 tracking-wide mt-3 leading-relaxed font-light">${post.text}</p>` : '';
             
-            // Delete button markup (only if Admin and not the default post)
+            const storagePathAttr = post.storagePath ? post.storagePath : '';
             const deleteBtnHtml = (isAdmin && post.id !== 'default-post') ? 
-                `<button onclick="deletePost('${post.id}', event)" class="absolute top-4 right-4 bg-white/90 text-red-400 hover:text-red-600 rounded-full p-2.5 z-20 shadow-lg transition-all hover:scale-110 opacity-0 group-hover:opacity-100" title="Delete Photo"><i data-feather="trash-2" class="w-4 h-4"></i></button>` : '';
+                `<button onclick="deletePost('${post.id}', '${storagePathAttr}', event)" class="absolute top-4 right-4 bg-white/90 text-red-400 hover:text-red-600 rounded-full p-2.5 z-20 shadow-lg transition-all hover:scale-110 opacity-0 group-hover:opacity-100" title="Delete Photo"><i data-feather="trash-2" class="w-4 h-4"></i></button>` : '';
 
             if (post.image) {
                 div.innerHTML = `
@@ -433,10 +514,10 @@
         if(window.feather) feather.replace();
     }
 
-    // --- Lightbox Logic ---
-    function openLightbox(postId) {
+    // --- Lightbox ---
+    window.openLightbox = function(postId) {
         currentLightboxPostId = postId;
-        const allPosts = [...customPosts, defaultPost];
+        const allPosts = customPosts.length > 0 ? customPosts : [defaultPost];
         const post = allPosts.find(p => p.id === postId);
         if(!post) return;
         
@@ -455,14 +536,14 @@
         }
         
         document.getElementById('lb-title').textContent = post.title || 'Cherished Moment';
-        document.getElementById('lb-caption').innerHTML = post.text ? post.text.replace(/\n/g, '<br>') : '';
+        document.getElementById('lb-caption').innerHTML = post.text ? post.text.replace(/\\n/g, '<br>') : '';
         document.getElementById('lb-date').textContent = new Date(post.date).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
         
         document.getElementById('lightbox').classList.add('active');
         document.body.style.overflow = 'hidden';
     }
 
-    function closeLightbox() {
+    window.closeLightbox = function() {
         document.getElementById('lightbox').classList.remove('active');
         document.body.style.overflow = '';
         currentLightboxPostId = null;
@@ -470,7 +551,7 @@
 
     document.addEventListener('keydown', (e) => {
         if(e.key === 'Escape' && document.getElementById('lightbox').classList.contains('active')) {
-            closeLightbox();
+            window.closeLightbox();
         }
     });
 
