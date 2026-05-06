@@ -1,33 +1,12 @@
-<!DOCTYPE html>
-<html lang="en" class="scroll-smooth antialiased bg-slate-50">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-    <title>Timeline | Dipak Kadamb</title>
-    <meta name="description" content="Project updates by Dipak Kadamb.">
-    <link rel="icon" href="assets/img/profile.png" type="image/png">
+import re
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+with open('timeline.html', 'r', encoding='utf-8') as f:
+    content = f.read()
 
-    <!-- Tailwind -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: { accent: { blue: '#2563eb', cyan: '#06b6d4', teal: '#0d9488', pink: '#db2777' } },
-                    fontFamily: { sans: ['"Plus Jakarta Sans"', 'sans-serif'] }
-                }
-            }
-        }
-    </script>
-    <!-- Feather Icons -->
-    <script src="https://unpkg.com/feather-icons"></script>
-    
-    <style>
+# Replace <style>
+style_start = content.find('<style>')
+style_end = content.find('</style>') + 8
+new_style = """<style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; background: #fafafa; }
         .ig-gradient { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); }
         .like-icon.liked { fill: #ef4444; color: #ef4444; }
@@ -134,20 +113,13 @@
         .upload-section {
             background: white; border: 1px solid #e5e7eb; border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
         }
-    </style>
-</head>
-<body class="text-slate-900 pb-20">
+    </style>"""
+content = content[:style_start] + new_style + content[style_end:]
 
-<!-- Nav -->
-<nav class="fixed top-0 w-full bg-white border-b border-gray-200 z-50 h-14 flex items-center px-4 md:px-0">
-    <div class="max-w-[470px] w-full mx-auto flex items-center justify-between">
-        <a href="index.html" class="text-gray-900 hover:text-gray-500"><i data-feather="chevron-left" class="w-7 h-7"></i></a>
-        <span class="font-semibold text-lg">Timeline</span>
-        <div class="w-7"></div>
-    </div>
-</nav>
-
-<!-- Main Feed -->
+# Replace Main Feed
+main_start = content.find('<!-- Main Feed -->')
+main_end = content.find('</main>') + 7
+new_main = """<!-- Main Feed -->
 <main class="pt-20 px-0 sm:px-4 max-w-4xl mx-auto pb-20">
     
     <!-- Profile Header -->
@@ -197,7 +169,7 @@
 <!-- Lightbox Modal -->
 <div id="lightbox" class="lightbox" onclick="if(event.target === this) closeLightbox()">
     <div class="lightbox-close" onclick="closeLightbox()"><i data-feather="x" class="w-8 h-8"></i></div>
-    <div class="lightbox-content m-4" onclick="event.stopPropagation()">
+    <div class="lightbox-content m-4">
         <!-- Left: Image -->
         <div class="lightbox-img-container">
             <img id="lb-image" src="" alt="Gallery Image">
@@ -243,9 +215,13 @@
             </div>
         </div>
     </div>
-</div>
+</div>"""
+content = content[:main_start] + new_main + content[main_end:]
 
-<script>
+# Replace Script
+script_start = content.find('<script>')
+script_end = content.find('</script>', script_start) + 9
+new_script = """<script>
     feather.replace();
 
     const POSTS_KEY = 'timeline_user_posts';
@@ -377,7 +353,7 @@
             lbTextPlaceholder.classList.remove('hidden');
         }
         
-        document.getElementById('lb-caption').innerHTML = post.text ? post.text.replace(/\n/g, '<br>') : '';
+        document.getElementById('lb-caption').innerHTML = post.text ? post.text.replace(/\\n/g, '<br>') : '';
         document.getElementById('lb-date').textContent = new Date(post.date).toLocaleDateString() + ' ' + new Date(post.date).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
         
         renderLightboxComments();
@@ -454,6 +430,8 @@
             alert('Share functionality unavailable');
         }
     }
-</script>
-</body>
-</html>
+</script>"""
+content = content[:script_start] + new_script + content[script_end:]
+
+with open('timeline.html', 'w', encoding='utf-8') as f:
+    f.write(content)
