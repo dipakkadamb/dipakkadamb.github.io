@@ -3,14 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-    <title>Gallery | Dipak Kadamb</title>
-    <meta name="description" content="Project updates by Dipak Kadamb.">
+    <title>Wedding Gallery | Dipak Kadamb</title>
+    <meta name="description" content="Wedding gallery and memories.">
     <link rel="icon" href="assets/img/profile.png" type="image/png">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+
+    <!-- AOS CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
     <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -18,10 +21,19 @@
         tailwind.config = {
             theme: {
                 extend: {
-                    colors: { accent: { blue: '#2563eb', cyan: '#06b6d4', teal: '#0d9488', pink: '#db2777' }, cream: '#f5f0e6' },
+                    colors: { 
+                        wedding: {
+                            ivory: '#fdfbf9',
+                            champagne: '#f4ede4',
+                            gold: '#c5a880',
+                            charcoal: '#2c3539',
+                            blush: '#f8e5e5'
+                        }
+                    },
                     fontFamily: { 
                         sans: ['"Plus Jakarta Sans"', 'sans-serif'],
-                        playfair: ['"Playfair Display"', 'serif']
+                        playfair: ['"Playfair Display"', 'serif'],
+                        script: ['"Great Vibes"', 'cursive']
                     }
                 }
             }
@@ -31,40 +43,59 @@
     <script src="https://unpkg.com/feather-icons"></script>
     
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #f3ede2; color: #1a1a1a; }
-        .ig-gradient { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #fdfbf9; color: #2c3539; }
         
-        /* Masonry Layout Styles */
+        /* Masonry Layout */
         .masonry-layout {
             column-count: 1;
-            column-gap: 2.5rem;
+            column-gap: 3rem;
         }
-        @media (min-width: 640px) {
-            .masonry-layout {
-                column-count: 2;
-            }
-        }
-        @media (min-width: 1024px) {
-            .masonry-layout {
-                column-count: 3;
-            }
-        }
+        @media (min-width: 640px) { .masonry-layout { column-count: 2; } }
+        @media (min-width: 1024px) { .masonry-layout { column-count: 3; } }
+        
         .gallery-item {
             break-inside: avoid;
-            margin-bottom: 3.5rem;
+            margin-bottom: 4rem;
             cursor: pointer;
+            position: relative;
         }
-        
-        /* Lightbox Styles */
+
+        /* Elegant Hover Effects */
+        .img-container {
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 10px 40px -10px rgba(0,0,0,0.08);
+            border-radius: 4px; /* Subtle softness */
+        }
+        .img-container img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            transition: transform 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .gallery-item:hover .img-container img {
+            transform: scale(1.08);
+        }
+        .img-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(44,53,57,0.3) 0%, transparent 50%);
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+        .gallery-item:hover .img-overlay {
+            opacity: 1;
+        }
+
+        /* Lightbox */
         .lightbox {
             position: fixed;
             inset: 0;
             z-index: 100;
-            background: rgba(0,0,0,0.85);
-            backdrop-filter: blur(8px);
+            background: rgba(253, 251, 249, 0.98);
             display: none;
             opacity: 0;
-            transition: opacity 0.3s ease;
+            transition: opacity 0.5s ease;
             align-items: center;
             justify-content: center;
         }
@@ -73,152 +104,165 @@
             opacity: 1;
         }
         .lightbox-content {
-            background: white;
             width: 100%;
-            max-width: 900px;
-            height: 90vh;
-            max-height: 600px;
-            border-radius: 8px;
-            overflow: hidden;
+            height: 100vh;
             display: flex;
             flex-direction: column;
         }
         @media (min-width: 768px) {
-            .lightbox-content {
-                flex-direction: row;
-            }
+            .lightbox-content { flex-direction: row; }
         }
         .lightbox-img-container {
             flex: 1;
-            background: black;
             display: flex;
             align-items: center;
             justify-content: center;
+            padding: 2rem;
         }
         .lightbox-img-container img {
             max-width: 100%;
-            max-height: 100%;
+            max-height: 90vh;
             object-fit: contain;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
         }
         .lightbox-sidebar {
             width: 100%;
-            background: white;
+            background: #fdfbf9;
             display: flex;
             flex-direction: column;
+            justify-content: center;
+            padding: 3rem;
         }
         @media (min-width: 768px) {
-            .lightbox-sidebar {
-                width: 350px;
-                border-left: 1px solid #e5e7eb;
-            }
+            .lightbox-sidebar { width: 400px; border-left: 1px solid rgba(197, 168, 128, 0.2); }
         }
         .lightbox-close {
             position: absolute;
-            top: 1rem;
-            right: 1rem;
-            color: white;
+            top: 2rem;
+            right: 2rem;
+            color: #2c3539;
             cursor: pointer;
             z-index: 101;
+            transition: transform 0.3s;
         }
-        .upload-section {
-            background: white; border: 1px solid #e5e7eb; padding: 2rem; margin-bottom: 4rem; box-shadow: 0 10px 30px -10px rgba(0,0,0,0.05);
-        }
+        .lightbox-close:hover { transform: scale(1.1); }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #e5e5e5; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #c5a880; }
     </style>
 </head>
-<body class="pb-20">
+<body class="pb-24 overflow-x-hidden">
 
 <!-- Nav -->
-<nav class="fixed top-0 w-full bg-[#f3ede2]/90 backdrop-blur-md z-50 h-16 flex items-center px-6 border-b border-black/5">
-    <div class="max-w-6xl w-full mx-auto flex items-center justify-between">
-        <a href="index.html" class="text-slate-900 hover:text-slate-500 transition"><i data-feather="arrow-left" class="w-6 h-6"></i></a>
-        <span class="font-playfair font-bold text-xl tracking-wide uppercase">Gallery</span>
-        <div class="w-6"></div>
+<nav class="fixed top-0 w-full bg-wedding-ivory/90 backdrop-blur-lg z-50 h-20 flex items-center px-6 transition-all duration-300 border-b border-wedding-gold/20">
+    <div class="max-w-7xl w-full mx-auto flex items-center justify-between">
+        <a href="index.html" class="text-wedding-charcoal hover:text-wedding-gold transition duration-300 flex items-center gap-2 text-sm font-medium tracking-widest uppercase">
+            <i data-feather="arrow-left" class="w-4 h-4"></i> Return
+        </a>
+        <span class="font-script text-3xl text-wedding-gold">Memories</span>
+        <div class="w-16"></div>
     </div>
 </nav>
 
+<!-- Hero Section -->
+<header class="pt-40 pb-20 px-6 text-center max-w-4xl mx-auto" data-aos="fade-up" data-aos-duration="1200">
+    <h2 class="font-script text-5xl md:text-7xl text-wedding-gold mb-4">Our Wedding Journey</h2>
+    <h1 class="font-playfair text-3xl md:text-5xl tracking-widest uppercase text-wedding-charcoal mb-6">A Collection of Memories</h1>
+    <div class="w-16 h-[1px] bg-wedding-gold mx-auto mb-6"></div>
+    <p class="text-slate-500 font-light tracking-wide max-w-xl mx-auto leading-relaxed">Moments of love, joy, and forever. Sharing our most beautiful memories with the people we cherish.</p>
+</header>
+
 <!-- Main Feed -->
-<main class="pt-28 px-4 sm:px-6 max-w-6xl mx-auto pb-20">
+<main class="px-6 max-w-7xl mx-auto">
     
-    <!-- Upload Section -->
-    <div class="upload-section max-w-2xl mx-auto relative overflow-hidden">
-        <div class="absolute top-0 left-0 w-1 h-full bg-slate-900"></div>
-        <h2 class="font-playfair text-2xl font-bold uppercase tracking-wider mb-5">Add to Editorial</h2>
-        
-        <input type="text" id="new-post-title" class="w-full bg-slate-50 border-b border-slate-300 p-3 text-lg font-playfair outline-none focus:border-slate-900 transition mb-4 placeholder-slate-400" placeholder="Event or Location Name...">
-        
-        <textarea id="new-post-content" rows="2" class="w-full bg-slate-50 border border-slate-200 p-3 text-sm outline-none focus:border-slate-900 transition resize-none placeholder-slate-400" placeholder="Write a description..."></textarea>
-        
-        <div id="image-preview-container" class="hidden mt-4 relative w-full border border-slate-200 overflow-hidden bg-slate-100 flex items-center justify-center">
-            <img id="image-preview" class="w-full h-auto object-contain max-h-64">
-            <button onclick="removeImage()" class="absolute top-2 right-2 p-1.5 bg-slate-900/50 rounded-full text-white hover:bg-slate-900/70 transition"><i data-feather="x" class="w-4 h-4"></i></button>
+    <!-- Upload Section (Designed as an elegant card) -->
+    <div class="bg-white border border-wedding-gold/20 rounded-sm p-8 md:p-10 max-w-2xl mx-auto mb-20 shadow-[0_15px_40px_-15px_rgba(197,168,128,0.15)]" data-aos="fade-up" data-aos-delay="200">
+        <div class="text-center mb-8">
+            <h3 class="font-playfair text-xl uppercase tracking-widest text-wedding-charcoal mb-2">Add a Memory</h3>
+            <p class="text-xs text-slate-400 tracking-widest uppercase">Share a special moment</p>
         </div>
         
-        <div class="flex justify-between items-center mt-6">
-            <label for="new-post-image" class="cursor-pointer text-slate-600 border border-slate-300 hover:bg-slate-100 transition-colors flex items-center gap-2 px-5 py-2.5 font-medium text-sm tracking-wide">
-                <i data-feather="camera" class="w-4 h-4"></i> Select Photo
-            </label>
-            <input type="file" id="new-post-image" accept="image/*" class="hidden" onchange="previewImage(event)">
-            <button onclick="createNewPost()" class="bg-slate-900 text-white px-8 py-2.5 text-sm font-bold uppercase tracking-wider hover:bg-slate-800 transition shadow-md">Publish</button>
+        <div class="space-y-5">
+            <div>
+                <input type="text" id="new-post-title" class="w-full bg-transparent border-b border-wedding-gold/30 p-3 text-center text-lg font-playfair outline-none focus:border-wedding-gold transition placeholder-slate-300" placeholder="E.g., The Engagement, Haldi Ceremony...">
+            </div>
+            <div>
+                <textarea id="new-post-content" rows="2" class="w-full bg-transparent border-b border-wedding-gold/30 p-3 text-center text-sm outline-none focus:border-wedding-gold transition resize-none placeholder-slate-300 font-light" placeholder="Write a beautiful description..."></textarea>
+            </div>
+            
+            <div id="image-preview-container" class="hidden relative w-full overflow-hidden flex items-center justify-center pt-4">
+                <img id="image-preview" class="w-full h-auto object-cover max-h-80 shadow-md">
+                <button onclick="removeImage()" class="absolute top-6 right-2 p-2 bg-white/80 backdrop-blur rounded-full text-wedding-charcoal hover:bg-white transition shadow-sm"><i data-feather="x" class="w-4 h-4"></i></button>
+            </div>
+            
+            <div class="flex flex-col sm:flex-row justify-center items-center gap-4 pt-4">
+                <label for="new-post-image" class="cursor-pointer text-wedding-charcoal bg-wedding-champagne hover:bg-wedding-gold/20 transition-colors flex items-center gap-2 px-8 py-3 text-xs tracking-widest uppercase font-medium w-full sm:w-auto justify-center">
+                    <i data-feather="image" class="w-4 h-4"></i> Choose Photo
+                </label>
+                <input type="file" id="new-post-image" accept="image/*" class="hidden" onchange="previewImage(event)">
+                <button onclick="createNewPost()" class="bg-wedding-charcoal text-white hover:bg-black transition-colors px-10 py-3 text-xs tracking-widest uppercase font-medium w-full sm:w-auto justify-center shadow-lg">Save Memory</button>
+            </div>
         </div>
     </div>
 
     <!-- Gallery Masonry -->
     <div id="gallery-masonry" class="masonry-layout"></div>
 
+    <div class="text-center mt-20" data-aos="fade-in">
+        <i data-feather="heart" class="w-6 h-6 text-wedding-gold mx-auto mb-4"></i>
+        <p class="font-script text-2xl text-slate-400">Forever & Always</p>
+    </div>
+
 </main>
 
 <!-- Lightbox Modal -->
 <div id="lightbox" class="lightbox" onclick="if(event.target === this) closeLightbox()">
     <div class="lightbox-close" onclick="closeLightbox()"><i data-feather="x" class="w-8 h-8"></i></div>
-    <div class="lightbox-content m-4" onclick="event.stopPropagation()">
+    <div class="lightbox-content" onclick="event.stopPropagation()">
         <!-- Left: Image -->
         <div class="lightbox-img-container">
-            <img id="lb-image" src="" alt="Gallery Image">
-            <div id="lb-text-placeholder" class="hidden px-8 py-12 text-center text-white text-xl font-medium w-full h-full flex items-center justify-center bg-slate-800"></div>
+            <img id="lb-image" src="" alt="Wedding Memory">
+            <div id="lb-text-placeholder" class="hidden px-8 py-12 text-center text-white text-xl font-medium w-full h-full flex items-center justify-center bg-wedding-charcoal/5"></div>
         </div>
         <!-- Right: Info -->
-        <div class="lightbox-sidebar flex flex-col h-full bg-[#fcfaf7]">
-            <!-- Header -->
-            <div class="flex items-center p-5 border-b border-black/5 shrink-0">
-                <div class="w-8 h-8 rounded-full overflow-hidden mr-3 border border-slate-200">
-                    <img src="assets/img/profile.png" class="w-full h-full object-cover">
-                </div>
-                <div class="font-semibold text-sm uppercase tracking-wider">dipakkadamb</div>
-            </div>
-            <!-- Scrollable Content -->
-            <div class="p-6 flex-1 overflow-y-auto" style="scrollbar-width: thin;">
-                <!-- Caption -->
-                <div class="mb-6">
-                    <h3 id="lb-title" class="font-playfair font-bold text-xl uppercase tracking-widest mb-3"></h3>
-                    <div id="lb-caption" class="text-sm text-slate-600 leading-relaxed font-medium uppercase tracking-wide"></div>
-                    <div id="lb-date" class="text-[10px] text-slate-400 uppercase tracking-widest mt-4"></div>
-                </div>
-            </div>
-            <!-- Actions -->
-            <div class="p-4 border-t border-black/5 shrink-0 bg-white">
-                <div class="flex items-center gap-4">
-                    <button onclick="shareLink()" class="flex items-center gap-2 text-slate-600 hover:text-slate-900 transition uppercase text-xs font-bold tracking-widest"><i data-feather="share-2" class="w-4 h-4"></i> Share</button>
-                </div>
+        <div class="lightbox-sidebar">
+            <div class="text-center">
+                <i data-feather="camera" class="w-5 h-5 text-wedding-gold mx-auto mb-6"></i>
+                <h3 id="lb-title" class="font-playfair italic text-2xl md:text-3xl text-wedding-charcoal mb-4"></h3>
+                <div class="w-10 h-[1px] bg-wedding-gold mx-auto mb-6"></div>
+                <div id="lb-caption" class="text-sm text-slate-500 leading-loose font-light tracking-wide px-4"></div>
+                <div id="lb-date" class="text-[10px] text-wedding-gold uppercase tracking-widest mt-8 font-medium"></div>
             </div>
         </div>
     </div>
 </div>
 
+<!-- AOS JS -->
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
     feather.replace();
+    AOS.init({
+        duration: 1200,
+        once: true,
+        offset: 50,
+        easing: 'ease-out-cubic'
+    });
 
-    const POSTS_KEY = 'timeline_user_posts';
+    const OLD_POSTS_KEY = 'timeline_user_posts';
 
     // Default post
     const defaultPost = {
         id: 'default-post',
-        title: 'STAY WITH LUXURY AT SEA PEARL',
-        text: 'Functionality & individuality are the essence of our executive suites.',
-        image: null,
+        title: 'OUR ENGAGEMENT',
+        text: 'The beginning of forever. Surrounded by love and light as we took our first step together.',
+        image: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=2069&auto=format&fit=crop', 
         date: new Date().toISOString()
     };
 
-    let customPosts = JSON.parse(localStorage.getItem(POSTS_KEY)) || [];
+    let customPosts = JSON.parse(localStorage.getItem(OLD_POSTS_KEY)) || [];
     let currentLightboxPostId = null;
 
     document.addEventListener("DOMContentLoaded", () => {
@@ -256,11 +300,11 @@
         const titleInput = document.getElementById('new-post-title');
         const contentInput = document.getElementById('new-post-content');
         
-        const title = titleInput.value.trim() || 'UNTITLED EVENT';
+        const title = titleInput.value.trim() || 'CHERISHED MOMENT';
         const text = contentInput.value.trim();
         
         if (!selectedImageBase64) {
-            alert('Please select an image for the editorial gallery.');
+            alert('Please select a photo to add to the gallery.');
             return;
         }
 
@@ -273,16 +317,14 @@
         };
 
         customPosts.unshift(newPost);
-        localStorage.setItem(POSTS_KEY, JSON.stringify(customPosts));
+        localStorage.setItem(OLD_POSTS_KEY, JSON.stringify(customPosts));
         
         titleInput.value = '';
         contentInput.value = '';
         removeImage();
         renderGallery();
-    }
-
-    function getAllPosts() {
-        return [...customPosts, defaultPost];
+        
+        setTimeout(() => { AOS.refresh(); }, 100);
     }
 
     function renderGallery() {
@@ -290,40 +332,38 @@
         if (!masonry) return;
         
         masonry.innerHTML = '';
-        const allPosts = getAllPosts();
+        const allPosts = [...customPosts, defaultPost];
         
-        allPosts.forEach(post => {
+        allPosts.forEach((post, index) => {
             const div = document.createElement('div');
             div.className = 'gallery-item group';
+            const delay = (index % 3) * 150;
+            div.setAttribute('data-aos', 'fade-up');
+            div.setAttribute('data-aos-delay', delay.toString());
             div.onclick = () => openLightbox(post.id);
             
-            const titleDisplay = post.title || 'UNTITLED EVENT';
-            const textDisplay = post.text ? `<p class="text-[10px] sm:text-xs text-slate-500 uppercase tracking-widest mt-2 leading-relaxed">${post.text}</p>` : '';
+            const titleDisplay = post.title || 'CHERISHED MOMENT';
+            const textDisplay = post.text ? `<p class="text-xs text-slate-500 tracking-wide mt-3 leading-relaxed font-light">${post.text}</p>` : '';
             
             if (post.image) {
                 div.innerHTML = `
-                    <div class="overflow-hidden bg-slate-200">
-                        <img src="${post.image}" alt="${titleDisplay}" class="w-full h-auto object-cover transition-transform duration-700 ease-out group-hover:scale-105" loading="lazy">
+                    <div class="img-container bg-wedding-champagne">
+                        <img src="${post.image}" alt="${titleDisplay}" loading="lazy">
+                        <div class="img-overlay"></div>
                     </div>
-                    <div class="mt-4 px-1">
-                        <h3 class="font-playfair font-bold text-lg sm:text-xl uppercase tracking-wider flex items-center justify-between text-slate-900 group-hover:text-slate-600 transition-colors">
-                            <span>${titleDisplay}</span> 
-                            <i data-feather="arrow-up-right" class="w-5 h-5 shrink-0 ml-3"></i>
-                        </h3>
+                    <div class="mt-6 text-center px-4">
+                        <h3 class="font-playfair text-lg sm:text-xl tracking-widest uppercase text-wedding-charcoal group-hover:text-wedding-gold transition-colors duration-500">${titleDisplay}</h3>
                         ${textDisplay}
                     </div>
                 `;
             } else {
                 div.innerHTML = `
-                    <div class="w-full aspect-[4/3] bg-slate-800 flex items-center justify-center p-8 text-center overflow-hidden relative">
-                        <div class="absolute inset-0 bg-slate-900/50 mix-blend-multiply"></div>
-                        <i data-feather="terminal" class="w-12 h-12 text-slate-400 relative z-10"></i>
+                    <div class="img-container aspect-[4/3] bg-wedding-champagne flex flex-col items-center justify-center p-8 text-center border border-wedding-gold/20">
+                        <i data-feather="heart" class="w-8 h-8 text-wedding-gold/50 mb-4"></i>
+                        <span class="font-script text-3xl text-wedding-gold">${titleDisplay}</span>
                     </div>
-                    <div class="mt-4 px-1">
-                        <h3 class="font-playfair font-bold text-lg sm:text-xl uppercase tracking-wider flex items-center justify-between text-slate-900 group-hover:text-slate-600 transition-colors">
-                            <span>${titleDisplay}</span> 
-                            <i data-feather="arrow-up-right" class="w-5 h-5 shrink-0 ml-3"></i>
-                        </h3>
+                    <div class="mt-6 text-center px-4">
+                        <h3 class="font-playfair text-lg tracking-widest uppercase text-wedding-charcoal group-hover:text-wedding-gold transition-colors duration-500">${titleDisplay}</h3>
                         ${textDisplay}
                     </div>
                 `;
@@ -336,7 +376,8 @@
 
     function openLightbox(postId) {
         currentLightboxPostId = postId;
-        const post = getAllPosts().find(p => p.id === postId);
+        const allPosts = [...customPosts, defaultPost];
+        const post = allPosts.find(p => p.id === postId);
         if(!post) return;
         
         const lbImg = document.getElementById('lb-image');
@@ -348,14 +389,14 @@
             lbTextPlaceholder.classList.add('hidden');
         } else {
             lbImg.classList.add('hidden');
-            lbTextPlaceholder.innerHTML = `<i data-feather="terminal" class="w-16 h-16 text-slate-500"></i>`;
+            lbTextPlaceholder.innerHTML = `<i data-feather="heart" class="w-12 h-12 text-wedding-gold"></i>`;
             lbTextPlaceholder.classList.remove('hidden');
             if(window.feather) feather.replace();
         }
         
-        document.getElementById('lb-title').textContent = post.title || 'UNTITLED EVENT';
+        document.getElementById('lb-title').textContent = post.title || 'Cherished Moment';
         document.getElementById('lb-caption').innerHTML = post.text ? post.text.replace(/\\n/g, '<br>') : '';
-        document.getElementById('lb-date').textContent = new Date(post.date).toLocaleDateString() + ' ' + new Date(post.date).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        document.getElementById('lb-date').textContent = new Date(post.date).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
         
         document.getElementById('lightbox').classList.add('active');
         document.body.style.overflow = 'hidden';
@@ -367,13 +408,12 @@
         currentLightboxPostId = null;
     }
 
-    function shareLink() {
-        if (navigator.share) {
-            navigator.share({ title: 'Dipak Kadamb Portfolio', url: window.location.href });
-        } else {
-            alert('Share functionality unavailable');
+    document.addEventListener('keydown', (e) => {
+        if(e.key === 'Escape' && document.getElementById('lightbox').classList.contains('active')) {
+            closeLightbox();
         }
-    }
+    });
+
 </script>
 </body>
 </html>
