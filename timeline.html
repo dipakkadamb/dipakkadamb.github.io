@@ -142,14 +142,17 @@
         .gallery-card:hover .gallery-card-info { opacity: 1; transform: translateY(0); }
         .gallery-card-delete {
             position: absolute; top: 12px; right: 12px;
-            background: rgba(255,255,255,0.92); color: #e05252;
-            border-radius: 50%; width: 36px; height: 36px;
+            background: white; color: #e05252;
+            border-radius: 50%; width: 38px; height: 38px;
             display: flex; align-items: center; justify-content: center;
             opacity: 0; transition: all 0.3s ease; z-index: 20;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+            border: 1.5px solid #fecaca;
         }
+        /* Always show delete for admin on mobile; on desktop show on hover */
         .gallery-card:hover .gallery-card-delete { opacity: 1; }
-        .gallery-card-delete:hover { background: #e05252; color: white; transform: scale(1.1); }
+        body.admin-mode .gallery-card-delete { opacity: 1; }
+        .gallery-card-delete:hover { background: #e05252; color: white; transform: scale(1.12); border-color: #e05252; }
 
         /* ── CATEGORY ICON CHIPS ── */
         .cat-icon-chip {
@@ -550,10 +553,17 @@
                 </div>
             </div>
 
-            <!-- Meta -->
-            <div class="flex items-center justify-between mt-4">
-                <p class="text-white/50 text-sm" id="lb-caption"></p>
-                <p class="text-white/40 text-xs" id="lb-date"></p>
+            <!-- Meta + Delete -->
+            <div class="flex items-start justify-between mt-4 gap-4">
+                <div>
+                    <p class="text-white/60 text-sm" id="lb-caption"></p>
+                    <p class="text-white/40 text-xs mt-1" id="lb-date"></p>
+                </div>
+                <button id="lb-delete-btn"
+                    class="hidden flex-shrink-0 flex items-center gap-2 px-4 py-2 rounded-xl bg-red-500/20 border border-red-500/40 text-red-400 hover:bg-red-500 hover:text-white transition-all text-sm font-semibold"
+                    onclick="deleteLightboxPost()">
+                    <i data-feather="trash-2" class="w-4 h-4"></i> Delete
+                </button>
             </div>
         </div>
     </div>
@@ -639,6 +649,9 @@
         function checkAuth() {
             const isAdmin = sessionStorage.getItem('wedding_admin') === 'true';
             const fab = document.getElementById('fab-btn');
+
+            // Toggle admin-mode class on body (controls delete button visibility)
+            document.body.classList.toggle('admin-mode', isAdmin);
 
             ['auth-btn', 'auth-btn-mobile'].forEach(id => {
                 const btn = document.getElementById(id);
@@ -959,8 +972,33 @@
             document.getElementById('lb-caption').textContent = post.text || '';
             document.getElementById('lb-date').textContent = post.date ? new Date(post.date).toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' }) : '';
 
+            // Show delete button only for admin
+            const lbDeleteBtn = document.getElementById('lb-delete-btn');
+            const isAdmin = sessionStorage.getItem('wedding_admin') === 'true';
+            if (lbDeleteBtn) {
+                lbDeleteBtn.classList.toggle('hidden', !isAdmin);
+                lbDeleteBtn.classList.toggle('flex', isAdmin);
+            }
+            feather.replace();
+
             document.getElementById('lightbox').classList.add('active');
             document.body.style.overflow = 'hidden';
+        };
+
+        // Delete from inside lightbox
+        window.deleteLightboxPost = async function() {
+            const post = allPosts[currentLightboxIndex];
+            if (!post) return;
+            if (!confirm('Delete this memory permanently?')) return;
+            try {
+                closeLightbox();
+                await deleteDoc(doc(db, 'posts', post.id));
+                await fetchAndRenderGallery();
+                showToast('Memory deleted. 🗑️');
+            } catch (err) {
+                console.error(err);
+                showToast('❌ Delete failed: ' + (err.message || err.code));
+            }
         };
 
         window.closeLightbox = function() {
