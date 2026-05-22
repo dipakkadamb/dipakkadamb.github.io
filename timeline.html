@@ -571,7 +571,6 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
         import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
-        import { getStorage, ref, uploadString, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-storage.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyA-De1RC9dO5k0AUqzfhJFg9xGLRpldm9M",
@@ -586,12 +585,30 @@
         const ADMIN_PASS = '127564';
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
-        const storage = getStorage(app);
 
         let allPosts = [];
         let activeFilter = 'All';
         let selectedImageBase64 = null;
         let currentLightboxIndex = -1;
+
+        // ─── IMAGE COMPRESSION ───
+        // Compresses image to max 1200px wide / 0.78 quality → keeps Firestore doc under 1MB
+        function compressImage(base64, maxWidth = 1200, quality = 0.78) {
+            return new Promise((resolve, reject) => {
+                const img = new Image();
+                img.onload = () => {
+                    let w = img.width, h = img.height;
+                    if (w > maxWidth) { h = Math.round(h * maxWidth / w); w = maxWidth; }
+                    const canvas = document.createElement('canvas');
+                    canvas.width = w; canvas.height = h;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, w, h);
+                    resolve(canvas.toDataURL('image/jpeg', quality));
+                };
+                img.onerror = reject;
+                img.src = base64;
+            });
+        }
 
         // ─── INIT ───
         window.addEventListener('DOMContentLoaded', () => {
@@ -842,24 +859,29 @@
             const category = document.getElementById('category-input').value;
             const btn = document.getElementById('submit-btn');
 
-            if (!selectedImageBase64) { alert('Please select a photo.'); return; }
-            if (!category) { alert('Please select an event category.'); return; }
+            if (!selectedImageBase64) { showToast('⚠️ Please select a photo first.'); return; }
+            if (!category) { showToast('⚠️ Please select an event category.'); return; }
 
-            btn.innerHTML = '<svg class="animate-spin w-4 h-4" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" stroke-dasharray="32" stroke-dashoffset="10"/></svg> Uploading...';
+            btn.innerHTML = '<svg class="animate-spin w-4 h-4 mr-2 inline" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="white" stroke-width="3" stroke-dasharray="32" stroke-dashoffset="10"/></svg> Saving...';
             btn.disabled = true;
 
             try {
-                const timestamp = Date.now();
-                const storagePath = `images/post_${timestamp}`;
-                const imageRef = ref(storage, storagePath);
-                await uploadString(imageRef, selectedImageBase64, 'data_url');
-                const imageUrl = await getDownloadURL(imageRef);
+                // Step 1: Compress image so it fits in Firestore (< 1MB doc limit)
+                updateBtn(btn, 'Compressing image...');
+                const compressed = await compressImage(selectedImageBase64, 1200, 0.78);
 
+                // Step 2: Save directly to Firestore (image stored as base64 string)
+                updateBtn(btn, 'Saving to database...');
+                const timestamp = Date.now();
                 await addDoc(collection(db, "posts"), {
-                    title, text, category, image: imageUrl,
-                    storagePath, date: new Date().toISOString(), timestamp
+                    title, text, category,
+                    image: compressed,          // base64 stored directly — no Storage needed
+                    storagePath: null,
+                    date: new Date().toISOString(),
+                    timestamp
                 });
 
+                // Step 3: Reset UI
                 document.getElementById('title-input').value = '';
                 document.getElementById('content-input').value = '';
                 document.getElementById('category-input').value = '';
@@ -867,15 +889,31 @@
                 closeUploadModal();
                 await fetchAndRenderGallery();
                 showToast('Memory saved! 💕');
+
             } catch (err) {
-                console.error(err);
-                alert('Upload failed. Check Firebase Storage rules.');
+                console.error('Upload error:', err);
+                let msg = 'Upload failed.';
+                if (err.code === 'permission-denied') {
+                    msg = '❌ Permission denied — check Firestore rules (allow write: if true)';
+                } else if (err.code === 'unavailable' || err.message?.includes('network')) {
+                    msg = '❌ Network error — check your internet connection.';
+                } else if (err.message?.includes('quota')) {
+                    msg = '❌ Firebase quota exceeded. Try again later.';
+                } else {
+                    msg = '❌ Error: ' + (err.message || err.code || 'Unknown error');
+                }
+                showToast(msg);
+                console.warn(msg);
             } finally {
-                btn.innerHTML = '<i data-feather="upload" class="w-4 h-4"></i> Save Memory';
+                btn.innerHTML = '<i data-feather="upload" class="w-4 h-4 inline mr-1"></i> Save Memory';
                 btn.disabled = false;
                 feather.replace();
             }
         };
+
+        function updateBtn(btn, text) {
+            btn.innerHTML = `<svg class="animate-spin w-4 h-4 mr-2 inline" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="white" stroke-width="3" stroke-dasharray="32" stroke-dashoffset="10"/></svg> ${text}`;
+        }
 
         // ─── DELETE ───
         window.deletePost = async function(postId, storagePath, event) {
@@ -883,14 +921,15 @@
             if (!confirm('Delete this memory permanently?')) return;
             try {
                 await deleteDoc(doc(db, "posts", postId));
-                if (storagePath) {
-                    try { await deleteObject(ref(storage, storagePath)); } catch(e) {}
-                }
+                // Note: images are stored as base64 in Firestore — no Storage cleanup needed
                 await fetchAndRenderGallery();
                 showToast('Memory deleted.');
             } catch (err) {
                 console.error(err);
-                alert('Delete failed.');
+                let msg = err.code === 'permission-denied'
+                    ? '❌ Permission denied — check Firestore rules'
+                    : '❌ Delete failed: ' + (err.message || err.code);
+                showToast(msg);
             }
         };
 
@@ -941,9 +980,12 @@
         // ─── TOAST ───
         window.showToast = function(msg) {
             const t = document.getElementById('toast');
+            const isError = msg.startsWith('❌') || msg.startsWith('⚠️');
             t.textContent = msg;
+            t.style.background = isError ? '#c0392b' : '#2c3539';
             t.classList.add('show');
-            setTimeout(() => t.classList.remove('show'), 3000);
+            clearTimeout(t._timer);
+            t._timer = setTimeout(() => t.classList.remove('show'), isError ? 6000 : 3000);
         };
 
     </script>
