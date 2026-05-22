@@ -3,1064 +3,276 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Our Wedding Story | Dipak & Family</title>
-<meta name="description" content="A cinematic wedding gallery — every moment, every memory, forever.">
-<link rel="icon" href="assets/img/profile.png" type="image/png">
+<title>Our Wedding Gallery</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Great+Vibes&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/feather-icons"></script>
 <style>
-/* ════════════════════════════════════════════
-   DESIGN SYSTEM  — Psychology-driven palette
-   • Deep plum-black  → sophistication, depth
-   • Warm gold        → luxury, celebration
-   • Rose-blush       → love, tenderness
-   • Cream-ivory      → purity, elegance
-   ════════════════════════════════════════════ */
-:root {
-  --bg:          #0C0810;   /* deep plum-black          */
-  --bg2:         #150F1A;   /* slightly lighter dark     */
-  --bg3:         #1E1628;   /* card background           */
-  --gold:        #C9A252;   /* warm gold                 */
-  --gold-lt:     #E8C87A;   /* light gold                */
-  --gold-dk:     #8B6914;   /* dark gold                 */
-  --rose:        #D4688E;   /* rose                      */
-  --rose-dk:     #8B1A4A;   /* deep rose                 */
-  --blush:       #F5C2D0;   /* soft blush                */
-  --cream:       #F9F0E6;   /* warm cream                */
-  --text:        #EDE0D4;   /* primary text              */
-  --text-muted:  #7A6878;   /* muted text                */
-  --border:      rgba(201,162,82,0.18); /* gold border   */
-  --glow-gold:   rgba(201,162,82,0.35);
-  --glow-rose:   rgba(212,104,142,0.35);
-  --r-card:      20px;
-  --r-pill:      100px;
-  --transition:  0.45s cubic-bezier(0.34,1.0,0.64,1);
-}
+  :root {
+    --primary: #2C3E50;
+    --bg: #FAFAFA;
+    --surface: #FFFFFF;
+    --text: #333333;
+    --text-light: #888888;
+    --danger: #e53e3e;
+  }
 
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
-body {
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  overflow-x: hidden;
-  min-height: 100vh;
-}
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: var(--bg);
+    color: var(--text);
+  }
 
-/* ── Scrollbar ── */
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: var(--bg); }
-::-webkit-scrollbar-thumb { background: var(--gold-dk); border-radius: 4px; }
+  /* Header */
+  .header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 24px 5%;
+    background: var(--surface);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+    position: sticky; top: 0; z-index: 100;
+  }
+  .logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px; font-weight: 600; color: var(--primary);
+  }
+  .auth-btn {
+    display: flex; align-items: center; gap: 8px;
+    background: none; border: 1px solid #ddd; border-radius: 20px;
+    padding: 8px 16px; cursor: pointer; color: var(--text);
+    font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 500;
+    transition: all 0.3s;
+  }
+  .auth-btn:hover { background: #f0f0f0; }
 
-/* ══════════════════════════════════════════════════════════
-   PARTICLES CANVAS
-   ══════════════════════════════════════════════════════════ */
-#particles-canvas {
-  position: fixed; inset: 0; z-index: 0;
-  pointer-events: none; opacity: 0.5;
-}
+  /* Hero */
+  .hero { text-align: center; padding: 80px 20px 60px; }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 48px; color: var(--primary); font-weight: 400; margin-bottom: 16px;
+  }
+  .hero p {
+    font-size: 14px; color: var(--text-light);
+    letter-spacing: 2px; text-transform: uppercase;
+  }
 
-/* ══════════════════════════════════════════════════════════
-   NAVIGATION
-   ══════════════════════════════════════════════════════════ */
-.nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  padding: 18px 32px;
-  display: flex; align-items: center; justify-content: space-between;
-  transition: background 0.4s, padding 0.4s, box-shadow 0.4s;
-}
-.nav.scrolled {
-  background: rgba(12,8,16,0.92);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  box-shadow: 0 1px 0 var(--border);
-  padding: 12px 32px;
-}
-.nav-logo {
-  display: flex; align-items: center; gap: 10px;
-  text-decoration: none;
-}
-.nav-logo-icon {
-  width: 36px; height: 36px; border-radius: 50%;
-  background: linear-gradient(135deg, var(--rose-dk), var(--gold));
-  display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 0 16px var(--glow-gold);
-}
-.nav-logo-text {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 20px; font-weight: 600;
-  color: var(--cream); letter-spacing: 0.03em;
-}
-.nav-right { display: flex; align-items: center; gap: 12px; }
-.nav-link {
-  font-size: 13px; font-weight: 500; color: var(--text-muted);
-  text-decoration: none; transition: color 0.3s;
-}
-.nav-link:hover { color: var(--gold); }
-.btn-admin {
-  display: flex; align-items: center; gap-8: gap; gap: 7px;
-  padding: 8px 18px; border-radius: var(--r-pill);
-  border: 1px solid var(--border);
-  background: rgba(201,162,82,0.07);
-  color: var(--gold); font-size: 13px; font-weight: 600;
-  cursor: pointer; transition: all 0.3s;
-}
-.btn-admin:hover {
-  background: rgba(201,162,82,0.16);
-  box-shadow: 0 0 20px var(--glow-gold);
-  transform: translateY(-1px);
-}
+  /* Gallery Grid - Perfectly Aligned Squares */
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 24px;
+    padding: 0 5% 100px;
+    max-width: 1600px; margin: 0 auto;
+  }
+  .gallery-item {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    border-radius: 8px;
+    overflow: hidden; cursor: pointer;
+    background: #eaeaea;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    transition: transform 0.4s, box-shadow 0.4s;
+  }
+  .gallery-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 25px rgba(0,0,0,0.1);
+  }
+  .gallery-img {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform 0.8s ease;
+  }
+  .gallery-item:hover .gallery-img { transform: scale(1.05); }
 
-/* ══════════════════════════════════════════════════════════
-   HERO
-   ══════════════════════════════════════════════════════════ */
-.hero {
-  position: relative;
-  height: 100vh; min-height: 600px;
-  display: flex; align-items: center; justify-content: center;
-  overflow: hidden; text-align: center;
-}
-.hero-bg {
-  position: absolute; inset: 0;
-  background: url('https://images.unsplash.com/photo-1511285560929-80b456503681?w=1800&q=85') center/cover no-repeat;
-  transform: scale(1.08);
-  transition: transform 0.1s linear;
-  will-change: transform;
-}
-.hero-overlay {
-  position: absolute; inset: 0;
-  background: linear-gradient(
-    to bottom,
-    rgba(12,8,16,0.5)  0%,
-    rgba(12,8,16,0.25) 40%,
-    rgba(12,8,16,0.8)  100%
-  );
-}
-.hero-content {
-  position: relative; z-index: 2;
-  padding: 0 24px;
-}
-.hero-label {
-  display: inline-flex; align-items: center; gap: 8px;
-  font-size: 11px; font-weight: 700; letter-spacing: 0.18em;
-  text-transform: uppercase; color: var(--gold);
-  margin-bottom: 20px;
-  opacity: 0; transform: translateY(20px);
-  animation: fadeUp 0.8s 0.3s forwards;
-}
-.hero-label::before, .hero-label::after {
-  content: ''; width: 30px; height: 1px; background: var(--gold); opacity: 0.5;
-}
-.hero-script {
-  font-family: 'Great Vibes', cursive;
-  font-size: clamp(68px, 12vw, 130px);
-  color: var(--cream); line-height: 1;
-  text-shadow: 0 0 60px rgba(201,162,82,0.3);
-  opacity: 0; transform: translateY(30px);
-  animation: fadeUp 1s 0.5s forwards;
-}
-.hero-sub {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(15px, 2.5vw, 22px);
-  color: var(--blush); letter-spacing: 0.2em;
-  font-style: italic; margin-top: 12px;
-  opacity: 0; transform: translateY(20px);
-  animation: fadeUp 0.8s 0.8s forwards;
-}
-.hero-divider {
-  display: flex; align-items: center; justify-content: center; gap: 16px;
-  margin: 28px auto; max-width: 300px;
-  opacity: 0; animation: fadeUp 0.8s 1.0s forwards;
-}
-.hero-divider-line { flex: 1; height: 1px; background: linear-gradient(to right, transparent, var(--gold)); opacity: 0.4; }
-.hero-divider-icon { color: var(--gold); font-size: 18px; }
-.hero-stats {
-  display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px;
-  opacity: 0; animation: fadeUp 0.8s 1.2s forwards;
-}
-.hero-stat-pill {
-  display: flex; align-items: center; gap: 8px;
-  padding: 10px 20px; border-radius: var(--r-pill);
-  border: 1px solid rgba(255,255,255,0.12);
-  background: rgba(255,255,255,0.07);
-  backdrop-filter: blur(10px);
-  font-size: 13px; font-weight: 600; color: var(--cream);
-  transition: all 0.3s;
-}
-.hero-stat-pill:hover {
-  border-color: var(--gold); background: rgba(201,162,82,0.12);
-  transform: translateY(-2px);
-}
-.hero-stat-pill svg { color: var(--rose); }
-.hero-scroll {
-  position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
-  display: flex; flex-direction: column; align-items: center; gap: 8px;
-  color: var(--text-muted); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
-  animation: floatY 2s ease-in-out infinite;
-  z-index: 2;
-}
-.hero-scroll-line {
-  width: 1px; height: 40px;
-  background: linear-gradient(to bottom, var(--gold), transparent);
-}
+  /* Overlay */
+  .item-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 60%);
+    opacity: 0; transition: opacity 0.3s;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 24px;
+  }
+  .gallery-item:hover .item-overlay { opacity: 1; }
+  .item-title { color: #fff; font-family: 'Playfair Display', serif; font-size: 20px; margin-bottom: 6px; }
+  .item-caption { color: rgba(255,255,255,0.8); font-size: 13px; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 
-/* ══════════════════════════════════════════════════════════
-   STORIES REEL
-   ══════════════════════════════════════════════════════════ */
-.stories-section {
-  position: relative; z-index: 1;
-  padding: 48px 32px 32px;
-  border-top: 1px solid var(--border);
-}
-.stories-reel {
-  display: flex; gap: 20px;
-  overflow-x: auto; padding-bottom: 8px;
-  scrollbar-width: none;
-}
-.stories-reel::-webkit-scrollbar { display: none; }
-.story-item {
-  display: flex; flex-direction: column; align-items: center; gap: 10px;
-  cursor: pointer; flex-shrink: 0; transition: transform 0.3s;
-}
-.story-item:hover { transform: translateY(-4px); }
-.story-ring {
-  width: 64px; height: 64px; border-radius: 50%; padding: 2.5px;
-  background: linear-gradient(135deg, var(--rose), var(--gold));
-  box-shadow: 0 0 20px var(--glow-gold);
-  transition: box-shadow 0.3s;
-}
-.story-ring.active {
-  background: linear-gradient(135deg, var(--gold), var(--rose-dk));
-  box-shadow: 0 0 30px var(--glow-rose);
-}
-.story-inner {
-  width: 100%; height: 100%; border-radius: 50%;
-  background: var(--bg3); display: flex; align-items: center; justify-content: center;
-  border: 2px solid var(--bg);
-  font-size: 20px;
-}
-.story-label {
-  font-size: 11px; font-weight: 600; color: var(--text-muted);
-  letter-spacing: 0.04em; text-align: center; max-width: 64px;
-  transition: color 0.3s;
-}
-.story-item:hover .story-label,
-.story-item.active .story-label { color: var(--gold); }
+  /* Delete Button */
+  .btn-delete {
+    position: absolute; top: 12px; right: 12px;
+    width: 36px; height: 36px; border-radius: 50%;
+    background: rgba(255,255,255,0.9); color: var(--danger);
+    border: none; display: none; align-items: center; justify-content: center;
+    cursor: pointer; z-index: 10; transition: 0.2s;
+  }
+  body.admin-mode .btn-delete { display: flex; }
+  .btn-delete:hover { background: var(--danger); color: white; transform: scale(1.1); }
 
-/* ══════════════════════════════════════════════════════════
-   FILTER BAR
-   ══════════════════════════════════════════════════════════ */
-.filter-bar {
-  position: sticky; top: 60px; z-index: 50;
-  padding: 14px 32px;
-  background: rgba(12,8,16,0.88);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--border);
-  display: flex; gap: 8px; overflow-x: auto;
-  scrollbar-width: none;
-}
-.filter-bar::-webkit-scrollbar { display: none; }
-.filter-pill {
-  display: inline-flex; align-items: center; gap: 6px;
-  padding: 8px 18px; border-radius: var(--r-pill);
-  border: 1px solid rgba(255,255,255,0.1);
-  background: transparent; color: var(--text-muted);
-  font-size: 13px; font-weight: 600;
-  cursor: pointer; white-space: nowrap;
-  transition: all 0.3s cubic-bezier(0.34,1.4,0.64,1);
-  flex-shrink: 0;
-}
-.filter-pill:hover {
-  border-color: var(--gold); color: var(--gold);
-  background: rgba(201,162,82,0.1);
-  transform: translateY(-2px);
-}
-.filter-pill.active {
-  background: linear-gradient(135deg, var(--rose-dk), var(--gold-dk));
-  border-color: transparent; color: white;
-  box-shadow: 0 4px 20px var(--glow-gold);
-  transform: translateY(-2px);
-}
-.filter-pill .dot {
-  width: 6px; height: 6px; border-radius: 50%;
-  background: currentColor; opacity: 0.7;
-}
+  /* Floating Action Button */
+  .fab {
+    position: fixed; bottom: 40px; right: 40px; z-index: 90;
+    width: 60px; height: 60px; border-radius: 50%;
+    background: var(--primary); color: white;
+    border: none; cursor: pointer; display: none; align-items: center; justify-content: center;
+    box-shadow: 0 8px 20px rgba(44,62,80,0.4); transition: 0.3s;
+  }
+  body.admin-mode .fab { display: flex; }
+  .fab:hover { transform: scale(1.1); }
 
-/* ══════════════════════════════════════════════════════════
-   GALLERY SECTION
-   ══════════════════════════════════════════════════════════ */
-.gallery-section {
-  position: relative; z-index: 1;
-  padding: 48px 28px 100px;
-  max-width: 1400px; margin: 0 auto;
-}
-.section-header {
-  display: flex; align-items: flex-end; justify-content: space-between;
-  margin-bottom: 36px;
-}
-.section-eyebrow {
-  font-size: 11px; font-weight: 700; letter-spacing: 0.16em;
-  text-transform: uppercase; color: var(--gold); margin-bottom: 6px;
-  display: flex; align-items: center; gap: 8px;
-}
-.section-eyebrow::before { content: ''; width: 24px; height: 1px; background: var(--gold); }
-.section-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(28px, 4vw, 44px); font-weight: 600;
-  color: var(--cream); line-height: 1.1;
-}
-.photo-count {
-  font-size: 13px; color: var(--text-muted); font-weight: 500;
-}
+  /* Modal */
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px);
+    display: none; align-items: center; justify-content: center; z-index: 200; padding: 20px;
+  }
+  .modal-overlay.active { display: flex; }
+  .modal-content {
+    background: var(--surface); border-radius: 12px; width: 100%; max-width: 450px;
+    padding: 32px; box-shadow: 0 20px 40px rgba(0,0,0,0.2); position: relative;
+  }
+  .modal-close {
+    position: absolute; top: 20px; right: 20px; background: none; border: none; cursor: pointer; color: #888; transition: 0.2s;
+  }
+  .modal-close:hover { color: var(--danger); }
+  .modal-title { font-family: 'Playfair Display', serif; font-size: 24px; color: var(--primary); margin-bottom: 24px; text-align: center; }
+  
+  .drop-zone {
+    border: 2px dashed #ccc; border-radius: 8px; padding: 40px 20px;
+    text-align: center; cursor: pointer; transition: 0.3s; margin-bottom: 20px;
+  }
+  .drop-zone:hover { border-color: var(--primary); background: #f9f9f9; }
+  .drop-zone p { font-size: 14px; font-weight: 500; margin-bottom: 8px; }
+  .drop-zone span { font-size: 12px; color: #888; }
+  
+  .preview-wrap { position: relative; display: none; margin-bottom: 20px; border-radius: 8px; overflow: hidden; }
+  .preview-wrap img { width: 100%; height: 250px; object-fit: cover; display: block; }
+  .preview-remove { position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.6); color: white; border: none; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
+  .preview-remove:hover { background: var(--danger); }
+  
+  .form-group { margin-bottom: 16px; }
+  .form-group label { display: block; font-size: 12px; font-weight: 600; color: #555; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
+  .form-input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-family: inherit; font-size: 14px; outline: none; transition: 0.3s; box-sizing: border-box; }
+  .form-input:focus { border-color: var(--primary); }
+  
+  .btn-submit {
+    width: 100%; padding: 16px; background: var(--primary); color: white; border: none; border-radius: 8px;
+    font-size: 14px; font-weight: 600; cursor: pointer; transition: 0.3s; margin-top: 10px; display: flex; justify-content: center; align-items: center; gap: 8px;
+  }
+  .btn-submit:hover { background: #1a252f; }
+  .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; }
 
-/* ── Masonry ── */
-.masonry {
-  columns: 1; column-gap: 16px;
-}
-@media (min-width: 600px)  { .masonry { columns: 2; } }
-@media (min-width: 1024px) { .masonry { columns: 3; } }
-@media (min-width: 1280px) { .masonry { columns: 4; } }
+  /* Lightbox */
+  .lightbox {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 300;
+    display: none; align-items: center; justify-content: center; flex-direction: column; opacity: 0; transition: opacity 0.3s;
+  }
+  .lightbox.active { display: flex; opacity: 1; }
+  .lb-close { position: absolute; top: 24px; right: 24px; background: none; border: none; color: white; cursor: pointer; padding: 8px; transition: 0.2s; }
+  .lb-close:hover { color: var(--danger); }
+  .lb-content { position: relative; max-width: 90vw; max-height: 80vh; display: flex; flex-direction: column; align-items: center; }
+  .lb-img { max-width: 100%; max-height: 70vh; object-fit: contain; border-radius: 4px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+  .lb-info { margin-top: 24px; text-align: center; color: white; max-width: 600px; }
+  .lb-title { font-family: 'Playfair Display', serif; font-size: 24px; margin-bottom: 8px; }
+  .lb-caption { font-size: 14px; color: #ccc; line-height: 1.6; }
+  
+  .lb-nav { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.1); border: none; color: white; width: 48px; height: 48px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.3s; backdrop-filter: blur(4px); }
+  .lb-nav:hover { background: rgba(255,255,255,0.2); }
+  .lb-prev { left: 24px; }
+  .lb-next { right: 24px; }
 
-/* ── Gallery Card ── */
-.g-card {
-  break-inside: avoid;
-  margin-bottom: 16px;
-  border-radius: var(--r-card);
-  overflow: hidden;
-  position: relative;
-  cursor: pointer;
-  background: var(--bg3);
-  border: 1px solid rgba(255,255,255,0.05);
-  transition: transform var(--transition), box-shadow var(--transition);
-  transform-style: preserve-3d;
-  /* Entrance animation */
-  opacity: 0; transform: translateY(40px) scale(0.96);
-}
-.g-card.revealed {
-  opacity: 1; transform: translateY(0) scale(1);
-}
-.g-card:hover {
-  box-shadow: 0 24px 60px rgba(0,0,0,0.6), 0 0 0 1px var(--border);
-  z-index: 10;
-}
-.g-card img {
-  width: 100%; height: auto; display: block;
-  transition: transform 1.4s cubic-bezier(0.25,0.46,0.45,0.94);
-  will-change: transform;
-}
-.g-card:hover img { transform: scale(1.07); }
+  /* Toast */
+  .toast {
+    position: fixed; bottom: 30px; left: 50%; transform: translate(-50%, 20px);
+    background: #333; color: white; padding: 12px 24px; border-radius: 30px;
+    font-size: 14px; font-weight: 500; opacity: 0; pointer-events: none; transition: 0.3s; z-index: 1000; box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  }
+  .toast.show { opacity: 1; transform: translate(-50%, 0); }
 
-/* Gradient overlay */
-.g-overlay {
-  position: absolute; inset: 0;
-  background: linear-gradient(
-    to top,
-    rgba(8,4,12,0.85) 0%,
-    rgba(8,4,12,0.2)  50%,
-    transparent       100%
-  );
-  opacity: 0; transition: opacity 0.5s ease;
-}
-.g-card:hover .g-overlay { opacity: 1; }
-
-/* Info */
-.g-info {
-  position: absolute; bottom: 0; left: 0; right: 0;
-  padding: 20px 16px 16px;
-  transform: translateY(8px); opacity: 0;
-  transition: all 0.45s cubic-bezier(0.34,1,0.64,1);
-}
-.g-card:hover .g-info { transform: translateY(0); opacity: 1; }
-.g-badge {
-  display: inline-block; padding: 3px 10px;
-  border-radius: var(--r-pill); font-size: 10px; font-weight: 700;
-  letter-spacing: 0.08em; text-transform: uppercase;
-  background: rgba(201,162,82,0.9); color: #12080F;
-  margin-bottom: 6px;
-}
-.g-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 17px; font-weight: 600; color: var(--cream);
-  line-height: 1.2;
-}
-.g-caption {
-  font-size: 11px; color: rgba(255,255,255,0.55);
-  margin-top: 4px; line-height: 1.5;
-  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
-}
-
-/* Delete btn on card */
-.g-delete {
-  position: absolute; top: 10px; right: 10px; z-index: 20;
-  width: 34px; height: 34px; border-radius: 50%;
-  background: rgba(15,10,18,0.8);
-  border: 1px solid rgba(255,100,100,0.4);
-  color: #f87171; cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  opacity: 0; transition: all 0.3s;
-  backdrop-filter: blur(8px);
-}
-.g-card:hover .g-delete { opacity: 1; }
-body.admin-mode .g-delete { opacity: 1; }
-.g-delete:hover { background: #e05252; color: white; border-color: #e05252; transform: scale(1.12); }
-
-/* Skeleton */
-.skeleton {
-  break-inside: avoid; margin-bottom: 16px;
-  border-radius: var(--r-card);
-  background: linear-gradient(90deg, var(--bg3) 25%, #201829 50%, var(--bg3) 75%);
-  background-size: 300% 100%;
-  animation: shimmer 1.8s infinite;
-}
-@keyframes shimmer { 0% { background-position: 100% 0; } 100% { background-position: -100% 0; } }
-
-/* Empty state */
-.empty-state {
-  text-align: center; padding: 80px 24px; grid-column: 1/-1;
-}
-.empty-icon {
-  width: 80px; height: 80px; border-radius: 50%;
-  background: linear-gradient(135deg, var(--rose-dk), var(--gold-dk));
-  display: flex; align-items: center; justify-content: center;
-  margin: 0 auto 24px; box-shadow: 0 0 40px var(--glow-rose);
-}
-
-/* ══════════════════════════════════════════════════════════
-   LIGHTBOX
-   ══════════════════════════════════════════════════════════ */
-.lightbox {
-  position: fixed; inset: 0; z-index: 200;
-  background: rgba(8,4,12,0.97);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  display: none; opacity: 0;
-  transition: opacity 0.4s ease;
-  align-items: center; justify-content: center;
-  padding: 24px;
-}
-.lightbox.active { display: flex; opacity: 1; }
-.lb-inner {
-  max-width: 900px; width: 100%;
-  animation: lbIn 0.45s cubic-bezier(0.34,1.4,0.64,1);
-}
-@keyframes lbIn { from { transform: scale(0.88); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-
-.lb-top {
-  display: flex; align-items: flex-start; justify-content: space-between;
-  margin-bottom: 16px; gap: 16px;
-}
-.lb-cat {
-  font-size: 10px; font-weight: 700; letter-spacing: 0.14em;
-  text-transform: uppercase; color: var(--gold); margin-bottom: 4px;
-}
-.lb-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(20px, 3vw, 30px); font-weight: 600; color: var(--cream);
-}
-.lb-close {
-  flex-shrink: 0; width: 40px; height: 40px; border-radius: 50%;
-  background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12);
-  color: var(--text-muted); cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  transition: all 0.3s;
-}
-.lb-close:hover { background: var(--rose-dk); color: white; border-color: transparent; }
-
-.lb-img-wrap {
-  position: relative; border-radius: 16px; overflow: hidden;
-  background: var(--bg3); max-height: 72vh;
-  box-shadow: 0 32px 80px rgba(0,0,0,0.7), 0 0 0 1px var(--border);
-}
-.lb-img-wrap img {
-  width: 100%; max-height: 70vh; object-fit: contain; display: block;
-}
-
-/* Prev / Next arrows */
-.lb-arrow {
-  position: absolute; top: 50%; transform: translateY(-50%);
-  width: 44px; height: 44px; border-radius: 50%;
-  background: rgba(12,8,16,0.7); border: 1px solid rgba(255,255,255,0.12);
-  color: var(--text); cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  transition: all 0.3s; z-index: 10;
-  backdrop-filter: blur(8px);
-}
-.lb-arrow:hover { background: var(--gold); color: #12080F; border-color: transparent; }
-.lb-arrow.prev { left: 12px; }
-.lb-arrow.next { right: 12px; }
-
-.lb-bottom {
-  display: flex; align-items: flex-start; justify-content: space-between;
-  margin-top: 16px; gap: 16px;
-}
-.lb-meta { flex: 1; }
-.lb-caption { font-size: 14px; color: rgba(255,255,255,0.5); line-height: 1.6; }
-.lb-date { font-size: 12px; color: var(--text-muted); margin-top: 4px; font-style: italic; }
-.lb-delete-btn {
-  flex-shrink: 0;
-  display: none; align-items: center; gap: 6px;
-  padding: 9px 18px; border-radius: var(--r-pill);
-  background: rgba(220,38,38,0.12); border: 1px solid rgba(220,38,38,0.3);
-  color: #f87171; font-size: 13px; font-weight: 600;
-  cursor: pointer; transition: all 0.3s;
-}
-.lb-delete-btn:hover { background: #dc2626; color: white; border-color: #dc2626; }
-.lb-delete-btn.show { display: flex; }
-
-/* ══════════════════════════════════════════════════════════
-   FAB
-   ══════════════════════════════════════════════════════════ */
-.fab {
-  position: fixed; bottom: 28px; right: 28px; z-index: 150;
-  width: 58px; height: 58px; border-radius: 50%;
-  background: linear-gradient(135deg, var(--rose-dk), var(--gold));
-  color: white; border: none; cursor: pointer;
-  display: none; align-items: center; justify-content: center;
-  box-shadow: 0 8px 32px var(--glow-gold), 0 0 0 0 var(--glow-gold);
-  transition: transform 0.4s cubic-bezier(0.34,1.6,0.64,1), box-shadow 0.3s;
-  animation: fabPulse 3s ease-in-out infinite;
-}
-.fab.show { display: flex; }
-.fab:hover { transform: scale(1.15) rotate(90deg); box-shadow: 0 16px 48px var(--glow-gold); animation: none; }
-@keyframes fabPulse {
-  0%,100% { box-shadow: 0 8px 32px var(--glow-gold), 0 0 0 0 var(--glow-gold); }
-  50%      { box-shadow: 0 8px 32px var(--glow-gold), 0 0 0 14px transparent; }
-}
-
-/* ══════════════════════════════════════════════════════════
-   UPLOAD MODAL
-   ══════════════════════════════════════════════════════════ */
-.modal-bg {
-  position: fixed; inset: 0; z-index: 180;
-  background: rgba(8,4,12,0.75);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  display: none; align-items: center; justify-content: center;
-  padding: 20px;
-}
-.modal-bg.active { display: flex; }
-.modal {
-  background: var(--bg2);
-  border: 1px solid var(--border);
-  border-radius: 28px; width: 100%; max-width: 500px;
-  max-height: 92vh; overflow-y: auto;
-  box-shadow: 0 40px 100px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.04);
-  animation: lbIn 0.45s cubic-bezier(0.34,1.4,0.64,1);
-}
-.modal-header {
-  padding: 28px 28px 20px;
-  border-bottom: 1px solid rgba(255,255,255,0.06);
-  display: flex; align-items: flex-start; justify-content: space-between;
-}
-.modal-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 26px; font-weight: 600; color: var(--cream);
-}
-.modal-sub { font-size: 13px; color: var(--text-muted); margin-top: 3px; }
-.modal-body { padding: 24px 28px; display: flex; flex-direction: column; gap: 18px; }
-
-.drop-zone {
-  border: 2px dashed rgba(201,162,82,0.25); border-radius: 16px;
-  padding: 36px 24px; text-align: center; cursor: pointer;
-  transition: all 0.3s;
-}
-.drop-zone:hover, .drop-zone.drag-over {
-  border-color: var(--gold); background: rgba(201,162,82,0.06);
-}
-.drop-zone-icon {
-  width: 52px; height: 52px; border-radius: 50%;
-  background: rgba(201,162,82,0.1); border: 1px solid var(--border);
-  display: flex; align-items: center; justify-content: center;
-  margin: 0 auto 12px; color: var(--gold);
-}
-.drop-zone p { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
-.drop-zone span { font-size: 12px; color: var(--text-muted); }
-
-.preview-wrap {
-  position: relative; border-radius: 14px; overflow: hidden;
-  display: none;
-}
-.preview-wrap img { width: 100%; height: 220px; object-fit: cover; display: block; }
-.preview-remove {
-  position: absolute; top: 10px; right: 10px;
-  width: 30px; height: 30px; border-radius: 50%;
-  background: rgba(12,8,16,0.8); border: 1px solid rgba(255,255,255,0.15);
-  color: #f87171; cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  transition: all 0.3s; backdrop-filter: blur(8px);
-}
-.preview-remove:hover { background: #dc2626; color: white; }
-
-.form-label {
-  display: block; font-size: 11px; font-weight: 700;
-  letter-spacing: 0.12em; text-transform: uppercase;
-  color: var(--text-muted); margin-bottom: 8px;
-}
-.form-input, .form-select, .form-textarea {
-  width: 100%; padding: 12px 16px;
-  background: rgba(255,255,255,0.04); border-radius: 12px;
-  border: 1px solid rgba(255,255,255,0.1);
-  color: var(--text); font-size: 14px; font-family: inherit;
-  transition: border-color 0.3s, box-shadow 0.3s;
-  outline: none;
-}
-.form-input::placeholder, .form-textarea::placeholder { color: var(--text-muted); }
-.form-select { appearance: none; cursor: pointer; }
-.form-select option { background: var(--bg2); }
-.form-input:focus, .form-select:focus, .form-textarea:focus {
-  border-color: var(--gold);
-  box-shadow: 0 0 0 3px rgba(201,162,82,0.12);
-}
-.form-textarea { resize: none; }
-
-.btn-submit {
-  width: 100%; padding: 15px;
-  background: linear-gradient(135deg, var(--rose-dk), var(--gold-dk));
-  color: white; font-size: 14px; font-weight: 700;
-  border-radius: 14px; border: none; cursor: pointer;
-  transition: all 0.3s; letter-spacing: 0.04em;
-  display: flex; align-items: center; justify-content: center; gap: 8px;
-  box-shadow: 0 8px 24px rgba(139,26,74,0.3);
-}
-.btn-submit:hover { opacity: 0.9; transform: translateY(-2px); box-shadow: 0 16px 36px rgba(139,26,74,0.4); }
-.btn-submit:disabled { opacity: 0.5; transform: none; cursor: not-allowed; }
-
-.modal-footer { padding: 0 28px 28px; }
-
-/* ══════════════════════════════════════════════════════════
-   TOAST
-   ══════════════════════════════════════════════════════════ */
-.toast {
-  position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%) translateY(20px);
-  padding: 13px 24px; border-radius: var(--r-pill);
-  font-size: 13px; font-weight: 600; z-index: 999;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-  opacity: 0; pointer-events: none;
-  transition: all 0.4s cubic-bezier(0.34,1.2,0.64,1);
-  max-width: 90vw; text-align: center;
-  backdrop-filter: blur(8px);
-}
-.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-
-/* ══════════════════════════════════════════════════════════
-   KEYFRAMES
-   ══════════════════════════════════════════════════════════ */
-@keyframes fadeUp   { to { opacity: 1; transform: translateY(0); } }
-@keyframes floatY   { 0%,100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(-8px); } }
-@keyframes spinSlow { to { transform: rotate(360deg); } }
-@keyframes heartbeat { 0%,100% { transform: scale(1); } 50% { transform: scale(1.15); } }
-
-/* ══════════════════════════════════════════════════════════
-   RESPONSIVE
-   ══════════════════════════════════════════════════════════ */
-@media (max-width: 600px) {
-  .nav { padding: 14px 20px; }
-  .gallery-section { padding: 36px 16px 100px; }
-  .filter-bar { padding: 12px 16px; }
-  .stories-section { padding: 36px 16px 24px; }
-  .lb-arrow { display: none; }
-}
+  /* Responsive */
+  @media (max-width: 768px) {
+    .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 16px; padding: 0 16px 80px; }
+    .hero { padding: 50px 20px 40px; }
+    .hero h1 { font-size: 36px; }
+    .lb-nav { display: none; }
+    .fab { bottom: 20px; right: 20px; }
+  }
 </style>
 </head>
 <body>
 
-<!-- ══════════════ CANVAS (floating hearts) ══════════════ -->
-<canvas id="particles-canvas"></canvas>
+<header class="header">
+  <div class="logo">Our Wedding</div>
+  <button class="auth-btn" id="auth-btn" onclick="toggleAuth()">
+    <i data-feather="lock" style="width:14px;height:14px;"></i> <span id="auth-text">Admin</span>
+  </button>
+</header>
 
-<!-- ══════════════════════ NAV ══════════════════════ -->
-<nav class="nav" id="navbar">
-  <a href="index.html" class="nav-logo">
-    <div class="nav-logo-icon">
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="white" stroke="white" stroke-width="0"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-    </div>
-    <span class="nav-logo-text">Wedding Gallery</span>
-  </a>
-  <div class="nav-right">
-    <a href="index.html" class="nav-link">Portfolio</a>
-    <button class="btn-admin" id="auth-btn" onclick="toggleAuth()">
-      <i data-feather="lock" style="width:14px;height:14px;"></i>
-      <span id="auth-text">Admin</span>
-    </button>
-  </div>
-</nav>
-
-<!-- ══════════════════════ HERO ══════════════════════ -->
-<section class="hero" id="hero">
-  <div class="hero-bg" id="hero-parallax"></div>
-  <div class="hero-overlay"></div>
-  <div class="hero-content">
-    <div class="hero-label">Our Wedding Story</div>
-    <div class="hero-script">Forever Begins</div>
-    <div class="hero-sub">Every moment, a lifetime of love</div>
-    <div class="hero-divider">
-      <div class="hero-divider-line"></div>
-      <span class="hero-divider-icon">✦</span>
-      <div class="hero-divider-line" style="background:linear-gradient(to left,transparent,var(--gold));"></div>
-    </div>
-    <div class="hero-stats">
-      <div class="hero-stat-pill">
-        <i data-feather="image" style="width:14px;height:14px;color:var(--rose)"></i>
-        <span id="stat-photos">0 Photos</span>
-      </div>
-      <div class="hero-stat-pill">
-        <i data-feather="heart" style="width:14px;height:14px;color:var(--rose)"></i>
-        <span>One Lifetime</span>
-      </div>
-      <div class="hero-stat-pill">
-        <i data-feather="calendar" style="width:14px;height:14px;color:var(--rose)"></i>
-        <span>June 2026</span>
-      </div>
-    </div>
-  </div>
-  <div class="hero-scroll">
-    <div class="hero-scroll-line"></div>
-    <span>Scroll</span>
-  </div>
+<section class="hero">
+  <h1>A Lifetime of Love</h1>
+  <p>Our favorite moments, perfectly captured</p>
 </section>
 
-<!-- ══════════════ STORIES REEL ══════════════ -->
-<section class="stories-section">
-  <div class="stories-reel" id="stories-reel">
-    <div class="story-item active" onclick="applyFilter('All',this)">
-      <div class="story-ring active"><div class="story-inner">✦</div></div>
-      <span class="story-label">All</span>
-    </div>
-    <div class="story-item" onclick="applyFilter('Engagement',this)">
-      <div class="story-ring"><div class="story-inner">💍</div></div>
-      <span class="story-label">Engagement</span>
-    </div>
-    <div class="story-item" onclick="applyFilter('Haldi',this)">
-      <div class="story-ring"><div class="story-inner">🌼</div></div>
-      <span class="story-label">Haldi</span>
-    </div>
-    <div class="story-item" onclick="applyFilter('Mehendi',this)">
-      <div class="story-ring"><div class="story-inner">🌿</div></div>
-      <span class="story-label">Mehendi</span>
-    </div>
-    <div class="story-item" onclick="applyFilter('Sangeet',this)">
-      <div class="story-ring"><div class="story-inner">🎶</div></div>
-      <span class="story-label">Sangeet</span>
-    </div>
-    <div class="story-item" onclick="applyFilter('Wedding Day',this)">
-      <div class="story-ring"><div class="story-inner">💒</div></div>
-      <span class="story-label">Wedding Day</span>
-    </div>
-    <div class="story-item" onclick="applyFilter('Reception',this)">
-      <div class="story-ring"><div class="story-inner">✨</div></div>
-      <span class="story-label">Reception</span>
-    </div>
-    <div class="story-item" onclick="applyFilter('Candid',this)">
-      <div class="story-ring"><div class="story-inner">📸</div></div>
-      <span class="story-label">Candid</span>
-    </div>
-  </div>
-</section>
-
-<!-- ══════════════ FILTER BAR (sticky) ══════════════ -->
-<div class="filter-bar" id="filter-bar">
-  <button class="filter-pill active" onclick="setFilter('All',this)"><span class="dot"></span>All</button>
-  <button class="filter-pill" onclick="setFilter('Engagement',this)">💍 Engagement</button>
-  <button class="filter-pill" onclick="setFilter('Haldi',this)">🌼 Haldi</button>
-  <button class="filter-pill" onclick="setFilter('Mehendi',this)">🌿 Mehendi</button>
-  <button class="filter-pill" onclick="setFilter('Sangeet',this)">🎶 Sangeet</button>
-  <button class="filter-pill" onclick="setFilter('Wedding Day',this)">💒 Wedding Day</button>
-  <button class="filter-pill" onclick="setFilter('Reception',this)">✨ Reception</button>
-  <button class="filter-pill" onclick="setFilter('Candid',this)">📸 Candid</button>
+<div class="gallery-grid" id="gallery-grid">
+  <!-- Loading Skeletons -->
+  <div class="gallery-item" style="background:#f0f0f0;"></div>
+  <div class="gallery-item" style="background:#f0f0f0;"></div>
+  <div class="gallery-item" style="background:#f0f0f0;"></div>
+  <div class="gallery-item" style="background:#f0f0f0;"></div>
 </div>
 
-<!-- ══════════════ GALLERY ══════════════ -->
-<section class="gallery-section">
-  <div class="section-header">
-    <div>
-      <div class="section-eyebrow">Complete Album</div>
-      <h2 class="section-title">Our Memories</h2>
-    </div>
-    <span class="photo-count" id="photo-count-label">Loading...</span>
-  </div>
-  <div class="masonry" id="gallery-masonry">
-    <div class="skeleton" style="height:280px;"></div>
-    <div class="skeleton" style="height:340px;"></div>
-    <div class="skeleton" style="height:260px;"></div>
-    <div class="skeleton" style="height:310px;"></div>
-    <div class="skeleton" style="height:290px;"></div>
-    <div class="skeleton" style="height:360px;"></div>
-  </div>
-  <div id="empty-state" class="empty-state" style="display:none;">
-    <div class="empty-icon">
-      <i data-feather="camera" style="width:32px;height:32px;color:white;"></i>
-    </div>
-    <p style="font-family:'Cormorant Garamond',serif;font-size:26px;color:var(--cream);margin-bottom:10px;">No photos yet</p>
-    <p style="font-size:14px;color:var(--text-muted);">Login as admin and add the first memory ✦</p>
-  </div>
-</section>
-
-<!-- ══════════════ FAB ══════════════ -->
-<button class="fab" id="fab-btn" onclick="openModal()">
-  <i data-feather="plus" style="width:24px;height:24px;"></i>
+<button class="fab" onclick="openModal()" title="Add new photo">
+  <i data-feather="plus"></i>
 </button>
 
-<!-- ══════════════ LIGHTBOX ══════════════ -->
-<div class="lightbox" id="lightbox" onclick="handleLbClick(event)">
-  <div class="lb-inner" onclick="event.stopPropagation()">
-    <div class="lb-top">
-      <div>
-        <div class="lb-cat" id="lb-category"></div>
-        <div class="lb-title" id="lb-title"></div>
-      </div>
-      <button class="lb-close" onclick="closeLightbox()">
-        <i data-feather="x" style="width:18px;height:18px;"></i>
-      </button>
+<!-- Upload Modal -->
+<div class="modal-overlay" id="upload-modal">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeModal()"><i data-feather="x"></i></button>
+    <h2 class="modal-title">Add Memory</h2>
+    
+    <div class="drop-zone" id="drop-zone" onclick="document.getElementById('img-input').click()">
+      <i data-feather="upload-cloud" style="margin-bottom:12px;color:#888;"></i>
+      <p>Click to upload photo</p>
+      <span>JPG, PNG, WEBP</span>
+      <input type="file" id="img-input" accept="image/*" style="display:none;" onchange="previewImage(event)">
     </div>
-    <div class="lb-img-wrap">
-      <img id="lb-image" src="" alt="">
-      <div id="lb-placeholder" style="display:none;height:300px;align-items:center;justify-content:center;">
-        <i data-feather="heart" style="width:60px;height:60px;color:var(--gold);animation:heartbeat 1.5s infinite;"></i>
-      </div>
-      <button class="lb-arrow prev" onclick="navigateLb(-1)">
-        <i data-feather="chevron-left" style="width:20px;height:20px;"></i>
-      </button>
-      <button class="lb-arrow next" onclick="navigateLb(1)">
-        <i data-feather="chevron-right" style="width:20px;height:20px;"></i>
-      </button>
+    
+    <div class="preview-wrap" id="img-preview-wrap">
+      <img id="img-preview" src="" alt="">
+      <button class="preview-remove" onclick="removeImage()"><i data-feather="x" style="width:16px;height:16px;"></i></button>
     </div>
-    <div class="lb-bottom">
-      <div class="lb-meta">
-        <div class="lb-caption" id="lb-caption"></div>
-        <div class="lb-date" id="lb-date"></div>
-      </div>
-      <button class="lb-delete-btn" id="lb-delete-btn" onclick="deleteLightboxPost()">
-        <i data-feather="trash-2" style="width:14px;height:14px;"></i> Delete
-      </button>
+
+    <div class="form-group">
+      <label>Title (Optional)</label>
+      <input type="text" id="title-input" class="form-input" placeholder="e.g. The First Dance" maxlength="60">
+    </div>
+    
+    <div class="form-group">
+      <label>Caption (Optional)</label>
+      <textarea id="content-input" class="form-input" rows="3" placeholder="Write something beautiful..." maxlength="200"></textarea>
+    </div>
+
+    <button class="btn-submit" id="submit-btn" onclick="submitPost()">
+      <i data-feather="upload" style="width:16px;height:16px;"></i> Save Memory
+    </button>
+  </div>
+</div>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox" onclick="if(event.target===this) closeLightbox()">
+  <button class="lb-close" onclick="closeLightbox()"><i data-feather="x" style="width:32px;height:32px;"></i></button>
+  <button class="lb-nav lb-prev" onclick="navigateLb(-1)"><i data-feather="chevron-left"></i></button>
+  <button class="lb-nav lb-next" onclick="navigateLb(1)"><i data-feather="chevron-right"></i></button>
+  
+  <div class="lb-content">
+    <img src="" id="lb-image" class="lb-img">
+    <div class="lb-info">
+      <div class="lb-title" id="lb-title"></div>
+      <div class="lb-caption" id="lb-caption"></div>
     </div>
   </div>
 </div>
 
-<!-- ══════════════ UPLOAD MODAL ══════════════ -->
-<div class="modal-bg" id="upload-modal">
-  <div class="modal">
-    <div class="modal-header">
-      <div>
-        <div class="modal-title">Add a Memory</div>
-        <div class="modal-sub">Upload a photo to your wedding gallery</div>
-      </div>
-      <button class="lb-close" onclick="closeModal()">
-        <i data-feather="x" style="width:18px;height:18px;"></i>
-      </button>
-    </div>
-    <div class="modal-body">
-      <!-- Drop zone -->
-      <div class="drop-zone" id="drop-zone"
-        onclick="document.getElementById('img-input').click()"
-        ondrop="handleDrop(event)"
-        ondragover="event.preventDefault();this.classList.add('drag-over')"
-        ondragleave="this.classList.remove('drag-over')">
-        <div class="drop-zone-icon">
-          <i data-feather="upload-cloud" style="width:24px;height:24px;"></i>
-        </div>
-        <p>Click or drag &amp; drop photo</p>
-        <span>JPG, PNG, WEBP — max 10MB</span>
-        <input type="file" id="img-input" accept="image/*" style="display:none;" onchange="previewImage(event)">
-      </div>
-      <!-- Preview -->
-      <div class="preview-wrap" id="img-preview-wrap">
-        <img id="img-preview" src="" alt="">
-        <button class="preview-remove" onclick="removeImage()">
-          <i data-feather="x" style="width:14px;height:14px;"></i>
-        </button>
-      </div>
-      <!-- Category -->
-      <div>
-        <label class="form-label">Event Category *</label>
-        <select id="category-input" class="form-select">
-          <option value="">Select event...</option>
-          <option value="Engagement">💍 Engagement</option>
-          <option value="Haldi">🌼 Haldi</option>
-          <option value="Mehendi">🌿 Mehendi</option>
-          <option value="Sangeet">🎶 Sangeet</option>
-          <option value="Wedding Day">💒 Wedding Day</option>
-          <option value="Reception">✨ Reception</option>
-          <option value="Candid">📸 Candid</option>
-        </select>
-      </div>
-      <!-- Caption -->
-      <div>
-        <label class="form-label">Caption</label>
-        <input type="text" id="title-input" class="form-input" placeholder="e.g. The First Look..." maxlength="80">
-      </div>
-      <!-- Story -->
-      <div>
-        <label class="form-label">Story <span style="font-weight:400;text-transform:none;letter-spacing:0;">(optional)</span></label>
-        <textarea id="content-input" class="form-textarea" rows="3" placeholder="Share the story behind this moment..." maxlength="300"></textarea>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn-submit" id="submit-btn" onclick="submitPost()">
-        <i data-feather="upload" style="width:16px;height:16px;"></i>
-        Save Memory
-      </button>
-    </div>
-  </div>
-</div>
+<div class="toast" id="toast">Message here</div>
 
-<!-- ══════════════ TOAST ══════════════ -->
-<div class="toast" id="toast"></div>
-
-<!-- ══════════════════════════════════════
-   SCRIPTS
-══════════════════════════════════════ -->
-<script>
-/* ── Parallax hero ── */
-const heroBg = document.getElementById('hero-parallax');
-window.addEventListener('scroll', () => {
-  const y = window.scrollY;
-  if (heroBg) heroBg.style.transform = `scale(1.08) translateY(${y * 0.3}px)`;
-  document.getElementById('navbar').classList.toggle('scrolled', y > 60);
-}, { passive: true });
-
-/* ── Floating hearts canvas ── */
-(function() {
-  const canvas = document.getElementById('particles-canvas');
-  const ctx = canvas.getContext('2d');
-  let W, H, particles = [];
-
-  function resize() {
-    W = canvas.width  = window.innerWidth;
-    H = canvas.height = window.innerHeight;
-  }
-  resize();
-  window.addEventListener('resize', resize);
-
-  const SYMBOLS = ['❤', '✦', '♡', '✿'];
-  for (let i = 0; i < 28; i++) {
-    particles.push({
-      x: Math.random() * 1200,
-      y: Math.random() * 800,
-      size: 8 + Math.random() * 14,
-      speed: 0.3 + Math.random() * 0.5,
-      drift: (Math.random() - 0.5) * 0.4,
-      opacity: 0.08 + Math.random() * 0.18,
-      sym: SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)],
-      phase: Math.random() * Math.PI * 2
-    });
-  }
-
-  function draw(t) {
-    ctx.clearRect(0, 0, W, H);
-    particles.forEach(p => {
-      p.y -= p.speed;
-      p.x += p.drift + Math.sin(t * 0.0008 + p.phase) * 0.3;
-      if (p.y < -40) { p.y = H + 40; p.x = Math.random() * W; }
-      if (p.x < -40) p.x = W + 40;
-      if (p.x > W + 40) p.x = -40;
-      ctx.globalAlpha = p.opacity;
-      ctx.font = `${p.size}px serif`;
-      ctx.fillStyle = '#C9A252';
-      ctx.fillText(p.sym, p.x, p.y);
-    });
-    ctx.globalAlpha = 1;
-    requestAnimationFrame(draw);
-  }
-  requestAnimationFrame(draw);
-})();
-
-/* ── Scroll-reveal cards ── */
-const revealObserver = new IntersectionObserver((entries) => {
-  entries.forEach((e, i) => {
-    if (e.isIntersecting) {
-      setTimeout(() => e.target.classList.add('revealed'), i * 80);
-      revealObserver.unobserve(e.target);
-    }
-  });
-}, { threshold: 0.1 });
-
-function observeCards() {
-  document.querySelectorAll('.g-card:not(.revealed)').forEach(c => revealObserver.observe(c));
-}
-
-/* ── 3D tilt on desktop ── */
-function addTilt(card) {
-  card.addEventListener('mousemove', e => {
-    const r = card.getBoundingClientRect();
-    const x = (e.clientX - r.left) / r.width  - 0.5;
-    const y = (e.clientY - r.top)  / r.height - 0.5;
-    card.style.transform = `perspective(600px) rotateY(${x * 8}deg) rotateX(${-y * 8}deg) scale(1.03)`;
-  });
-  card.addEventListener('mouseleave', () => {
-    card.style.transform = '';
-  });
-}
-
-/* ── Filter sync between pills & stories ── */
-window.setFilter = function(cat, btn) {
-  activeFilter = cat;
-  document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
-  if (btn) btn.classList.add('active');
-  document.querySelectorAll('.story-item').forEach(s => {
-    s.classList.remove('active');
-    s.querySelector('.story-ring')?.classList.remove('active');
-  });
-  renderAll();
-};
-
-window.applyFilter = function(cat, item) {
-  activeFilter = cat;
-  document.querySelectorAll('.story-item').forEach(s => {
-    s.classList.remove('active');
-    s.querySelector('.story-ring')?.classList.remove('active');
-  });
-  item.classList.add('active');
-  item.querySelector('.story-ring')?.classList.add('active');
-  document.querySelectorAll('.filter-pill').forEach(p => {
-    const match = p.textContent.trim().includes(cat) || (cat === 'All' && p.textContent.trim() === 'All');
-    p.classList.toggle('active', match);
-  });
-  renderAll();
-  document.getElementById('filter-bar').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-};
-
-/* ── Modal helpers ── */
-window.openModal  = () => { document.getElementById('upload-modal').classList.add('active'); document.body.style.overflow = 'hidden'; };
-window.closeModal = () => { document.getElementById('upload-modal').classList.remove('active'); document.body.style.overflow = ''; };
-
-/* ── Lightbox helpers ── */
-window.handleLbClick = (e) => { if (e.target === document.getElementById('lightbox')) closeLightbox(); };
-window.navigateLb = (dir) => {
-  const filtered = activeFilter === 'All' ? allPosts : allPosts.filter(p => p.category === activeFilter);
-  const idx = filtered.findIndex(p => p === allPosts[currentLightboxIndex]);
-  const next = idx + dir;
-  if (next >= 0 && next < filtered.length) openLightbox(allPosts.indexOf(filtered[next]));
-};
-
-/* ── Keyboard ── */
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') {
-    if (document.getElementById('lightbox').classList.contains('active')) closeLightbox();
-    if (document.getElementById('upload-modal').classList.contains('active')) closeModal();
-  }
-  if (document.getElementById('lightbox').classList.contains('active')) {
-    if (e.key === 'ArrowRight') navigateLb(1);
-    if (e.key === 'ArrowLeft')  navigateLb(-1);
-  }
-});
-
-/* ── Toast ── */
-window.showToast = function(msg) {
-  const t = document.getElementById('toast');
-  const isErr = msg.startsWith('❌') || msg.startsWith('⚠️');
-  t.textContent = msg;
-  t.style.background = isErr ? 'rgba(220,38,38,0.95)' : 'rgba(30,22,40,0.95)';
-  t.style.border     = isErr ? '1px solid rgba(248,113,113,0.4)' : '1px solid rgba(201,162,82,0.3)';
-  t.style.color      = isErr ? '#fca5a5' : 'var(--cream)';
-  t.classList.add('show');
-  clearTimeout(t._t);
-  t._t = setTimeout(() => t.classList.remove('show'), isErr ? 6000 : 3500);
-};
-</script>
-
-<!-- Firebase -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
 import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
@@ -1071,21 +283,18 @@ const firebaseConfig = {
   projectId: "wedding-galary",
   storageBucket: "wedding-galary.firebasestorage.app",
   messagingSenderId: "671325483219",
-  appId: "1:671325483219:web:13be561bb9de587bb96426",
-  measurementId: "G-4S286FR5JC"
+  appId: "1:671325483219:web:13be561bb9de587bb96426"
 };
 
 const ADMIN_PASS = '127564';
 const app = initializeApp(firebaseConfig);
 const db  = getFirestore(app);
 
-window.allPosts           = [];
-window.activeFilter       = 'All';
+window.allPosts = [];
 window.selectedImageBase64 = null;
 window.currentLightboxIndex = -1;
 
-/* ── Compress ── */
-function compressImage(base64, maxW = 1200, q = 0.78) {
+function compressImage(base64, maxW = 1200, q = 0.8) {
   return new Promise((resolve, reject) => {
     const img = new Image();
     img.onload = () => {
@@ -1101,14 +310,12 @@ function compressImage(base64, maxW = 1200, q = 0.78) {
   });
 }
 
-/* ── Init ── */
 window.addEventListener('DOMContentLoaded', () => {
   feather.replace();
   checkAuth();
   fetchAndRenderGallery();
 });
 
-/* ── Auth ── */
 window.toggleAuth = function() {
   if (sessionStorage.getItem('wedding_admin') === 'true') {
     sessionStorage.removeItem('wedding_admin');
@@ -1125,150 +332,70 @@ window.toggleAuth = function() {
 function checkAuth() {
   const isAdmin = sessionStorage.getItem('wedding_admin') === 'true';
   document.body.classList.toggle('admin-mode', isAdmin);
-  const btn = document.getElementById('auth-btn');
-  if (btn) btn.innerHTML = isAdmin
-    ? `<i data-feather="unlock" style="width:14px;height:14px;"></i> <span id="auth-text">Logout</span>`
-    : `<i data-feather="lock" style="width:14px;height:14px;"></i> <span id="auth-text">Admin</span>`;
-  const fab = document.getElementById('fab-btn');
-  if (fab) { isAdmin ? fab.classList.add('show') : fab.classList.remove('show'); }
+  
+  const authBtn = document.getElementById('auth-btn');
+  if (authBtn) {
+    authBtn.innerHTML = isAdmin 
+      ? '<i data-feather="unlock" style="width:14px;height:14px;"></i> <span id="auth-text">Logout</span>' 
+      : '<i data-feather="lock" style="width:14px;height:14px;"></i> <span id="auth-text">Admin</span>';
+  }
   feather.replace();
-  renderAll();
 }
 
-/* ── Fetch ── */
 async function fetchAndRenderGallery() {
   try {
     const q = query(collection(db,'posts'), orderBy('timestamp','desc'));
     const snap = await getDocs(q);
     window.allPosts = [];
     snap.forEach(d => window.allPosts.push({ id: d.id, ...d.data() }));
-    renderAll();
+    renderGrid();
   } catch(err) {
     console.error(err);
-    document.getElementById('gallery-masonry').innerHTML =
-      `<div style="text-align:center;padding:60px;color:var(--text-muted);">Could not load photos.<br><small>${err.message}</small></div>`;
+    document.getElementById('gallery-grid').innerHTML = '<p style="text-align:center;grid-column:1/-1;">Error loading photos.</p>';
   }
 }
 
-/* ── Render ── */
-function renderAll() {
-  const filtered = activeFilter === 'All'
-    ? window.allPosts
-    : window.allPosts.filter(p => p.category === activeFilter);
-  document.getElementById('stat-photos').textContent = window.allPosts.length + ' Photo' + (window.allPosts.length !== 1 ? 's' : '');
-  document.getElementById('photo-count-label').textContent = filtered.length + ' memories';
-  renderMasonry(filtered);
-}
-
-function renderMasonry(posts) {
-  const grid   = document.getElementById('gallery-masonry');
-  const empty  = document.getElementById('empty-state');
-  const isAdmin = sessionStorage.getItem('wedding_admin') === 'true';
+function renderGrid() {
+  const grid = document.getElementById('gallery-grid');
   if (!grid) return;
-
-  if (posts.length === 0) {
-    grid.innerHTML = '';
-    empty.style.display = 'block';
+  
+  if (window.allPosts.length === 0) {
+    grid.innerHTML = '<p style="text-align:center;grid-column:1/-1;color:#888;padding:40px;">No photos yet. Login as admin to add some!</p>';
     return;
   }
-  empty.style.display = 'none';
 
-  grid.innerHTML = posts.map((post, i) => {
-    const delBtn = isAdmin
-      ? `<button class="g-delete" onclick="deletePost('${post.id}',event)" title="Delete">
-           <i data-feather="trash-2" style="width:14px;height:14px;pointer-events:none;"></i>
-         </button>` : '';
-
-    if (post.image) {
-      return `
-        <div class="g-card" onclick="openLightbox(${window.allPosts.indexOf(post)})">
-          ${delBtn}
-          <img src="${post.image}" alt="${post.title||''}" loading="lazy">
-          <div class="g-overlay"></div>
-          <div class="g-info">
-            ${post.category ? `<div class="g-badge">${post.category}</div>` : ''}
-            <div class="g-title">${post.title||'Cherished Moment'}</div>
-            ${post.text ? `<div class="g-caption">${post.text}</div>` : ''}
+  grid.innerHTML = window.allPosts.map((post, i) => {
+    return `
+      <div class="gallery-item" onclick="openLightbox(${i})">
+        <button class="btn-delete" onclick="deletePost('${post.id}', event)"><i data-feather="trash-2" style="width:16px;height:16px;"></i></button>
+        <img src="${post.image}" class="gallery-img" loading="lazy">
+        ${post.title || post.text ? `
+          <div class="item-overlay">
+            ${post.title ? `<div class="item-title">${post.title}</div>` : ''}
+            ${post.text ? `<div class="item-caption">${post.text}</div>` : ''}
           </div>
-        </div>`;
-    } else {
-      return `
-        <div class="g-card" style="min-height:200px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;padding:32px;" onclick="openLightbox(${window.allPosts.indexOf(post)})">
-          ${delBtn}
-          <i data-feather="heart" style="width:36px;height:36px;color:var(--gold);animation:heartbeat 1.5s infinite;"></i>
-          <div class="g-title" style="text-align:center;">${post.title||'Memory'}</div>
-          ${post.text ? `<div style="font-size:12px;color:var(--text-muted);text-align:center;">${post.text}</div>` : ''}
-        </div>`;
-    }
+        ` : ''}
+      </div>
+    `;
   }).join('');
-
   feather.replace();
-  // Add tilt & reveal
-  document.querySelectorAll('.g-card').forEach(c => {
-    addTilt(c);
-    revealObserver.observe(c);
-  });
 }
 
-/* ── Lightbox ── */
-window.openLightbox = function(index) {
-  window.currentLightboxIndex = index;
-  const post = window.allPosts[index];
-  if (!post) return;
-  const lbImg = document.getElementById('lb-image');
-  const lbPh  = document.getElementById('lb-placeholder');
-  if (post.image) {
-    lbImg.src = post.image; lbImg.style.display = 'block'; lbPh.style.display = 'none';
-  } else {
-    lbImg.style.display = 'none'; lbPh.style.display = 'flex';
-    feather.replace();
-  }
-  document.getElementById('lb-category').textContent = post.category || '';
-  document.getElementById('lb-title').textContent    = post.title    || 'Cherished Moment';
-  document.getElementById('lb-caption').textContent  = post.text     || '';
-  document.getElementById('lb-date').textContent     = post.date
-    ? new Date(post.date).toLocaleDateString('en-IN',{year:'numeric',month:'long',day:'numeric'}) : '';
-  const delBtn = document.getElementById('lb-delete-btn');
-  const isAdmin = sessionStorage.getItem('wedding_admin') === 'true';
-  if (delBtn) delBtn.classList.toggle('show', isAdmin);
-  feather.replace();
-  document.getElementById('lightbox').classList.add('active');
-  document.body.style.overflow = 'hidden';
-};
-
-window.closeLightbox = function() {
-  document.getElementById('lightbox').classList.remove('active');
-  document.body.style.overflow = '';
-};
-
-/* ── Delete from lightbox ── */
-window.deleteLightboxPost = async function() {
-  const post = window.allPosts[window.currentLightboxIndex];
-  if (!post || !confirm('Delete this memory permanently?')) return;
-  try {
-    closeLightbox();
-    await deleteDoc(doc(db,'posts',post.id));
-    await fetchAndRenderGallery();
-    showToast('Memory deleted. 🗑️');
-  } catch(err) { showToast('❌ Delete failed: ' + err.message); }
-};
-
-/* ── Delete from card ── */
 window.deletePost = async function(postId, event) {
   event.stopPropagation();
-  if (!confirm('Delete this memory permanently?')) return;
+  if (!confirm('Delete this photo permanently?')) return;
   try {
     await deleteDoc(doc(db,'posts',postId));
     await fetchAndRenderGallery();
-    showToast('Memory deleted. 🗑️');
+    showToast('Photo deleted. 🗑️');
   } catch(err) {
-    showToast(err.code === 'permission-denied'
-      ? '❌ Permission denied — check Firestore rules'
-      : '❌ Delete failed: ' + err.message);
+    showToast('❌ Error: ' + err.message);
   }
 };
 
-/* ── Upload: preview ── */
+window.openModal = () => { document.getElementById('upload-modal').classList.add('active'); };
+window.closeModal = () => { document.getElementById('upload-modal').classList.remove('active'); };
+
 window.previewImage = function(e) {
   const file = e.target.files[0];
   if (!file) return;
@@ -1283,16 +410,6 @@ window.previewImage = function(e) {
   reader.readAsDataURL(file);
 };
 
-window.handleDrop = function(e) {
-  e.preventDefault(); e.currentTarget.classList.remove('drag-over');
-  const file = e.dataTransfer.files[0];
-  if (file?.type.startsWith('image/')) {
-    const dt = new DataTransfer(); dt.items.add(file);
-    document.getElementById('img-input').files = dt.files;
-    previewImage({ target: { files: [file] } });
-  }
-};
-
 window.removeImage = function() {
   window.selectedImageBase64 = null;
   document.getElementById('img-input').value = '';
@@ -1301,46 +418,87 @@ window.removeImage = function() {
   document.getElementById('drop-zone').style.display = 'block';
 };
 
-/* ── Submit ── */
 window.submitPost = async function() {
-  const title    = document.getElementById('title-input').value.trim();
-  const text     = document.getElementById('content-input').value.trim();
-  const category = document.getElementById('category-input').value;
-  const btn      = document.getElementById('submit-btn');
+  const title = document.getElementById('title-input').value.trim();
+  const text  = document.getElementById('content-input').value.trim();
+  const btn   = document.getElementById('submit-btn');
 
   if (!window.selectedImageBase64) { showToast('⚠️ Please select a photo.'); return; }
-  if (!category) { showToast('⚠️ Please select an event category.'); return; }
 
-  const spinner = `<svg class="spin" style="width:16px;height:16px;margin-right:8px;animation:spinSlow 1s linear infinite;" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="white" stroke-width="3" stroke-dasharray="32" stroke-dashoffset="10"/></svg>`;
-  btn.innerHTML = spinner + 'Compressing...'; btn.disabled = true;
+  btn.innerHTML = '<i data-feather="loader" style="width:16px;height:16px;" class="spin"></i> Saving...'; 
+  btn.disabled = true;
+  feather.replace();
 
   try {
-    const compressed = await compressImage(window.selectedImageBase64, 1200, 0.78);
-    btn.innerHTML = spinner + 'Saving to Firebase...';
+    const compressed = await compressImage(window.selectedImageBase64, 1200, 0.8);
     const timestamp = Date.now();
-    await addDoc(collection(db,'posts'), {
-      title, text, category, image: compressed,
-      storagePath: null, date: new Date().toISOString(), timestamp
+    await addDoc(collection(db, 'posts'), {
+      title, text, image: compressed,
+      date: new Date().toISOString(), timestamp
     });
-    document.getElementById('title-input').value    = '';
-    document.getElementById('content-input').value  = '';
-    document.getElementById('category-input').value = '';
+    
+    document.getElementById('title-input').value = '';
+    document.getElementById('content-input').value = '';
     removeImage(); closeModal();
     await fetchAndRenderGallery();
-    showToast('Memory saved! 💕');
+    showToast('Photo saved successfully! 💕');
   } catch(err) {
     console.error(err);
-    const msg = err.code === 'permission-denied'
-      ? '❌ Permission denied — update Firestore rules'
-      : err.code === 'unavailable'
-      ? '❌ Network error. Check connection.'
-      : '❌ ' + (err.message || err.code);
-    showToast(msg);
+    showToast('❌ Upload failed. ' + err.message);
   } finally {
     btn.innerHTML = '<i data-feather="upload" style="width:16px;height:16px;"></i> Save Memory';
-    btn.disabled  = false; feather.replace();
+    btn.disabled = false;
+    feather.replace();
   }
 };
+
+window.openLightbox = function(index) {
+  window.currentLightboxIndex = index;
+  const post = window.allPosts[index];
+  if (!post) return;
+  
+  document.getElementById('lb-image').src = post.image;
+  document.getElementById('lb-title').textContent = post.title || '';
+  document.getElementById('lb-caption').textContent = post.text || '';
+  
+  document.getElementById('lightbox').classList.add('active');
+  document.body.style.overflow = 'hidden';
+};
+
+window.closeLightbox = function() {
+  document.getElementById('lightbox').classList.remove('active');
+  document.body.style.overflow = '';
+};
+
+window.navigateLb = function(dir) {
+  let next = window.currentLightboxIndex + dir;
+  if (next < 0) next = window.allPosts.length - 1;
+  if (next >= window.allPosts.length) next = 0;
+  window.openLightbox(next);
+};
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    closeLightbox(); closeModal();
+  }
+  if (document.getElementById('lightbox').classList.contains('active')) {
+    if (e.key === 'ArrowRight') navigateLb(1);
+    if (e.key === 'ArrowLeft') navigateLb(-1);
+  }
+});
+
+window.showToast = function(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.background = msg.includes('❌') ? '#e53e3e' : '#333';
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+};
+
+// Add CSS for spinning icon
+const style = document.createElement('style');
+style.innerHTML = '@keyframes spin { 100% { transform: rotate(360deg); } } .spin { animation: spin 1s linear infinite; }';
+document.head.appendChild(style);
 </script>
 </body>
 </html>
