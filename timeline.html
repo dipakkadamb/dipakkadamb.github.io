@@ -1,6 +1,15 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-M52Y1TXBBT"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-M52Y1TXBBT');
+    </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Our Wedding Gallery</title>
@@ -31,7 +40,7 @@
     -webkit-font-smoothing: antialiased;
   }
 
-  /* ════════════ HEADER ════════════ */
+  /* â•â•â•â•â•â•â•â•â•â•â•â• HEADER â•â•â•â•â•â•â•â•â•â•â•â• */
   .header {
     display: flex; justify-content: space-between; align-items: center;
     padding: 24px 5%;
@@ -56,7 +65,7 @@
   }
   .auth-btn:hover { background: var(--primary); color: white; border-color: var(--primary); }
 
-  /* ════════════ HERO ════════════ */
+  /* â•â•â•â•â•â•â•â•â•â•â•â• HERO â•â•â•â•â•â•â•â•â•â•â•â• */
   .hero { 
     text-align: center; padding: 100px 20px 80px; 
     display: flex; flex-direction: column; align-items: center;
@@ -82,7 +91,7 @@
     to { opacity: 1; transform: translateY(0); }
   }
 
-  /* ════════════ GALLERY GRID ════════════ */
+  /* â•â•â•â•â•â•â•â•â•â•â•â• GALLERY GRID â•â•â•â•â•â•â•â•â•â•â•â• */
   .gallery-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -165,7 +174,7 @@
   body.admin-mode .gallery-item:hover .btn-delete { opacity: 1; transform: scale(1); }
   .btn-delete:hover { background: var(--danger); color: white; transform: scale(1.1) !important; }
 
-  /* ════════════ FLOATING ACTION BUTTON ════════════ */
+  /* â•â•â•â•â•â•â•â•â•â•â•â• FLOATING ACTION BUTTON â•â•â•â•â•â•â•â•â•â•â•â• */
   .fab {
     position: fixed; bottom: 40px; right: 40px; z-index: 90;
     width: 64px; height: 64px; border-radius: 50%;
@@ -176,7 +185,7 @@
   body.admin-mode .fab { display: flex; }
   .fab:hover { transform: translateY(-5px) scale(1.05); box-shadow: 0 15px 40px rgba(26,26,26,0.4); }
 
-  /* ════════════ SECURE LOGIN MODAL ════════════ */
+  /* â•â•â•â•â•â•â•â•â•â•â•â• SECURE LOGIN MODAL â•â•â•â•â•â•â•â•â•â•â•â• */
   .login-overlay {
     position: fixed; inset: 0; background: rgba(253, 252, 251, 0.85); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
     display: flex; align-items: center; justify-content: center; z-index: 500; 
@@ -224,7 +233,7 @@
   }
   .shake { animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both; border-color: var(--danger) !important; color: var(--danger); }
 
-  /* ════════════ UPLOAD MODAL ════════════ */
+  /* â•â•â•â•â•â•â•â•â•â•â•â• UPLOAD MODAL â•â•â•â•â•â•â•â•â•â•â•â• */
   .modal-overlay {
     position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
     display: flex; align-items: center; justify-content: center; z-index: 400; 
@@ -266,7 +275,7 @@
   .btn-submit:hover { background: var(--primary-light); transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
   .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
-  /* ════════════ CINEMATIC LIGHTBOX ════════════ */
+  /* â•â•â•â•â•â•â•â•â•â•â•â• CINEMATIC LIGHTBOX â•â•â•â•â•â•â•â•â•â•â•â• */
   .lightbox {
     position: fixed; inset: 0; background: rgba(0,0,0,0.98); z-index: 600;
     display: flex; align-items: center; justify-content: center; flex-direction: column; 
@@ -300,7 +309,7 @@
   .lb-prev { left: -80px; }
   .lb-next { right: -80px; }
 
-  /* ════════════ TOAST ════════════ */
+  /* â•â•â•â•â•â•â•â•â•â•â•â• TOAST â•â•â•â•â•â•â•â•â•â•â•â• */
   .toast {
     position: fixed; bottom: 40px; left: 50%; transform: translate(-50%, 20px);
     background: var(--primary); color: white; padding: 16px 32px; border-radius: 40px;
@@ -310,7 +319,7 @@
   }
   .toast.show { opacity: 1; transform: translate(-50%, 0); }
 
-  /* ════════════ RESPONSIVE ════════════ */
+  /* â•â•â•â•â•â•â•â•â•â•â•â• RESPONSIVE â•â•â•â•â•â•â•â•â•â•â•â• */
   @media (max-width: 900px) {
     .lb-nav { display: none; } /* Hide side arrows on small screens, users can swipe (if implemented) or use bottom controls if we had them. Just relying on clicking out or closing. Actually let's keep them but move them inside. */
     .lb-prev { left: 10px; } .lb-next { right: 10px; }
@@ -352,7 +361,7 @@
   <i data-feather="plus" style="width:24px;height:24px;"></i>
 </button>
 
-<!-- ════════════ SECURE LOGIN OVERLAY ════════════ -->
+<!-- â•â•â•â•â•â•â•â•â•â•â•â• SECURE LOGIN OVERLAY â•â•â•â•â•â•â•â•â•â•â•â• -->
 <div class="login-overlay" id="login-overlay" onclick="if(event.target===this) closeLogin()">
   <div class="login-card">
     <button class="login-close" onclick="closeLogin()"><i data-feather="x"></i></button>
@@ -362,7 +371,7 @@
     
     <div class="login-input-wrap">
       <i data-feather="key"></i>
-      <input type="password" id="admin-pass-input" class="login-input" placeholder="••••••" onkeyup="if(event.key === 'Enter') checkLoginSubmit()">
+      <input type="password" id="admin-pass-input" class="login-input" placeholder="â€¢â€¢â€¢â€¢â€¢â€¢" onkeyup="if(event.key === 'Enter') checkLoginSubmit()">
     </div>
     
     <button class="btn-secure-login" onclick="checkLoginSubmit()">
@@ -371,7 +380,7 @@
   </div>
 </div>
 
-<!-- ════════════ UPLOAD MODAL ════════════ -->
+<!-- â•â•â•â•â•â•â•â•â•â•â•â• UPLOAD MODAL â•â•â•â•â•â•â•â•â•â•â•â• -->
 <div class="modal-overlay" id="upload-modal" onclick="if(event.target===this) closeModal()">
   <div class="modal-content">
     <button class="login-close" onclick="closeModal()"><i data-feather="x"></i></button>
@@ -405,7 +414,7 @@
   </div>
 </div>
 
-<!-- ════════════ LIGHTBOX ════════════ -->
+<!-- â•â•â•â•â•â•â•â•â•â•â•â• LIGHTBOX â•â•â•â•â•â•â•â•â•â•â•â• -->
 <div class="lightbox" id="lightbox" onclick="if(event.target===this) closeLightbox()">
   <button class="lb-close" onclick="closeLightbox()"><i data-feather="x" style="width:32px;height:32px;"></i></button>
   <button class="lb-nav lb-prev" onclick="navigateLb(-1); event.stopPropagation();"><i data-feather="arrow-left"></i></button>
@@ -477,7 +486,7 @@ window.addEventListener('DOMContentLoaded', () => {
   fetchAndRenderGallery();
 });
 
-// ════════════ LOGIN / AUTH LOGIC ════════════
+// â•â•â•â•â•â•â•â•â•â•â•â• LOGIN / AUTH LOGIC â•â•â•â•â•â•â•â•â•â•â•â•
 window.openLoginOverlay = function() {
   if (sessionStorage.getItem('wedding_admin') === 'true') {
     // If already logged in, clicking the button logs them out
@@ -533,7 +542,7 @@ function checkAuth() {
   feather.replace();
 }
 
-// ════════════ GALLERY LOGIC ════════════
+// â•â•â•â•â•â•â•â•â•â•â•â• GALLERY LOGIC â•â•â•â•â•â•â•â•â•â•â•â•
 async function fetchAndRenderGallery() {
   try {
     const q = query(collection(db,'posts'), orderBy('timestamp','desc'));
@@ -594,7 +603,7 @@ window.deletePost = async function(postId, event) {
   }
 };
 
-// ════════════ UPLOAD LOGIC ════════════
+// â•â•â•â•â•â•â•â•â•â•â•â• UPLOAD LOGIC â•â•â•â•â•â•â•â•â•â•â•â•
 window.openModal = () => { document.getElementById('upload-modal').classList.add('active'); };
 window.closeModal = () => { document.getElementById('upload-modal').classList.remove('active'); };
 
@@ -664,7 +673,7 @@ window.submitPost = async function() {
   }
 };
 
-// ════════════ LIGHTBOX LOGIC ════════════
+// â•â•â•â•â•â•â•â•â•â•â•â• LIGHTBOX LOGIC â•â•â•â•â•â•â•â•â•â•â•â•
 window.openLightbox = function(index) {
   window.currentLightboxIndex = index;
   const post = window.allPosts[index];
@@ -730,3 +739,4 @@ document.head.appendChild(style);
 </script>
 </body>
 </html>
+
