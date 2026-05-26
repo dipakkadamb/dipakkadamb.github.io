@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth antialiased bg-slate-50 selection:bg-violet-600 selection:text-white">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>Corporate AI LLM Service Pune | Private On-Premise AI Setup | Dipak Kadamb</title>
+    <meta name="description" content="Deploy a secure, private Corporate AI (Local LLM) on your own server in Pune. We install Ollama, LLaMA, Mistral & Open WebUI — fully air-gapped, zero cloud, zero data leaks. One-time setup, unlimited AI forever.">
+    <meta name="keywords" content="corporate AI service Pune, local LLM service Pune, private AI setup India, on-premise ChatGPT Pune, Ollama setup corporate, air-gapped AI enterprise Pune, corporate LLM installation, private AI server Pune, local AI for business India, secure AI deployment Pune">
+    <meta property="og:title" content="Corporate Local AI (LLM) Service Pune | Private AI On Your Server | Dipak Kadamb">
+    <meta property="og:description" content="We install a private, offline AI on your corporate hardware. No cloud. No subscriptions. No data leaks. Your team gets a ChatGPT-like assistant — running entirely on your own server.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://dipakkadamb.github.io/ai-corporate-llm-service.html">
+
+    <link rel="icon" href="assets/img/profile.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        accent: { blue: '#2563eb', cyan: '#06b6d4', teal: '#0d9488', amber: '#f59e0b', violet: '#7c3aed' }
+                    },
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .gradient-hero { background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%); }
+        .glass-card {
+            background: rgba(255,255,255,0.88);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(15,23,42,0.08);
+        }
+        .glow-violet { box-shadow: 0 0 40px rgba(124,58,237,0.25); }
+        .shimmer-text {
+            background: linear-gradient(90deg, #7c3aed, #06b6d4, #7c3aed);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shimmer 3s linear infinite;
+        }
+        @keyframes shimmer { to { background-position: 200% center; } }
+        .badge-ai {
+            background: linear-gradient(135deg, rgba(124,58,237,0.15), rgba(6,182,212,0.1));
+            border: 1px solid rgba(124,58,237,0.3);
+        }
+        .terminal-block {
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 10px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .check-item { display: flex; align-items: flex-start; gap: 12px; }
+        .check-dot {
+            flex-shrink: 0;
+            width: 20px; height: 20px;
+            border-radius: 50%;
+            background: rgba(124,58,237,0.1);
+            border: 1px solid rgba(124,58,237,0.3);
+            display: flex; align-items: center; justify-content: center;
+            margin-top: 2px;
+        }
+    </style>
+</head>
+
+<body class="text-slate-700 bg-slate-50">
+
+    <!-- Navbar -->
+    <nav class="fixed top-0 w-full z-40 py-4 px-4 sm:px-6 lg:px-12 backdrop-blur-md border-b border-slate-200 bg-white/90 shadow-sm">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <a href="index.html" class="flex items-center gap-2 text-slate-800 font-bold hover:text-violet-600 transition-colors">
+                <i data-feather="arrow-left" class="w-5 h-5"></i> Back to Home
+            </a>
+            <div class="font-bold text-slate-900 hidden sm:block font-mono text-sm">Dipak Kadamb | Corporate AI Service</div>
+            <a href="https://wa.me/917796852335?text=Hello%20Dipak,%20I%20want%20to%20inquire%20about%20setting%20up%20a%20Corporate%20Local%20AI%20(LLM)%20for%20my%20organization." target="_blank"
+               class="px-5 py-2 rounded-lg bg-violet-600 text-white font-semibold text-sm hover:bg-violet-700 transition flex items-center gap-2">
+                <i data-feather="message-circle" class="w-4 h-4"></i> Get Quote
+            </a>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="gradient-hero text-white pt-32 pb-24 px-4 sm:px-6 lg:px-12 relative overflow-hidden">
+        <div class="absolute top-16 left-8 w-80 h-80 bg-violet-700/25 rounded-full blur-[120px] pointer-events-none"></div>
+        <div class="absolute bottom-0 right-0 w-96 h-96 bg-cyan-500/15 rounded-full blur-[140px] pointer-events-none"></div>
+
+        <div class="max-w-5xl mx-auto relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <!-- Badge -->
+                    <div class="inline-flex items-center gap-2 badge-ai text-violet-300 text-xs font-mono uppercase tracking-widest px-4 py-2 rounded-full mb-6">
+                        <span class="w-2 h-2 bg-violet-400 rounded-full animate-pulse"></span>
+                        AI Service — Pune, India
+                    </div>
+
+                    <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight leading-tight mb-5">
+                        Corporate <span class="shimmer-text">Local AI</span><br>
+                        <span class="text-slate-300 text-2xl sm:text-3xl font-semibold">Private. Offline. On Your Server.</span>
+                    </h1>
+
+                    <p class="text-slate-300 text-lg leading-relaxed mb-8">
+                        We deploy a powerful, enterprise-grade AI language model <strong class="text-white">directly on your hardware</strong> — like having your own private ChatGPT running completely offline, inside your office, with <strong class="text-violet-300">zero cloud, zero subscriptions, and zero data leaks.</strong>
+                    </p>
+
+                    <div class="flex flex-col sm:flex-row gap-3">
+                        <a href="https://wa.me/917796852335?text=Hello%20Dipak,%20I%20want%20to%20set%20up%20a%20Corporate%20Local%20AI%20for%20my%20organization." target="_blank"
+                           class="px-7 py-3.5 rounded-xl bg-violet-600 hover:bg-violet-500 font-bold text-white transition-all duration-300 flex items-center justify-center gap-2 shadow-lg glow-violet">
+                            <i data-feather="cpu" class="w-5 h-5"></i> Book Free Consultation
+                        </a>
+                        <a href="corporate-llm-pune.html"
+                           class="px-7 py-3.5 rounded-xl bg-white/10 border border-white/20 hover:bg-white/20 font-semibold text-white transition-all duration-300 flex items-center justify-center gap-2">
+                            <i data-feather="file-text" class="w-5 h-5"></i> Read Full Article
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Stats Panel -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-white/5 border border-violet-400/20 rounded-2xl p-5 text-center">
+                        <div class="text-3xl font-extrabold text-white mb-1">0%</div>
+                        <div class="text-xs text-slate-400 font-mono uppercase tracking-wider">Data to Cloud</div>
+                    </div>
+                    <div class="bg-white/5 border border-violet-400/20 rounded-2xl p-5 text-center">
+                        <div class="text-3xl font-extrabold text-white mb-1">100%</div>
+                        <div class="text-xs text-slate-400 font-mono uppercase tracking-wider">On Your Server</div>
+                    </div>
+                    <div class="bg-white/5 border border-violet-400/20 rounded-2xl p-5 text-center">
+                        <div class="text-3xl font-extrabold text-white mb-1">₹0</div>
+                        <div class="text-xs text-slate-400 font-mono uppercase tracking-wider">Monthly Cost After Setup</div>
+                    </div>
+                    <div class="bg-white/5 border border-violet-400/20 rounded-2xl p-5 text-center">
+                        <div class="text-3xl font-extrabold text-white mb-1">7</div>
+                        <div class="text-xs text-slate-400 font-mono uppercase tracking-wider">Days to Go Live</div>
+                    </div>
+                    <div class="col-span-2 terminal-block px-5 py-4">
+                        <div class="text-slate-500 text-xs mb-1 font-mono"># Running on YOUR server</div>
+                        <div class="font-mono text-sm">
+                            <span class="text-violet-400">$</span>
+                            <span class="text-green-400"> ollama</span>
+                            <span class="text-cyan-400"> run</span>
+                            <span class="text-white"> llama3</span>
+                        </div>
+                        <div class="text-slate-400 text-xs font-mono mt-1">→ Fully offline · No API key · No subscription</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
+
+        <!-- What Is This Service -->
+        <section class="py-20">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-4">What Is a Corporate Local AI?</h2>
+                <div class="w-16 h-1 bg-gradient-to-r from-violet-600 to-cyan-500 rounded-full mx-auto mb-6"></div>
+                <p class="text-slate-600 max-w-3xl mx-auto text-lg leading-relaxed">
+                    Think of it as <strong class="text-slate-900">ChatGPT — but installed entirely inside your own office</strong>. No internet required. No vendor subscription. No risk of your confidential prompts being stored or used for AI training by a third party.
+                    Your employees get an intelligent AI assistant accessible from any device on your internal network, powered by open-source models like LLaMA, Mistral, or DeepSeek — running on your own hardware, 24/7.
+                </p>
+            </div>
+
+            <!-- 3 key pillars -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="glass-card p-8 rounded-2xl text-center hover:-translate-y-1 transition-all duration-300">
+                    <div class="w-14 h-14 rounded-2xl bg-violet-100 border border-violet-200 flex items-center justify-center mx-auto mb-5 text-violet-600">
+                        <i data-feather="lock" class="w-7 h-7"></i>
+                    </div>
+                    <h3 class="font-extrabold text-slate-900 text-lg mb-2">100% Private</h3>
+                    <p class="text-sm text-slate-600 leading-relaxed">Every query, every document, every response — processed entirely on your server. Zero data ever leaves your building. Fully GDPR &amp; IT Act 2000 compliant.</p>
+                </div>
+                <div class="glass-card p-8 rounded-2xl text-center hover:-translate-y-1 transition-all duration-300">
+                    <div class="w-14 h-14 rounded-2xl bg-cyan-100 border border-cyan-200 flex items-center justify-center mx-auto mb-5 text-cyan-600">
+                        <i data-feather="wifi-off" class="w-7 h-7"></i>
+                    </div>
+                    <h3 class="font-extrabold text-slate-900 text-lg mb-2">Zero Internet Dependency</h3>
+                    <p class="text-sm text-slate-600 leading-relaxed">Your AI works even during internet outages. No vendor downtime affects your team. Full control — no external SLAs to depend on, no rate limits, no throttling.</p>
+                </div>
+                <div class="glass-card p-8 rounded-2xl text-center hover:-translate-y-1 transition-all duration-300">
+                    <div class="w-14 h-14 rounded-2xl bg-emerald-100 border border-emerald-200 flex items-center justify-center mx-auto mb-5 text-emerald-600">
+                        <i data-feather="trending-down" class="w-7 h-7"></i>
+                    </div>
+                    <h3 class="font-extrabold text-slate-900 text-lg mb-2">One-Time Investment</h3>
+                    <p class="text-sm text-slate-600 leading-relaxed">Pay once for the setup. Run unlimited queries forever with ₹0 per-token costs. Typical ROI is achieved within 4–6 months versus cloud AI subscriptions.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- What We Do -->
+        <section class="mb-20">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-4">What This Service Includes</h2>
+                <div class="w-16 h-1 bg-gradient-to-r from-violet-600 to-cyan-500 rounded-full mx-auto"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="glass-card p-6 rounded-2xl group hover:-translate-y-1 transition-all duration-300">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-11 h-11 rounded-xl bg-violet-100 border border-violet-200 flex items-center justify-center text-violet-600 group-hover:bg-violet-600 group-hover:text-white transition-all flex-shrink-0">
+                            <i data-feather="server" class="w-5 h-5"></i>
+                        </div>
+                        <h3 class="font-bold text-slate-900 text-lg">Hardware Assessment &amp; Setup</h3>
+                    </div>
+                    <p class="text-slate-600 text-sm leading-relaxed">We audit your existing servers or recommend the right hardware — GPU workstations, RAM upgrades, NVMe SSDs — sized precisely for your chosen AI model and team size.</p>
+                </div>
+
+                <div class="glass-card p-6 rounded-2xl group hover:-translate-y-1 transition-all duration-300">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-11 h-11 rounded-xl bg-blue-100 border border-blue-200 flex items-center justify-center text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-all flex-shrink-0">
+                            <i data-feather="download-cloud" class="w-5 h-5"></i>
+                        </div>
+                        <h3 class="font-bold text-slate-900 text-lg">AI Model Installation &amp; Tuning</h3>
+                    </div>
+                    <p class="text-slate-600 text-sm leading-relaxed">Full Ollama setup with your chosen model (LLaMA 3, Mistral, DeepSeek, Phi-3, Gemma). We apply quantisation and tune system prompts for your specific business use case.</p>
+                </div>
+
+                <div class="glass-card p-6 rounded-2xl group hover:-translate-y-1 transition-all duration-300">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-11 h-11 rounded-xl bg-teal-100 border border-teal-200 flex items-center justify-center text-teal-600 group-hover:bg-teal-600 group-hover:text-white transition-all flex-shrink-0">
+                            <i data-feather="layout" class="w-5 h-5"></i>
+                        </div>
+                        <h3 class="font-bold text-slate-900 text-lg">Private Chat Interface (Open WebUI)</h3>
+                    </div>
+                    <p class="text-slate-600 text-sm leading-relaxed">A beautiful, ChatGPT-like interface deployed on your intranet. Multi-user support, conversation history, file uploads — accessible from any device on your network, no internet needed.</p>
+                </div>
+
+                <div class="glass-card p-6 rounded-2xl group hover:-translate-y-1 transition-all duration-300">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-11 h-11 rounded-xl bg-amber-100 border border-amber-200 flex items-center justify-center text-amber-600 group-hover:bg-amber-600 group-hover:text-white transition-all flex-shrink-0">
+                            <i data-feather="database" class="w-5 h-5"></i>
+                        </div>
+                        <h3 class="font-bold text-slate-900 text-lg">RAG — AI That Knows Your Business</h3>
+                    </div>
+                    <p class="text-slate-600 text-sm leading-relaxed">Connect the LLM to your internal documents, SOPs, PDFs, and knowledge base via Retrieval-Augmented Generation. Ask the AI questions about your own company data — privately.</p>
+                </div>
+
+                <div class="glass-card p-6 rounded-2xl group hover:-translate-y-1 transition-all duration-300">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-11 h-11 rounded-xl bg-red-100 border border-red-200 flex items-center justify-center text-red-600 group-hover:bg-red-600 group-hover:text-white transition-all flex-shrink-0">
+                            <i data-feather="shield" class="w-5 h-5"></i>
+                        </div>
+                        <h3 class="font-bold text-slate-900 text-lg">Network Security &amp; Isolation</h3>
+                    </div>
+                    <p class="text-slate-600 text-sm leading-relaxed">Firewall rules, VLAN isolation, HTTPS certificates, and LDAP/Active Directory authentication so only your authorised employees can access the AI — zero external exposure.</p>
+                </div>
+
+                <div class="glass-card p-6 rounded-2xl group hover:-translate-y-1 transition-all duration-300">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-11 h-11 rounded-xl bg-violet-100 border border-violet-200 flex items-center justify-center text-violet-600 group-hover:bg-violet-600 group-hover:text-white transition-all flex-shrink-0">
+                            <i data-feather="users" class="w-5 h-5"></i>
+                        </div>
+                        <h3 class="font-bold text-slate-900 text-lg">Training &amp; Full Documentation</h3>
+                    </div>
+                    <p class="text-slate-600 text-sm leading-relaxed">IT team onboarding session + all-staff walkthrough. Complete technical documentation — system architecture, update procedures, troubleshooting guides — handed over on Day 7. 30-day support included.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Why Local AI vs Cloud -->
+        <section class="bg-gradient-to-br from-violet-50 to-cyan-50 border border-violet-100 rounded-3xl p-10 mb-20">
+            <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900 mb-2">Why Local AI Instead of Cloud AI?</h2>
+            <p class="text-slate-600 mb-8 max-w-2xl">Cloud AI tools like ChatGPT are powerful — but they come with serious corporate risks that a local LLM completely eliminates.</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div class="flex items-start gap-4 bg-white/70 rounded-2xl p-5 border border-red-100">
+                    <div class="flex-shrink-0 w-8 h-8 rounded-lg bg-red-100 border border-red-200 flex items-center justify-center text-red-500">
+                        <i data-feather="x" class="w-4 h-4"></i>
+                    </div>
+                    <div>
+                        <div class="font-bold text-slate-900 text-sm">Cloud AI: Your Data Goes Abroad</div>
+                        <p class="text-xs text-slate-500 mt-0.5 leading-relaxed">Every prompt sent to ChatGPT or Claude is processed on overseas servers. Confidential contracts, customer data, internal strategies — all potentially stored by a foreign company.</p>
+                    </div>
+                </div>
+                <div class="flex items-start gap-4 bg-white/70 rounded-2xl p-5 border border-green-100">
+                    <div class="flex-shrink-0 w-8 h-8 rounded-lg bg-green-100 border border-green-200 flex items-center justify-center text-green-600">
+                        <i data-feather="check" class="w-4 h-4"></i>
+                    </div>
+                    <div>
+                        <div class="font-bold text-slate-900 text-sm">Local AI: Complete Data Sovereignty</div>
+                        <p class="text-xs text-slate-500 mt-0.5 leading-relaxed">Every query stays on your server. No vendor sees your data. Fully compliant with GDPR, HIPAA, and India's IT Act 2000. Perfect for regulated industries.</p>
+                    </div>
+                </div>
+                <div class="flex items-start gap-4 bg-white/70 rounded-2xl p-5 border border-red-100">
+                    <div class="flex-shrink-0 w-8 h-8 rounded-lg bg-red-100 border border-red-200 flex items-center justify-center text-red-500">
+                        <i data-feather="x" class="w-4 h-4"></i>
+                    </div>
+                    <div>
+                        <div class="font-bold text-slate-900 text-sm">Cloud AI: Expensive Subscriptions</div>
+                        <p class="text-xs text-slate-500 mt-0.5 leading-relaxed">₹2,000–₹8,000 per user per month. For a 20-person team that's ₹40,000–₹1,60,000 every single month — growing as your team grows. Enterprise plans cost lakhs annually.</p>
+                    </div>
+                </div>
+                <div class="flex items-start gap-4 bg-white/70 rounded-2xl p-5 border border-green-100">
+                    <div class="flex-shrink-0 w-8 h-8 rounded-lg bg-green-100 border border-green-200 flex items-center justify-center text-green-600">
+                        <i data-feather="check" class="w-4 h-4"></i>
+                    </div>
+                    <div>
+                        <div class="font-bold text-slate-900 text-sm">Local AI: One-Time Setup Cost</div>
+                        <p class="text-xs text-slate-500 mt-0.5 leading-relaxed">Pay once for installation. Unlimited queries forever — ₹0 per token. ROI is typically achieved within 4–6 months. Your entire team uses it with no per-seat fees.</p>
+                    </div>
+                </div>
+                <div class="flex items-start gap-4 bg-white/70 rounded-2xl p-5 border border-red-100">
+                    <div class="flex-shrink-0 w-8 h-8 rounded-lg bg-red-100 border border-red-200 flex items-center justify-center text-red-500">
+                        <i data-feather="x" class="w-4 h-4"></i>
+                    </div>
+                    <div>
+                        <div class="font-bold text-slate-900 text-sm">Cloud AI: Internet Dependency</div>
+                        <p class="text-xs text-slate-500 mt-0.5 leading-relaxed">No internet = no AI. Vendor outages, API rate limits, and downtime affect your entire team's productivity. You control nothing about availability.</p>
+                    </div>
+                </div>
+                <div class="flex items-start gap-4 bg-white/70 rounded-2xl p-5 border border-green-100">
+                    <div class="flex-shrink-0 w-8 h-8 rounded-lg bg-green-100 border border-green-200 flex items-center justify-center text-green-600">
+                        <i data-feather="check" class="w-4 h-4"></i>
+                    </div>
+                    <div>
+                        <div class="font-bold text-slate-900 text-sm">Local AI: Always On, Always Yours</div>
+                        <p class="text-xs text-slate-500 mt-0.5 leading-relaxed">Works on your internal network 24/7 — even during internet outages. No vendor SLA to depend on. Your server, your uptime, your control.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Use Cases -->
+        <section class="mb-20">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-extrabold text-slate-900 mb-4">What Your Team Can Do With It</h2>
+                <div class="w-16 h-1 bg-gradient-to-r from-violet-600 to-cyan-500 rounded-full mx-auto"></div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                <div class="glass-card p-6 rounded-2xl">
+                    <div class="text-2xl mb-3">📄</div>
+                    <h3 class="font-bold text-slate-900 mb-2 text-sm">Internal Document Q&amp;A</h3>
+                    <p class="text-xs text-slate-500 leading-relaxed">Ask questions about your own SOPs, HR policies, product manuals, and contracts — the AI reads <em>your</em> files and gives instant, sourced answers.</p>
+                </div>
+                <div class="glass-card p-6 rounded-2xl">
+                    <div class="text-2xl mb-3">✍️</div>
+                    <h3 class="font-bold text-slate-900 mb-2 text-sm">Report &amp; Email Drafting</h3>
+                    <p class="text-xs text-slate-500 leading-relaxed">Draft professional emails, business reports, and meeting summaries in seconds — without your content going to OpenAI or any third party.</p>
+                </div>
+                <div class="glass-card p-6 rounded-2xl">
+                    <div class="text-2xl mb-3">💻</div>
+                    <h3 class="font-bold text-slate-900 mb-2 text-sm">Private Code Assistant</h3>
+                    <p class="text-xs text-slate-500 leading-relaxed">Developers get a GitHub Copilot alternative that never sends your proprietary source code to any external server. Powered by CodeLlama or DeepSeek-Coder.</p>
+                </div>
+                <div class="glass-card p-6 rounded-2xl">
+                    <div class="text-2xl mb-3">🧑‍💼</div>
+                    <h3 class="font-bold text-slate-900 mb-2 text-sm">HR &amp; Onboarding Bot</h3>
+                    <p class="text-xs text-slate-500 leading-relaxed">New employees ask the AI about leave policies, IT procedures, and benefits — getting answers from your actual HR documents, not the internet.</p>
+                </div>
+                <div class="glass-card p-6 rounded-2xl">
+                    <div class="text-2xl mb-3">⚖️</div>
+                    <h3 class="font-bold text-slate-900 mb-2 text-sm">Legal &amp; Contract Review</h3>
+                    <p class="text-xs text-slate-500 leading-relaxed">Summarise vendor contracts, flag unusual clauses, and draft NDAs — without sensitive client data ever leaving your premises.</p>
+                </div>
+                <div class="glass-card p-6 rounded-2xl">
+                    <div class="text-2xl mb-3">📊</div>
+                    <h3 class="font-bold text-slate-900 mb-2 text-sm">Data Interpretation &amp; Insights</h3>
+                    <p class="text-xs text-slate-500 leading-relaxed">Feed the AI your reports and ask it to summarise trends, find patterns, or generate management commentary — privately, from your own data.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Industries -->
+        <section class="mb-20">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-extrabold text-slate-900 mb-4">Industries We Serve</h2>
+                <div class="w-16 h-1 bg-gradient-to-r from-violet-600 to-cyan-500 rounded-full mx-auto"></div>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-5">
+                <div class="glass-card p-6 rounded-2xl text-center"><div class="text-3xl mb-2">🏭</div><h3 class="font-bold text-slate-900 text-sm">Manufacturing</h3><p class="text-xs text-slate-500 mt-1">Query SOPs &amp; technical manuals offline</p></div>
+                <div class="glass-card p-6 rounded-2xl text-center"><div class="text-3xl mb-2">🏥</div><h3 class="font-bold text-slate-900 text-sm">Healthcare</h3><p class="text-xs text-slate-500 mt-1">Patient data stays on your server — always</p></div>
+                <div class="glass-card p-6 rounded-2xl text-center"><div class="text-3xl mb-2">⚖️</div><h3 class="font-bold text-slate-900 text-sm">Legal &amp; CA Firms</h3><p class="text-xs text-slate-500 mt-1">Client confidentiality is never at risk</p></div>
+                <div class="glass-card p-6 rounded-2xl text-center"><div class="text-3xl mb-2">🏦</div><h3 class="font-bold text-slate-900 text-sm">Finance &amp; NBFCs</h3><p class="text-xs text-slate-500 mt-1">RBI &amp; SEBI compliant AI deployment</p></div>
+                <div class="glass-card p-6 rounded-2xl text-center"><div class="text-3xl mb-2">💻</div><h3 class="font-bold text-slate-900 text-sm">Software Dev Teams</h3><p class="text-xs text-slate-500 mt-1">Private code assistant, no IP exposure</p></div>
+                <div class="glass-card p-6 rounded-2xl text-center"><div class="text-3xl mb-2">🏗️</div><h3 class="font-bold text-slate-900 text-sm">Construction &amp; Infra</h3><p class="text-xs text-slate-500 mt-1">Project docs, estimates, compliance — AI-assisted</p></div>
+            </div>
+        </section>
+
+        <!-- Pricing & CTA -->
+        <section class="bg-white rounded-2xl p-8 shadow-sm border border-slate-200 mb-12 relative overflow-hidden">
+            <div class="absolute top-0 right-0 p-8 text-violet-50 opacity-50">
+                <i data-feather="cpu" class="w-32 h-32"></i>
+            </div>
+            <div class="relative z-10">
+                <h3 class="text-xl font-bold text-slate-900 mb-2">Transparent, Fixed-Price Quotes</h3>
+                <p class="text-slate-600 mb-6 max-w-2xl text-sm leading-relaxed">Every organisation has unique hardware, team size, and use-case requirements. After a free 30-minute scoping call, we provide a detailed scope of work with a fixed-price quote — no hidden charges, no surprise invoices.</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6 text-sm">
+                    <div class="flex items-center gap-2 text-slate-700"><i data-feather="check-square" class="w-4 h-4 text-violet-600 flex-shrink-0"></i>Hardware recommendation &amp; procurement support</div>
+                    <div class="flex items-center gap-2 text-slate-700"><i data-feather="check-square" class="w-4 h-4 text-violet-600 flex-shrink-0"></i>Full model install, tuning &amp; quantisation</div>
+                    <div class="flex items-center gap-2 text-slate-700"><i data-feather="check-square" class="w-4 h-4 text-violet-600 flex-shrink-0"></i>Private Chat UI + RAG document pipeline</div>
+                    <div class="flex items-center gap-2 text-slate-700"><i data-feather="check-square" class="w-4 h-4 text-violet-600 flex-shrink-0"></i>Security hardening &amp; network isolation</div>
+                    <div class="flex items-center gap-2 text-slate-700"><i data-feather="check-square" class="w-4 h-4 text-violet-600 flex-shrink-0"></i>Staff training &amp; full technical documentation</div>
+                    <div class="flex items-center gap-2 text-slate-700"><i data-feather="check-square" class="w-4 h-4 text-violet-600 flex-shrink-0"></i>30 days post-deployment support</div>
+                </div>
+                <a href="https://wa.me/917796852335?text=Hello%20Dipak,%20I%20want%20to%20inquire%20about%20Corporate%20Local%20AI%20setup%20for%20my%20organization." target="_blank"
+                   class="inline-flex items-center gap-2 bg-violet-600 text-white font-bold px-8 py-3.5 rounded-xl hover:bg-violet-700 transition shadow-lg">
+                    <i data-feather="message-circle" class="w-5 h-5"></i> Chat on WhatsApp
+                </a>
+            </div>
+        </section>
+
+        <!-- Final CTA -->
+        <div class="text-center bg-gradient-to-br from-violet-600 to-cyan-600 rounded-3xl p-12 relative overflow-hidden">
+            <div class="absolute inset-0 bg-black/20 rounded-3xl"></div>
+            <div class="relative z-10">
+                <h2 class="text-3xl md:text-4xl font-extrabold text-white mb-4">Ready to Run AI Privately?</h2>
+                <p class="text-white/80 mb-8 max-w-xl mx-auto">Get a free 30-minute consultation. We'll assess your infrastructure and send you a detailed quote within 24 hours.</p>
+                <div class="flex flex-col sm:flex-row justify-center gap-4">
+                    <a href="https://wa.me/917796852335?text=Hello%20Dipak,%20I%20want%20to%20set%20up%20a%20Corporate%20Local%20AI%20LLM%20for%20my%20company." target="_blank"
+                       class="px-8 py-4 rounded-xl bg-white text-violet-700 font-extrabold hover:bg-slate-100 transition-all duration-300 flex items-center justify-center gap-2 shadow-xl">
+                        <i data-feather="message-circle" class="w-5 h-5"></i> WhatsApp Now
+                    </a>
+                    <a href="corporate-llm-pune.html"
+                       class="px-8 py-4 rounded-xl bg-white/10 border border-white/30 text-white font-semibold hover:bg-white/20 transition-all duration-300 flex items-center justify-center gap-2">
+                        <i data-feather="book-open" class="w-5 h-5"></i> Read Full Article
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="border-t border-slate-200 py-8 bg-white text-center">
+        <p class="text-sm text-slate-500 font-medium">&copy; 2026 Dipak Kadamb. All rights reserved. | <a href="index.html" class="hover:text-violet-600 transition">Back to Home</a></p>
+    </footer>
+
+    <script>feather.replace();</script>
+</body>
+</html>
