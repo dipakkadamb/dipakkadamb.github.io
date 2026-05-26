@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth antialiased bg-slate-50 selection:bg-violet-600 selection:text-white">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>Local LLM Installation Service Pune | Corporate AI Hardware & Software Setup | Dipak Kadamb</title>
+    <meta name="description" content="Professional local LLM installation for enterprises in Pune. We set up secure, air-gapped AI models (Ollama, LLaMA, Mistral) on your hardware — zero data leaves your premises. 100% private AI.">
+    <meta name="keywords" content="local LLM installation Pune, on-premise AI setup Pune, corporate LLM deployment, private AI server installation, Ollama setup Pune, LLaMA installation enterprise, secure AI deployment India, air-gapped LLM corporate, ChatGPT alternative on-premise, self-hosted AI Pune">
+    <meta property="og:title" content="Local LLM Installation Service | Corporate AI Privacy | Dipak Kadamb">
+    <meta property="og:description" content="Install a private, secure, locally-run AI model on your corporate server. No cloud. No data leaks. Full control.">
+    <meta property="og:type" content="website">
+
+    <link rel="icon" href="assets/img/profile.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: { 900: '#0a0f1c', 800: '#111827', 700: '#1e293b' },
+                        accent: { blue: '#2563eb', cyan: '#06b6d4', teal: '#0d9488', amber: '#f59e0b', violet: '#7c3aed' }
+                    },
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .gradient-hero { background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 40%, #0f172a 100%); }
+        .glow-violet { box-shadow: 0 0 40px rgba(124, 58, 237, 0.25); }
+        .glow-cyan { box-shadow: 0 0 30px rgba(6, 182, 212, 0.2); }
+        .glass-card {
+            background: rgba(255,255,255,0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(15,23,42,0.08);
+        }
+        .glass-dark {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(124,58,237,0.2);
+        }
+        .terminal-block {
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .shimmer-text {
+            background: linear-gradient(90deg, #7c3aed, #06b6d4, #7c3aed);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shimmer 3s linear infinite;
+        }
+        @keyframes shimmer { to { background-position: 200% center; } }
+        .floating { animation: float 6s ease-in-out infinite; }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-12px); }
+        }
+        .step-line::before {
+            content: '';
+            position: absolute;
+            left: 22px;
+            top: 48px;
+            bottom: -16px;
+            width: 2px;
+            background: linear-gradient(to bottom, #7c3aed, transparent);
+        }
+        .badge-ai {
+            background: linear-gradient(135deg, rgba(124,58,237,0.15), rgba(6,182,212,0.1));
+            border: 1px solid rgba(124,58,237,0.3);
+        }
+    </style>
+</head>
+
+<body class="text-slate-700 bg-slate-50">
+
+    <!-- Navbar -->
+    <nav class="fixed top-0 w-full z-40 py-4 px-4 sm:px-6 lg:px-12 backdrop-blur-md border-b border-slate-200 bg-white/90 shadow-sm">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <a href="index.html" class="flex items-center gap-2 text-slate-800 font-bold hover:text-violet-600 transition-colors">
+                <i data-feather="arrow-left" class="w-5 h-5"></i> Back to Home
+            </a>
+            <div class="font-bold text-slate-900 hidden sm:block font-mono text-sm">Dipak Kadamb | AI &amp; IT Consulting</div>
+            <a href="https://wa.me/917796852335?text=Hello%20Dipak,%20I%20want%20to%20inquire%20about%20Local%20LLM%20Installation%20for%20my%20organization." target="_blank"
+               class="px-5 py-2 rounded-lg bg-violet-600 text-white font-semibold text-sm hover:bg-violet-700 transition flex items-center gap-2">
+                <i data-feather="message-circle" class="w-4 h-4"></i> Get Quote
+            </a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="gradient-hero text-white pt-32 pb-20 px-4 sm:px-6 lg:px-12 relative overflow-hidden">
+        <!-- Decorative Orbs -->
+        <div class="absolute top-20 left-10 w-72 h-72 bg-violet-600/20 rounded-full blur-[100px] pointer-events-none"></div>
+        <div class="absolute bottom-10 right-10 w-96 h-96 bg-cyan-500/15 rounded-full blur-[120px] pointer-events-none"></div>
+
+        <div class="max-w-5xl mx-auto text-center relative z-10">
+            <!-- Badge -->
+            <div class="inline-flex items-center gap-2 badge-ai text-violet-300 text-xs font-mono uppercase tracking-widest px-4 py-2 rounded-full mb-8">
+                <span class="w-2 h-2 bg-violet-400 rounded-full animate-pulse"></span>
+                Corporate AI Infrastructure Service
+            </div>
+
+            <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-tight mb-6">
+                <span class="shimmer-text">Local LLM</span> Installation<br>
+                <span class="text-slate-300 text-3xl sm:text-4xl md:text-5xl font-bold">for Your Corporate Infrastructure</span>
+            </h1>
+
+            <p class="text-slate-300 text-lg sm:text-xl max-w-3xl mx-auto mb-10 leading-relaxed">
+                We install enterprise-grade <strong class="text-white">AI language models</strong> directly on your hardware — completely <strong class="text-violet-300">air-gapped</strong>, 100% private. Your data never leaves your premises. Your AI. Your rules.
+            </p>
+
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="https://wa.me/917796852335?text=Hello%20Dipak,%20I%20want%20to%20inquire%20about%20Local%20LLM%20Installation%20for%20my%20organization." target="_blank"
+                   class="px-8 py-4 rounded-xl bg-violet-600 hover:bg-violet-500 font-bold text-white transition-all duration-300 flex items-center justify-center gap-2 shadow-lg glow-violet">
+                    <i data-feather="cpu" class="w-5 h-5"></i> Book a Free Consultation
+                </a>
+                <a href="blog-local-llm-security.html"
+                   class="px-8 py-4 rounded-xl bg-white/10 border border-white/20 hover:bg-white/20 font-semibold text-white transition-all duration-300 flex items-center justify-center gap-2">
+                    <i data-feather="file-text" class="w-5 h-5"></i> Read the Article
+                </a>
+            </div>
+
+            <!-- Quick Stats -->
+            <div class="mt-16 grid grid-cols-3 gap-6 max-w-2xl mx-auto border-t border-white/10 pt-12">
+                <div class="text-center">
+                    <div class="text-3xl font-extrabold text-white mb-1">0%</div>
+                    <div class="text-xs text-slate-400 font-mono uppercase tracking-wider">Data Sent to Cloud</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-extrabold text-white mb-1">100%</div>
+                    <div class="text-xs text-slate-400 font-mono uppercase tracking-wider">On-Premise Control</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-extrabold text-white mb-1">24/7</div>
+                    <div class="text-xs text-slate-400 font-mono uppercase tracking-wider">Offline Availability</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
+
+        <!-- What We Offer -->
+        <section class="py-20">
+            <div class="text-center mb-14">
+                <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-4">What This Service Includes</h2>
+                <div class="w-16 h-1 bg-gradient-to-r from-violet-600 to-cyan-500 rounded-full mx-auto"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+                <div class="glass-card p-6 rounded-2xl hover:-translate-y-1 transition-all duration-300 group">
+                    <div class="w-12 h-12 rounded-xl bg-violet-100 border border-violet-200 flex items-center justify-center mb-4 text-violet-600 group-hover:bg-violet-600 group-hover:text-white transition-all">
+                        <i data-feather="server" class="w-5 h-5"></i>
+                    </div>
+                    <h3 class="font-bold text-slate-900 text-lg mb-2">Hardware Assessment & Sizing</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">We evaluate your existing servers or recommend new hardware (GPU workstations, NVMe SSDs, RAM upgrades) based on your LLM model size requirements.</p>
+                </div>
+
+                <div class="glass-card p-6 rounded-2xl hover:-translate-y-1 transition-all duration-300 group">
+                    <div class="w-12 h-12 rounded-xl bg-cyan-100 border border-cyan-200 flex items-center justify-center mb-4 text-cyan-600 group-hover:bg-cyan-600 group-hover:text-white transition-all">
+                        <i data-feather="download-cloud" class="w-5 h-5"></i>
+                    </div>
+                    <h3 class="font-bold text-slate-900 text-lg mb-2">Model Installation & Configuration</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">Full setup of Ollama, LM Studio, or custom Docker containers with models like LLaMA 3, Mistral, Phi-3, Gemma, or DeepSeek optimized for your use case.</p>
+                </div>
+
+                <div class="glass-card p-6 rounded-2xl hover:-translate-y-1 transition-all duration-300 group">
+                    <div class="w-12 h-12 rounded-xl bg-teal-100 border border-teal-200 flex items-center justify-center mb-4 text-teal-600 group-hover:bg-teal-600 group-hover:text-white transition-all">
+                        <i data-feather="shield" class="w-5 h-5"></i>
+                    </div>
+                    <h3 class="font-bold text-slate-900 text-lg mb-2">Network Isolation & Security</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">Configure firewall rules, VLAN isolation, and access-control policies so only authorized users on your internal network can query the AI model.</p>
+                </div>
+
+                <div class="glass-card p-6 rounded-2xl hover:-translate-y-1 transition-all duration-300 group">
+                    <div class="w-12 h-12 rounded-xl bg-amber-100 border border-amber-200 flex items-center justify-center mb-4 text-amber-600 group-hover:bg-amber-600 group-hover:text-white transition-all">
+                        <i data-feather="layout" class="w-5 h-5"></i>
+                    </div>
+                    <h3 class="font-bold text-slate-900 text-lg mb-2">Internal Chat UI Deployment</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">Deploy a beautiful, private ChatGPT-like interface (Open WebUI, AnythingLLM) on your intranet for all employees to use securely.</p>
+                </div>
+
+                <div class="glass-card p-6 rounded-2xl hover:-translate-y-1 transition-all duration-300 group">
+                    <div class="w-12 h-12 rounded-xl bg-blue-100 border border-blue-200 flex items-center justify-center mb-4 text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-all">
+                        <i data-feather="database" class="w-5 h-5"></i>
+                    </div>
+                    <h3 class="font-bold text-slate-900 text-lg mb-2">RAG & Document Integration</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">Connect the LLM to your internal documents, PDFs, manuals, and knowledge base using Retrieval-Augmented Generation (RAG) — so the AI understands YOUR business.</p>
+                </div>
+
+                <div class="glass-card p-6 rounded-2xl hover:-translate-y-1 transition-all duration-300 group">
+                    <div class="w-12 h-12 rounded-xl bg-violet-100 border border-violet-200 flex items-center justify-center mb-4 text-violet-600 group-hover:bg-violet-600 group-hover:text-white transition-all">
+                        <i data-feather="users" class="w-5 h-5"></i>
+                    </div>
+                    <h3 class="font-bold text-slate-900 text-lg mb-2">Staff Training & Handover</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">Comprehensive onboarding session for your IT team. We document everything and ensure your staff can manage, update, and scale the system independently.</p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Supported Models -->
+        <section class="bg-slate-900 text-white rounded-3xl p-10 mb-20 relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-violet-600/20 blur-[80px] rounded-full pointer-events-none"></div>
+            <h2 class="text-2xl md:text-3xl font-extrabold mb-2 relative z-10">Supported AI Models</h2>
+            <p class="text-slate-400 mb-8 relative z-10">We install and configure any open-source LLM that fits your hardware and use case.</p>
+
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 relative z-10">
+                <div class="terminal-block px-4 py-3 text-center">
+                    <div class="text-violet-400 font-mono font-bold text-sm">LLaMA 3.x</div>
+                    <div class="text-slate-500 text-xs mt-1">Meta AI</div>
+                </div>
+                <div class="terminal-block px-4 py-3 text-center">
+                    <div class="text-cyan-400 font-mono font-bold text-sm">Mistral 7B</div>
+                    <div class="text-slate-500 text-xs mt-1">Mistral AI</div>
+                </div>
+                <div class="terminal-block px-4 py-3 text-center">
+                    <div class="text-teal-400 font-mono font-bold text-sm">Gemma 2</div>
+                    <div class="text-slate-500 text-xs mt-1">Google</div>
+                </div>
+                <div class="terminal-block px-4 py-3 text-center">
+                    <div class="text-amber-400 font-mono font-bold text-sm">Phi-3 Mini</div>
+                    <div class="text-slate-500 text-xs mt-1">Microsoft</div>
+                </div>
+                <div class="terminal-block px-4 py-3 text-center">
+                    <div class="text-blue-400 font-mono font-bold text-sm">DeepSeek</div>
+                    <div class="text-slate-500 text-xs mt-1">DeepSeek AI</div>
+                </div>
+                <div class="terminal-block px-4 py-3 text-center">
+                    <div class="text-pink-400 font-mono font-bold text-sm">Qwen 2.5</div>
+                    <div class="text-slate-500 text-xs mt-1">Alibaba</div>
+                </div>
+                <div class="terminal-block px-4 py-3 text-center">
+                    <div class="text-green-400 font-mono font-bold text-sm">CodeLlama</div>
+                    <div class="text-slate-500 text-xs mt-1">Meta AI</div>
+                </div>
+                <div class="terminal-block px-4 py-3 text-center">
+                    <div class="text-orange-400 font-mono font-bold text-sm">Mixtral 8x7B</div>
+                    <div class="text-slate-500 text-xs mt-1">Mistral AI</div>
+                </div>
+            </div>
+
+            <div class="mt-8 border-t border-slate-700 pt-6 relative z-10">
+                <p class="text-slate-400 text-sm font-mono">
+                    <span class="text-violet-400">$</span> ollama run llama3 <span class="text-slate-500"># fully offline, your server, your control</span>
+                </p>
+            </div>
+        </section>
+
+        <!-- Deployment Process -->
+        <section class="mb-20">
+            <div class="text-center mb-14">
+                <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-4">Our Installation Process</h2>
+                <p class="text-slate-600 max-w-2xl mx-auto">A structured, zero-disruption deployment that gets your team using private AI in days — not months.</p>
+                <div class="w-16 h-1 bg-gradient-to-r from-violet-600 to-cyan-500 rounded-full mx-auto mt-4"></div>
+            </div>
+
+            <div class="space-y-6">
+
+                <div class="flex gap-6 items-start relative step-line">
+                    <div class="flex-shrink-0 w-11 h-11 rounded-full bg-violet-600 flex items-center justify-center text-white font-extrabold text-sm shadow-lg glow-violet">1</div>
+                    <div class="glass-card p-6 rounded-2xl flex-1">
+                        <h3 class="font-bold text-slate-900 text-lg mb-1">Discovery & Requirements Assessment</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed">We start with a 45-minute technical call to understand your team size, use cases (document Q&A, code assistance, report generation), compliance requirements, and existing infrastructure.</p>
+                        <div class="mt-3 inline-flex items-center gap-1 text-xs font-mono text-violet-600 bg-violet-50 border border-violet-200 px-3 py-1 rounded-full">
+                            <i data-feather="clock" class="w-3 h-3"></i> Day 1
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex gap-6 items-start relative step-line">
+                    <div class="flex-shrink-0 w-11 h-11 rounded-full bg-cyan-600 flex items-center justify-center text-white font-extrabold text-sm shadow-lg glow-cyan">2</div>
+                    <div class="glass-card p-6 rounded-2xl flex-1">
+                        <h3 class="font-bold text-slate-900 text-lg mb-1">Hardware Procurement & OS Preparation</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed">We recommend hardware specs and assist with procurement if needed. We then install or configure Ubuntu Server / Windows Server with CUDA drivers, Docker, and all dependencies.</p>
+                        <div class="mt-3 inline-flex items-center gap-1 text-xs font-mono text-cyan-600 bg-cyan-50 border border-cyan-200 px-3 py-1 rounded-full">
+                            <i data-feather="clock" class="w-3 h-3"></i> Day 2-3
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex gap-6 items-start relative step-line">
+                    <div class="flex-shrink-0 w-11 h-11 rounded-full bg-teal-600 flex items-center justify-center text-white font-extrabold text-sm shadow-lg">3</div>
+                    <div class="glass-card p-6 rounded-2xl flex-1">
+                        <h3 class="font-bold text-slate-900 text-lg mb-1">LLM Model Download & Optimization</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed">We pull the selected model, apply quantization (GGUF/Q4/Q8) to balance speed and accuracy, and run performance benchmarks on your specific hardware configuration.</p>
+                        <div class="mt-3 inline-flex items-center gap-1 text-xs font-mono text-teal-600 bg-teal-50 border border-teal-200 px-3 py-1 rounded-full">
+                            <i data-feather="clock" class="w-3 h-3"></i> Day 3-4
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex gap-6 items-start relative step-line">
+                    <div class="flex-shrink-0 w-11 h-11 rounded-full bg-amber-500 flex items-center justify-center text-white font-extrabold text-sm shadow-lg">4</div>
+                    <div class="glass-card p-6 rounded-2xl flex-1">
+                        <h3 class="font-bold text-slate-900 text-lg mb-1">UI Deployment & RAG Setup</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed">We deploy Open WebUI or AnythingLLM on your intranet, connect it to your internal document library, and configure user authentication (LDAP/Active Directory integration available).</p>
+                        <div class="mt-3 inline-flex items-center gap-1 text-xs font-mono text-amber-600 bg-amber-50 border border-amber-200 px-3 py-1 rounded-full">
+                            <i data-feather="clock" class="w-3 h-3"></i> Day 4-5
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex gap-6 items-start">
+                    <div class="flex-shrink-0 w-11 h-11 rounded-full bg-slate-900 flex items-center justify-center text-white font-extrabold text-sm shadow-lg">5</div>
+                    <div class="glass-card p-6 rounded-2xl flex-1">
+                        <h3 class="font-bold text-slate-900 text-lg mb-1">Training, Documentation & Go-Live</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed">We train your IT team, hand over full documentation (system architecture, update procedures, troubleshooting guides), and provide 30-day post-launch support.</p>
+                        <div class="mt-3 inline-flex items-center gap-1 text-xs font-mono text-slate-600 bg-slate-100 border border-slate-200 px-3 py-1 rounded-full">
+                            <i data-feather="clock" class="w-3 h-3"></i> Day 5-7
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Why Local LLM -->
+        <section class="bg-gradient-to-br from-violet-50 to-cyan-50 border border-violet-100 rounded-3xl p-10 mb-20">
+            <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900 mb-2">Why Local Instead of Cloud AI?</h2>
+            <p class="text-slate-600 mb-8">Cloud AI tools like ChatGPT are powerful — but they come with real corporate risks that on-premise LLMs completely eliminate.</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="flex items-start gap-4">
+                    <div class="flex-shrink-0 w-8 h-8 rounded-lg bg-red-100 border border-red-200 flex items-center justify-center text-red-500">
+                        <i data-feather="x" class="w-4 h-4"></i>
+                    </div>
+                    <div>
+                        <div class="font-bold text-slate-900 text-sm">Cloud AI: Data Privacy Risk</div>
+                        <p class="text-xs text-slate-500 mt-0.5">Every prompt sent to ChatGPT/Claude can potentially be used for model training or exposed in breaches. Your confidential business data is at risk.</p>
+                    </div>
+                </div>
+                <div class="flex items-start gap-4">
+                    <div class="flex-shrink-0 w-8 h-8 rounded-lg bg-green-100 border border-green-200 flex items-center justify-center text-green-600">
+                        <i data-feather="check" class="w-4 h-4"></i>
+                    </div>
+                    <div>
+                        <div class="font-bold text-slate-900 text-sm">Local LLM: Complete Data Sovereignty</div>
+                        <p class="text-xs text-slate-500 mt-0.5">Every query stays on your server. No vendor sees your data. Fully compliant with GDPR, HIPAA, and IT Act 2000.</p>
+                    </div>
+                </div>
+                <div class="flex items-start gap-4">
+                    <div class="flex-shrink-0 w-8 h-8 rounded-lg bg-red-100 border border-red-200 flex items-center justify-center text-red-500">
+                        <i data-feather="x" class="w-4 h-4"></i>
+                    </div>
+                    <div>
+                        <div class="font-bold text-slate-900 text-sm">Cloud AI: Recurring Subscription Costs</div>
+                        <p class="text-xs text-slate-500 mt-0.5">₹2,000–₹8,000 per user/month adds up fast. Enterprise plans cost lakhs annually and scale with usage.</p>
+                    </div>
+                </div>
+                <div class="flex items-start gap-4">
+                    <div class="flex-shrink-0 w-8 h-8 rounded-lg bg-green-100 border border-green-200 flex items-center justify-center text-green-600">
+                        <i data-feather="check" class="w-4 h-4"></i>
+                    </div>
+                    <div>
+                        <div class="font-bold text-slate-900 text-sm">Local LLM: One-Time Setup Cost</div>
+                        <p class="text-xs text-slate-500 mt-0.5">Pay once for installation. Run unlimited queries forever with zero per-token charges. ROI typically achieved within 4–6 months.</p>
+                    </div>
+                </div>
+                <div class="flex items-start gap-4">
+                    <div class="flex-shrink-0 w-8 h-8 rounded-lg bg-red-100 border border-red-200 flex items-center justify-center text-red-500">
+                        <i data-feather="x" class="w-4 h-4"></i>
+                    </div>
+                    <div>
+                        <div class="font-bold text-slate-900 text-sm">Cloud AI: Internet Dependency</div>
+                        <p class="text-xs text-slate-500 mt-0.5">No internet = no AI. Downtime at the vendor affects your entire team's productivity. You control nothing.</p>
+                    </div>
+                </div>
+                <div class="flex items-start gap-4">
+                    <div class="flex-shrink-0 w-8 h-8 rounded-lg bg-green-100 border border-green-200 flex items-center justify-center text-green-600">
+                        <i data-feather="check" class="w-4 h-4"></i>
+                    </div>
+                    <div>
+                        <div class="font-bold text-slate-900 text-sm">Local LLM: Always-On, Offline Access</div>
+                        <p class="text-xs text-slate-500 mt-0.5">Works on your internal network 24/7. No internet required. No downtime because of vendor outages.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pricing Signal -->
+        <section class="bg-white rounded-2xl p-8 shadow-sm border border-slate-200 mb-20 relative overflow-hidden">
+            <div class="absolute top-0 right-0 p-8 text-violet-50 opacity-40">
+                <i data-feather="cpu" class="w-32 h-32"></i>
+            </div>
+            <div class="relative z-10">
+                <h3 class="text-xl font-bold text-slate-900 mb-3">Project-Based Pricing</h3>
+                <p class="text-slate-600 mb-6 max-w-2xl">Every organization has unique hardware, team size, and use-case requirements. We provide a detailed statement of work with transparent, fixed-price quotes covering:</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
+                    <div class="flex items-center gap-2 text-sm text-slate-700">
+                        <i data-feather="check-square" class="w-4 h-4 text-violet-600 flex-shrink-0"></i>
+                        Hardware recommendation & procurement assistance
+                    </div>
+                    <div class="flex items-center gap-2 text-sm text-slate-700">
+                        <i data-feather="check-square" class="w-4 h-4 text-violet-600 flex-shrink-0"></i>
+                        Model installation, tuning & quantization
+                    </div>
+                    <div class="flex items-center gap-2 text-sm text-slate-700">
+                        <i data-feather="check-square" class="w-4 h-4 text-violet-600 flex-shrink-0"></i>
+                        UI deployment & RAG document integration
+                    </div>
+                    <div class="flex items-center gap-2 text-sm text-slate-700">
+                        <i data-feather="check-square" class="w-4 h-4 text-violet-600 flex-shrink-0"></i>
+                        Security hardening & network isolation
+                    </div>
+                    <div class="flex items-center gap-2 text-sm text-slate-700">
+                        <i data-feather="check-square" class="w-4 h-4 text-violet-600 flex-shrink-0"></i>
+                        Staff training & full documentation
+                    </div>
+                    <div class="flex items-center gap-2 text-sm text-slate-700">
+                        <i data-feather="check-square" class="w-4 h-4 text-violet-600 flex-shrink-0"></i>
+                        30-day post-deployment support
+                    </div>
+                </div>
+                <a href="https://wa.me/917796852335?text=Hello%20Dipak,%20I%20want%20a%20quote%20for%20Local%20LLM%20Installation." target="_blank"
+                   class="inline-flex items-center gap-2 bg-violet-600 text-white font-bold px-8 py-3.5 rounded-xl hover:bg-violet-700 transition shadow-lg">
+                    <i data-feather="message-circle" class="w-5 h-5"></i> Get a Custom Quote on WhatsApp
+                </a>
+            </div>
+        </section>
+
+        <!-- Who is this for -->
+        <section class="mb-20">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl font-extrabold text-slate-900 mb-2">Who Is This Service For?</h2>
+                <div class="w-16 h-1 bg-gradient-to-r from-violet-600 to-cyan-500 rounded-full mx-auto"></div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+                <div class="glass-card p-6 rounded-2xl text-center">
+                    <div class="text-3xl mb-3">🏥</div>
+                    <h3 class="font-bold text-slate-900 mb-1">Healthcare Organizations</h3>
+                    <p class="text-xs text-slate-500 leading-relaxed">Patient records, diagnostic reports, and clinical summaries processed with absolute data privacy compliance.</p>
+                </div>
+                <div class="glass-card p-6 rounded-2xl text-center">
+                    <div class="text-3xl mb-3">⚖️</div>
+                    <h3 class="font-bold text-slate-900 mb-1">Legal & CA Firms</h3>
+                    <p class="text-xs text-slate-500 leading-relaxed">Contract analysis, legal research, and document summarization without confidential client data ever leaving your office.</p>
+                </div>
+                <div class="glass-card p-6 rounded-2xl text-center">
+                    <div class="text-3xl mb-3">🏭</div>
+                    <h3 class="font-bold text-slate-900 mb-1">Manufacturing & Engineering</h3>
+                    <p class="text-xs text-slate-500 leading-relaxed">Query SOPs, technical manuals, and engineering specs using AI. Perfect for shop floor and R&D teams.</p>
+                </div>
+                <div class="glass-card p-6 rounded-2xl text-center">
+                    <div class="text-3xl mb-3">🏦</div>
+                    <h3 class="font-bold text-slate-900 mb-1">Finance & Banking (NBFCs)</h3>
+                    <p class="text-xs text-slate-500 leading-relaxed">Regulatory reporting assistance, loan document processing, and customer query automation — fully RBI-compliant.</p>
+                </div>
+                <div class="glass-card p-6 rounded-2xl text-center">
+                    <div class="text-3xl mb-3">💻</div>
+                    <h3 class="font-bold text-slate-900 mb-1">Software Development Teams</h3>
+                    <p class="text-xs text-slate-500 leading-relaxed">Private code completion and review with CodeLlama or Qwen-Coder — no proprietary code sent to OpenAI.</p>
+                </div>
+                <div class="glass-card p-6 rounded-2xl text-center">
+                    <div class="text-3xl mb-3">🎓</div>
+                    <h3 class="font-bold text-slate-900 mb-1">Educational Institutions</h3>
+                    <p class="text-xs text-slate-500 leading-relaxed">AI tutoring, assignment assistance, and administrative automation on a campus-wide private network.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <div class="text-center bg-gradient-to-br from-violet-600 to-cyan-600 rounded-3xl p-12 relative overflow-hidden">
+            <div class="absolute inset-0 bg-black/20 rounded-3xl"></div>
+            <div class="relative z-10">
+                <h2 class="text-3xl md:text-4xl font-extrabold text-white mb-4">Ready to Deploy Your Private AI?</h2>
+                <p class="text-white/80 mb-8 max-w-xl mx-auto">Get a free 30-minute consultation to assess your requirements and receive a detailed quote within 24 hours.</p>
+                <div class="flex flex-col sm:flex-row justify-center gap-4">
+                    <a href="https://wa.me/917796852335?text=Hello%20Dipak,%20I%20want%20to%20install%20a%20Local%20LLM%20for%20my%20organization.%20Please%20share%20details." target="_blank"
+                       class="px-8 py-4 rounded-xl bg-white text-violet-700 font-extrabold hover:bg-slate-100 transition-all duration-300 flex items-center justify-center gap-2 shadow-xl">
+                        <i data-feather="message-circle" class="w-5 h-5"></i> WhatsApp Now
+                    </a>
+                    <a href="blog-local-llm-security.html"
+                       class="px-8 py-4 rounded-xl bg-white/10 border border-white/30 text-white font-semibold hover:bg-white/20 transition-all duration-300 flex items-center justify-center gap-2">
+                        <i data-feather="book-open" class="w-5 h-5"></i> Read Our Article First
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="border-t border-slate-200 py-8 bg-white text-center">
+        <p class="text-sm text-slate-500 font-medium">&copy; 2026 Dipak Kadamb. All rights reserved. | <a href="index.html" class="hover:text-violet-600 transition">Back to Home</a></p>
+    </footer>
+
+    <script>
+        feather.replace();
+    </script>
+</body>
+</html>
