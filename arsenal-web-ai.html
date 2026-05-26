@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth antialiased bg-slate-50 selection:bg-blue-600 selection:text-white">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>AI-Accelerated Web Development | HTML5, React, ChatGPT API | Dipak Kadamb Pune</title>
+    <meta name="description" content="Full-stack web development powered by AI tools — HTML5, CSS3, JavaScript, React.js, Tailwind CSS, ChatGPT API &amp; GitHub Copilot. Building modern, fast, intelligent web apps in Pune.">
+    <meta name="keywords" content="web developer Pune, AI web development India, React developer Pune, ChatGPT API integration, GitHub Copilot web dev, HTML5 CSS3 JavaScript Pune, Tailwind CSS developer, AI-powered websites Pune">
+    <meta property="og:title" content="AI-Accelerated Web Development | HTML5, React, ChatGPT API | Dipak Kadamb Pune">
+    <meta property="og:description" content="Full-stack web development powered by AI tools — HTML5, CSS3, JavaScript, React.js, Tailwind CSS, ChatGPT API &amp; GitHub Copilot. Building modern, fast, intelligent web apps in Pune.">
+    <meta property="og:type" content="website">
+
+    <link rel="icon" href="assets/img/profile.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: { 900: '#0a0f1c', 800: '#111827', 700: '#1e293b' },
+                        accent: { blue: '#2563eb', cyan: '#06b6d4', teal: '#0d9488', amber: '#f59e0b', violet: '#7c3aed' }
+                    },
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+
+        /* Hero gradient — deep navy with a blue/cyan tilt */
+        .gradient-hero {
+            background: linear-gradient(135deg, #0f172a 0%, #0c1a2e 40%, #0f172a 100%);
+        }
+
+        /* Blue accent glows */
+        .glow-blue  { box-shadow: 0 0 40px rgba(37, 99, 235, 0.30); }
+        .glow-cyan  { box-shadow: 0 0 30px rgba(6, 182, 212, 0.22); }
+
+        /* Glass cards */
+        .glass-card {
+            background: rgba(255,255,255,0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(15,23,42,0.08);
+        }
+        .glass-dark {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(37,99,235,0.25);
+        }
+
+        /* Terminal block */
+        .terminal-block {
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Shimmer — blue → cyan */
+        .shimmer-text {
+            background: linear-gradient(90deg, #2563eb, #06b6d4, #2563eb);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shimmer 3s linear infinite;
+        }
+        @keyframes shimmer { to { background-position: 200% center; } }
+
+        /* Float animation for decorative elements */
+        .floating { animation: float 6s ease-in-out infinite; }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50%       { transform: translateY(-12px); }
+        }
+
+        /* Numbered step connector line */
+        .step-line::before {
+            content: '';
+            position: absolute;
+            left: 22px;
+            top: 48px;
+            bottom: -16px;
+            width: 2px;
+            background: linear-gradient(to bottom, #2563eb, transparent);
+        }
+
+        /* Hero badge */
+        .badge-ai {
+            background: linear-gradient(135deg, rgba(37,99,235,0.15), rgba(6,182,212,0.10));
+            border: 1px solid rgba(37,99,235,0.30);
+        }
+
+        /* Tech stack icon bubbles — hover colour swap */
+        .tech-icon-wrap { transition: background 0.25s, border-color 0.25s, color 0.25s; }
+
+        /* Comparison table rows */
+        .compare-row:nth-child(even) { background: rgba(241,245,249,0.6); }
+
+        /* Pulse dot */
+        .pulse-blue { background: #2563eb; animation: pulse 2s cubic-bezier(0.4,0,0.6,1) infinite; }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50%       { opacity: 0.4; }
+        }
+
+        /* Tag chips inside tech cards */
+        .tag-chip {
+            display: inline-block;
+            font-size: 0.68rem;
+            font-family: 'JetBrains Mono', monospace;
+            padding: 2px 10px;
+            border-radius: 999px;
+            background: rgba(37,99,235,0.08);
+            border: 1px solid rgba(37,99,235,0.18);
+            color: #2563eb;
+            margin: 2px;
+        }
+    </style>
+</head>
+
+<body class="text-slate-700 bg-slate-50">
+
+    <!-- ═══════════════════════════════════════════════════════════
+         NAVBAR
+    ═══════════════════════════════════════════════════════════ -->
+    <nav class="fixed top-0 w-full z-40 py-4 px-4 sm:px-6 lg:px-12 backdrop-blur-md border-b border-slate-200 bg-white/90 shadow-sm">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <a href="index.html" class="flex items-center gap-2 text-slate-800 font-bold hover:text-blue-600 transition-colors">
+                <i data-feather="arrow-left" class="w-5 h-5"></i> Back to Home
+            </a>
+            <div class="font-bold text-slate-900 hidden sm:block font-mono text-sm">Dipak Kadamb | Web &amp; AI Dev</div>
+            <a href="https://wa.me/917796852335?text=Hello%20Dipak,%20I%20want%20to%20inquire%20about%20your%20web%20development%20services." target="_blank"
+               class="px-5 py-2 rounded-lg bg-blue-600 text-white font-semibold text-sm hover:bg-blue-700 transition flex items-center gap-2">
+                <i data-feather="message-circle" class="w-4 h-4"></i> Get Quote
+            </a>
+        </div>
+    </nav>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         HERO SECTION
+    ═══════════════════════════════════════════════════════════ -->
+    <section class="gradient-hero text-white pt-32 pb-24 px-4 sm:px-6 lg:px-12 relative overflow-hidden">
+        <!-- Decorative orbs -->
+        <div class="absolute top-16 left-8 w-80 h-80 bg-blue-600/20 rounded-full blur-[110px] pointer-events-none"></div>
+        <div class="absolute bottom-12 right-8 w-96 h-96 bg-cyan-500/15 rounded-full blur-[120px] pointer-events-none"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-900/10 rounded-full blur-[150px] pointer-events-none"></div>
+
+        <div class="max-w-5xl mx-auto text-center relative z-10">
+
+            <!-- Badge -->
+            <div class="inline-flex items-center gap-2 badge-ai text-blue-300 text-xs font-mono uppercase tracking-widest px-5 py-2 rounded-full mb-8">
+                <span class="w-2 h-2 pulse-blue rounded-full"></span>
+                Technical Arsenal · Web &amp; AI Stack
+            </div>
+
+            <!-- H1 -->
+            <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-tight mb-6">
+                Web Development<br>
+                <span class="shimmer-text">Powered by AI</span>
+            </h1>
+
+            <!-- Subheading -->
+            <p class="text-slate-300 text-base sm:text-lg font-mono tracking-wide max-w-3xl mx-auto mb-4">
+                HTML5 · JavaScript · React · ChatGPT API · GitHub Copilot · Tailwind CSS
+            </p>
+            <p class="text-slate-400 text-base sm:text-lg max-w-2xl mx-auto mb-10 leading-relaxed">
+                I build <strong class="text-white">modern, fast, intelligent web applications</strong> for businesses in Pune and across India — combining battle-tested front-end skills with cutting-edge AI tooling for a 2× productivity edge.
+            </p>
+
+            <!-- CTA buttons -->
+            <div class="flex flex-col sm:flex-row justify-center gap-4 mb-16">
+                <a href="https://wa.me/917796852335?text=Hello%20Dipak,%20I%20want%20to%20discuss%20a%20web%20project." target="_blank"
+                   class="px-8 py-4 rounded-xl bg-blue-600 hover:bg-blue-500 font-bold text-white transition-all duration-300 flex items-center justify-center gap-2 shadow-lg glow-blue">
+                    <i data-feather="message-circle" class="w-5 h-5"></i> WhatsApp: +91 77968 52335
+                </a>
+                <a href="index.html#work"
+                   class="px-8 py-4 rounded-xl bg-white/10 border border-white/20 hover:bg-white/20 font-semibold text-white transition-all duration-300 flex items-center justify-center gap-2">
+                    <i data-feather="briefcase" class="w-5 h-5"></i> View Portfolio →
+                </a>
+            </div>
+
+            <!-- Stat cards -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-3xl mx-auto border-t border-white/10 pt-10">
+                <div class="text-center glass-dark rounded-2xl p-5">
+                    <div class="text-3xl font-extrabold text-white mb-1">6+</div>
+                    <div class="text-xs text-slate-400 font-mono uppercase tracking-wider">Years Experience</div>
+                </div>
+                <div class="text-center glass-dark rounded-2xl p-5">
+                    <div class="text-3xl font-extrabold shimmer-text mb-1">40+</div>
+                    <div class="text-xs text-slate-400 font-mono uppercase tracking-wider">React Apps Built</div>
+                </div>
+                <div class="text-center glass-dark rounded-2xl p-5">
+                    <div class="text-3xl font-extrabold text-cyan-400 mb-1">10+</div>
+                    <div class="text-xs text-slate-400 font-mono uppercase tracking-wider">AI APIs Integrated</div>
+                </div>
+                <div class="text-center glass-dark rounded-2xl p-5">
+                    <div class="text-3xl font-extrabold text-white mb-1">95+</div>
+                    <div class="text-xs text-slate-400 font-mono uppercase tracking-wider">Avg Lighthouse Score</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         MAIN CONTENT
+    ═══════════════════════════════════════════════════════════ -->
+    <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
+
+        <!-- ─────────────────────────────────────────────────────
+             SECTION 1: TECHNOLOGY STACK (6 glass cards)
+        ───────────────────────────────────────────────────── -->
+        <section class="py-20">
+            <div class="text-center mb-14">
+                <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-4">My Web &amp; AI Technology Stack</h2>
+                <p class="text-slate-600 max-w-2xl mx-auto">Every technology I use is chosen for performance, maintainability, and real-world business impact. Here's what powers the products I build.</p>
+                <div class="w-16 h-1 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-full mx-auto mt-5"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+                <!-- HTML5 & CSS3 -->
+                <div class="glass-card p-6 rounded-2xl hover:-translate-y-1 transition-all duration-300 group">
+                    <div class="w-12 h-12 rounded-xl bg-orange-100 border border-orange-200 flex items-center justify-center mb-4 text-orange-500 group-hover:bg-orange-500 group-hover:text-white transition-all tech-icon-wrap">
+                        <i data-feather="code" class="w-5 h-5"></i>
+                    </div>
+                    <h3 class="font-bold text-slate-900 text-lg mb-2">HTML5 &amp; CSS3</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed mb-4">Semantic, accessible markup that search engines and screen readers love. From simple landing pages to complex layouts — built right from the ground up.</p>
+                    <div>
+                        <span class="tag-chip">Semantic HTML</span>
+                        <span class="tag-chip">Accessibility</span>
+                        <span class="tag-chip">CSS Grid</span>
+                        <span class="tag-chip">Flexbox</span>
+                        <span class="tag-chip">CSS Animations</span>
+                        <span class="tag-chip">Custom Properties</span>
+                    </div>
+                </div>
+
+                <!-- JavaScript -->
+                <div class="glass-card p-6 rounded-2xl hover:-translate-y-1 transition-all duration-300 group">
+                    <div class="w-12 h-12 rounded-xl bg-yellow-100 border border-yellow-200 flex items-center justify-center mb-4 text-yellow-600 group-hover:bg-yellow-500 group-hover:text-white transition-all tech-icon-wrap">
+                        <i data-feather="zap" class="w-5 h-5"></i>
+                    </div>
+                    <h3 class="font-bold text-slate-900 text-lg mb-2">JavaScript (ES2024)</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed mb-4">Modern JavaScript — the language of the web. I write clean, performant, maintainable JS that handles everything from DOM manipulation to complex async data flows.</p>
+                    <div>
+                        <span class="tag-chip">async/await</span>
+                        <span class="tag-chip">ES Modules</span>
+                        <span class="tag-chip">DOM APIs</span>
+                        <span class="tag-chip">REST fetch</span>
+                        <span class="tag-chip">Promises</span>
+                        <span class="tag-chip">Web APIs</span>
+                    </div>
+                </div>
+
+                <!-- React.js -->
+                <div class="glass-card p-6 rounded-2xl hover:-translate-y-1 transition-all duration-300 group">
+                    <div class="w-12 h-12 rounded-xl bg-cyan-100 border border-cyan-200 flex items-center justify-center mb-4 text-cyan-600 group-hover:bg-cyan-600 group-hover:text-white transition-all tech-icon-wrap">
+                        <i data-feather="refresh-cw" class="w-5 h-5"></i>
+                    </div>
+                    <h3 class="font-bold text-slate-900 text-lg mb-2">React.js</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed mb-4">I build scalable single-page applications with React — from dashboards to full SaaS products — using modern patterns that are easy to maintain and extend.</p>
+                    <div>
+                        <span class="tag-chip">Hooks</span>
+                        <span class="tag-chip">Context API</span>
+                        <span class="tag-chip">SPA Routing</span>
+                        <span class="tag-chip">Component Arch.</span>
+                        <span class="tag-chip">State Mgmt</span>
+                        <span class="tag-chip">Custom Hooks</span>
+                    </div>
+                </div>
+
+                <!-- Tailwind CSS -->
+                <div class="glass-card p-6 rounded-2xl hover:-translate-y-1 transition-all duration-300 group">
+                    <div class="w-12 h-12 rounded-xl bg-sky-100 border border-sky-200 flex items-center justify-center mb-4 text-sky-600 group-hover:bg-sky-600 group-hover:text-white transition-all tech-icon-wrap">
+                        <i data-feather="layers" class="w-5 h-5"></i>
+                    </div>
+                    <h3 class="font-bold text-slate-900 text-lg mb-2">Tailwind CSS</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed mb-4">Utility-first CSS that makes pixel-perfect, responsive UI fast to build and easy to iterate on. I create custom design systems that feel premium and consistent.</p>
+                    <div>
+                        <span class="tag-chip">Utility-First</span>
+                        <span class="tag-chip">Responsive Design</span>
+                        <span class="tag-chip">Design Systems</span>
+                        <span class="tag-chip">Dark Mode</span>
+                        <span class="tag-chip">Custom Themes</span>
+                        <span class="tag-chip">JIT Compiler</span>
+                    </div>
+                </div>
+
+                <!-- ChatGPT API -->
+                <div class="glass-card p-6 rounded-2xl hover:-translate-y-1 transition-all duration-300 group">
+                    <div class="w-12 h-12 rounded-xl bg-blue-100 border border-blue-200 flex items-center justify-center mb-4 text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-all tech-icon-wrap">
+                        <i data-feather="cpu" class="w-5 h-5"></i>
+                    </div>
+                    <h3 class="font-bold text-slate-900 text-lg mb-2">ChatGPT API</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed mb-4">I integrate OpenAI's ChatGPT API to add real intelligence to web products — streaming chatbots, document Q&amp;A, content generators, and smart search experiences.</p>
+                    <div>
+                        <span class="tag-chip">Prompt Engineering</span>
+                        <span class="tag-chip">Streaming</span>
+                        <span class="tag-chip">Function Calling</span>
+                        <span class="tag-chip">Chat UIs</span>
+                        <span class="tag-chip">GPT-4o</span>
+                        <span class="tag-chip">Embeddings</span>
+                    </div>
+                </div>
+
+                <!-- GitHub Copilot -->
+                <div class="glass-card p-6 rounded-2xl hover:-translate-y-1 transition-all duration-300 group">
+                    <div class="w-12 h-12 rounded-xl bg-purple-100 border border-purple-200 flex items-center justify-center mb-4 text-purple-600 group-hover:bg-purple-600 group-hover:text-white transition-all tech-icon-wrap">
+                        <i data-feather="git-merge" class="w-5 h-5"></i>
+                    </div>
+                    <h3 class="font-bold text-slate-900 text-lg mb-2">GitHub Copilot</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed mb-4">My AI pair programmer. Copilot accelerates every development session — boilerplate generation, pattern suggestions, inline docs, and intelligent code review assistance.</p>
+                    <div>
+                        <span class="tag-chip">AI Pair Prog.</span>
+                        <span class="tag-chip">Code Review</span>
+                        <span class="tag-chip">Inline Completions</span>
+                        <span class="tag-chip">Boilerplate Gen</span>
+                        <span class="tag-chip">Copilot Chat</span>
+                        <span class="tag-chip">2× Speed</span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ─────────────────────────────────────────────────────
+             SECTION 2: HOW AI ACCELERATES MY WORKFLOW
+        ───────────────────────────────────────────────────── -->
+        <section class="bg-slate-900 text-white rounded-3xl p-8 sm:p-12 mb-20 relative overflow-hidden">
+            <!-- Orbs -->
+            <div class="absolute top-0 right-0 w-72 h-72 bg-blue-600/20 blur-[90px] rounded-full pointer-events-none"></div>
+            <div class="absolute bottom-0 left-0 w-48 h-48 bg-cyan-500/15 blur-[70px] rounded-full pointer-events-none"></div>
+
+            <div class="text-center mb-12 relative z-10">
+                <h2 class="text-2xl md:text-3xl font-extrabold mb-3">How AI Accelerates My Development Workflow</h2>
+                <p class="text-slate-400 max-w-2xl mx-auto">Every stage of my development process is enhanced by AI — cutting delivery time in half while improving output quality.</p>
+            </div>
+
+            <div class="space-y-6 relative z-10">
+
+                <!-- Step 1 -->
+                <div class="flex gap-5 items-start relative step-line">
+                    <div class="flex-shrink-0 w-11 h-11 rounded-full bg-blue-600 flex items-center justify-center text-white font-extrabold text-sm shadow-lg glow-blue">1</div>
+                    <div class="glass-dark p-6 rounded-2xl flex-1 border border-blue-500/20">
+                        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2">
+                            <h3 class="font-bold text-white text-lg">Rapid Prototyping with Copilot</h3>
+                            <span class="inline-flex items-center gap-1 text-xs font-mono text-blue-300 bg-blue-900/50 border border-blue-700/50 px-3 py-1 rounded-full w-fit">
+                                <i data-feather="trending-up" class="w-3 h-3"></i> 2× Faster Delivery
+                            </span>
+                        </div>
+                        <p class="text-slate-400 text-sm leading-relaxed">GitHub Copilot generates component scaffolding, repetitive boilerplate, and API integration code inline as I type. What used to take an hour of setup now takes minutes — freeing me to focus on architecture and business logic instead of syntax.</p>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="flex gap-5 items-start relative step-line">
+                    <div class="flex-shrink-0 w-11 h-11 rounded-full bg-cyan-600 flex items-center justify-center text-white font-extrabold text-sm shadow-lg glow-cyan">2</div>
+                    <div class="glass-dark p-6 rounded-2xl flex-1 border border-cyan-500/20">
+                        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2">
+                            <h3 class="font-bold text-white text-lg">ChatGPT API for Intelligent Features</h3>
+                            <span class="inline-flex items-center gap-1 text-xs font-mono text-cyan-300 bg-cyan-900/50 border border-cyan-700/50 px-3 py-1 rounded-full w-fit">
+                                <i data-feather="cpu" class="w-3 h-3"></i> AI-Native Features
+                            </span>
+                        </div>
+                        <p class="text-slate-400 text-sm leading-relaxed">I integrate the OpenAI ChatGPT API to add intelligent features — smart search, document summarisation, AI chatbots, and context-aware content generators — directly into web applications, giving clients a competitive edge without months of ML research.</p>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="flex gap-5 items-start relative step-line">
+                    <div class="flex-shrink-0 w-11 h-11 rounded-full bg-blue-500 flex items-center justify-center text-white font-extrabold text-sm shadow-lg glow-blue">3</div>
+                    <div class="glass-dark p-6 rounded-2xl flex-1 border border-blue-500/20">
+                        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2">
+                            <h3 class="font-bold text-white text-lg">AI-Generated Component Patterns &amp; Architecture</h3>
+                            <span class="inline-flex items-center gap-1 text-xs font-mono text-blue-300 bg-blue-900/50 border border-blue-700/50 px-3 py-1 rounded-full w-fit">
+                                <i data-feather="box" class="w-3 h-3"></i> Best Practices
+                            </span>
+                        </div>
+                        <p class="text-slate-400 text-sm leading-relaxed">I use AI to explore and validate architecture decisions quickly — evaluating component decomposition strategies, state management patterns, and API design trade-offs in seconds rather than days of documentation research.</p>
+                    </div>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="flex gap-5 items-start">
+                    <div class="flex-shrink-0 w-11 h-11 rounded-full bg-slate-600 flex items-center justify-center text-white font-extrabold text-sm shadow-lg">4</div>
+                    <div class="glass-dark p-6 rounded-2xl flex-1 border border-slate-600/30">
+                        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2">
+                            <h3 class="font-bold text-white text-lg">Automated Testing &amp; Code Review with AI</h3>
+                            <span class="inline-flex items-center gap-1 text-xs font-mono text-slate-400 bg-slate-800 border border-slate-600 px-3 py-1 rounded-full w-fit">
+                                <i data-feather="shield" class="w-3 h-3"></i> Higher Quality Code
+                            </span>
+                        </div>
+                        <p class="text-slate-400 text-sm leading-relaxed">Copilot generates unit tests, edge-case assertions, and catches potential bugs before they hit production. AI-assisted code review highlights performance anti-patterns, accessibility issues, and security vulnerabilities at the speed of a linter.</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Terminal code snippet -->
+            <div class="mt-10 relative z-10">
+                <div class="terminal-block p-6">
+                    <div class="flex items-center gap-2 mb-4 pb-3 border-b border-slate-700">
+                        <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                        <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
+                        <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                        <span class="ml-3 text-slate-500 text-xs font-mono">ChatWidget.jsx — AI-assisted React component</span>
+                    </div>
+                    <pre class="text-sm leading-relaxed overflow-x-auto"><code><span class="text-slate-500">// AI-assisted React component</span>
+<span class="text-blue-400">const</span> <span class="text-yellow-300">ChatWidget</span> = () =&gt; {
+  <span class="text-blue-400">const</span> [response, setResponse] = <span class="text-cyan-400">useState</span>('');
+  <span class="text-blue-400">const</span> [loading, setLoading]   = <span class="text-cyan-400">useState</span>(<span class="text-orange-400">false</span>);
+
+  <span class="text-slate-500">// Powered by ChatGPT API streaming</span>
+  <span class="text-blue-400">const</span> <span class="text-yellow-300">handleSend</span> = <span class="text-blue-400">async</span> (message) =&gt; {
+    setLoading(<span class="text-orange-400">true</span>);
+    <span class="text-blue-400">const</span> res = <span class="text-blue-400">await</span> <span class="text-cyan-400">fetch</span>('/api/chat', {
+      method: <span class="text-green-400">'POST'</span>,
+      headers: { <span class="text-green-400">'Content-Type'</span>: <span class="text-green-400">'application/json'</span> },
+      body: <span class="text-cyan-400">JSON.stringify</span>({ message })
+    });
+    <span class="text-blue-400">const</span> reader = res.body.<span class="text-cyan-400">getReader</span>(); <span class="text-slate-500">// stream chunks</span>
+    <span class="text-blue-400">while</span> (<span class="text-orange-400">true</span>) {
+      <span class="text-blue-400">const</span> { done, value } = <span class="text-blue-400">await</span> reader.<span class="text-cyan-400">read</span>();
+      <span class="text-blue-400">if</span> (done) <span class="text-blue-400">break</span>;
+      <span class="text-cyan-400">setResponse</span>(prev =&gt; prev + <span class="text-cyan-400">decode</span>(value));
+    }
+    setLoading(<span class="text-orange-400">false</span>);
+  };
+
+  <span class="text-blue-400">return</span> &lt;<span class="text-cyan-400">ChatUI</span> onSend={handleSend} response={response} loading={loading} /&gt;;
+};</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─────────────────────────────────────────────────────
+             SECTION 3: WHAT I BUILD
+        ───────────────────────────────────────────────────── -->
+        <section class="mb-20">
+            <div class="text-center mb-14">
+                <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-4">What I Build</h2>
+                <p class="text-slate-600 max-w-2xl mx-auto">From a simple business landing page to a fully AI-integrated SaaS dashboard — here's the range of web products I deliver.</p>
+                <div class="w-16 h-1 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-full mx-auto mt-5"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+                <!-- Business Websites -->
+                <div class="glass-card p-8 rounded-2xl hover:-translate-y-1 transition-all duration-300 relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 w-24 h-24 bg-blue-50 rounded-full -translate-y-8 translate-x-8 group-hover:bg-blue-100 transition-all"></div>
+                    <div class="relative z-10">
+                        <div class="w-14 h-14 rounded-2xl bg-blue-100 border border-blue-200 flex items-center justify-center mb-5 text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-all">
+                            <i data-feather="globe" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="font-bold text-slate-900 text-xl mb-3">Business Websites</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-4">High-converting digital presence for companies, professionals, and consultants — designed to rank on Google and turn visitors into clients.</p>
+                        <ul class="space-y-2">
+                            <li class="flex items-center gap-2 text-xs text-slate-600">
+                                <i data-feather="check-circle" class="w-3.5 h-3.5 text-blue-500 flex-shrink-0"></i>
+                                Landing pages &amp; lead generation sites
+                            </li>
+                            <li class="flex items-center gap-2 text-xs text-slate-600">
+                                <i data-feather="check-circle" class="w-3.5 h-3.5 text-blue-500 flex-shrink-0"></i>
+                                Portfolio &amp; personal brand sites
+                            </li>
+                            <li class="flex items-center gap-2 text-xs text-slate-600">
+                                <i data-feather="check-circle" class="w-3.5 h-3.5 text-blue-500 flex-shrink-0"></i>
+                                Corporate &amp; product showcase sites
+                            </li>
+                            <li class="flex items-center gap-2 text-xs text-slate-600">
+                                <i data-feather="check-circle" class="w-3.5 h-3.5 text-blue-500 flex-shrink-0"></i>
+                                SEO-optimised, mobile-first, fast-loading
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Web Applications -->
+                <div class="glass-card p-8 rounded-2xl hover:-translate-y-1 transition-all duration-300 relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 w-24 h-24 bg-cyan-50 rounded-full -translate-y-8 translate-x-8 group-hover:bg-cyan-100 transition-all"></div>
+                    <div class="relative z-10">
+                        <div class="w-14 h-14 rounded-2xl bg-cyan-100 border border-cyan-200 flex items-center justify-center mb-5 text-cyan-600 group-hover:bg-cyan-600 group-hover:text-white transition-all">
+                            <i data-feather="monitor" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="font-bold text-slate-900 text-xl mb-3">Web Applications</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-4">Full-featured React applications with real-time data, complex state management, and polished UX — built for scale and performance from day one.</p>
+                        <ul class="space-y-2">
+                            <li class="flex items-center gap-2 text-xs text-slate-600">
+                                <i data-feather="check-circle" class="w-3.5 h-3.5 text-cyan-500 flex-shrink-0"></i>
+                                Interactive dashboards &amp; data visualisation
+                            </li>
+                            <li class="flex items-center gap-2 text-xs text-slate-600">
+                                <i data-feather="check-circle" class="w-3.5 h-3.5 text-cyan-500 flex-shrink-0"></i>
+                                SaaS product frontends
+                            </li>
+                            <li class="flex items-center gap-2 text-xs text-slate-600">
+                                <i data-feather="check-circle" class="w-3.5 h-3.5 text-cyan-500 flex-shrink-0"></i>
+                                Admin panels &amp; CMS interfaces
+                            </li>
+                            <li class="flex items-center gap-2 text-xs text-slate-600">
+                                <i data-feather="check-circle" class="w-3.5 h-3.5 text-cyan-500 flex-shrink-0"></i>
+                                REST API &amp; backend integration
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- AI-Powered Tools -->
+                <div class="glass-card p-8 rounded-2xl hover:-translate-y-1 transition-all duration-300 relative overflow-hidden group border-2 border-blue-200">
+                    <div class="absolute top-0 right-0 w-24 h-24 bg-blue-50 rounded-full -translate-y-8 translate-x-8 group-hover:bg-blue-100 transition-all"></div>
+                    <div class="absolute top-3 right-3 text-xs font-mono text-blue-600 bg-blue-100 px-2 py-0.5 rounded-full border border-blue-200">Most Popular</div>
+                    <div class="relative z-10">
+                        <div class="w-14 h-14 rounded-2xl bg-blue-600 border border-blue-700 flex items-center justify-center mb-5 text-white">
+                            <i data-feather="cpu" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="font-bold text-slate-900 text-xl mb-3">AI-Powered Tools</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-4">Web apps with intelligence built in — using the OpenAI API, embeddings, and RAG to create tools that feel like magic to your customers.</p>
+                        <ul class="space-y-2">
+                            <li class="flex items-center gap-2 text-xs text-slate-600">
+                                <i data-feather="check-circle" class="w-3.5 h-3.5 text-blue-500 flex-shrink-0"></i>
+                                Custom AI chatbots &amp; virtual assistants
+                            </li>
+                            <li class="flex items-center gap-2 text-xs text-slate-600">
+                                <i data-feather="check-circle" class="w-3.5 h-3.5 text-blue-500 flex-shrink-0"></i>
+                                Document Q&amp;A &amp; knowledge base tools
+                            </li>
+                            <li class="flex items-center gap-2 text-xs text-slate-600">
+                                <i data-feather="check-circle" class="w-3.5 h-3.5 text-blue-500 flex-shrink-0"></i>
+                                Content generators &amp; writing assistants
+                            </li>
+                            <li class="flex items-center gap-2 text-xs text-slate-600">
+                                <i data-feather="check-circle" class="w-3.5 h-3.5 text-blue-500 flex-shrink-0"></i>
+                                ChatGPT / OpenAI API integrations
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ─────────────────────────────────────────────────────
+             SECTION 4: WHY THIS STACK? (Comparison)
+        ───────────────────────────────────────────────────── -->
+        <section class="mb-20">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-4">Why This Stack?</h2>
+                <p class="text-slate-600 max-w-2xl mx-auto">Not all web development is equal. AI-accelerated development consistently delivers better results, faster — here's the difference you can expect.</p>
+                <div class="w-16 h-1 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-full mx-auto mt-5"></div>
+            </div>
+
+            <div class="rounded-3xl overflow-hidden border border-slate-200 shadow-sm">
+                <!-- Header row -->
+                <div class="grid grid-cols-3 bg-slate-900 text-white text-sm font-bold">
+                    <div class="p-4 text-slate-400 font-mono uppercase tracking-wide text-xs">Category</div>
+                    <div class="p-4 text-center border-l border-slate-700">
+                        <div class="flex items-center justify-center gap-2 text-red-400">
+                            <i data-feather="x-circle" class="w-4 h-4"></i> Old Way
+                        </div>
+                        <div class="text-slate-500 text-xs font-normal font-mono mt-0.5">Manual Development</div>
+                    </div>
+                    <div class="p-4 text-center border-l border-slate-700 bg-blue-900/40">
+                        <div class="flex items-center justify-center gap-2 text-blue-400">
+                            <i data-feather="zap" class="w-4 h-4"></i> AI-Accelerated
+                        </div>
+                        <div class="text-slate-400 text-xs font-normal font-mono mt-0.5">With Copilot + ChatGPT</div>
+                    </div>
+                </div>
+
+                <!-- Row 1: Speed -->
+                <div class="grid grid-cols-3 compare-row border-t border-slate-200">
+                    <div class="p-5 border-r border-slate-200">
+                        <div class="flex items-center gap-2 font-semibold text-slate-800 text-sm">
+                            <i data-feather="clock" class="w-4 h-4 text-blue-600"></i> Delivery Speed
+                        </div>
+                        <p class="text-xs text-slate-500 mt-1">Time from kickoff to production</p>
+                    </div>
+                    <div class="p-5 border-r border-slate-200 text-center">
+                        <div class="text-sm text-slate-700 font-medium">4–8 weeks</div>
+                        <p class="text-xs text-slate-400 mt-1">Per standard feature set</p>
+                    </div>
+                    <div class="p-5 text-center bg-blue-50/50">
+                        <div class="text-sm text-blue-700 font-bold">2–4 weeks</div>
+                        <p class="text-xs text-slate-500 mt-1">AI-assisted boilerplate &amp; scaffolding</p>
+                    </div>
+                </div>
+
+                <!-- Row 2: Code Quality -->
+                <div class="grid grid-cols-3 compare-row border-t border-slate-200">
+                    <div class="p-5 border-r border-slate-200">
+                        <div class="flex items-center gap-2 font-semibold text-slate-800 text-sm">
+                            <i data-feather="award" class="w-4 h-4 text-blue-600"></i> Code Quality
+                        </div>
+                        <p class="text-xs text-slate-500 mt-1">Consistency &amp; bug rate</p>
+                    </div>
+                    <div class="p-5 border-r border-slate-200 text-center">
+                        <div class="text-sm text-slate-700 font-medium">Variable quality</div>
+                        <p class="text-xs text-slate-400 mt-1">Depends on developer fatigue &amp; experience</p>
+                    </div>
+                    <div class="p-5 text-center bg-blue-50/50">
+                        <div class="text-sm text-blue-700 font-bold">Consistently high</div>
+                        <p class="text-xs text-slate-500 mt-1">AI reviews every function for edge cases &amp; patterns</p>
+                    </div>
+                </div>
+
+                <!-- Row 3: Features -->
+                <div class="grid grid-cols-3 compare-row border-t border-slate-200">
+                    <div class="p-5 border-r border-slate-200">
+                        <div class="flex items-center gap-2 font-semibold text-slate-800 text-sm">
+                            <i data-feather="star" class="w-4 h-4 text-blue-600"></i> Intelligent Features
+                        </div>
+                        <p class="text-xs text-slate-500 mt-1">AI search, chatbots, generators</p>
+                    </div>
+                    <div class="p-5 border-r border-slate-200 text-center">
+                        <div class="text-sm text-slate-700 font-medium">Not included</div>
+                        <p class="text-xs text-slate-400 mt-1">Requires separate ML team &amp; months of work</p>
+                    </div>
+                    <div class="p-5 text-center bg-blue-50/50">
+                        <div class="text-sm text-blue-700 font-bold">Built-in via API</div>
+                        <p class="text-xs text-slate-500 mt-1">ChatGPT API integration in days, not months</p>
+                    </div>
+                </div>
+
+                <!-- Row 4: Maintenance -->
+                <div class="grid grid-cols-3 border-t border-slate-200">
+                    <div class="p-5 border-r border-slate-200">
+                        <div class="flex items-center gap-2 font-semibold text-slate-800 text-sm">
+                            <i data-feather="tool" class="w-4 h-4 text-blue-600"></i> Maintenance
+                        </div>
+                        <p class="text-xs text-slate-500 mt-1">Long-term cost &amp; effort</p>
+                    </div>
+                    <div class="p-5 border-r border-slate-200 text-center">
+                        <div class="text-sm text-slate-700 font-medium">High overhead</div>
+                        <p class="text-xs text-slate-400 mt-1">Undocumented code, technical debt accumulates</p>
+                    </div>
+                    <div class="p-5 text-center bg-blue-50/50">
+                        <div class="text-sm text-blue-700 font-bold">Low overhead</div>
+                        <p class="text-xs text-slate-500 mt-1">Auto-generated docs, clean patterns, easy handover</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ─────────────────────────────────────────────────────
+             SECTION 5: PRICING / CTA
+        ───────────────────────────────────────────────────── -->
+        <section class="bg-white rounded-2xl p-8 sm:p-10 shadow-sm border border-slate-200 mb-20 relative overflow-hidden">
+            <div class="absolute top-0 right-0 p-8 text-blue-50 opacity-60">
+                <i data-feather="code" class="w-36 h-36"></i>
+            </div>
+            <div class="relative z-10">
+                <div class="inline-flex items-center gap-2 text-xs font-mono text-blue-600 bg-blue-50 border border-blue-200 px-4 py-1.5 rounded-full mb-5">
+                    <i data-feather="tag" class="w-3 h-3"></i> Project-Based Pricing
+                </div>
+                <h3 class="text-2xl font-extrabold text-slate-900 mb-3">Ready to Build Your Web Project?</h3>
+                <p class="text-slate-600 mb-6 max-w-2xl leading-relaxed">Every project is scoped individually — fixed-price quotes with no surprise overruns. Tell me what you need and I'll send a detailed proposal within 24 hours.</p>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8">
+                    <div class="flex items-center gap-2 text-sm text-slate-700">
+                        <i data-feather="check-square" class="w-4 h-4 text-blue-600 flex-shrink-0"></i>
+                        Custom website or web app design &amp; build
+                    </div>
+                    <div class="flex items-center gap-2 text-sm text-slate-700">
+                        <i data-feather="check-square" class="w-4 h-4 text-blue-600 flex-shrink-0"></i>
+                        React SPA / dashboard development
+                    </div>
+                    <div class="flex items-center gap-2 text-sm text-slate-700">
+                        <i data-feather="check-square" class="w-4 h-4 text-blue-600 flex-shrink-0"></i>
+                        ChatGPT API / AI feature integration
+                    </div>
+                    <div class="flex items-center gap-2 text-sm text-slate-700">
+                        <i data-feather="check-square" class="w-4 h-4 text-blue-600 flex-shrink-0"></i>
+                        Landing page &amp; SEO optimisation
+                    </div>
+                    <div class="flex items-center gap-2 text-sm text-slate-700">
+                        <i data-feather="check-square" class="w-4 h-4 text-blue-600 flex-shrink-0"></i>
+                        Performance tuning (Lighthouse 95+)
+                    </div>
+                    <div class="flex items-center gap-2 text-sm text-slate-700">
+                        <i data-feather="check-square" class="w-4 h-4 text-blue-600 flex-shrink-0"></i>
+                        Post-launch support &amp; maintenance
+                    </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <a href="https://wa.me/917796852335?text=Hello%20Dipak,%20I%20want%20a%20quote%20for%20a%20web%20development%20project." target="_blank"
+                       class="inline-flex items-center justify-center gap-2 bg-blue-600 text-white font-bold px-8 py-3.5 rounded-xl hover:bg-blue-700 transition shadow-lg">
+                        <i data-feather="message-circle" class="w-5 h-5"></i> Get a Quote on WhatsApp
+                    </a>
+                    <a href="index.html#work"
+                       class="inline-flex items-center justify-center gap-2 bg-slate-100 text-slate-700 font-semibold px-8 py-3.5 rounded-xl hover:bg-slate-200 transition">
+                        <i data-feather="eye" class="w-5 h-5"></i> See Past Projects
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─────────────────────────────────────────────────────
+             SECTION 6: FINAL DARK CTA BANNER
+        ───────────────────────────────────────────────────── -->
+        <div class="text-center bg-gradient-to-br from-blue-600 to-cyan-600 rounded-3xl p-10 sm:p-14 relative overflow-hidden">
+            <div class="absolute inset-0 bg-black/20 rounded-3xl pointer-events-none"></div>
+            <div class="absolute top-0 left-0 w-56 h-56 bg-white/5 rounded-full -translate-x-20 -translate-y-20 pointer-events-none"></div>
+            <div class="absolute bottom-0 right-0 w-72 h-72 bg-white/5 rounded-full translate-x-24 translate-y-24 pointer-events-none"></div>
+
+            <div class="relative z-10">
+                <div class="inline-flex items-center gap-2 bg-white/15 border border-white/25 text-white text-xs font-mono px-4 py-1.5 rounded-full mb-6 uppercase tracking-widest">
+                    <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+                    Available for New Projects
+                </div>
+
+                <h2 class="text-3xl md:text-4xl font-extrabold text-white mb-4">Let's Build Something<br class="hidden sm:block"> Intelligent Together</h2>
+                <p class="text-white/80 mb-8 max-w-xl mx-auto leading-relaxed">Whether it's a crisp business website, a feature-rich React app, or a product powered by AI — I'll deliver it fast, clean, and built to grow.</p>
+
+                <div class="flex flex-col sm:flex-row justify-center gap-4">
+                    <a href="https://wa.me/917796852335?text=Hello%20Dipak,%20I%20want%20to%20discuss%20a%20web%20development%20project." target="_blank"
+                       class="px-8 py-4 rounded-xl bg-white text-blue-700 font-extrabold hover:bg-slate-100 transition-all duration-300 flex items-center justify-center gap-2 shadow-xl">
+                        <i data-feather="message-circle" class="w-5 h-5"></i> WhatsApp Now
+                    </a>
+                    <a href="index.html"
+                       class="px-8 py-4 rounded-xl bg-white/10 border border-white/30 text-white font-semibold hover:bg-white/20 transition-all duration-300 flex items-center justify-center gap-2">
+                        <i data-feather="home" class="w-5 h-5"></i> View Full Portfolio
+                    </a>
+                </div>
+
+                <!-- Trust signals -->
+                <div class="mt-10 flex flex-wrap justify-center gap-6 text-white/60 text-xs font-mono">
+                    <span class="flex items-center gap-1.5"><i data-feather="map-pin" class="w-3 h-3"></i> Based in Pune, India</span>
+                    <span class="flex items-center gap-1.5"><i data-feather="globe" class="w-3 h-3"></i> Remote-friendly worldwide</span>
+                    <span class="flex items-center gap-1.5"><i data-feather="clock" class="w-3 h-3"></i> Reply within 2 hours</span>
+                    <span class="flex items-center gap-1.5"><i data-feather="shield" class="w-3 h-3"></i> NDA available</span>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         FOOTER
+    ═══════════════════════════════════════════════════════════ -->
+    <footer class="border-t border-slate-200 py-8 bg-white text-center">
+        <p class="text-sm text-slate-500 font-medium">&copy; 2026 Dipak Kadamb. All rights reserved. | <a href="index.html" class="hover:text-blue-600 transition">Back to Home</a></p>
+    </footer>
+
+    <script>
+        feather.replace();
+    </script>
+</body>
+</html>
